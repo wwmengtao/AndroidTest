@@ -3,6 +3,7 @@ package com.mt.androidtest;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.SystemProperties;
 
 
 public class MainActivity extends Activity {
@@ -17,7 +18,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume(){	
 		super.onResume();
-		if(isLogRun)ALog.Log("====onResume");
+		if(isLogRun)ALog.Log("====onResume:"+getLocale());
 	}
 	
 	@Override
@@ -45,6 +46,23 @@ public class MainActivity extends Activity {
         if(mOrientation == Configuration.ORIENTATION_PORTRAIT){  
         	if(isLogRun)ALog.Log("====ORIENTATION_PORTRAIT");
         }
-    }	
+    }
+    /*
+	[persist.sys.first_time_boot]: [false]
+	[persist.sys.sd.defaultpath]: [/storage/emulated/0]
+	[persist.sys.timezone]: [Europe/Moscow]
+	[persist.sys.usb.config]: [mtp,adb]
+	
+	[ro.lenovo.wificert]: [pass]
+	[ro.lenovo.platform]: [mtk]
+	[ro.lenovo.region]: [row]
+	[ro.lenovo.series]: [Lenovo S1]
+	[ro.lenovo.device]: [phone]
+	[ro.lenovo.easyimage.code]: [ru]
+    */
+    public String getLocale(){
+			String locale = SystemProperties.get("persist.sys.locale");
+			return locale;
+    }
 }
 
