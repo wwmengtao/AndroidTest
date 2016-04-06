@@ -1,6 +1,15 @@
 package com.mt.androidtest;
 
+import java.util.List;
+
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.SystemProperties;
@@ -19,6 +28,7 @@ public class MainActivity extends Activity {
 	protected void onResume(){	
 		super.onResume();
 		if(isLogRun)ALog.Log("====onResume:"+getLocale());
+		checkComponentExist();
 	}
 	
 	@Override
@@ -63,6 +73,68 @@ public class MainActivity extends Activity {
     public String getLocale(){
 			String locale = SystemProperties.get("persist.sys.locale");
 			return locale;
+    }
+    /**
+     * checkComponentExist：试验检测组件是否存在的几种方法
+     */
+    public void checkComponentExist(){
+        String packageName = "com.mt.androidprocessservice";
+        String className = "com.mt.androidprocessservice.MainActivity";
+        if(isLogRun)ALog.Log("====checkComponentExist:"+isComponentExist(packageName, className));
+		if(isLogRun)ALog.Log("====hasComponent:"+hasComponent(packageName, className));
+		if(isLogRun)ALog.Log("====getComponentName:"+getComponentName(packageName));
+		
+    }
+    /**
+     * isComponentExist：检测是否对应的组件存在
+     * @param packageName
+     * @param className
+     * @return boolean
+     */
+	public boolean isComponentExist(String packageName, String className){
+        Intent intent = new Intent("android.intent.action.MAIN");
+        intent.setClassName(packageName, className);
+		PackageManager packageManager = getPackageManager();
+		List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
+		//startActivity(intent);
+		boolean isIntentSafe = activities.size() > 0;
+		return isIntentSafe;
+	}
+    /**
+     * hasComponent：检测是否对应的组件存在
+     * @param packageName
+     * @param className
+     * @return boolean
+     */
+    public boolean hasComponent(String packageName, String className) {
+        ComponentName mComponentName = new ComponentName(packageName, className);
+        PackageManager pm = getPackageManager();
+        try {
+            ActivityInfo info = pm.getActivityInfo(mComponentName, 0);
+            if (info != null) {
+                return true;
+            }
+            return false;
+        } catch (NameNotFoundException e) {
+            return false;
+        }
+    }	
+	/**
+	 * getComponentName：获取对应组件的应用名称
+	 * @param packageName
+	 * @return
+	 */
+    private String getComponentName(String packageName) {
+        try {
+            PackageManager pm = getPackageManager();
+            ApplicationInfo applicationInfo = pm.getApplicationInfo(packageName, 0);
+
+            if (applicationInfo != null) {
+                return pm.getApplicationLabel(applicationInfo).toString();
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 }
 
