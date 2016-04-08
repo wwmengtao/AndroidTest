@@ -149,9 +149,10 @@ public class MainActivity extends Activity {
     private PhoneStateListener phoneStateListener = new PhoneStateListener() {
         public void onCallStateChanged(int state, String incomingNumber) {
             switch(state) {
-                case TelephonyManager.CALL_STATE_RINGING :
+                case TelephonyManager.CALL_STATE_RINGING ://电话响铃
                 	ALog.Log("CALL_STATE_RINGING");
-                case TelephonyManager.CALL_STATE_OFFHOOK :
+                	break;
+                case TelephonyManager.CALL_STATE_OFFHOOK ://电话接听
                 	ALog.Log("CALL_STATE_OFFHOOK");
                     break;
                 default:
