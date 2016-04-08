@@ -147,6 +147,11 @@ public class ALog {
         }
 	}
 	
+	/**
+	 * saveToXml：此方法适合一次性写入的情况，相比较howToWriteToXml方法使用起来不灵活
+	 * @param mContext
+	 * @param fileName
+	 */
 	public  static void saveToXml(Context mContext ,String fileName) {
 	     final FileOutputStream os;
 			AtomicFile mAtomicFile = new AtomicFile(new File(mContext.getFilesDir(),fileName));
