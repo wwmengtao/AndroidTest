@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
@@ -13,6 +14,8 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.SystemProperties;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 
 
 public class MainActivity extends Activity {
@@ -22,6 +25,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		if(isLogRun)ALog.Log("====onCreate");
+		setListenCall();
 	}
 	
 	@Override
@@ -136,5 +140,24 @@ public class MainActivity extends Activity {
         }
         return null;
     }
+    
+    public void setListenCall(){
+        TelephonyManager telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+    }
+
+    private PhoneStateListener phoneStateListener = new PhoneStateListener() {
+        public void onCallStateChanged(int state, String incomingNumber) {
+            switch(state) {
+                case TelephonyManager.CALL_STATE_RINGING :
+                	ALog.Log("CALL_STATE_RINGING");
+                case TelephonyManager.CALL_STATE_OFFHOOK :
+                	ALog.Log("CALL_STATE_OFFHOOK");
+                    break;
+                default:
+                    break;
+            }
+        };
+    };
 }
 
