@@ -32,7 +32,8 @@ public class MainActivity extends Activity {
 	protected void onResume(){	
 		super.onResume();
 		if(isLogRun)ALog.Log("====onResume:"+getLocale());
-		checkComponentExist();
+		writeToXml(this);//或者调用ALog.howToWriteToXml(this);
+		
 	}
 	
 	@Override
@@ -160,5 +161,20 @@ public class MainActivity extends Activity {
             }
         };
     };
+    
+    /**
+     * writeToXml：Android环境下调用ALog中的方法写xml
+     */
+    public void writeToXml(Context mContext){
+		String fileToSave = "1.xml";
+		String docTag = "Document";
+		ALog.startSaving(mContext,fileToSave,docTag);
+		for(int i=0;i<5;i++){
+			ALog.stag("name"+i);
+			ALog.attr("attr1", "123");
+			ALog.etag("name"+i);
+		}
+		ALog.endSaving();
+    }
 }
 
