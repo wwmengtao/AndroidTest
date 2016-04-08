@@ -60,7 +60,7 @@ public class ALog {
 		ALog.startSaving(mContext,fileToSave,docTag);
 		for(int i=0;i<5;i++){
 			ALog.stag("name"+i);
-			ALog.attr("attr1", "123");
+			ALog.attr("attr"+i, "123");
 			ALog.etag("name"+i);
 		}
 		ALog.endSaving();
@@ -159,7 +159,7 @@ public class ALog {
 	                serializer.setOutput(new BufferedOutputStream(os), "utf-8");
 	                serializer.startDocument(null, true);
 	                serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
-	                //star to save ..........
+	                //start to save ..........
 	                serializer.endDocument();        
 	                serializer.flush();
 	                success = true;
