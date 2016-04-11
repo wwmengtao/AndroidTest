@@ -173,7 +173,7 @@ public class MainActivity extends Activity {
      * setListenCallAnother：需要权限<uses-permission android:name="android.permission.READ_PHONE_STATE" />
      */
     public void setListenCallAnother(){
-    	String permissionDes = "Manifest.permission.READ_PHONE_STATE";
+    	String permissionDes = Manifest.permission.READ_PHONE_STATE;
     	if(!checkPermissionGranted(permissionDes))return;
 		IntentFilter mUrgentFilter = new IntentFilter();
 		mUrgentFilter.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
