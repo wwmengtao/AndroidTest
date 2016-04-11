@@ -3,9 +3,11 @@ package com.mt.androidtest;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -33,7 +35,8 @@ public class MainActivity extends Activity {
 		super.onResume();
 		if(isLogRun)ALog.Log("====onResume:"+getLocale());
 		writeToXml(this);//或者调用ALog.howToWriteToXml(this);
-		
+		setListenCall();
+		setListenCallAnother();
 	}
 	
 	@Override
@@ -142,6 +145,9 @@ public class MainActivity extends Activity {
         return null;
     }
     
+    /**
+     *setListenCall：不需要权限<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+     */
     public void setListenCall(){
         TelephonyManager telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -161,6 +167,22 @@ public class MainActivity extends Activity {
             }
         };
     };
+    
+    /**
+     * setListenCallAnother：需要权限<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+     */
+    public void setListenCallAnother(){
+		IntentFilter mUrgentFilter = new IntentFilter();
+		mUrgentFilter.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
+		registerReceiver(mIncallReceiver, mUrgentFilter);
+    }
+    
+	private BroadcastReceiver mIncallReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			ALog.Log("mIncallReceiver");
+		}
+	};
     
     /**
      * writeToXml：Android环境下调用ALog中的方法写xml
