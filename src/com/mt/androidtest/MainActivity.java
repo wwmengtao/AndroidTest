@@ -148,11 +148,13 @@ public class MainActivity extends Activity {
                 default:
                     break;
             }
-        };
+        }
     };
     
     /**
      * setListenCallAnother：需要权限<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+     * 注意：满足1)测试机是android6.0以上版本;2)编译环境的 targetSdkVersion大于22这两个条件，上述READ_PHONE_STATE权限申请不到，需要设置
+     * 用户交互界面让用户手动授权
      */
     public void setListenCallAnother(){
     	String permissionDes = Manifest.permission.READ_PHONE_STATE;
