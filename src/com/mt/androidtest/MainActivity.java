@@ -16,7 +16,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.SystemProperties;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
@@ -34,8 +33,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume(){	
 		super.onResume();
-		if(isLogRun)ALog.Log("====onResume:"+getLocale());
-		writeToXml(this);//或者调用ALog.howToWriteToXml(this);
+		if(isLogRun)ALog.Log("====onResume");
 		setListenCall();
 		setListenCallAnother();
 	}
@@ -66,23 +64,7 @@ public class MainActivity extends Activity {
         	if(isLogRun)ALog.Log("====ORIENTATION_PORTRAIT");
         }
     }
-    /*
-	[persist.sys.first_time_boot]: [false]
-	[persist.sys.sd.defaultpath]: [/storage/emulated/0]
-	[persist.sys.timezone]: [Europe/Moscow]
-	[persist.sys.usb.config]: [mtp,adb]
-	
-	[ro.lenovo.wificert]: [pass]
-	[ro.lenovo.platform]: [mtk]
-	[ro.lenovo.region]: [row]
-	[ro.lenovo.series]: [Lenovo S1]
-	[ro.lenovo.device]: [phone]
-	[ro.lenovo.easyimage.code]: [ru]
-    */
-    public String getLocale(){
-			String locale = SystemProperties.get("persist.sys.locale");
-			return locale;
-    }
+
     /**
      * checkComponentExist：试验检测组件是否存在的几种方法
      */
@@ -206,19 +188,5 @@ public class MainActivity extends Activity {
 		}  
 		return isGranted;
 	}
-    /**
-     * writeToXml：Android环境下调用ALog中的方法写xml
-     */
-    public void writeToXml(Context mContext){
-		String fileToSave = "1.xml";
-		String docTag = "Document";
-		ALog.startSaving(mContext,fileToSave,docTag);
-		for(int i=0;i<5;i++){
-			ALog.stag("name"+i);
-			ALog.attr("attr1", "123");
-			ALog.etag("name"+i);
-		}
-		ALog.endSaving();
-    }
 }
 
