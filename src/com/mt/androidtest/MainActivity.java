@@ -2,6 +2,7 @@ package com.mt.androidtest;
 
 import java.util.List;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -172,6 +173,8 @@ public class MainActivity extends Activity {
      * setListenCallAnother：需要权限<uses-permission android:name="android.permission.READ_PHONE_STATE" />
      */
     public void setListenCallAnother(){
+    	String permissionDes = "Manifest.permission.READ_PHONE_STATE";
+    	if(!checkPermissionGranted(permissionDes))return;
 		IntentFilter mUrgentFilter = new IntentFilter();
 		mUrgentFilter.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
 		registerReceiver(mIncallReceiver, mUrgentFilter);
@@ -184,6 +187,25 @@ public class MainActivity extends Activity {
 		}
 	};
     
+	/**
+	 * checkPermissionGranted：判断是否支持对应权限
+	 * @param permissionDes
+	 * @return
+	 */
+	public boolean checkPermissionGranted(String permissionDes){
+		boolean isGranted = false;
+		Context context = getApplicationContext();  
+		if (context.getPackageManager().checkPermission(permissionDes,
+		        context.getPackageName()) == PackageManager.PERMISSION_GRANTED){  
+			isGranted = true;
+		    ALog.Log(getApplicationContext().getString(R.string.permission_granted,permissionDes));  
+		}  
+		else{  
+			isGranted = false;
+		    ALog.Log(getApplicationContext().getString(R.string.permission_not_granted,permissionDes));  
+		}  
+		return isGranted;
+	}
     /**
      * writeToXml：Android环境下调用ALog中的方法写xml
      */
