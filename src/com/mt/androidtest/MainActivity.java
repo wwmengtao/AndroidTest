@@ -228,11 +228,33 @@ public class MainActivity extends Activity {
 		TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
 		Class<?> mClass = telephonyManager.getClass();
 		Method [] mMethods = mClass.getDeclaredMethods();
-		for (Method m : mMethods) {
-			//if (m.getName().equals("setDataEnabledUsingSubId")) {
-				ALog.Log("m.getName():"+m.getName());
-			//}
+		Method m = getExistedMethod(mMethods,"setDataEnabled");
+		int subId = 1;
+		if(null!=m){
+			m.setAccessible(true);
+			try{
+				m.invoke(telephonyManager, subId, true);//打开卡槽subId的数据连接
+			}catch(Exception ex){
+				
+			}
 		}
+
+	}
+	
+	/**
+	 * isMethodExist：判断指定名称的方法是否存在
+	 * @param mMethods
+	 * @param methodName
+	 * @return
+	 */
+	public Method getExistedMethod(Method [] mMethods,String methodName){
+		if(null==mMethods||null==methodName)return null;
+		for (Method m : mMethods) {
+			if (m.getName().equals(methodName)) {
+				return m;
+			}
+		}
+		return null;
 	}
 }
 
