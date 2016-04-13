@@ -1,5 +1,6 @@
 package com.mt.androidtest;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import android.Manifest;
@@ -15,7 +16,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
@@ -34,8 +38,12 @@ public class MainActivity extends Activity {
 	protected void onResume(){	
 		super.onResume();
 		if(isLogRun)ALog.Log("====onResume");
-		setListenCall();
-		setListenCallAnother();
+		//1、监听来电状态
+		//setListenCall();
+		//setListenCallAnother();
+		//2、反射调用
+		//reflectCall();
+		reflectCallListAll();
 	}
 	
 	@Override
@@ -189,6 +197,42 @@ public class MainActivity extends Activity {
 		    ALog.Log(getApplicationContext().getString(R.string.permission_not_granted,permissionDes));  
 		}  
 		return isGranted;
+	}
+	
+	/**
+	 * reflectCall：测试setDataEnabledUsingSubId和setDataEnabled哪个方法存在
+	 */
+	public void reflectCall(){
+		TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+		Class<?> mClass = telephonyManager.getClass();
+		Method mMethod = null;
+		try {
+			mMethod = mClass.getMethod("setDataEnabledUsingSubId",new Class[]{int.class,boolean.class});
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			ALog.Log("setDataEnabledUsingSubId not found!");
+			try {
+				mMethod= mClass.getMethod("setDataEnabled",new Class[]{int.class,boolean.class});
+			} catch (NoSuchMethodException e1) {
+				// TODO Auto-generated catch block
+				ALog.Log("setDataEnabled not found!");
+			}
+		}
+		ALog.Log("mMethod.getName():"+mMethod.getName());
+	}
+	
+	/**
+	 * reflectCallListAll：罗列出所有的待调用方法，这样可以省去reflectCall中的try-catch结构以及罗列有关方法参数的麻烦
+	 */
+	public void reflectCallListAll(){
+		TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+		Class<?> mClass = telephonyManager.getClass();
+		Method [] mMethods = mClass.getDeclaredMethods();
+		for (Method m : mMethods) {
+			//if (m.getName().equals("setDataEnabledUsingSubId")) {
+				ALog.Log("m.getName():"+m.getName());
+			//}
+		}
 	}
 }
 
