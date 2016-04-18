@@ -26,24 +26,22 @@ import android.telephony.TelephonyManager;
 
 public class MainActivity extends Activity {
 	boolean isLogRun=true;
+	TelephonyManager telephonyManager;
+	IntentFilter mUrgentFilter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		if(isLogRun)ALog.Log("====onCreate");
-		setListenCall();
+		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 	}
 	
 	@Override
 	protected void onResume(){	
 		super.onResume();
 		if(isLogRun)ALog.Log("====onResume");
-		//1、监听来电状态
-		//setListenCall();
-		//setListenCallAnother();
-		//2、反射调用
-		//reflectCall();
-		reflectCallListAll();
+		testFunctions();
+		testFunctionsRegister();
 	}
 	
 	@Override
@@ -56,9 +54,28 @@ public class MainActivity extends Activity {
 	public void onDestroy() {
 		super.onDestroy();
 		if(isLogRun)ALog.Log("====onDestroy");
+		testFunctionsUnRegister();
 	}	
 	
+	public void testFunctions(){
+		//1、反射调用
+		//reflectCall();
+		//reflectCallListAll();
+		//2、检测组件是否存在
+		//checkComponentExist();
+	}
 	
+	public void testFunctionsRegister(){
+		//1、监听来电状态
+		setListenCall();
+		setListenCallAnother();
+	}
+	
+	public void testFunctionsUnRegister(){
+		//1、取消监听来电状态
+		unSetListenCall();
+		unSetListenCallAnother();
+	}
     @Override
     //onConfigurationChanged函数必须在AndroidManifest中增加android:configChanges="orientation|keyboardHidden|screenSize"后才会调用
     //如果没有上述android:configChanges属性，那么手机横竖屏时，Activity将重绘从而调用onCreate、onResume等函数
@@ -79,7 +96,7 @@ public class MainActivity extends Activity {
     public void checkComponentExist(){
         String packageName = "com.mt.androidprocessservice";
         String className = "com.mt.androidprocessservice.MainActivity";
-        if(isLogRun)ALog.Log("====checkComponentExist:"+isComponentExist(packageName, className));
+        if(isLogRun)ALog.Log("====isComponentExist:"+isComponentExist(packageName, className));
 		if(isLogRun)ALog.Log("====hasComponent:"+hasComponent(packageName, className));
 		if(isLogRun)ALog.Log("====getComponentName:"+getComponentName(packageName));
 		
@@ -140,10 +157,12 @@ public class MainActivity extends Activity {
      *setListenCall：不需要权限<uses-permission android:name="android.permission.READ_PHONE_STATE" />
      */
     public void setListenCall(){
-        TelephonyManager telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
-
+    
+    public void unSetListenCall(){
+    	 telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
+    }
     private PhoneStateListener phoneStateListener = new PhoneStateListener() {
         public void onCallStateChanged(int state, String incomingNumber) {
             switch(state) {
@@ -167,11 +186,14 @@ public class MainActivity extends Activity {
     public void setListenCallAnother(){
     	String permissionDes = Manifest.permission.READ_PHONE_STATE;
     	if(!checkPermissionGranted(permissionDes))return;
-		IntentFilter mUrgentFilter = new IntentFilter();
+		mUrgentFilter = new IntentFilter();
 		mUrgentFilter.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
-		registerReceiver(mIncallReceiver, mUrgentFilter);
+		this.registerReceiver(mIncallReceiver, mUrgentFilter);
     }
     
+    public void unSetListenCallAnother(){
+    	this.unregisterReceiver(mIncallReceiver);
+    }
 	private BroadcastReceiver mIncallReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
