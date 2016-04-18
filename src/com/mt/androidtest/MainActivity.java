@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		if(isLogRun)ALog.Log("====onCreate");
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+		testFunctionsRegister();
 	}
 	
 	@Override
@@ -41,7 +42,6 @@ public class MainActivity extends Activity {
 		super.onResume();
 		if(isLogRun)ALog.Log("====onResume");
 		testFunctions();
-		testFunctionsRegister();
 	}
 	
 	@Override
