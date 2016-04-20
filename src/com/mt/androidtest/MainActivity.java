@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
         if(isLogRun)ALog.Log("====isComponentExist:"+isComponentExist(packageName, className));
 		if(isLogRun)ALog.Log("====hasComponent:"+hasComponent(packageName, className));
 		if(isLogRun)ALog.Log("====getComponentName:"+getComponentName(packageName));
-		
+		if(isLogRun)ALog.Log("====isLaunchIntentForPackageNull:"+isLaunchIntentForPackageNull(this.getPackageName()));
     }
     /**
      * isComponentExist：检测是否对应的组件存在
@@ -151,6 +151,11 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
         }
         return null;
+    }
+    
+    private boolean isLaunchIntentForPackageNull(String packageName){
+    	Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+    	return null==intent;
     }
     
     /**
