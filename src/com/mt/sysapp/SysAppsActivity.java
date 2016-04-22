@@ -56,10 +56,10 @@ public class SysAppsActivity extends Activity {
 	}
 
 	private void initData(){
-		loadSystemApp();
+		loadDeviceApp();
 	}
 	
-    private void loadSystemApp(){
+    private void loadDeviceApp(){
    	 new Thread(){
   	           public void run() {
 	        	      Message msg_dialog = mAnimationHandler.obtainMessage(1);

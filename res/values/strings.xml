@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="permission_granted">"Permission %1$s granted!"</string>
     <string name="permission_not_granted">"Permission %1$s not granted!"</string>
-    <string name="show_sysapp">Show system apps</string>
+    <string name="show_sysapp">Show device apps</string>
     <string name="title_activity_sys_apps">SysAppsActivity</string>
     <string name="msg_loading">loading...</string>
 </resources>
