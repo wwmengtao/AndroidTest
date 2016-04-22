@@ -177,6 +177,9 @@ public class MainActivity extends Activity {
                 case TelephonyManager.CALL_STATE_OFFHOOK ://电话接听
                 	ALog.Log("CALL_STATE_OFFHOOK");
                     break;
+                case TelephonyManager.CALL_STATE_IDLE ://电话挂断，注册之后就会监听到
+                	ALog.Log("CALL_STATE_IDLE");
+                    break;                    
                 default:
                     break;
             }
