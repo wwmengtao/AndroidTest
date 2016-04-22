@@ -1,7 +1,11 @@
 package com.mt.androidtest;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+
+import com.mt.sysapp.SysAppsActivity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,22 +20,27 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.database.ContentObserver;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Build;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.widget.Button;
+import android.view.View;
 
-
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener{
 	boolean isLogRun=true;
 	TelephonyManager telephonyManager;
 	IntentFilter mUrgentFilter;
+	Button btn=null;
+	int [] buttonID = {R.id.btn_showsysapp};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		for(int i=0;i<buttonID.length;i++){
+			btn = (Button)findViewById(buttonID[i]);
+			btn.setOnClickListener(this);
+		}
+
 		if(isLogRun)ALog.Log("====onCreate");
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		testFunctionsRegister();
@@ -286,5 +295,20 @@ public class MainActivity extends Activity {
 		}
 		return null;
 	}
+	
+
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch(v.getId()){
+			case	R.id.btn_showsysapp:
+				Intent intent=new Intent();
+				intent.setClass(MainActivity.this, SysAppsActivity.class);
+				startActivity(intent);
+				break;
+		}
+	}
+
 }
 
