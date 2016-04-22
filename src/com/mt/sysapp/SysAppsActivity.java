@@ -10,19 +10,27 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.WindowManager;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 public class SysAppsActivity extends Activity {
 	GridView mGridView = null;
 	ListViewAdapter mListViewAdapter = null;
 	private ArrayList<HashMap<String, Object>> mSysAppList = new ArrayList<HashMap<String, Object>>();
 	ProgressDialog mProgressDialog = null;
+	ImageView mImageView = null;
+	TextView mtvName = null;
+	TextView mtvPackage = null;
+	TextView mtvClass = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,6 +38,10 @@ public class SysAppsActivity extends Activity {
 		mGridView=(GridView)findViewById(R.id.gridview_sysapp);
 		mListViewAdapter = new ListViewAdapter(this);
 		mProgressDialog = new ProgressDialog(this);
+		mImageView = (ImageView)findViewById(R.id.icon);
+		mtvName = (TextView)findViewById(R.id.name);
+		mtvPackage = (TextView)findViewById(R.id.packageName);
+		mtvClass = (TextView)findViewById(R.id.className);
 	}
 
 	@Override
@@ -65,7 +77,7 @@ public class SysAppsActivity extends Activity {
   	 				                 map.put("packname", info.activityInfo.packageName);
   	 				                 map.put("classname", info.activityInfo.name);
   	 				                 mSysAppList.add(map);
-  	 				                 ALog.Log("packname:"+info.activityInfo.packageName+" classname:"+info.activityInfo.name);
+  	 				                 //ALog.Log("packname:"+info.activityInfo.packageName+" classname:"+info.activityInfo.name);
   	 			              }
   	 		         }
   	 			    Message msg = mAnimationHandler.obtainMessage(2);
@@ -89,6 +101,16 @@ public class SysAppsActivity extends Activity {
 					mListViewAdapter.setupList(mSysAppList);
 					mGridView.setNumColumns(4);
 					mGridView.setAdapter(mListViewAdapter);
+					mGridView.setOnItemClickListener(new OnItemClickListener() {
+						@Override
+						public void onItemClick(AdapterView<?> arg0, View view,
+								int position, long id) {
+							mImageView.setImageDrawable((Drawable)mSysAppList.get(position).get("itemImage"));
+					        mtvName.setText((String) mSysAppList.get(position).get("label"));
+					        mtvPackage.setText((String) mSysAppList.get(position).get("packname"));
+					        mtvClass.setText((String) mSysAppList.get(position).get("classname"));
+						}
+					});
 			  	break;			
 			}
 		}
