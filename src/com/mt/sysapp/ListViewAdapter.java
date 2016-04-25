@@ -6,6 +6,7 @@ import com.mt.androidtest.R;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,11 @@ public class ListViewAdapter extends BaseAdapter {
 //    private Context mContext;
     ArrayList <HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
     private LayoutInflater listContainer;
-
+    private int mDensityDpi = 0;
     public ListViewAdapter(Context context) {
         listContainer = LayoutInflater.from(context);
+        DisplayMetrics metric  = context.getResources().getDisplayMetrics();
+        mDensityDpi = metric.densityDpi;
     }
 
     public int getCount() {
@@ -53,7 +56,17 @@ public class ListViewAdapter extends BaseAdapter {
         TextView title = (TextView)view.findViewById(R.id.menu_label);
     	image.setImageDrawable((Drawable)mList.get(position).get("itemImage"));
         title.setText((String) mList.get(position).get("label"));
+        setLayoutParams(image);
         return view;
     }
-
+    /**
+     * setLayoutParams: Define the LayoutParams of mView to avoid being too big to display
+     * @param mView
+     */
+    public void setLayoutParams(View mView){
+    	ViewGroup.LayoutParams lp = mView.getLayoutParams();
+    	lp.width= (int)(mDensityDpi*0.3);//144;
+    	lp.height = (int)(mDensityDpi*0.3);//144;
+    	mView.setLayoutParams(lp);
+    }
 }
