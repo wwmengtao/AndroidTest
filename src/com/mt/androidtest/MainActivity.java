@@ -9,6 +9,7 @@ import com.mt.sysapp.SysAppsActivity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -28,10 +29,13 @@ import android.view.View;
 
 public class MainActivity extends Activity implements View.OnClickListener{
 	boolean isLogRun=true;
-	TelephonyManager telephonyManager;
-	IntentFilter mUrgentFilter;
+	boolean isPermissionGranted = false;
+	TelephonyManager telephonyManager=null;
+	PackageManager mPackageManager=null;
+	IntentFilter mUrgentFilter=null;
 	Button btn=null;
-	int [] buttonID = {R.id.btn_showsysapp};
+	int [] buttonID = {R.id.btn_showsysapp,
+								  R.id.btn_start_activity};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,6 +47,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 		if(isLogRun)ALog.Log("====onCreate");
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+		mPackageManager = getPackageManager();
 		testFunctionsRegister();
 	}
 	
@@ -119,8 +124,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	public boolean isComponentExist(String packageName, String className){
         Intent intent = new Intent("android.intent.action.MAIN");
         intent.setClassName(packageName, className);
-		PackageManager packageManager = getPackageManager();
-		List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
+		List<ResolveInfo> activities = mPackageManager.queryIntentActivities(intent, 0);
 		//startActivity(intent);
 		boolean isIntentSafe = activities.size() > 0;
 		return isIntentSafe;
@@ -133,9 +137,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
      */
     public boolean hasComponent(String packageName, String className) {
         ComponentName mComponentName = new ComponentName(packageName, className);
-        PackageManager pm = getPackageManager();
         try {
-            ActivityInfo info = pm.getActivityInfo(mComponentName, 0);
+            ActivityInfo info = mPackageManager.getActivityInfo(mComponentName, 0);
             if (info != null) {
                 return true;
             }
@@ -151,11 +154,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	 */
     private String getComponentName(String packageName) {
         try {
-            PackageManager pm = getPackageManager();
-            ApplicationInfo applicationInfo = pm.getApplicationInfo(packageName, 0);
+            ApplicationInfo applicationInfo = mPackageManager.getApplicationInfo(packageName, 0);
 
             if (applicationInfo != null) {
-                return pm.getApplicationLabel(applicationInfo).toString();
+                return mPackageManager.getApplicationLabel(applicationInfo).toString();
             }
         } catch (Exception e) {
         }
@@ -163,7 +165,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     }
     
     private boolean isLaunchIntentForPackageNull(String packageName){
-    	Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+    	Intent intent = mPackageManager.getLaunchIntentForPackage(packageName);
     	return null==intent;
     }
     
@@ -202,14 +204,17 @@ public class MainActivity extends Activity implements View.OnClickListener{
      */
     public void setListenCallAnother(){
     	String permissionDes = Manifest.permission.READ_PHONE_STATE;
-    	if(!checkPermissionGranted(permissionDes))return;
+    	isPermissionGranted = checkPermissionGranted(permissionDes);
+    	if(!isPermissionGranted)return;
 		mUrgentFilter = new IntentFilter();
 		mUrgentFilter.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
 		this.registerReceiver(mIncallReceiver, mUrgentFilter);
     }
     
     public void unSetListenCallAnother(){
-    	this.unregisterReceiver(mIncallReceiver);
+    	if(isPermissionGranted){
+    		this.unregisterReceiver(mIncallReceiver);
+    	}
     }
 	private BroadcastReceiver mIncallReceiver = new BroadcastReceiver() {
 		@Override
@@ -226,7 +231,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	public boolean checkPermissionGranted(String permissionDes){
 		boolean isGranted = false;
 		Context context = getApplicationContext();  
-		if (context.getPackageManager().checkPermission(permissionDes,
+		if (mPackageManager.checkPermission(permissionDes,
 		        context.getPackageName()) == PackageManager.PERMISSION_GRANTED){  
 			isGranted = true;
 		    ALog.Log(getApplicationContext().getString(R.string.permission_granted,permissionDes));  
@@ -306,8 +311,26 @@ public class MainActivity extends Activity implements View.OnClickListener{
 				Intent intent=new Intent();
 				intent.setClass(MainActivity.this, SysAppsActivity.class);
 				startActivity(intent);
-				break;
+			break;
+			case	R.id.btn_start_activity:
+				startActivityByFlags();
+			break;
 		}
+	}
+	public void startActivityByFlags(){
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		//String packname = "com.lenovo.serviceit";
+		//String classname = "com.lenovo.serviceit.activity.MainActivity";
+		String packname = "com.mt.androidstorage";
+		String classname = "com.mt.androidstorage.AndroidStorage";
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| ActivityManager.MOVE_TASK_WITH_HOME
+				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+				| Intent.FLAG_ACTIVITY_TASK_ON_HOME
+				| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+				);
+		intent.setComponent(new ComponentName(packname, classname));
+		startActivity(intent);
 	}
 
 }
