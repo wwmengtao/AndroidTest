@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class SysAppsActivity extends Activity {
 	TextView mtvName = null;
 	TextView mtvPackage = null;
 	TextView mtvClass = null;
+	PackageManager mPackageManager=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,6 +44,7 @@ public class SysAppsActivity extends Activity {
 		mtvName = (TextView)findViewById(R.id.name);
 		mtvPackage = (TextView)findViewById(R.id.packageName);
 		mtvClass = (TextView)findViewById(R.id.className);
+		mPackageManager = getPackageManager();
 	}
 
 	@Override
@@ -62,24 +65,39 @@ public class SysAppsActivity extends Activity {
     private void loadDeviceApp(){
    	 new Thread(){
   	           public void run() {
-	        	      Message msg_dialog = mAnimationHandler.obtainMessage(1);
-                      mAnimationHandler.sendMessage(msg_dialog);
-                      mSysAppList.clear();
-  	 		         Intent it = new Intent(Intent.ACTION_MAIN);
-  	                 it.addCategory(Intent.CATEGORY_LAUNCHER);
-  	 		         List<ResolveInfo> resolveInfos = getPackageManager().queryIntentActivities(it,PackageManager.GET_ACTIVITIES);
-  	 		         Collections.sort(resolveInfos,new ResolveInfo.DisplayNameComparator(getPackageManager()));
-  	 		         for(ResolveInfo info : resolveInfos) {
-  	 			              if(!"com.lenovo.lesnapshot".equals(info.activityInfo.packageName)){
-  	 				                  HashMap<String,Object> map = new HashMap<String,Object>();
-  	 				                 map.put("itemImage",info.loadIcon(getPackageManager()));
-  	 				                 map.put("label",info.loadLabel(getPackageManager()));
-  	 				                 map.put("packname", info.activityInfo.packageName);
-  	 				                 map.put("classname", info.activityInfo.name);
-  	 				                 mSysAppList.add(map);
-  	 				                 //ALog.Log("packname:"+info.activityInfo.packageName+" classname:"+info.activityInfo.name);
-  	 			              }
-  	 		         }
+					Message msg_dialog = mAnimationHandler.obtainMessage(1);
+					mAnimationHandler.sendMessage(msg_dialog);
+					mSysAppList.clear();
+					Intent it = new Intent(Intent.ACTION_MAIN);
+					it.addCategory(Intent.CATEGORY_LAUNCHER);
+					List<ResolveInfo> resolveInfos = mPackageManager.queryIntentActivities(it,PackageManager.GET_ACTIVITIES);
+					Collections.sort(resolveInfos,new ResolveInfo.DisplayNameComparator(mPackageManager));
+					for(ResolveInfo info : resolveInfos) {
+						if(!"com.lenovo.lesnapshot".equals(info.activityInfo.packageName)){
+							HashMap<String,Object> map = new HashMap<String,Object>();
+							Drawable mDrawable=null;
+							boolean isAppIcon=true;
+							map.put("label",info.loadLabel(mPackageManager));
+		                    map.put("packname", info.activityInfo.packageName);
+		                    map.put("classname", info.activityInfo.name);		
+		                    if(!isAppIcon){
+		                    	mDrawable = info.loadIcon(mPackageManager);//Indicate the icon of each activity
+		                    }else{
+		                    	try {
+		                    		//Indicate the icon of each application
+									mDrawable = mPackageManager.getApplicationIcon(mPackageManager.getApplicationInfo(info.activityInfo.packageName,0));
+								} catch (NameNotFoundException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+									mDrawable =  getResources().getDrawable(R.drawable.not_found);
+								}
+		                    }
+							
+							map.put("itemImage",mDrawable);
+		                    mSysAppList.add(map);
+		                    //ALog.Log("packname:"+info.activityInfo.packageName+" classname:"+info.activityInfo.name);
+						}
+					}
   	 			    Message msg = mAnimationHandler.obtainMessage(2);
   	 			    mAnimationHandler.sendMessage(msg);
   	            }
