@@ -63,7 +63,12 @@ public class ListViewAdapter extends BaseAdapter {
         }
 		ImageView image = (ImageView)view.findViewById(R.id.menu_img);
         TextView title = (TextView)view.findViewById(R.id.menu_label);
-    	image.setImageDrawable((Drawable)mList.get(position).get("itemImage"));
+        Object obj = mList.get(position).get("itemImage");
+        if(obj instanceof Drawable){
+        	image.setImageDrawable((Drawable)obj);
+        }else if(obj instanceof Integer){
+        	image.setImageResource((Integer)obj);
+        }
         title.setText((String) mList.get(position).get("label"));
         setLayoutParams(image);
         return view;
