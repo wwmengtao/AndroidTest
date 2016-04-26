@@ -24,4 +24,6 @@
      <string name="switch_flightmode">Airplane mode</string>
      <string name="switch_mobile">Data Connection</string>
      <string name="switch_gps">GPS</string>
+     <string name="get_resource">Get resource</string>
+     <string name="relative_textview">Relative textview</string>
 </resources>

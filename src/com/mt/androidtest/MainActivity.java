@@ -26,6 +26,8 @@ import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mt.androidtest.R;
@@ -36,12 +38,15 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	PackageManager mPackageManager=null;
 	IntentFilter mUrgentFilter=null;
 	String mText=null;
-	private TextView mTextView ;  
-    private EditText mEditText;  
+	private TextView mTextView=null;
+    private EditText mEditText=null;
+    private ImageView mImageView=null;
+    private RelativeLayout mRelativeLayout=null;
 	Button btn=null;
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity,
-								  R.id.btn_showswitcher};
+								  R.id.btn_showswitcher,
+								  R.id.btn_getresource};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,6 +56,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		mEditText = (EditText) findViewById(R.id.editText);  
 		mEditText.setText(mText);  
 		mEditText.setSelection(mText.length()); //光标一直位于内容后面，方便输入
+		mRelativeLayout=(RelativeLayout) findViewById(R.id.layout_relative);  
+		mRelativeLayout.setVisibility(View.GONE);
 		for(int i=0;i<buttonID.length;i++){
 			btn = (Button)findViewById(buttonID[i]);
 			btn.setOnClickListener(this);
@@ -117,7 +124,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
     }
 
-	private void getResourceID0(Context context,String name,String type,String packageName) {
+	private int getResourceID0(Context context,String name,String type,String packageName) {
 		int resID = 0;
 		Context mResources = null;
 		String str=null;
@@ -130,14 +137,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
 			}
 		} catch (NameNotFoundException e) {
 			ALog.Log(packageName + " not found！-->" + e.getMessage());
+			return resID;
 		}
-     	if(0!=resID){
-    		str = getResources().getString(resID);
-    	}
-    	ALog.Log(packageName+"_getResourceID0_Resource:"+str);
+		return resID;
+    	
 	}
     
-    public void getResourceID1(Context context,String name,String type,String packageName){
+    public int getResourceID1(Context context,String name,String type,String packageName){
     	int resID = 0;
     	String str = null;
         Resources mResources=null;
@@ -149,31 +155,18 @@ public class MainActivity extends Activity implements View.OnClickListener{
         	}
         } catch(NameNotFoundException e) {
         	 e.printStackTrace();
+        	 return resID;
          }
-     	if(0!=resID){
-    		str = getResources().getString(resID);
-    	}
-    	ALog.Log(packageName+"_getResourceID1_Resource:"+str);
+        return resID;
 	}
     
-    public void getResourceID2(String name,String type,String packageName){
-    	int resID = 0;
-    	String str = null;
-    	resID = getResources().getIdentifier(name, type ,packageName);
-     	if(0!=resID){
-    		str = getResources().getString(resID);
-    	}
-    	ALog.Log(packageName+"_getResourceID2_Resource:"+str);
+    public int getResourceID2(String name,String type,String packageName){
+    	return getResources().getIdentifier(name, type ,packageName);
     }
     
-    public void getResourceID3(String name,String type,String packageName){
-    	int resID = 0;
-    	String str = null;
-    	resID =  getResources().getIdentifier(packageName+":"+type+"/"+name,null,null);
-     	if(0!=resID){
-    		str = getResources().getString(resID);
-    	}
-    	ALog.Log(packageName+"_getResourceID3_Resource:"+str);
+    public int getResourceID3(String name,String type,String packageName){
+    	return getResources().getIdentifier(packageName+":"+type+"/"+name,null,null);
+
     }
     
     public void getSystemResource(){
@@ -188,24 +181,42 @@ public class MainActivity extends Activity implements View.OnClickListener{
     
     public void getCertainResources(){
     	boolean thisApplication=false;
-    	String name = "app_name";
-    	String type = "string";
-    	String packageNameOther = "com.example.androidtest2";
+    	int resID=0;
+    	String name = "ic_notfound";
+    	String type = "drawable";
+    	String packageName = null;
     	if(thisApplication){
 	    	//一、获取本应用的资源
-	    	getResourceID0(this, name, type ,getPackageName()); 	
-	    	getResourceID1(this, name, type ,getPackageName());
-	    	getResourceID2(name, type ,getPackageName());
-	    	getResourceID3(name, type ,getPackageName());
+    		packageName = getPackageName();
+	    	resID = getResourceID0(this, name, type ,packageName); 	
+	    	resID = getResourceID1(this, name, type ,packageName);
+	    	resID = getResourceID2(name, type ,packageName);
+	    	resID = getResourceID3(name, type ,packageName);
     	}else{
     	//二、获取其他应用的资源
-	    	getResourceID0(this, name, type ,packageNameOther);
-	    	getResourceID1(this, name, type ,packageNameOther);
-	    	getResourceID2(name, type ,packageNameOther);
-	    	getResourceID3(name, type ,packageNameOther);
+    		packageName = "com.example.androidtemp";
+    		resID = getResourceID0(this, name, type ,packageName);
+	    	//resID = getResourceID1(this, name, type ,packageName);
+	    	//resID = getResourceID2(name, type ,packageName);
+	    	//resID = getResourceID3(name, type ,packageName);
     	}
     	//三、获取系统资源
     	//getSystemResource();
+    	String str=null;
+    	Drawable mDrawable=null;
+     	if(0!=resID){
+	    	switch(type){
+	    	case "drawable":
+	    		mDrawable = getResources().getDrawable(resID);
+	    		ALog.Log(packageName+":"+type+"/"+name+"_Resource:"+resID);
+	    		break;
+	    	case "string":
+	    		str = getResources().getString(resID);
+	    		ALog.Log(packageName+":"+type+"/"+name+"_Resource:"+str);
+	    		break;    		
+	    	}
+    	}
+    	
     }
 
     
@@ -425,6 +436,26 @@ public class MainActivity extends Activity implements View.OnClickListener{
 			break;
 			case	R.id.btn_start_activity:
 				startActivityByFlags();
+			break;
+			case R.id.btn_getresource:
+				mRelativeLayout.setVisibility(View.VISIBLE);
+				mTextView = (TextView) findViewById(R.id.tv_relative);
+				mImageView = (ImageView) findViewById(R.id.img_relative);
+		    	String name = "ic_notfound";
+		    	String type = "drawable";
+		    	String packageName = "com.example.androidtemp";
+		    	int resID = getResourceID0(this, name, type ,packageName);
+		     	if(0!=resID){
+			    	switch(type){
+			    	case "drawable":
+			    		mImageView.setBackgroundResource(resID);
+			    		break;
+			    	case "string":
+			    		String str = getResources().getString(resID);
+			    		mTextView.setText(str);
+			    		break;    		
+			    	}
+		    	}
 			break;
 		}
 	}
