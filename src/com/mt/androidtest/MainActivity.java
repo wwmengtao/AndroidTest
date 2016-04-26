@@ -18,6 +18,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -25,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.mt.androidtest.R;
 public class MainActivity extends Activity implements View.OnClickListener{
 	boolean isLogRun=true;
@@ -85,6 +88,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		//reflectCallListAll();
 		//2、检测组件是否存在
 		//checkComponentExist();
+		//3、从其他应用获取资源
+		getCertainResources();
 	}
 	
 	public void testFunctionsRegister(){
@@ -112,6 +117,98 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
     }
 
+	private void getResourceID0(Context context,String name,String type,String packageName) {
+		int resID = 0;
+		Context mResources = null;
+		String str=null;
+		try {
+			mResources = this.createPackageContext(packageName,
+					Context.CONTEXT_IGNORE_SECURITY);
+			if (mResources != null) {
+				resID = mResources.getResources().getIdentifier(
+						packageName+":"+type+"/"+name, null, null);
+			}
+		} catch (NameNotFoundException e) {
+			ALog.Log(packageName + " not found！-->" + e.getMessage());
+		}
+     	if(0!=resID){
+    		str = getResources().getString(resID);
+    	}
+    	ALog.Log(packageName+"_getResourceID0_Resource:"+str);
+	}
+    
+    public void getResourceID1(Context context,String name,String type,String packageName){
+    	int resID = 0;
+    	String str = null;
+        Resources mResources=null;
+        PackageManager pm=context.getPackageManager();
+        try {
+        	mResources=pm.getResourcesForApplication(packageName);
+        	if (mResources != null) {
+        		resID = mResources.getIdentifier(name, type, packageName);
+        	}
+        } catch(NameNotFoundException e) {
+        	 e.printStackTrace();
+         }
+     	if(0!=resID){
+    		str = getResources().getString(resID);
+    	}
+    	ALog.Log(packageName+"_getResourceID1_Resource:"+str);
+	}
+    
+    public void getResourceID2(String name,String type,String packageName){
+    	int resID = 0;
+    	String str = null;
+    	resID = getResources().getIdentifier(name, type ,packageName);
+     	if(0!=resID){
+    		str = getResources().getString(resID);
+    	}
+    	ALog.Log(packageName+"_getResourceID2_Resource:"+str);
+    }
+    
+    public void getResourceID3(String name,String type,String packageName){
+    	int resID = 0;
+    	String str = null;
+    	resID =  getResources().getIdentifier(packageName+":"+type+"/"+name,null,null);
+     	if(0!=resID){
+    		str = getResources().getString(resID);
+    	}
+    	ALog.Log(packageName+"_getResourceID3_Resource:"+str);
+    }
+    
+    public void getSystemResource(){
+    	//无需任何权限可以直接获取
+        boolean isCellBroadcastAppLinkEnabled = false;
+        int resId = getResources().getIdentifier("config_cellBroadcastAppLinks", "bool", "android");
+        if (resId > 0) {
+            isCellBroadcastAppLinkEnabled = this.getResources().getBoolean(resId);
+        }
+        ALog.Log("android_isCellBroadcastAppLinkEnabled:"+isCellBroadcastAppLinkEnabled);
+    }
+    
+    public void getCertainResources(){
+    	boolean thisApplication=false;
+    	String name = "app_name";
+    	String type = "string";
+    	String packageNameOther = "com.example.androidtest2";
+    	if(thisApplication){
+	    	//一、获取本应用的资源
+	    	getResourceID0(this, name, type ,getPackageName()); 	
+	    	getResourceID1(this, name, type ,getPackageName());
+	    	getResourceID2(name, type ,getPackageName());
+	    	getResourceID3(name, type ,getPackageName());
+    	}else{
+    	//二、获取其他应用的资源
+	    	getResourceID0(this, name, type ,packageNameOther);
+	    	getResourceID1(this, name, type ,packageNameOther);
+	    	getResourceID2(name, type ,packageNameOther);
+	    	getResourceID3(name, type ,packageNameOther);
+    	}
+    	//三、获取系统资源
+    	//getSystemResource();
+    }
+
+    
     /**
      * checkComponentExist：试验检测组件是否存在的几种方法
      */
