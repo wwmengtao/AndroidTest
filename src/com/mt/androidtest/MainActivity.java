@@ -23,7 +23,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,9 +49,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
 								  R.id.btn_start_activity,
 								  R.id.btn_showswitcher,
 								  R.id.btn_getresource};
+    private int mDensityDpi = 0;
+    private DisplayMetrics metric=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if(isLogRun)ALog.Log("====onCreate");
 		setContentView(R.layout.activity_main);
 		mTextView = (TextView) findViewById(R.id.textview);  
 		mText = mTextView.getText().toString();
@@ -62,10 +67,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
 			btn = (Button)findViewById(buttonID[i]);
 			btn.setOnClickListener(this);
 		}
-
-		if(isLogRun)ALog.Log("====onCreate");
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		mPackageManager = getPackageManager();
+        metric = getResources().getDisplayMetrics();
+        mDensityDpi = metric.densityDpi;
 		testFunctionsRegister();
 	}
 	
@@ -438,16 +443,20 @@ public class MainActivity extends Activity implements View.OnClickListener{
 				startActivityByFlags();
 			break;
 			case R.id.btn_getresource:
-				mRelativeLayout.setVisibility(View.VISIBLE);
-				mTextView = (TextView) findViewById(R.id.tv_relative);
-				mImageView = (ImageView) findViewById(R.id.img_relative);
+				if(!mRelativeLayout.isShown()){
+					mRelativeLayout.setVisibility(View.VISIBLE);
+					mTextView = (TextView) findViewById(R.id.tv_relative);
+					mImageView = (ImageView) findViewById(R.id.img_relative);
+				}
 		    	String name = "ic_notfound";
 		    	String type = "drawable";
 		    	String packageName = "com.example.androidtemp";
+		    	//String packageName = "com.mt.androidtest";
 		    	int resID = getResourceID0(this, name, type ,packageName);
 		     	if(0!=resID){
 			    	switch(type){
 			    	case "drawable":
+			    		setLayoutParams(mImageView);
 			    		mImageView.setBackgroundResource(resID);
 			    		break;
 			    	case "string":
@@ -459,6 +468,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
 			break;
 		}
 	}
+	
+    public void setLayoutParams(View mView){
+    	ViewGroup.LayoutParams lp = mView.getLayoutParams();
+    	lp.width= (int)(mDensityDpi*0.3);//144;
+    	lp.height = (int)(mDensityDpi*0.3);//144;
+    	mView.setLayoutParams(lp);
+    }
+	
 	public void startActivityByFlags(){
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		//String packname = "com.lenovo.serviceit";

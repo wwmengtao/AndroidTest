@@ -19,11 +19,12 @@ public class ListViewAdapter extends BaseAdapter {
     ArrayList <HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
     private LayoutInflater listContainer;
     private int mDensityDpi = 0;
+    private DisplayMetrics metric=null;
     private int mMode=0;
     private Context mContext=null;
     public ListViewAdapter(Context context) {
         listContainer = LayoutInflater.from(context);
-        DisplayMetrics metric  = context.getResources().getDisplayMetrics();
+        metric  = context.getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
         mContext = context;
     }
