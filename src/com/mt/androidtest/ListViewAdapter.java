@@ -20,10 +20,12 @@ public class ListViewAdapter extends BaseAdapter {
     private LayoutInflater listContainer;
     private int mDensityDpi = 0;
     private int mMode=0;
+    private Context mContext=null;
     public ListViewAdapter(Context context) {
         listContainer = LayoutInflater.from(context);
         DisplayMetrics metric  = context.getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
+        mContext = context;
     }
 
     public int getCount() {
@@ -68,6 +70,7 @@ public class ListViewAdapter extends BaseAdapter {
         	image.setImageDrawable((Drawable)obj);
         }else if(obj instanceof Integer){
         	image.setImageResource((Integer)obj);
+			view.setBackgroundColor(mContext.getResources().getColor(R.color.wheat));
         }
         title.setText((String) mList.get(position).get("label"));
         setLayoutParams(image);
