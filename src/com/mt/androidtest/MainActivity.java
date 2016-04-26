@@ -1,11 +1,7 @@
 package com.mt.androidtest;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-
-import com.mt.sysapp.SysAppsActivity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -24,8 +20,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.widget.Button;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.mt.sysapp.SysAppsActivity;
 
 public class MainActivity extends Activity implements View.OnClickListener{
 	boolean isLogRun=true;
@@ -33,6 +33,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	TelephonyManager telephonyManager=null;
 	PackageManager mPackageManager=null;
 	IntentFilter mUrgentFilter=null;
+	String mText=null;
+	private TextView mTextView ;  
+    private EditText mEditText;  
 	Button btn=null;
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity};
@@ -40,6 +43,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		mTextView = (TextView) findViewById(R.id.textview);  
+		mText = mTextView.getText().toString();
+		mEditText = (EditText) findViewById(R.id.editText);  
+		mEditText.setText(mText);  
+		mEditText.setSelection(mText.length()); //光标一直位于内容后面，方便输入
 		for(int i=0;i<buttonID.length;i++){
 			btn = (Button)findViewById(buttonID[i]);
 			btn.setOnClickListener(this);
