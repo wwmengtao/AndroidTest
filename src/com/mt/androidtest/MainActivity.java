@@ -25,7 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import com.mt.androidtest.R;
 public class MainActivity extends Activity implements View.OnClickListener{
 	boolean isLogRun=true;
 	boolean isPermissionGranted = false;
