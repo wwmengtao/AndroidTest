@@ -116,6 +116,7 @@ public class SysAppsActivity extends Activity {
 				  break;			
 				case 2:
 					mProgressDialog.dismiss();
+					mListViewAdapter.setMode(1);
 					mListViewAdapter.setupList(mSysAppList);
 					mGridView.setNumColumns(4);
 					mGridView.setAdapter(mListViewAdapter);

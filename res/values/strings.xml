@@ -11,5 +11,17 @@
     <string name="msg_loading">loading...</string>
     <string name="start_activity">start activity</string>
     <string name="title_activity_switcher_demo">SwitcherDemoActivity</string>
-
+    <string name="show_switcher">Show switchers</string>
+     <string name="switch_empty"/>
+     <string name="widetouch_torchlight">Flashlight</string>     
+	 <string name="switch_brightness">Brightness</string>
+     <string name="switch_wifi">WLAN</string>
+     <string name="switch_rotation">Auto Rotate</string>
+     <string name="switch_smart_rotation">Smart Rotate</string>
+     <string name="switch_rotation_off">Rotate Off</string>
+     <string name="switch_bluetooth">Bluetooth</string>
+     <string name="switch_profile">Ringtones</string>
+     <string name="switch_flightmode">Airplane mode</string>
+     <string name="switch_mobile">Data Connection</string>
+     <string name="switch_gps">GPS</string>
 </resources>

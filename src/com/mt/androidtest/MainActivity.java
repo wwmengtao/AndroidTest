@@ -37,7 +37,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private EditText mEditText;  
 	Button btn=null;
 	int [] buttonID = {R.id.btn_showsysapp,
-								  R.id.btn_start_activity};
+								  R.id.btn_start_activity,
+								  R.id.btn_showswitcher};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -313,10 +314,16 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		Intent intent=null;
 		switch(v.getId()){
 			case	R.id.btn_showsysapp:
-				Intent intent=new Intent();
+				intent=new Intent();
 				intent.setClass(MainActivity.this, SysAppsActivity.class);
+				startActivity(intent);
+			break;
+			case	R.id.btn_showswitcher:
+				intent=new Intent();
+				intent.setClass(MainActivity.this, SwitcherDemoActivity.class);
 				startActivity(intent);
 			break;
 			case	R.id.btn_start_activity:

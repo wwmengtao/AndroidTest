@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.mt.androidtest.SysAppsActivity" >
-	<include layout="@layout/sys_app_layout" />	
+	<include layout="@layout/sys_app_details" />	
     <GridView
         android:id="@+id/gridview_sysapp"
         android:layout_width="match_parent"

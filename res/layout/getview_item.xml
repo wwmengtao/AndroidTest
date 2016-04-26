@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:gravity="center">
-    
+
     <ImageView
             android:id="@+id/menu_img"
             android:layout_width="wrap_content"

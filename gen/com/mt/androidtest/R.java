@@ -22,29 +22,66 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int not_found=0x7f020001;
+        public static final int back=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int lenovo_widget_btn_flashlight_off=0x7f020002;
+        public static final int lenovo_widget_btn_flashlight_on=0x7f020003;
+        public static final int lwt_back_activated=0x7f020004;
+        public static final int lwt_back_normal=0x7f020005;
+        public static final int not_found=0x7f020006;
+        public static final int switch_bluetooth=0x7f020007;
+        public static final int switch_brightness=0x7f020008;
+        public static final int switch_flightmode=0x7f020009;
+        public static final int switch_gps=0x7f02000a;
+        public static final int switch_mobile=0x7f02000b;
+        public static final int switch_profile=0x7f02000c;
+        public static final int switch_rotation=0x7f02000d;
+        public static final int switch_torchlight=0x7f02000e;
+        public static final int switch_wifi=0x7f02000f;
+        public static final int toolbar_auto_rotation_enable=0x7f020010;
+        public static final int toolbar_auto_rotation_off=0x7f020011;
+        public static final int toolbar_bluetooth_enable=0x7f020012;
+        public static final int toolbar_bluetooth_off=0x7f020013;
+        public static final int toolbar_brightness_auto=0x7f020014;
+        public static final int toolbar_brightness_auto1=0x7f020015;
+        public static final int toolbar_brightness_auto2=0x7f020016;
+        public static final int toolbar_brightness_middle=0x7f020017;
+        public static final int toolbar_brightness_off=0x7f020018;
+        public static final int toolbar_brightness_on=0x7f020019;
+        public static final int toolbar_flight_mode_off=0x7f02001a;
+        public static final int toolbar_flight_mode_on=0x7f02001b;
+        public static final int toolbar_gps_enable=0x7f02001c;
+        public static final int toolbar_gps_off=0x7f02001d;
+        public static final int toolbar_mobile_1=0x7f02001e;
+        public static final int toolbar_mobile_2=0x7f02001f;
+        public static final int toolbar_mobile_enable=0x7f020020;
+        public static final int toolbar_mobile_off=0x7f020021;
+        public static final int toolbar_normal_profile_enable=0x7f020022;
+        public static final int toolbar_normal_profile_off=0x7f020023;
+        public static final int toolbar_wifi_enable=0x7f020024;
+        public static final int toolbar_wifi_off=0x7f020025;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000b;
+        public static final int action_settings=0x7f08000c;
+        public static final int btn_showswitcher=0x7f080003;
         public static final int btn_showsysapp=0x7f080002;
-        public static final int btn_start_activity=0x7f080003;
-        public static final int className=0x7f08000a;
+        public static final int btn_start_activity=0x7f080004;
+        public static final int className=0x7f08000b;
         public static final int editText=0x7f080000;
-        public static final int gridview_sysapp=0x7f080004;
-        public static final int icon=0x7f080007;
-        public static final int menu_img=0x7f080005;
-        public static final int menu_label=0x7f080006;
-        public static final int name=0x7f080008;
-        public static final int packageName=0x7f080009;
+        public static final int gridview_sysapp=0x7f080005;
+        public static final int icon=0x7f080008;
+        public static final int menu_img=0x7f080006;
+        public static final int menu_label=0x7f080007;
+        public static final int name=0x7f080009;
+        public static final int packageName=0x7f08000a;
         public static final int textview=0x7f080001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_switcher_demo=0x7f030001;
         public static final int activity_sys_apps=0x7f030002;
-        public static final int app_item=0x7f030003;
-        public static final int sys_app_layout=0x7f030004;
+        public static final int getview_item=0x7f030003;
+        public static final int sys_app_details=0x7f030004;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -58,10 +95,23 @@ public final class R {
         public static final int msg_loading=0x7f050007;
         public static final int permission_granted=0x7f050003;
         public static final int permission_not_granted=0x7f050004;
+        public static final int show_switcher=0x7f05000a;
         public static final int show_sysapp=0x7f050005;
         public static final int start_activity=0x7f050008;
+        public static final int switch_bluetooth=0x7f050012;
+        public static final int switch_brightness=0x7f05000d;
+        public static final int switch_empty=0x7f05000b;
+        public static final int switch_flightmode=0x7f050014;
+        public static final int switch_gps=0x7f050016;
+        public static final int switch_mobile=0x7f050015;
+        public static final int switch_profile=0x7f050013;
+        public static final int switch_rotation=0x7f05000f;
+        public static final int switch_rotation_off=0x7f050011;
+        public static final int switch_smart_rotation=0x7f050010;
+        public static final int switch_wifi=0x7f05000e;
         public static final int title_activity_switcher_demo=0x7f050009;
         public static final int title_activity_sys_apps=0x7f050006;
+        public static final int widetouch_torchlight=0x7f05000c;
     }
     public static final class style {
         /** 

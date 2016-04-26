@@ -19,6 +19,7 @@ public class ListViewAdapter extends BaseAdapter {
     ArrayList <HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
     private LayoutInflater listContainer;
     private int mDensityDpi = 0;
+    private int mMode=0;
     public ListViewAdapter(Context context) {
         listContainer = LayoutInflater.from(context);
         DisplayMetrics metric  = context.getResources().getDisplayMetrics();
@@ -38,6 +39,10 @@ public class ListViewAdapter extends BaseAdapter {
         return position;
     }
 
+    public void setMode(int mode){
+    	mMode = mode;
+    }
+    
     public void setupList(ArrayList<HashMap<String, Object>> list) {
     	mList.clear();
     	for(int i = 0;i<list.size();i++){
@@ -48,7 +53,11 @@ public class ListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = null;
         if (convertView == null) {
-        	 view = listContainer.inflate(R.layout.app_item, parent,false);
+            switch(mMode){
+        	case 1:
+        		view = listContainer.inflate(R.layout.getview_item, parent,false);
+           	break;
+            }
         }else {
         	view = convertView;
         }
