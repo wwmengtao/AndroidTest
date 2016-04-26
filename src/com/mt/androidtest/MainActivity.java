@@ -6,6 +6,7 @@ import java.util.List;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -24,8 +25,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.mt.sysapp.SysAppsActivity;
 
 public class MainActivity extends Activity implements View.OnClickListener{
 	boolean isLogRun=true;
@@ -338,7 +337,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
 				| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
 				);
 		intent.setComponent(new ComponentName(packname, classname));
-		startActivity(intent);
+		try{
+			startActivity(intent);
+		}catch(ActivityNotFoundException e){
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -26,8 +26,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mt.sysapp.SysAppsActivity"
+            android:name="com.mt.androidtest.SysAppsActivity"
             android:label="@string/title_activity_sys_apps" >
+        </activity>
+        <activity
+            android:name="com.mt.androidtest.SwitcherDemoActivity"
+            android:label="@string/title_activity_switcher_demo" >
         </activity>
     </application>
 

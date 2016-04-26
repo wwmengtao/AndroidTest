@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mt.sysapp.SysAppsActivity" >
+    tools:context="com.mt.androidtest.SysAppsActivity" >
 	<include layout="@layout/sys_app_layout" />	
     <GridView
         android:id="@+id/gridview_sysapp"

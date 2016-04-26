@@ -41,13 +41,15 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int activity_sys_apps=0x7f030001;
-        public static final int app_item=0x7f030002;
-        public static final int sys_app_layout=0x7f030003;
+        public static final int activity_switcher_demo=0x7f030001;
+        public static final int activity_sys_apps=0x7f030002;
+        public static final int app_item=0x7f030003;
+        public static final int sys_app_layout=0x7f030004;
     }
     public static final class menu {
         public static final int main=0x7f070000;
-        public static final int sys_apps=0x7f070001;
+        public static final int switcher_demo=0x7f070001;
+        public static final int sys_apps=0x7f070002;
     }
     public static final class string {
         public static final int action_settings=0x7f050002;
@@ -58,6 +60,7 @@ public final class R {
         public static final int permission_not_granted=0x7f050004;
         public static final int show_sysapp=0x7f050005;
         public static final int start_activity=0x7f050008;
+        public static final int title_activity_switcher_demo=0x7f050009;
         public static final int title_activity_sys_apps=0x7f050006;
     }
     public static final class style {
