@@ -15,10 +15,11 @@ import android.provider.Settings;
 public class SwitchersInfo {
 	Context mContext;
 	WifiManager mWifiManager=null;
+	boolean isVibeUI35=false;//表明当前是VIBEUI3.5资源环境
 	public SwitchersInfo(Context mContex){
 		this.mContext = mContex;
 		mWifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-
+		isVibeUI35 = isVibeUI35();
 	}
 	public int [] lvpDrawablesID={
 			R.drawable.ic_qs_airplane_off,
@@ -137,9 +138,9 @@ public class SwitchersInfo {
 		final BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if (null != adapter && adapter.isEnabled()) {
-			map.put("itemImage", R.drawable.lenovo_widget_btn_bluetooth_on);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_qs_bluetooth_on : R.drawable.lenovo_widget_btn_bluetooth_on);
 		} else {
-			map.put("itemImage", R.drawable.lenovo_widget_btn_bluetooth_off);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_qs_bluetooth_off : R.drawable.lenovo_widget_btn_bluetooth_off);
 		}
 		return map;
 	}
@@ -147,9 +148,9 @@ public class SwitchersInfo {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		boolean isEnabled = Settings.Global.getInt(mContext.getContentResolver(),"torch_on", 0) != 0;
 		if (isEnabled) {
-			map.put("itemImage", R.drawable.lenovo_widget_btn_flashlight_on);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_qs_flashlight_on : R.drawable.lenovo_widget_btn_flashlight_on);
 		} else {
-			map.put("itemImage", R.drawable.lenovo_widget_btn_flashlight_off);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_qs_flashlight_off : R.drawable.lenovo_widget_btn_flashlight_off);
 		}
 		return map;
 	}
@@ -162,22 +163,22 @@ public class SwitchersInfo {
 				Settings.Secure.LOCATION_MODE_OFF);
 		boolean open = (gpsmode == 3) || (gpsmode == 1) ? true : false;
 		if (!open) {
-			map.put("itemImage", R.drawable.toolbar_gps_off);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_qs_location_off : R.drawable.toolbar_gps_off);
 		} else {
-			map.put("itemImage", R.drawable.toolbar_gps_enable);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_qs_location_on : R.drawable.toolbar_gps_enable);
 		}
 		return map;
 	}
 	
 	public HashMap<String, Object> getMobileSwitcher() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		boolean simStateReady = true;
+		boolean simStateReady = false;
 		boolean airMode = Settings.Global.getInt(mContext.getContentResolver(),
 				Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
 		if (!airMode  && simStateReady) {
-			map.put("itemImage", R.drawable.toolbar_mobile_enable);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_dataconnect_on : R.drawable.toolbar_mobile_enable);
 		} else {
-			map.put("itemImage", R.drawable.toolbar_mobile_off);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_dataconnect_off : R.drawable.toolbar_mobile_off);
 		}
 		return map;
 	}
@@ -231,15 +232,13 @@ public class SwitchersInfo {
 	
 	public HashMap<String, Object> getRotationSwitch() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		int smart_rotation = Settings.System.getInt(mContext.getContentResolver(),
-				"screen_smart_rotation", 3);
 		int flag = Settings.System.getInt(mContext.getContentResolver(),
 				Settings.System.ACCELEROMETER_ROTATION, 0);
 		if (flag == 1) {
-			map.put("itemImage", R.drawable.toolbar_auto_rotation_enable);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_qs_rotation_unlocked : R.drawable.toolbar_auto_rotation_enable);
 			map.put("itemText", mContext.getString(R.string.switch_rotation));
 		} else {
-			map.put("itemImage", R.drawable.toolbar_auto_rotation_off);
+			map.put("itemImage", isVibeUI35?R.drawable.ic_qs_rotation_portrait : R.drawable.toolbar_auto_rotation_off);
 			map.put("itemText", mContext.getString(R.string.switch_rotation));
 		}
 		return map;
@@ -250,9 +249,9 @@ public class SwitchersInfo {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		int state = mWifiManager.getWifiState();
 		if (!(state == WifiManager.WIFI_STATE_ENABLED)) {
-			map.put("itemImage", R.drawable.toolbar_wifi_off);
+			map.put("itemImage", isVibeUI35? R.drawable.ic_qs_wifi_disabled : R.drawable.toolbar_wifi_off);
 		} else {
-			map.put("itemImage", R.drawable.toolbar_wifi_enable);
+			map.put("itemImage", isVibeUI35? R.drawable.ic_qs_wifi_full_4 : R.drawable.toolbar_wifi_enable);
 		}
 		return map;
 	}
@@ -319,5 +318,9 @@ public class SwitchersInfo {
 		}
 		return DEFAULT_BACKLIGHT;
 	}
-
+    public boolean isVibeUI35(){
+    	String lvpVersion = SysProp.get("ro.lenovo.lvp.version",null);
+    	boolean isVibeUI35 = (null!=lvpVersion&&lvpVersion.contains("V3.5"));
+    	return isVibeUI35;
+    }
 }
