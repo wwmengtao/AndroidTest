@@ -73,7 +73,7 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
 					mAnimationHandler.sendMessage(msgNew);
       			}
 				if(isUpdateHandler){
-					mUpdater.sendEmptyMessageDelayed(UPDATE_MESSAGE, RESCAN_INTERVAL_MS);//每隔一秒钟发送消息
+					mUpdater.sendEmptyMessageDelayed(UPDATE_MESSAGE, RESCAN_INTERVAL_MS);//间隔一秒钟发送消息
 				}
       		}
          }.start();
@@ -104,7 +104,7 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
 	@Override
 	public boolean handleMessage(Message msg) {
 		// TODO Auto-generated method stub
-		mUpdater.removeMessages(UPDATE_MESSAGE);//如果更新操作耗时的话会导致有几次的信息没有处理，造成消息堆积
+		mUpdater.removeMessages(UPDATE_MESSAGE);//
 		mListViewAdapter.setupList(mSwitchersList);
 		mListViewAdapter.notifyDataSetChanged();
 		initData(true);

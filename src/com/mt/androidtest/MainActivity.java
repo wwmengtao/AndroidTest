@@ -450,19 +450,20 @@ public class MainActivity extends Activity implements View.OnClickListener{
 				}
 		    	String name = "ic_notfound";
 		    	String type = "drawable";
-		    	String packageName = "com.example.androidtemp";
-		    	//String packageName = "com.mt.androidtest";
+		    	String packageName = null;
+		    	packageName = "com.example.androidtemp";
+		    	//packageName = getPackageName();//package name of this application
 		    	int resID = getResourceID0(this, name, type ,packageName);
 		     	if(0!=resID){
 			    	switch(type){
 			    	case "drawable":
 			    		setLayoutParams(mImageView);
 			    		mImageView.setBackgroundResource(resID);
-			    		break;
+			    	break;
 			    	case "string":
 			    		String str = getResources().getString(resID);
 			    		mTextView.setText(str);
-			    		break;    		
+			    	break;    		
 			    	}
 		    	}
 			break;
