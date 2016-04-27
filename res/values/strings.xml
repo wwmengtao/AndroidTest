@@ -26,4 +26,6 @@
      <string name="switch_gps">GPS</string>
      <string name="get_resource">Get resource</string>
      <string name="relative_textview">Relative textview</string>
+     <string name="switchers_demo">Switchers demo</string>
+     <string name="lvp_switchers_demo">LVP switchers demo</string>
 </resources>

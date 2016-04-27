@@ -77,7 +77,7 @@ public class SysAppsActivity extends Activity {
 							HashMap<String,Object> map = new HashMap<String,Object>();
 							Drawable mDrawable=null;
 							boolean isAppIcon=true;
-							map.put("label",info.loadLabel(mPackageManager));
+							map.put("itemText",info.loadLabel(mPackageManager));
 		                    map.put("packname", info.activityInfo.packageName);
 		                    map.put("classname", info.activityInfo.name);		
 		                    if(!isAppIcon){
@@ -125,7 +125,7 @@ public class SysAppsActivity extends Activity {
 						public void onItemClick(AdapterView<?> arg0, View view,
 								int position, long id) {
 							mImageView.setImageDrawable((Drawable)mSysAppList.get(position).get("itemImage"));
-					        mtvName.setText((String) mSysAppList.get(position).get("label"));
+					        mtvName.setText((String) mSysAppList.get(position).get("itemText"));
 					        mtvPackage.setText((String) mSysAppList.get(position).get("packname"));
 					        mtvClass.setText((String) mSysAppList.get(position).get("classname"));
 						}

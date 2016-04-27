@@ -73,7 +73,7 @@ public class ListViewAdapter extends BaseAdapter {
         	image.setImageResource((Integer)obj);
 			view.setBackgroundColor(mContext.getResources().getColor(R.color.wheat));
         }
-        title.setText((String) mList.get(position).get("label"));
+        title.setText((String) mList.get(position).get("itemText"));
         setLayoutParams(image);
         return view;
     }

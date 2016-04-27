@@ -2,17 +2,23 @@ package com.mt.androidtest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.GridView;
+import android.widget.ListView;
 public class SwitcherDemoActivity extends Activity   implements Handler.Callback{
 	GridView mGridView = null;
+	ListView mListView = null;
 	ListViewAdapter mListViewAdapter = null;
+	ListViewAdapter mListViewAdapterLVP = null;
 	ProgressDialog mProgressDialog = null;
 	private ArrayList<HashMap<String, Object>> mSwitchersList = new ArrayList<HashMap<String, Object>>();
+	private ArrayList<HashMap<String, Object>> mLVPSwitchersList = new ArrayList<HashMap<String, Object>>();
+
 	private static int[] switchIMAGE = { R.drawable.switch_brightness,
 			R.drawable.switch_wifi, R.drawable.switch_rotation,
 			R.drawable.switch_bluetooth, R.drawable.back,
@@ -37,7 +43,9 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
 		setContentView(R.layout.activity_switcher_demo);
 		mProgressDialog = new ProgressDialog(this);
 		mGridView=(GridView)findViewById(R.id.gridview_sysapp);
+		mListView=(ListView)findViewById(R.id.list_lvp_switchers);
 		mListViewAdapter = new ListViewAdapter(this);
+		mListViewAdapterLVP = new ListViewAdapter(this);
 		mSwitchersInfo = new SwitchersInfo(this);
 	}
 	@Override
@@ -69,6 +77,7 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
       			}
 				loadSwitchersResource();
       			if(!isUpdateHandler){
+      				loadLVPSwitchersResource();
 					Message msgNew = mAnimationHandler.obtainMessage(DIALOG_DISMISS_MESSAGE);
 					mAnimationHandler.sendMessage(msgNew);
       			}
@@ -91,10 +100,16 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
 			break;	
 			case 2:
 				mProgressDialog.dismiss();
+				//
 				mListViewAdapter.setMode(1);
 				mListViewAdapter.setupList(mSwitchersList);
 				mGridView.setNumColumns(3);
 				mGridView.setAdapter(mListViewAdapter);
+				//
+				mListViewAdapterLVP.setMode(1);
+				mListViewAdapterLVP.setupList(mLVPSwitchersList);
+				mListView.setAdapter(mListViewAdapterLVP);
+				//
 				mUpdater.sendEmptyMessage(UPDATE_MESSAGE);
 			break;		
 			}
@@ -156,5 +171,15 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
 			mSwitchersList.add(map);
 		}
 	}
-
+	
+	public void loadLVPSwitchersResource(){
+		mLVPSwitchersList.clear();
+		for(int i=0;i<mSwitchersInfo.lvpDrawablesdes.length;i++){
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("itemText", mSwitchersInfo.lvpDrawablesdes[i]);
+			map.put("itemImage", mSwitchersInfo.lvpDrawablesID[i]);
+			mLVPSwitchersList.add(map);
+		}
+	}
+	
 }
