@@ -293,5 +293,5 @@
 <color name="navy">#000080</color><!--海军色 -->
 
 <color name="black">#000000</color><!--黑色 -->
-
+<color name="qs_detail_empty">#24B0BEC5</color><!-- 14% blue grey 200 -->
 </resources>
