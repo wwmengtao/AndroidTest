@@ -14,4 +14,13 @@ public class ALog {
 		Log.e(TAG_M,"Called:", RTE);
 	}
 
+	public static String toHexString(int mInt){
+		return Integer.toHexString(mInt);
+	}
+	
+	//eg:parseHexString("11"), result is 17
+	public static int parseHexString(String mData){
+		return Integer.parseInt(mData,16);
+	}	
+	
 }

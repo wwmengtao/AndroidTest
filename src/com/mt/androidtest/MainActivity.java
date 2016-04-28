@@ -100,8 +100,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		//reflectCallListAll();
 		//2、检测组件是否存在
 		//checkComponentExist();
-		//3、从其他应用获取资源
-		getCertainResources();
+		//3、从其他应用获取资源，参照onClick函数中case R.id.btn_getresource:
+
 	}
 	
 	public void testFunctionsRegister(){
@@ -129,48 +129,65 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
     }
 
-	private int getResourceID0(Context context,String name,String type,String packageName) {
+	private Object getResourceType0(Context context,String name,String type,String packageName) {
+		Object obj=null;
 		int resID = 0;
-		Context mResources = null;
-		String str=null;
+		Context mContext = null;
 		try {
-			mResources = this.createPackageContext(packageName,
+			mContext = this.createPackageContext(packageName,
 					Context.CONTEXT_IGNORE_SECURITY);
-			if (mResources != null) {
-				resID = mResources.getResources().getIdentifier(
-						packageName+":"+type+"/"+name, null, null);
+			if (mContext != null) {
+				resID = getResourceID1(mContext.getResources(), name, type ,packageName);
 			}
 		} catch (NameNotFoundException e) {
 			ALog.Log(packageName + " not found！-->" + e.getMessage());
-			return resID;
+			return null;
 		}
-		return resID;
+		if(0==resID)return null;
+    	switch(type){
+	    	case "drawable":
+	    		obj = mContext.getResources().getDrawable(resID);
+	    	break;
+	    	case "string":
+	    		obj = mContext.getResources().getString(resID);
+    	break;    		
+    	}
+		return obj;
     	
 	}
     
-    public int getResourceID1(Context context,String name,String type,String packageName){
+    public Object getResourceType1(Context context,String name,String type,String packageName){
+		Object obj=null;
     	int resID = 0;
-    	String str = null;
         Resources mResources=null;
         PackageManager pm=context.getPackageManager();
         try {
         	mResources=pm.getResourcesForApplication(packageName);
         	if (mResources != null) {
-        		resID = mResources.getIdentifier(name, type, packageName);
+        		resID = getResourceID0(mResources, name, type ,packageName);
         	}
         } catch(NameNotFoundException e) {
         	 e.printStackTrace();
-        	 return resID;
+        	 return null;
          }
-        return resID;
+		if(0==resID)return null;
+    	switch(type){
+	    	case "drawable":
+	    		obj = mResources.getDrawable(resID);
+	    	break;
+	    	case "string":
+	    		obj = mResources.getString(resID);
+    	break;    		
+    	}
+		return obj;
 	}
     
-    public int getResourceID2(String name,String type,String packageName){
-    	return getResources().getIdentifier(name, type ,packageName);
+    public int getResourceID0(Resources mResources, String name, String type, String packageName){
+    	return mResources.getIdentifier(name, type ,packageName);
     }
     
-    public int getResourceID3(String name,String type,String packageName){
-    	return getResources().getIdentifier(packageName+":"+type+"/"+name,null,null);
+    public int getResourceID1(Resources mResources, String name, String type, String packageName){
+    	return mResources.getIdentifier(packageName+":"+type+"/"+name,null,null);
 
     }
     
@@ -183,47 +200,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
         ALog.Log("android_isCellBroadcastAppLinkEnabled:"+isCellBroadcastAppLinkEnabled);
     }
-    
-    public void getCertainResources(){
-    	boolean thisApplication=false;
-    	int resID=0;
-    	String name = "ic_notfound";
-    	String type = "drawable";
-    	String packageName = null;
-    	if(thisApplication){
-	    	//一、获取本应用的资源
-    		packageName = getPackageName();
-	    	resID = getResourceID0(this, name, type ,packageName); 	
-	    	resID = getResourceID1(this, name, type ,packageName);
-	    	resID = getResourceID2(name, type ,packageName);
-	    	resID = getResourceID3(name, type ,packageName);
-    	}else{
-    	//二、获取其他应用的资源
-    		packageName = "com.example.androidtemp";
-    		resID = getResourceID0(this, name, type ,packageName);
-	    	//resID = getResourceID1(this, name, type ,packageName);
-	    	//resID = getResourceID2(name, type ,packageName);
-	    	//resID = getResourceID3(name, type ,packageName);
-    	}
-    	//三、获取系统资源
-    	//getSystemResource();
-    	String str=null;
-    	Drawable mDrawable=null;
-     	if(0!=resID){
-	    	switch(type){
-	    	case "drawable":
-	    		mDrawable = getResources().getDrawable(resID);
-	    		ALog.Log(packageName+":"+type+"/"+name+"_Resource:"+resID);
-	    		break;
-	    	case "string":
-	    		str = getResources().getString(resID);
-	    		ALog.Log(packageName+":"+type+"/"+name+"_Resource:"+str);
-	    		break;    		
-	    	}
-    	}
-    	
-    }
-
     
     /**
      * checkComponentExist：试验检测组件是否存在的几种方法
@@ -448,23 +424,20 @@ public class MainActivity extends Activity implements View.OnClickListener{
 					mTextView = (TextView) findViewById(R.id.tv_relative);
 					mImageView = (ImageView) findViewById(R.id.img_relative);
 				}
-		    	String name = "ic_notfound";
+				String packageName = "com.lenovo.powersetting";//其他应用的包名
+		    	//packageName = getPackageName();//本应用的包名
+		    	String name = "ic_launcher";
 		    	String type = "drawable";
-		    	String packageName = null;
-		    	packageName = "com.example.androidtemp";
-		    	//packageName = getPackageName();//package name of this application
-		    	int resID = getResourceID0(this, name, type ,packageName);
-		     	if(0!=resID){
-			    	switch(type){
-			    	case "drawable":
-			    		setLayoutParams(mImageView);
-			    		mImageView.setBackgroundResource(resID);
-			    	break;
-			    	case "string":
-			    		String str = getResources().getString(resID);
-			    		mTextView.setText(str);
-			    	break;    		
-			    	}
+		    	Object obj0 = getResourceType1(this, name, type ,packageName);
+		    	name="app_name";
+		    	type = "string";
+		    	Object obj1 = getResourceType0(this, name, type ,packageName);
+		    	if(null!=obj0){
+		    		setLayoutParams(mImageView);
+		    		mImageView.setBackground((Drawable)obj0);
+		    	}
+		    	if(null!=obj1){
+		    		mTextView.setText((String)obj1);
 		    	}
 			break;
 		}
