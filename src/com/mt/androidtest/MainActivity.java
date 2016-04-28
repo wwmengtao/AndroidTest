@@ -6,10 +6,12 @@ import java.util.List;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
@@ -31,9 +33,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mt.androidtest.R;
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends Activity implements View.OnClickListener,DialogInterface.OnClickListener{
 	boolean isLogRun=true;
 	boolean isPermissionGranted = false;
 	TelephonyManager telephonyManager=null;
@@ -48,7 +51,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity,
 								  R.id.btn_showswitcher,
-								  R.id.btn_getresource};
+								  R.id.btn_getresource,
+								  R.id.btn_showdialog};
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
 	@Override
@@ -440,6 +444,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		    		mTextView.setText((String)obj1);
 		    	}
 			break;
+			case	R.id.btn_showdialog:
+				showDialog();
+			break;			
 		}
 	}
 	
@@ -449,7 +456,31 @@ public class MainActivity extends Activity implements View.OnClickListener{
     	lp.height = (int)(mDensityDpi*0.3);//144;
     	mView.setLayoutParams(lp);
     }
-	
+    private DialogInterface mShowDialog;
+    private void showDialog() {
+        // TODO: DialogFragment?
+    	mShowDialog = new AlertDialog.Builder(this).setTitle(
+                getResources().getString(R.string.app_name))
+                .setIcon(R.drawable.ic_notfound)
+                .setMessage(getResources().getString(R.string.title_activity_switcher_demo))
+                .setPositiveButton(android.R.string.yes, this)
+                .setNegativeButton(android.R.string.no, this)
+                .show();
+    }
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+    	String str="Nothing to show!";
+        if (dialog == mShowDialog) {
+            if(which == DialogInterface.BUTTON_POSITIVE){
+            	str = "DialogInterface.BUTTON_POSITIVE";
+            }else if(which == DialogInterface.BUTTON_NEGATIVE){
+            	str = "DialogInterface.BUTTON_NEGATIVE";
+            }else if(which == DialogInterface.BUTTON_NEUTRAL){
+            	str = "DialogInterface.BUTTON_NEUTRAL";
+            }
+            Toast.makeText(this, str, Toast.LENGTH_LONG).show();
+        }
+    }
 	public void startActivityByFlags(){
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		//String packname = "com.lenovo.serviceit";

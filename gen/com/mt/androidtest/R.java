@@ -565,24 +565,25 @@ public final class R {
         public static final int toolbar_wifi_off=0x7f020063;
     }
     public static final class id {
-        public static final int action_settings=0x7f090011;
+        public static final int action_settings=0x7f090012;
         public static final int btn_getresource=0x7f090005;
+        public static final int btn_showdialog=0x7f090006;
         public static final int btn_showswitcher=0x7f090003;
         public static final int btn_showsysapp=0x7f090002;
         public static final int btn_start_activity=0x7f090004;
-        public static final int className=0x7f090010;
+        public static final int className=0x7f090011;
         public static final int editText=0x7f090000;
-        public static final int gridview_sysapp=0x7f090006;
-        public static final int icon=0x7f09000d;
-        public static final int img_relative=0x7f09000c;
-        public static final int layout_relative=0x7f09000a;
-        public static final int list_lvp_switchers=0x7f090007;
-        public static final int menu_img=0x7f090008;
-        public static final int menu_label=0x7f090009;
-        public static final int name=0x7f09000e;
-        public static final int packageName=0x7f09000f;
+        public static final int gridview_sysapp=0x7f090007;
+        public static final int icon=0x7f09000e;
+        public static final int img_relative=0x7f09000d;
+        public static final int layout_relative=0x7f09000b;
+        public static final int list_lvp_switchers=0x7f090008;
+        public static final int menu_img=0x7f090009;
+        public static final int menu_label=0x7f09000a;
+        public static final int name=0x7f09000f;
+        public static final int packageName=0x7f090010;
         public static final int textview=0x7f090001;
-        public static final int tv_relative=0x7f09000b;
+        public static final int tv_relative=0x7f09000c;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -600,31 +601,32 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f060002;
         public static final int app_name=0x7f060000;
-        public static final int get_resource=0x7f060017;
+        public static final int get_resource=0x7f060018;
         public static final int hello_world=0x7f060001;
-        public static final int lvp_switchers_demo=0x7f06001a;
-        public static final int msg_loading=0x7f060007;
+        public static final int lvp_switchers_demo=0x7f06001b;
+        public static final int msg_loading=0x7f060008;
         public static final int permission_granted=0x7f060003;
         public static final int permission_not_granted=0x7f060004;
-        public static final int relative_textview=0x7f060018;
-        public static final int show_switcher=0x7f06000a;
+        public static final int relative_textview=0x7f060019;
+        public static final int show_dialog=0x7f060006;
+        public static final int show_switcher=0x7f06000b;
         public static final int show_sysapp=0x7f060005;
-        public static final int start_activity=0x7f060008;
-        public static final int switch_bluetooth=0x7f060012;
-        public static final int switch_brightness=0x7f06000d;
-        public static final int switch_empty=0x7f06000b;
-        public static final int switch_flightmode=0x7f060014;
-        public static final int switch_gps=0x7f060016;
-        public static final int switch_mobile=0x7f060015;
-        public static final int switch_profile=0x7f060013;
-        public static final int switch_rotation=0x7f06000f;
-        public static final int switch_rotation_off=0x7f060011;
-        public static final int switch_smart_rotation=0x7f060010;
-        public static final int switch_wifi=0x7f06000e;
-        public static final int switchers_demo=0x7f060019;
-        public static final int title_activity_switcher_demo=0x7f060009;
-        public static final int title_activity_sys_apps=0x7f060006;
-        public static final int widetouch_torchlight=0x7f06000c;
+        public static final int start_activity=0x7f060009;
+        public static final int switch_bluetooth=0x7f060013;
+        public static final int switch_brightness=0x7f06000e;
+        public static final int switch_empty=0x7f06000c;
+        public static final int switch_flightmode=0x7f060015;
+        public static final int switch_gps=0x7f060017;
+        public static final int switch_mobile=0x7f060016;
+        public static final int switch_profile=0x7f060014;
+        public static final int switch_rotation=0x7f060010;
+        public static final int switch_rotation_off=0x7f060012;
+        public static final int switch_smart_rotation=0x7f060011;
+        public static final int switch_wifi=0x7f06000f;
+        public static final int switchers_demo=0x7f06001a;
+        public static final int title_activity_switcher_demo=0x7f06000a;
+        public static final int title_activity_sys_apps=0x7f060007;
+        public static final int widetouch_torchlight=0x7f06000d;
     }
     public static final class style {
         /** 
