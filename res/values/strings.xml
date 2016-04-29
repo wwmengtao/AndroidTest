@@ -29,4 +29,7 @@
      <string name="relative_textview">Relative textview</string>
      <string name="switchers_demo">Switchers demo</string>
      <string name="lvp_switchers_demo">LVP switchers demo</string>
+     <string name="shut_down">Shut down</string>
+     <string name="go_to_sleep">Go to sleep</string>     
+     
 </resources>

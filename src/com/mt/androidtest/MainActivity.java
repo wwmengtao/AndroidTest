@@ -55,7 +55,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 								  R.id.btn_showswitcher,
 								  R.id.btn_getresource,
 								  R.id.btn_showdialog,
-								  R.id.btn_shutdown};
+								  R.id.btn_shutdown,
+								  R.id.btn_gotosleep};
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
     private PowerManager mPowerManager =null;
@@ -453,7 +454,12 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				showDialog();
 			break;
 			case	R.id.btn_shutdown:
-				shutDown();
+				powerOperate("shutdown");
+				//powerOperate2("shutdown");
+			break;
+			case R.id.btn_gotosleep:
+				//powerOperate("goToSleep");
+				powerOperate2("goToSleep");
 			break;
 		}
 	}
@@ -509,32 +515,60 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		}
 	}
 	/**
-	 *  一、PowerManager.goToSleep(long time, int reason, int flags)生效的条件：
+	 *  一、PowerManager.goToSleep(long time, int reason, int flags)
+	 *  A.生效的条件：
 	 *  1)需要<uses-permission android:name="android.permission.DEVICE_POWER" />权限;
 	 *  2)平台签名
 	 *  3)位于system/priv-app或者(system/app)下
-	 *  二、PowerManager.goToSleep中，reason可取的数值如下：
+	 *  B.PowerManager.goToSleep中，reason可取的数值如下：
 	 *  public static final int GO_TO_SLEEP_REASON_APPLICATION = 0;
 	 *  public static final int GO_TO_SLEEP_REASON_DEVICE_ADMIN = 1;
 	 *  public static final int GO_TO_SLEEP_REASON_TIMEOUT = 2;
 	 *  public static final int GO_TO_SLEEP_REASON_LID_SWITCH = 3;
 	 *  public static final int GO_TO_SLEEP_REASON_POWER_BUTTON = 4;
+	 *  二、PowerManager.shutdown(boolean confirm, boolean wait)生效的条件：
+	 *  1)需要<uses-permission android:name="android.permission.REBOOT" />权限;
+	 *  2)平台签名
+	 *  3)位于system/priv-app或者(system/app)下
 	 */
-	public void shutDown(){
+	public void powerOperate(String methodName){
 		if (mPowerManager != null) {
 			Class<?> mClass = mPowerManager.getClass();
 			Method mMethod = null;
 			try {
-				mMethod= mClass.getMethod("goToSleep",new Class[]{long.class,int.class,int.class});
-				try{
+				if(methodName.equals("shutdown")){
+					mMethod = mClass.getMethod(methodName, boolean.class, boolean.class);
+					mMethod.invoke(mPowerManager, true, false);
+				}else if(methodName.equals("goToSleep")){
+					mMethod= mClass.getMethod("goToSleep",new Class[]{long.class,int.class,int.class});
 					mMethod.invoke(mPowerManager, SystemClock.uptimeMillis(),4,0);
-				}catch (Exception e) {
-					ALog.Log("goToSleep(long.class,int.class,int.class) invoke failed!");
 				}
-			} catch (NoSuchMethodException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				ALog.Log("goToSleep(long.class,int.class,int.class) not found!");
+				e.printStackTrace();
 			}
+		}
+		
+	}
+	
+	public void powerOperate2(String methodName){
+	try {
+			Class<?> ServiceManager = Class.forName("android.os.ServiceManager");
+			Method getService = ServiceManager.getMethod("getService", java.lang.String.class);
+			Object oRemoteService = getService.invoke(null, Context.POWER_SERVICE);
+			Class<?> cStub = Class.forName("android.os.IPowerManager$Stub");
+			Method asInterface = cStub.getMethod("asInterface", android.os.IBinder.class);
+			Object oIPowerManager = asInterface.invoke(null, oRemoteService);
+			Method mMethod = null;
+			if(methodName.equals("shutdown")){
+				mMethod = oIPowerManager.getClass().getMethod(methodName,	boolean.class, boolean.class);
+				mMethod.invoke(oIPowerManager, true, false);
+			}else if(methodName.equals("goToSleep")){
+				mMethod= oIPowerManager.getClass().getMethod(methodName,new Class[]{long.class,int.class,int.class});
+				mMethod.invoke(oIPowerManager, SystemClock.uptimeMillis(),4,0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
