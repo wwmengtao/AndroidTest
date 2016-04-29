@@ -23,6 +23,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -52,9 +54,11 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 								  R.id.btn_start_activity,
 								  R.id.btn_showswitcher,
 								  R.id.btn_getresource,
-								  R.id.btn_showdialog};
+								  R.id.btn_showdialog,
+								  R.id.btn_shutdown};
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
+    private PowerManager mPowerManager =null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,6 +77,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		}
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		mPackageManager = getPackageManager();
+		mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
         metric = getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
 		testFunctionsRegister();
@@ -446,7 +451,10 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 			break;
 			case	R.id.btn_showdialog:
 				showDialog();
-			break;			
+			break;
+			case	R.id.btn_shutdown:
+				shutDown();
+			break;
 		}
 	}
 	
@@ -500,6 +508,34 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 *  一、PowerManager.goToSleep(long time, int reason, int flags)生效的条件：
+	 *  1)需要<uses-permission android:name="android.permission.DEVICE_POWER" />权限;
+	 *  2)平台签名
+	 *  3)位于system/priv-app或者(system/app)下
+	 *  二、PowerManager.goToSleep中，reason可取的数值如下：
+	 *  public static final int GO_TO_SLEEP_REASON_APPLICATION = 0;
+	 *  public static final int GO_TO_SLEEP_REASON_DEVICE_ADMIN = 1;
+	 *  public static final int GO_TO_SLEEP_REASON_TIMEOUT = 2;
+	 *  public static final int GO_TO_SLEEP_REASON_LID_SWITCH = 3;
+	 *  public static final int GO_TO_SLEEP_REASON_POWER_BUTTON = 4;
+	 */
+	public void shutDown(){
+		if (mPowerManager != null) {
+			Class<?> mClass = mPowerManager.getClass();
+			Method mMethod = null;
+			try {
+				mMethod= mClass.getMethod("goToSleep",new Class[]{long.class,int.class,int.class});
+				try{
+					mMethod.invoke(mPowerManager, SystemClock.uptimeMillis(),4,0);
+				}catch (Exception e) {
+					ALog.Log("goToSleep(long.class,int.class,int.class) invoke failed!");
+				}
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				ALog.Log("goToSleep(long.class,int.class,int.class) not found!");
+			}
+		}
+	}
 }
 
