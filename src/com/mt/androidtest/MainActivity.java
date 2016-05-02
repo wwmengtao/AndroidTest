@@ -1,8 +1,20 @@
 package com.mt.androidtest;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.List;
+
+
+
+
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.Manifest;
 import android.app.Activity;
@@ -20,6 +32,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -29,6 +43,7 @@ import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -143,6 +158,25 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     	String path = "com/drawable/resource/test.png"; 
     	InputStream is = getClassLoader().getResourceAsStream(path); 
     	return Drawable.createFromStream(is, "src"); 
+    }
+    /**
+     * getDrawbleFromAsset：从assets目录中获取png类型图片
+     * @return
+     */
+    public Drawable getDrawbleFromAsset(){
+    	InputStream is=null;
+    	AssetManager asm=this.getAssets();
+    	Drawable mDrawable=null;
+    	try {
+			is=asm.open("ic_notfound.png");
+			mDrawable=Drawable.createFromStream(is, null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			asm.close();
+		}
+    	return mDrawable;
     }
     
 	private Object getResourceType0(Context context,String name,String type,String packageName) {
@@ -449,9 +483,13 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		    	type = "string";
 		    	Object obj1 = getResourceType0(this, name, type ,packageName);
 		    	if(null!=obj0){
+		    		Drawable mDrawable=null;
 		    		setLayoutParams(mImageView);
-		    		mImageView.setBackground((Drawable)obj0);
-		    		//mImageView.setBackground(getDrawbleFromSrc());//从src中获取图片资源
+		    		//mDrawable = (Drawable)obj0;//getIdentifier获取图片资源
+		    		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
+		    		mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
+		    		mImageView.setBackground(mDrawable);
+		    		//mImageView.setBackgroundColor(getResources().getColor(R.color.wheat));
 		    	}
 		    	if(null!=obj1){
 		    		mTextView.setText((String)obj1);
