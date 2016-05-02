@@ -1,5 +1,6 @@
 package com.mt.androidtest;
 
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -138,7 +139,12 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
         	if(isLogRun)ALog.Log("====ORIENTATION_PORTRAIT");
         }
     }
-
+    public Drawable getDrawbleFromSrc(){
+    	String path = "com/drawable/resource/test.png"; 
+    	InputStream is = getClassLoader().getResourceAsStream(path); 
+    	return Drawable.createFromStream(is, "src"); 
+    }
+    
 	private Object getResourceType0(Context context,String name,String type,String packageName) {
 		Object obj=null;
 		int resID = 0;
@@ -445,6 +451,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		    	if(null!=obj0){
 		    		setLayoutParams(mImageView);
 		    		mImageView.setBackground((Drawable)obj0);
+		    		//mImageView.setBackground(getDrawbleFromSrc());//从src中获取图片资源
 		    	}
 		    	if(null!=obj1){
 		    		mTextView.setText((String)obj1);
