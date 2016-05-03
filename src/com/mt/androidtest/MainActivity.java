@@ -154,6 +154,11 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
         	if(isLogRun)ALog.Log("====ORIENTATION_PORTRAIT");
         }
     }
+    
+    /**
+     * getDrawbleFromSrc：从src文件夹中获取图片
+     * @return
+     */
     public Drawable getDrawbleFromSrc(){
     	String path = "com/drawable/resource/test.png"; 
     	InputStream is = getClassLoader().getResourceAsStream(path); 
@@ -168,13 +173,11 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     	AssetManager asm=this.getAssets();
     	Drawable mDrawable=null;
     	try {
-			is=asm.open("ic_notfound.png");
+			is=asm.open("pic_switcher/ic_notfound.png");
 			mDrawable=Drawable.createFromStream(is, null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
-			asm.close();
 		}
     	return mDrawable;
     }
@@ -488,6 +491,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		    		//mDrawable = (Drawable)obj0;//getIdentifier获取图片资源
 		    		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
 		    		mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
+		    		//mDrawable = getDrawbleFromAssetXml();
 		    		mImageView.setBackground(mDrawable);
 		    		//mImageView.setBackgroundColor(getResources().getColor(R.color.wheat));
 		    	}
