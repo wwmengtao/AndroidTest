@@ -481,34 +481,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				startActivityByFlags();
 			break;
 			case R.id.btn_getresource:
-				if(!mRelativeLayout.isShown()){
-					mRelativeLayout.setVisibility(View.VISIBLE);
-					mTextView = (TextView) findViewById(R.id.tv_relative);
-					mImageView = (ImageView) findViewById(R.id.img_relative);
-					String packageName = "com.lenovo.powersetting";//其他应用的包名
-			    	//packageName = getPackageName();//本应用的包名
-			    	String name = "ic_launcher";
-			    	String type = "drawable";
-			    	Object obj0 = getResourceType1(this, name, type ,packageName);
-			    	name="app_name";
-			    	type = "string";
-			    	Object obj1 = getResourceType0(this, name, type ,packageName);
-			    	if(null!=obj0){
-			    		Drawable mDrawable=null;
-			    		setLayoutParams(mImageView);
-			    		//mDrawable = (Drawable)obj0;//getIdentifier获取图片资源
-			    		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
-			    		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
-			    		mDrawable = getDrawableFromResourcesXml();
-			    		mImageView.setBackground(mDrawable);
-			    		mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.wheat));		    		
-			    	}
-			    	if(null!=obj1){
-			    		mTextView.setText((String)obj1);
-			    	}
-				}else{
-					mRelativeLayout.setVisibility(View.GONE);
-				}
+				getResourceBtn();
 			break;
 			case	R.id.btn_showdialog:
 				showDialog();
@@ -521,6 +494,37 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				//powerOperate("goToSleep");
 				powerOperate2("goToSleep");
 			break;
+		}
+	}
+	
+	public void getResourceBtn(){
+		if(!mRelativeLayout.isShown()){
+			mRelativeLayout.setVisibility(View.VISIBLE);
+			mTextView = (TextView) findViewById(R.id.tv_relative);
+			mImageView = (ImageView) findViewById(R.id.img_relative);
+			String packageName = "com.lenovo.powersetting";//其他应用的包名
+	    	//packageName = getPackageName();//本应用的包名
+	    	String name = "ic_launcher";
+	    	String type = "drawable";
+	    	Object obj0 = getResourceType1(this, name, type ,packageName);
+	    	name="app_name";
+	    	type = "string";
+	    	Object obj1 = getResourceType0(this, name, type ,packageName);
+	    	if(null!=obj0){
+	    		Drawable mDrawable=null;
+	    		setLayoutParams(mImageView);
+	    		//mDrawable = (Drawable)obj0;//getIdentifier获取图片资源
+	    		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
+	    		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
+	    		mDrawable = getDrawableFromResourcesXml();//从系统xml资源获取图片
+	    		mImageView.setBackground(mDrawable);
+	    		mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.wheat));		    		
+	    	}
+	    	if(null!=obj1){
+	    		mTextView.setText((String)obj1);
+	    	}
+		}else{
+			mRelativeLayout.setVisibility(View.GONE);
 		}
 	}
 	
