@@ -5,13 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.List;
-
-
-
-
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -32,7 +27,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -182,6 +176,19 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     	return mDrawable;
     }
     
+    public Drawable getDrawableFromResourcesXml(){
+    	Resources mResources = this.getResources();
+    	XmlPullParser parser = mResources.getXml(R.drawable.ic_qs_bluetooth_on);
+        Drawable mDrawable = null;
+		try {
+			mDrawable = Drawable.createFromXml(mResources, parser);
+		} catch (XmlPullParserException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return mDrawable;
+    }
+    
 	private Object getResourceType0(Context context,String name,String type,String packageName) {
 		Object obj=null;
 		int resID = 0;
@@ -209,6 +216,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     	
 	}
     
+	
+	
     public Object getResourceType1(Context context,String name,String type,String packageName){
 		Object obj=null;
     	int resID = 0;
@@ -476,28 +485,30 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 					mRelativeLayout.setVisibility(View.VISIBLE);
 					mTextView = (TextView) findViewById(R.id.tv_relative);
 					mImageView = (ImageView) findViewById(R.id.img_relative);
+					String packageName = "com.lenovo.powersetting";//其他应用的包名
+			    	//packageName = getPackageName();//本应用的包名
+			    	String name = "ic_launcher";
+			    	String type = "drawable";
+			    	Object obj0 = getResourceType1(this, name, type ,packageName);
+			    	name="app_name";
+			    	type = "string";
+			    	Object obj1 = getResourceType0(this, name, type ,packageName);
+			    	if(null!=obj0){
+			    		Drawable mDrawable=null;
+			    		setLayoutParams(mImageView);
+			    		//mDrawable = (Drawable)obj0;//getIdentifier获取图片资源
+			    		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
+			    		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
+			    		mDrawable = getDrawableFromResourcesXml();
+			    		mImageView.setBackground(mDrawable);
+			    		mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.wheat));		    		
+			    	}
+			    	if(null!=obj1){
+			    		mTextView.setText((String)obj1);
+			    	}
+				}else{
+					mRelativeLayout.setVisibility(View.GONE);
 				}
-				String packageName = "com.lenovo.powersetting";//其他应用的包名
-		    	//packageName = getPackageName();//本应用的包名
-		    	String name = "ic_launcher";
-		    	String type = "drawable";
-		    	Object obj0 = getResourceType1(this, name, type ,packageName);
-		    	name="app_name";
-		    	type = "string";
-		    	Object obj1 = getResourceType0(this, name, type ,packageName);
-		    	if(null!=obj0){
-		    		Drawable mDrawable=null;
-		    		setLayoutParams(mImageView);
-		    		//mDrawable = (Drawable)obj0;//getIdentifier获取图片资源
-		    		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
-		    		mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
-		    		//mDrawable = getDrawbleFromAssetXml();
-		    		mImageView.setBackground(mDrawable);
-		    		//mImageView.setBackgroundColor(getResources().getColor(R.color.wheat));
-		    	}
-		    	if(null!=obj1){
-		    		mTextView.setText((String)obj1);
-		    	}
 			break;
 			case	R.id.btn_showdialog:
 				showDialog();
