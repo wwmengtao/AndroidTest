@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -478,7 +479,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				startActivity(intent);
 			break;
 			case	R.id.btn_start_activity:
-				startActivityByFlags();
+				//startActivityByFlags();
+				startDocumentsActivity();
 			break;
 			case R.id.btn_getresource:
 				getResourceBtn();
@@ -534,8 +536,9 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     	}
 		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
 		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
+    	//mDrawable = getDrawbleFromAssetXml();
 		//mDrawable = getDrawableFromResourcesXml();//从系统xml资源获取图片
-		mImageView.setBackground(mDrawable);	   
+		mImageView.setBackground(mDrawable);
 	}
 	
     public void setLayoutParams(View mView){
@@ -588,6 +591,16 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 			e.printStackTrace();
 		}
 	}
+	
+	public void startDocumentsActivity(){
+		Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
+		try{
+			startActivity(intent);
+		}catch(ActivityNotFoundException e){
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 *  一、PowerManager.goToSleep(long time, int reason, int flags)
 	 *  A.生效的条件：
