@@ -177,6 +177,32 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     	return mDrawable;
     }
     
+    public Drawable getDrawbleFromAssetXml(){
+    	Drawable mDrawable = null;
+    	XmlPullParser mXmlPullParser = null;
+        InputStream mInputStream = null;
+        Resources mResources = getResources();
+        AssetManager mAM=null;
+        try {
+        	mAM = mResources.getAssets();
+        	mInputStream = mAM.open("pic_switcher/vpn.xml"); 
+        	mXmlPullParser = Xml.newPullParser();
+        	mXmlPullParser.setInput(mInputStream, StandardCharsets.UTF_8.name());
+            mDrawable = Drawable.createFromXml(mResources,  mXmlPullParser);
+        } catch (XmlPullParserException e) {
+        	ALog.printStackTrace("getDrawbleFromAssetXml.XmlPullParserException");
+        } catch (IOException e) {
+        	ALog.printStackTrace("getDrawbleFromAssetXml.Exception");
+        }finally {
+            try {
+            	if(null!=mInputStream)mInputStream.close();
+            } catch (IOException e) {
+            	ALog.printStackTrace("getDrawbleFromAssetXml.IOException");
+            }
+        }
+        return mDrawable;
+    }
+    
     public Drawable getDrawableFromResourcesXml(){
     	Resources mResources = this.getResources();
     	XmlPullParser parser = mResources.getXml(R.drawable.ic_qs_bluetooth_on);
@@ -536,7 +562,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     	}
 		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
 		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
-    	//mDrawable = getDrawbleFromAssetXml();
+    	mDrawable = getDrawbleFromAssetXml();
 		//mDrawable = getDrawableFromResourcesXml();//从系统xml资源获取图片
 		mImageView.setBackground(mDrawable);
 	}
