@@ -461,6 +461,7 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f050000;
         public static final int activity_vertical_margin=0x7f050001;
+        public static final int item_preference_pading_right=0x7f050002;
     }
     public static final class drawable {
         public static final int back=0x7f020000;
@@ -565,7 +566,7 @@ public final class R {
         public static final int toolbar_wifi_off=0x7f020063;
     }
     public static final class id {
-        public static final int action_settings=0x7f090014;
+        public static final int action_settings=0x7f090016;
         public static final int btn_getresource=0x7f090005;
         public static final int btn_gotosleep=0x7f090008;
         public static final int btn_showdialog=0x7f090006;
@@ -573,19 +574,21 @@ public final class R {
         public static final int btn_showsysapp=0x7f090002;
         public static final int btn_shutdown=0x7f090007;
         public static final int btn_start_activity=0x7f090004;
-        public static final int className=0x7f090013;
+        public static final int className=0x7f090015;
         public static final int editText=0x7f090000;
         public static final int gridview_sysapp=0x7f090009;
-        public static final int icon=0x7f090010;
+        public static final int icon=0x7f090012;
         public static final int img_relative=0x7f09000f;
         public static final int layout_relative=0x7f09000d;
+        public static final int lenovo_switch=0x7f090011;
         public static final int list_lvp_switchers=0x7f09000a;
         public static final int menu_img=0x7f09000b;
         public static final int menu_label=0x7f09000c;
-        public static final int name=0x7f090011;
-        public static final int packageName=0x7f090012;
+        public static final int name=0x7f090013;
+        public static final int packageName=0x7f090014;
         public static final int textview=0x7f090001;
         public static final int tv_relative=0x7f09000e;
+        public static final int txStatus=0x7f090010;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -593,7 +596,8 @@ public final class R {
         public static final int activity_sys_apps=0x7f030002;
         public static final int getview_item=0x7f030003;
         public static final int relativelayout=0x7f030004;
-        public static final int sys_app_details=0x7f030005;
+        public static final int switchbar=0x7f030005;
+        public static final int sys_app_details=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f080000;
