@@ -29,17 +29,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/show_switcher" />	
-	<Button
-	    android:id="@+id/btn_start_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start_activity" />	
+    <include layout="@layout/linear_layout_buttons" />
 	<Button
 	    android:id="@+id/btn_getresource"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/get_resource" />	  
-    <include layout="@layout/relativelayout" />
+    <include layout="@layout/relative_layout" />
 	<Button
 	    android:id="@+id/btn_showdialog"
         android:layout_width="wrap_content"

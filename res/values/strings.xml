@@ -10,7 +10,9 @@
     <string name="show_dialog">Show dialog</string>    
     <string name="title_activity_sys_apps">SysAppsActivity</string>
     <string name="msg_loading">loading...</string>
-    <string name="start_activity">start activity</string>
+    <string name="start_activity">Activity</string>
+    <string name="start_documentsactivity">DocActivity</string>    
+    <string name="start_downloadproviderui">DProviderui</string>        
     <string name="title_activity_switcher_demo">SwitcherDemoActivity</string>
     <string name="show_switcher">Show switchers</string>
      <string name="switch_empty"/>

@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/layout_linear_buttons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:context="com.example.androidtemp.MainActivity" >
+
+	<Button
+	    android:id="@+id/btn_start_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_activity" />
+	<Button
+		android:id="@+id/btn_start_documentsactivity"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/start_documentsactivity" />
+	<Button
+		android:id="@+id/btn_start_downloadproviderui"
+		android:layout_width="0dip"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:singleLine="true"
+		android:text="@string/start_downloadproviderui" />		
+</LinearLayout>

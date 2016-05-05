@@ -63,6 +63,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	Button btn=null;
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity,
+								  R.id.btn_start_documentsactivity,
+								  R.id.btn_start_downloadproviderui,
 								  R.id.btn_showswitcher,
 								  R.id.btn_getresource,
 								  R.id.btn_showdialog,
@@ -505,9 +507,14 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				startActivity(intent);
 			break;
 			case	R.id.btn_start_activity:
-				//startActivityByFlags();
-				startDocumentsActivity();
+				startActivityByFlags();
 			break;
+			case	R.id.btn_start_documentsactivity:
+				startDocumentsActivity();
+			break;			
+			case	R.id.btn_start_downloadproviderui:
+				startDownloadProviderUI();
+			break;					
 			case R.id.btn_getresource:
 				getResourceBtn();
 			break;
@@ -620,6 +627,21 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	
 	public void startDocumentsActivity(){
 		Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| ActivityManager.MOVE_TASK_WITH_HOME
+				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+				| Intent.FLAG_ACTIVITY_TASK_ON_HOME
+				| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+				);
+		try{
+			startActivity(intent);
+		}catch(ActivityNotFoundException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void startDownloadProviderUI(){
+		Intent intent = new Intent("android.intent.action.VIEW_DOWNLOADS");
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| ActivityManager.MOVE_TASK_WITH_HOME
 				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
