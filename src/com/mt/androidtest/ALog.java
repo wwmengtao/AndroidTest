@@ -8,7 +8,7 @@ public class ALog {
 		Log.e(TAG_M,info);
 	}
 
-	public static void printStackTrace(String info){
+	public static void fillInStackTrace(String info){
 		RuntimeException RTE = new RuntimeException(info);
 		RTE.fillInStackTrace();
 		Log.e(TAG_M,"Called:", RTE);

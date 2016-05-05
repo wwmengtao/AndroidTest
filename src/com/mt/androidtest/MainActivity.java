@@ -190,14 +190,14 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
         	mXmlPullParser.setInput(mInputStream, StandardCharsets.UTF_8.name());
             mDrawable = Drawable.createFromXml(mResources,  mXmlPullParser);
         } catch (XmlPullParserException e) {
-        	ALog.printStackTrace("getDrawbleFromAssetXml.XmlPullParserException");
+        	ALog.fillInStackTrace("getDrawbleFromAssetXml.XmlPullParserException");
         } catch (IOException e) {
-        	ALog.printStackTrace("getDrawbleFromAssetXml.Exception");
+        	ALog.fillInStackTrace("getDrawbleFromAssetXml.Exception");
         }finally {
             try {
             	if(null!=mInputStream)mInputStream.close();
             } catch (IOException e) {
-            	ALog.printStackTrace("getDrawbleFromAssetXml.IOException");
+            	ALog.fillInStackTrace("getDrawbleFromAssetXml.IOException");
             }
         }
         return mDrawable;
@@ -620,6 +620,12 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	
 	public void startDocumentsActivity(){
 		Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| ActivityManager.MOVE_TASK_WITH_HOME
+				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+				| Intent.FLAG_ACTIVITY_TASK_ON_HOME
+				| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+				);
 		try{
 			startActivity(intent);
 		}catch(ActivityNotFoundException e){
