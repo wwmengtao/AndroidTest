@@ -626,9 +626,13 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	}
 	
 	/**
-	 * onWindowFocusChanged：onCreate->onResume->onWindowFocusChanged，执行到onWindowFocusChanged
-		表明已经获取焦点，此时View的绘制工作已经完成，可以获取View控件的宽度、高度。
-		下列结果显示，当onWindowFocusChanged调用时，并非每一层布局都能获取实际宽度、高度值
+	 * onWindowFocusChanged：
+		1、进入组件时执行顺序如下：
+		onStart--->onResume--->onAttachedToWindow--->onWindowVisibilityChanged--visibility=0--->onWindowFocusChanged(true)--->
+		执行到onWindowFocusChanged表明已经获取焦点，此时View的绘制工作已经完成，可以获取View控件的宽度、高度。
+		2、离开组件时
+		2.1)onPause---->onStop---->onWindowFocusChanged(false)  --- (lockscreen)
+		2.2)onPause--->onWindowFocusChanged(false)--->onWindowVisibilityChanged--visibility=8--->onStop(to another activity)
 	 * @param hasFocus
 	 */
     @Override
