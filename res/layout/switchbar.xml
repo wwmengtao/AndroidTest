@@ -3,12 +3,9 @@
 	     android:orientation="horizontal"
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:minHeight="?android:attr/listPreferredItemHeight"
-    	android:gravity="center_vertical"
-    	android:paddingStart="@dimen/item_preference_pading_right"
-		android:paddingEnd="@dimen/item_preference_pading_right">
+    	android:gravity="center_vertical">
         <TextView
-               android:id="@+id/txStatus"
+            android:id="@+id/txStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"

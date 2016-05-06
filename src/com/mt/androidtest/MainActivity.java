@@ -569,7 +569,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     	}
 		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
 		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
-    	mDrawable = getDrawbleFromAssetXml();
+    	//mDrawable = getDrawbleFromAssetXml();
 		//mDrawable = getDrawableFromResourcesXml();//从系统xml资源获取图片
 		mImageView.setBackground(mDrawable);
 	}
