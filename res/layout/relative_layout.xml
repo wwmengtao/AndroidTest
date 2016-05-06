@@ -3,6 +3,7 @@
 	android:id="@+id/layout_relative"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:visibility="gone"
     tools:context="com.example.androidtemp.MainActivity" >
 
     <TextView
@@ -15,6 +16,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_relative"
-        android:visibility="gone"
         android:text="@string/relative_textview" />
 </RelativeLayout>

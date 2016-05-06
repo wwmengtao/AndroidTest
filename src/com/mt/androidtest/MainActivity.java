@@ -544,17 +544,16 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		if(!mLayout.isShown()){
 			mLayout.setVisibility(View.VISIBLE);
 			if(!ifAddView){
-				//现在我要往mLayout里边添加一个TextView    
-				TextView textView = new TextView(this);      
-				textView.setText("View added" );
-				textView.setBackgroundColor(getResources().getColor(R.color.wheat));
-				//在xml里边怎么配置高宽大家都会的。   
 				//第一个参数为宽的设置，第二个参数为高的设置。   
 				LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(      
-						LinearLayout.LayoutParams.MATCH_PARENT,      
+						LinearLayout.LayoutParams.WRAP_CONTENT,      
 						LinearLayout.LayoutParams.WRAP_CONTENT );      
 				//调用addView()方法增加一个TextView到线性布局中   
-				mLayout.addView(textView, p); 
+				//现在我要往mLayout里边添加一个TextView
+				TextView mTextView = new TextView(this);      
+				mTextView.setText("View added" );
+				mTextView.setBackgroundColor(getResources().getColor(R.color.wheat));				
+				mLayout.addView(mTextView, p); 
 				ifAddView = true;
 			}
 		}else{
