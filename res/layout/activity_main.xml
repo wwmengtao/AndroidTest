@@ -4,19 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.mt.androidtest.MainActivity" >
-    <EditText  
-        android:id="@+id/editText"  
-        android:layout_width="wrap_content"  
-        android:layout_height="wrap_content"  
-        android:ems="10" />  
-    <TextView
-        android:id="@+id/textview"  
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-    <include layout="@layout/switchbar" />    
-    <include layout="@layout/linear_layout_buttons21" />
-    <include layout="@layout/linear_layout_buttons3" />
+    <include layout="@layout/linear_layout_item" /> 
+    <include layout="@layout/linear_layout_switchbar" />    
+    <include layout="@layout/linear_layout_buttons23" />      
     <include layout="@layout/linear_layout_buttons22" />
-    <include layout="@layout/linear_layout_buttons23" />       
+    <include layout="@layout/linear_layout_buttons21" />    
+    <include layout="@layout/linear_layout_buttons3" />    
 </LinearLayout>
