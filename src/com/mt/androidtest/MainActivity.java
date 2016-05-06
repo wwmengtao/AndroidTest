@@ -45,6 +45,7 @@ import android.util.Xml;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -582,7 +583,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				mTextViewAdded.setWidth(widthOfView);
 				mTextViewAdded.setGravity(Gravity.CENTER_HORIZONTAL);
 				mTextViewAdded.setText(test_str);
-				ALog.Log("mTextViewAdded_getWidth:"+mTextViewAdded.getWidth());
+				//ALog.Log("mTextViewAdded_getWidth:"+mTextViewAdded.getWidth());
 				ifShowView = true;
 			}
 		}else{
@@ -616,15 +617,47 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				LinearLayout.LayoutParams.WRAP_CONTENT,      
 				LinearLayout.LayoutParams.WRAP_CONTENT );      
 		//调用addView()方法增加一个TextView到线性布局中   
-		//现在我要往mLayout里边添加一个TextView
+		//往mLayout里边添加一个TextView
 		mTextViewAdded = new TextView(this);      
 		mTextViewAdded.setBackgroundColor(getResources().getColor(R.color.wheat));				
 		mLayout.addView(mTextViewAdded, p); 
 		mTextViewAdded.setText("View added" );
-		textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getMeasuredWidth();
-		ALog.Log("mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+		//下列直接获取控件宽度为0，必须使用ViewTreeObserver.OnGlobalLayoutListener监听器
+		//textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getMeasuredWidth();
+		//ALog.Log("mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+		//方法一、mTextViewAdded直接设置监听器
+		//setOnGlobalLayoutListener();
+		//方法二、mTextViewAdded设置mOnGlobalLayoutListener监听器
+		setOnGlobalLayoutListener2();
 	}
 	
+	public void setOnGlobalLayoutListener(){
+		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver. 
+				OnGlobalLayoutListener() {
+				@Override 
+				    public void onGlobalLayout() { 
+				    //由于此方法会执行多次，而我们只需要执行一次就可以了， 
+				    //所以，在执行一次的时候，将全局的layout监听取消，此处this指的是，内部的匿名对象 
+					//如果不执行下列取消监听的话，当mTextViewAdded显示、消失的时候都会调用onGlobalLayout()函数
+					mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(this); 
+					textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getWidth(); 
+				    ALog.Log("****mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+				    } 
+		}); 
+	}
+	
+	ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener =new ViewTreeObserver.OnGlobalLayoutListener(){
+		@Override
+		public void onGlobalLayout() {
+			mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener); 
+			textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getWidth(); 
+		    ALog.Log("****mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+		}
+	};
+	
+	public void setOnGlobalLayoutListener2(){
+		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+	}
 	/**
 	 * onWindowFocusChanged：
 		1、进入组件时执行顺序如下：
@@ -639,22 +672,27 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		ALog.Log("/------------------------onWindowFocusChanged------------------------/");
-        String betweenTitle=" ";
-		ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle+"getMeasuredHeight");
 		//mEditText：宽高均不为0
 		showWidthAndHeight(mEditText, "mEditText");				
 		//mRelativeLayout：宽高均为0
 		showWidthAndHeight(mRelativeLayout, "mRelativeLayout");					
-		//mLayout：由于布局没有指定显示的内容，高度数值为0
+		//mLayout：由于布局没有指定显示的内容，高度数值为0；如果指定android:visibility="gone"，那么宽度数值也为0
 		showWidthAndHeight(mLayout, "mLayout");			
 		//mLayout_linear_buttons：由于布局下面有Button等可显示内容，因此宽高都不为0
 		showWidthAndHeight(mLayout_linear_buttons, "mLayout_linear_buttons");	
 		ALog.Log("/************************onWindowFocusChanged************************/");
 	}
-	String regShowWidthAndHeight = "id+\\/[a-zA-Z]+.+\\}";//仅仅
+    
+	String regShowWidthAndHeight = "id+\\/[a-zA-Z]+.+\\}";//仅仅获取控件id，其他内容不要
     Pattern mPatternShowWidthAndHeight = Pattern.compile(regShowWidthAndHeight);
     Matcher mMatcher = null;
+	boolean is_showWidthAndHeight_exec = false;
     public void showWidthAndHeight(View mView, String objName){
+    	if(!is_showWidthAndHeight_exec){
+    		String betweenTitle=" ";
+    		ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle+"getMeasuredHeight");
+    		is_showWidthAndHeight_exec = true;
+    	}
     	String str_ALog=null;
         String str = mView.toString();
         mMatcher = mPatternShowWidthAndHeight.matcher(str);
