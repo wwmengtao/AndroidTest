@@ -1,13 +1,12 @@
 package com.mt.androidtest;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -31,25 +30,29 @@ import android.content.pm.ResolveInfo;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.text.TextPaint;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.util.Xml;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.mt.androidtest.R;
 public class MainActivity extends Activity implements View.OnClickListener,DialogInterface.OnClickListener{
 	boolean isLogRun=true;
 	boolean isPermissionGranted = false;
@@ -61,8 +64,9 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     private EditText mEditText=null;
     private ImageView mImageView=null;
     private RelativeLayout mRelativeLayout=null;
-	private boolean ifAddView=false;
-	private LinearLayout mLayout;
+	private boolean ifShowView=false;
+	private LinearLayout mLayout=null;
+	private LinearLayout mLayout_linear_buttons=null;
 	Button btn=null;
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity,
@@ -73,7 +77,9 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 								  R.id.btn_showdialog,
 								  R.id.btn_shutdown,
 								  R.id.btn_gotosleep,
-								  R.id.btn_showview};
+								  R.id.btn_showview,
+								  R.id.btn_showfixedlength1,
+								  R.id.btn_showfixedlength2};
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
     private PowerManager mPowerManager =null;
@@ -89,6 +95,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		mEditText.setSelection(mText.length()); //光标一直位于内容后面，方便输入
 		mRelativeLayout=(RelativeLayout) findViewById(R.id.layout_relative);  
 		mLayout=(LinearLayout) findViewById(R.id.layout_linear);
+		mLayout_linear_buttons=(LinearLayout) findViewById(R.id.layout_linear_buttons21);
 		for(int i=0;i<buttonID.length;i++){
 			btn = (Button)findViewById(buttonID[i]);
 			btn.setOnClickListener(this);
@@ -534,27 +541,68 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				powerOperate2("goToSleep");
 			break;
 			case R.id.btn_showview:
+				ifShowView = false;
 				showViewByAddView();
-			break;			
+			break;		
+			case R.id.btn_showfixedlength1:
+				ifShowView = false;
+				showViewFixedLength();
+			break;				
+			case R.id.btn_showfixedlength2:
+				showViewByAddView();
+			break;					
 		}
 	}
 	
-
+	public static class textViewAddedParams{
+		static int widthOfTextViewAdded=0;
+	}
+	
+	/**
+	 * showViewFixedLength：根据要显示的内容以及间距精确控制控件的宽度
+	 */
+	public void showViewFixedLength(){
+		if(!mLayout.isShown()){
+			mLayout.setVisibility(View.VISIBLE);
+			if(!ifShowView){
+				String test_str = "123456789123456789123456789123456789";
+				TextView mTextView=new TextView(this);
+				//方法一
+				/*
+		        Rect bounds = new Rect();
+		        Paint mTextPaint = mTextView.getPaint();
+		        mTextPaint.getTextBounds(test_str,0,0,bounds);*/
+		        //方法二
+		        TextPaint mTextPaint = mTextView.getPaint(); 
+		        //widthOfView：控件的精确宽度
+		        int widthOfView = (int)mTextPaint.measureText(test_str)+2*getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+				if(null==mTextViewAdded){
+					initTextViewAdded();
+				}
+				mTextViewAdded.setWidth(widthOfView);
+				mTextViewAdded.setGravity(Gravity.CENTER_HORIZONTAL);
+				mTextViewAdded.setText(test_str);
+				ALog.Log("mTextViewAdded_getWidth:"+mTextViewAdded.getWidth());
+				ifShowView = true;
+			}
+		}else{
+			mLayout.setVisibility(View.GONE);
+		}
+	}
+	
+	TextView mTextViewAdded=null;
 	public void showViewByAddView(){
 		if(!mLayout.isShown()){
 			mLayout.setVisibility(View.VISIBLE);
-			if(!ifAddView){
-				//第一个参数为宽的设置，第二个参数为高的设置。   
-				LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(      
-						LinearLayout.LayoutParams.WRAP_CONTENT,      
-						LinearLayout.LayoutParams.WRAP_CONTENT );      
-				//调用addView()方法增加一个TextView到线性布局中   
-				//现在我要往mLayout里边添加一个TextView
-				TextView mTextView = new TextView(this);      
-				mTextView.setText("View added" );
-				mTextView.setBackgroundColor(getResources().getColor(R.color.wheat));				
-				mLayout.addView(mTextView, p); 
-				ifAddView = true;
+			if(!ifShowView){
+				if(null==mTextViewAdded){
+					initTextViewAdded();
+				}else{
+					mTextViewAdded.setWidth(textViewAddedParams.widthOfTextViewAdded );
+				}
+				mTextViewAdded.setGravity(Gravity.CENTER_HORIZONTAL);
+				mTextViewAdded.setText("View added" );
+				ifShowView = true;
 			}
 		}else{
 			mLayout.setVisibility(View.GONE);
@@ -562,6 +610,72 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
    		
 	}
 	
+	public void initTextViewAdded(){
+		//第一个参数为宽的设置，第二个参数为高的设置。   
+		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(      
+				LinearLayout.LayoutParams.WRAP_CONTENT,      
+				LinearLayout.LayoutParams.WRAP_CONTENT );      
+		//调用addView()方法增加一个TextView到线性布局中   
+		//现在我要往mLayout里边添加一个TextView
+		mTextViewAdded = new TextView(this);      
+		mTextViewAdded.setBackgroundColor(getResources().getColor(R.color.wheat));				
+		mLayout.addView(mTextViewAdded, p); 
+		mTextViewAdded.setText("View added" );
+		textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getMeasuredWidth();
+		ALog.Log("mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+	}
+	
+	/**
+	 * onWindowFocusChanged：onCreate->onResume->onWindowFocusChanged，执行到onWindowFocusChanged
+		表明已经获取焦点，此时View的绘制工作已经完成，可以获取View控件的宽度、高度。
+		下列结果显示，当onWindowFocusChanged调用时，并非每一层布局都能获取实际宽度、高度值
+	 * @param hasFocus
+	 */
+    @Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		ALog.Log("/------------------------onWindowFocusChanged------------------------/");
+        String betweenTitle=" ";
+		ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle+"getMeasuredHeight");
+		//mEditText：宽高均不为0
+		showWidthAndHeight(mEditText, "mEditText");				
+		//mRelativeLayout：宽高均为0
+		showWidthAndHeight(mRelativeLayout, "mRelativeLayout");					
+		//mLayout：由于布局没有指定显示的内容，高度数值为0
+		showWidthAndHeight(mLayout, "mLayout");			
+		//mLayout_linear_buttons：由于布局下面有Button等可显示内容，因此宽高都不为0
+		showWidthAndHeight(mLayout_linear_buttons, "mLayout_linear_buttons");	
+		ALog.Log("/************************onWindowFocusChanged************************/");
+	}
+	String regShowWidthAndHeight = "id+\\/[a-zA-Z]+.+\\}";//仅仅
+    Pattern mPatternShowWidthAndHeight = Pattern.compile(regShowWidthAndHeight);
+    Matcher mMatcher = null;
+    public void showWidthAndHeight(View mView, String objName){
+    	String str_ALog=null;
+        String str = mView.toString();
+        mMatcher = mPatternShowWidthAndHeight.matcher(str);
+        while(mMatcher.find()){
+        	str_ALog = mMatcher.group().replace("}", "");
+            break;
+        }
+        String format="%-14d";
+        String strgetWidth = String.format(format,mView.getWidth());
+        String strgetMeasuredWidth = String.format(format,mView.getMeasuredWidth());
+        String strgetHeight = String.format(format,mView.getHeight());
+        String strgetMeasuredHeight = String.format(format,mView.getMeasuredHeight());
+        ALog.Log(strgetWidth+
+        				 strgetMeasuredWidth+
+        				 strgetHeight+
+        				 strgetMeasuredHeight+
+        				 str_ALog+":"+objName);
+        /*
+		ALog.Log(String.format("%-5d",mView.getWidth())+":getWidth");
+		ALog.Log(String.format("%-5d",mView.getMeasuredWidth())+":getMeasuredWidth");	
+		ALog.Log(String.format("%-5d",mView.getHeight())+":getHeight");
+		ALog.Log(String.format("%-5d",mView.getMeasuredHeight())+":getMeasuredHeight");	
+		*/
+    }
+    
 	public void getResourceBtn(){
 		if(!mRelativeLayout.isShown()){
 			mRelativeLayout.setVisibility(View.VISIBLE);

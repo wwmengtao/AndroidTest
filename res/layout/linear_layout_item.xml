@@ -13,15 +13,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />   
-	<Button
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<Button
 	    android:id="@+id/btn_showview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/show_view" /> 
+        android:text="@string/show_view" />   
+		<Button
+		android:id="@+id/btn_showfixedlength1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/show_fix1" />	
+		<Button
+		android:id="@+id/btn_showfixedlength2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/show_fix2" />			
+    </LinearLayout>         
+	<!-- 下列布局文件内没有指定任何内容 -->
 	<LinearLayout
 	    android:id="@+id/layout_linear"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:visibility="gone"
-		android:orientation="horizontal" />               
+		android:visibility="visible"
+		android:orientation="horizontal" />       
 </LinearLayout>
