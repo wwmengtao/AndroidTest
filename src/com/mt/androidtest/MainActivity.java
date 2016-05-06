@@ -44,6 +44,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     private EditText mEditText=null;
     private ImageView mImageView=null;
     private RelativeLayout mRelativeLayout=null;
+	private boolean ifAddView=false;
+	private LinearLayout mLayout;
 	Button btn=null;
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity,
@@ -69,7 +72,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 								  R.id.btn_getresource,
 								  R.id.btn_showdialog,
 								  R.id.btn_shutdown,
-								  R.id.btn_gotosleep};
+								  R.id.btn_gotosleep,
+								  R.id.btn_showview};
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
     private PowerManager mPowerManager =null;
@@ -84,7 +88,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		mEditText.setText(mText);  
 		mEditText.setSelection(mText.length()); //光标一直位于内容后面，方便输入
 		mRelativeLayout=(RelativeLayout) findViewById(R.id.layout_relative);  
-		mRelativeLayout.setVisibility(View.GONE);
+		mLayout=(LinearLayout) findViewById(R.id.layout_linear);
 		for(int i=0;i<buttonID.length;i++){
 			btn = (Button)findViewById(buttonID[i]);
 			btn.setOnClickListener(this);
@@ -529,7 +533,34 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				//powerOperate("goToSleep");
 				powerOperate2("goToSleep");
 			break;
+			case R.id.btn_showview:
+				showViewByAddView();
+			break;			
 		}
+	}
+	
+
+	public void showViewByAddView(){
+		if(!mLayout.isShown()){
+			mLayout.setVisibility(View.VISIBLE);
+			if(!ifAddView){
+				//现在我要往mLayout里边添加一个TextView    
+				TextView textView = new TextView(this);      
+				textView.setText("View added" );
+				textView.setBackgroundColor(getResources().getColor(R.color.wheat));
+				//在xml里边怎么配置高宽大家都会的。   
+				//第一个参数为宽的设置，第二个参数为高的设置。   
+				LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(      
+						LinearLayout.LayoutParams.MATCH_PARENT,      
+						LinearLayout.LayoutParams.WRAP_CONTENT );      
+				//调用addView()方法增加一个TextView到线性布局中   
+				mLayout.addView(textView, p); 
+				ifAddView = true;
+			}
+		}else{
+			mLayout.setVisibility(View.GONE);
+		}
+   		
 	}
 	
 	public void getResourceBtn(){
