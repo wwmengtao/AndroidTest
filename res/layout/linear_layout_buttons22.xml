@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/layout_linear_buttons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:context="com.example.androidtemp.MainActivity" >
+	<Button
+	    android:id="@+id/btn_getresource"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/get_resource" />	  
+    <include layout="@layout/relative_layout" />
+	<Button
+	    android:id="@+id/btn_showdialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_dialog" />	 	
+</LinearLayout>

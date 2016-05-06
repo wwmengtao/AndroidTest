@@ -19,36 +19,8 @@
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
     <include layout="@layout/switchbar" />    
-	<Button
-	    android:id="@+id/btn_showsysapp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/show_sysapp" />
-	<Button
-	    android:id="@+id/btn_showswitcher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/show_switcher" />	
-    <include layout="@layout/linear_layout_buttons" />
-	<Button
-	    android:id="@+id/btn_getresource"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/get_resource" />	  
-    <include layout="@layout/relative_layout" />
-	<Button
-	    android:id="@+id/btn_showdialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/show_dialog" />	    
-	<Button
-	    android:id="@+id/btn_shutdown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/shut_down" />	    
-	<Button
-	    android:id="@+id/btn_gotosleep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/go_to_sleep" />	           
+    <include layout="@layout/linear_layout_buttons21" />
+    <include layout="@layout/linear_layout_buttons3" />
+    <include layout="@layout/linear_layout_buttons22" />
+    <include layout="@layout/linear_layout_buttons23" />       
 </LinearLayout>
