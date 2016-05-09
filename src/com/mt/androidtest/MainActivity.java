@@ -632,26 +632,29 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	}
 	
 	public void setOnGlobalLayoutListener(){
-		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver. 
-				OnGlobalLayoutListener() {
-				@Override 
-				    public void onGlobalLayout() { 
-				    //由于此方法会执行多次，而我们只需要执行一次就可以了， 
-				    //所以，在执行一次的时候，将全局的layout监听取消，此处this指的是，内部的匿名对象 
-					//如果不执行下列取消监听的话，当mTextViewAdded显示、消失的时候都会调用onGlobalLayout()函数
-					mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(this); 
-					textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getWidth(); 
-				    ALog.Log("****mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
-				    } 
+		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override 
+			public void onGlobalLayout() { 
+			//由于此方法会执行多次，而我们只需要执行一次就可以了， 
+			//所以，在执行一次的时候，将全局的layout监听取消，此处this指的是，内部的匿名对象 
+			//如果不执行下列取消监听的话，当mTextViewAdded显示、消失的时候都会调用onGlobalLayout()函数
+			textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getWidth(); 
+			if(0!=textViewAddedParams.widthOfTextViewAdded){
+				mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(this); 
+				ALog.Log("****mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+				}
+			} 
 		}); 
 	}
 	
 	ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener =new ViewTreeObserver.OnGlobalLayoutListener(){
 		@Override
 		public void onGlobalLayout() {
-			mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener); 
 			textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getWidth(); 
-		    ALog.Log("****mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+			if(0!=textViewAddedParams.widthOfTextViewAdded){
+				mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener); 
+			    ALog.Log("****mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+			}
 		}
 	};
 	
