@@ -107,6 +107,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
         metric = getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
 		testFunctionsRegister();
+		addOnGlobalLayoutListener();
 	}
 	
 	@Override
@@ -630,7 +631,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		//方法二、mTextViewAdded设置mOnGlobalLayoutListener监听器
 		setOnGlobalLayoutListener2();
 	}
-	
+	boolean is_onGlobalLayout = false;
 	public void setOnGlobalLayoutListener(){
 		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override 
@@ -650,13 +651,39 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener =new ViewTreeObserver.OnGlobalLayoutListener(){
 		@Override
 		public void onGlobalLayout() {
-			textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getWidth(); 
-			if(0!=textViewAddedParams.widthOfTextViewAdded){
-				mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener); 
-			    ALog.Log("****mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+			ALog.Log("/------------------------onGlobalLayout------------------------/");
+			int widthOfmEditText=0;
+			if(null!=mTextViewAdded){
+				widthOfmEditText = mTextViewAdded.getWidth();
+				textViewAddedParams.widthOfTextViewAdded = widthOfmEditText; 
+				if(0!=widthOfmEditText){
+					mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener); 
+				    ALog.Log("mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+				}
 			}
+			showWidthAndHeight_onGlobalLayout(mEditText, "mEditText");	
+			showWidthAndHeight_onGlobalLayout(mRelativeLayout, "mRelativeLayout");	
+			showWidthAndHeight_onGlobalLayout(mLayout, "mLayout");
+			showWidthAndHeight_onGlobalLayout(mLayout_linear_buttons, "mLayout_linear_buttons");
+			ALog.Log("/************************onGlobalLayout************************/");
 		}
 	};
+	
+	public void showWidthAndHeight_onGlobalLayout(View mView, String objName){
+		if(null!=mView){
+			if(0!=mView.getWidth()||0!=mView.getHeight()){
+				mView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener); 
+				showWidthAndHeight(mView, objName);
+			}	
+		}
+	}
+	
+	public void addOnGlobalLayoutListener(){
+		mEditText.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+		mRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+		mLayout.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+		mLayout_linear_buttons.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+	}
 	
 	public void setOnGlobalLayoutListener2(){
 		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
@@ -675,26 +702,26 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		ALog.Log("/------------------------onWindowFocusChanged------------------------/");
-		//mEditText：宽高均不为0
-		showWidthAndHeight(mEditText, "mEditText");				
-		//mRelativeLayout：宽高均为0
-		showWidthAndHeight(mRelativeLayout, "mRelativeLayout");					
-		//mLayout：由于布局没有指定显示的内容，高度数值为0；如果指定android:visibility="gone"，那么宽度数值也为0
-		showWidthAndHeight(mLayout, "mLayout");			
-		//mLayout_linear_buttons：由于布局下面有Button等可显示内容，因此宽高都不为0
-		showWidthAndHeight(mLayout_linear_buttons, "mLayout_linear_buttons");	
+		showWidthAndHeightLog();
 		ALog.Log("/************************onWindowFocusChanged************************/");
 	}
+    
+    public void showWidthAndHeightLog(){
+		showWidthAndHeight(mEditText, "mEditText");				
+		showWidthAndHeight(mRelativeLayout, "mRelativeLayout");					
+		showWidthAndHeight(mLayout, "mLayout");			
+		showWidthAndHeight(mLayout_linear_buttons, "mLayout_linear_buttons");	
+    }
     
 	String regShowWidthAndHeight = "id+\\/[a-zA-Z]+.+\\}";//仅仅获取控件id，其他内容不要
     Pattern mPatternShowWidthAndHeight = Pattern.compile(regShowWidthAndHeight);
     Matcher mMatcher = null;
-	boolean is_showWidthAndHeight_exec = false;
+	boolean is_onWindowFocusChanged = false;
     public void showWidthAndHeight(View mView, String objName){
-    	if(!is_showWidthAndHeight_exec){
+    	if(!is_onWindowFocusChanged){
     		String betweenTitle=" ";
     		ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle+"getMeasuredHeight");
-    		is_showWidthAndHeight_exec = true;
+    		is_onWindowFocusChanged = true;
     	}
     	String str_ALog=null;
         String str = mView.toString();
