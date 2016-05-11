@@ -22,7 +22,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
     private Handler mHandler;
 	private final int MSG_INIT_TEXT_VIEW_ADDED=0x000;
 	private final int MSG_INIT_TEXT_VIEW_ADDED_WIDTH=0x001;
-	private final int MSG_SHOW_VIEW_BY_ADD_VIEW=0x002;
+	private final int MSG_SHOW_VIEW_ADD_VIEW=0x002;
 	private final int MSG_SHOW_VIEW_FIXED_LENGTH=0x003;
 	private final int MSG_SHOW_VIEW_FINALLY=0x004;	
 	@Override
@@ -58,11 +58,9 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	public void onClick(View v) {
 		switch(v.getId()){
 			case R.id.btn_showview:		
-				mHandler.removeMessages(MSG_SHOW_VIEW_BY_ADD_VIEW);
-				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_BY_ADD_VIEW);
+				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_ADD_VIEW);
 			break;		
 			case R.id.btn_showfixedlength:
-				mHandler.removeMessages(MSG_SHOW_VIEW_BY_ADD_VIEW);
 				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_FIXED_LENGTH);
 			break;
 			case R.id.btn_showtextsize:
@@ -86,7 +84,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 			setAddViewBtnClickable(true);
 			showView();
 			break;
-		case MSG_SHOW_VIEW_BY_ADD_VIEW:
+		case MSG_SHOW_VIEW_ADD_VIEW:
 			mTVAddedParams.isShowAddView=true;
 			if(null==mTextViewAdded){
 				mHandler.sendEmptyMessage(MSG_INIT_TEXT_VIEW_ADDED);
