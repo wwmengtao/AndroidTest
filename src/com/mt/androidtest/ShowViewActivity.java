@@ -20,7 +20,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 			  R.id.btn_showtextsize};
 	private LinearLayout mLayout=null;
 	private TextView mTextViewAdded=null;
-    private View contentLayout=null;
+	private View mContentLayout=null;
     private TextView mTVclassic_time=null;
     private Handler mHandler;
 	private final int MSG_INIT_TEXT_VIEW_ADDED=0x000;
@@ -38,9 +38,8 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 			btn = (Button)findViewById(buttonID[i]);
 			btn.setOnClickListener(this);
 		}
-	    contentLayout = findViewById(R.id.classic_content_layout);
+		mContentLayout = findViewById(R.id.classic_content_layout);
 	    mTVclassic_time = (TextView) findViewById(R.id.classic_time);
-	    mTVclassic_time.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
 	}
 
 	@Override
@@ -62,19 +61,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-        int widthContentLayout = contentLayout.getWidth();
-        int widthTVclassic_time = mTVclassic_time.getWidth();
-        ALog.Log("widthContentLayout:"+widthContentLayout);
-        ALog.Log("widthTVclassic_time:"+widthTVclassic_time);
-        String time_now_str = "123456789123456789123456789123456789123456789123456789";
-        mTVclassic_time.setSingleLine(true);
-        int textSize = (int)mTVclassic_time.getTextSize();
-        ALog.Log("textSize:"+textSize);
-        while((int)mTVclassic_time.getPaint().measureText(time_now_str) > widthContentLayout){
-        	mTVclassic_time.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize--);
-            if(1==textSize)break;
-        }
-        mTVclassic_time.setText(time_now_str);
+		showTextSizeView();
 	}	
 	
 	@Override
@@ -87,7 +74,11 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_FIXED_LENGTH);
 			break;
 			case R.id.btn_showtextsize:
-		
+				if(!mContentLayout.isShown()){
+					mContentLayout.setVisibility(View.VISIBLE);
+				}else{
+					mContentLayout.setVisibility(View.GONE);
+				}
 			break;		
 		}
 	}
@@ -153,6 +144,21 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	}
 	textViewAddedParams mTVAddedParams = new textViewAddedParams();
 
+	/**
+	 * showTextSizeView：根据固定控件的大小调整所能显示的最大字体
+	 */
+	public void showTextSizeView(){
+		mTVclassic_time.setSingleLine(true);
+        int widthTVclassic_time = mTVclassic_time.getWidth();
+        String time_now_str = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ987654321";
+        int textSize = (int)mTVclassic_time.getTextSize();
+        while((int)mTVclassic_time.getPaint().measureText(time_now_str) > widthTVclassic_time){
+        	mTVclassic_time.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize--);
+            if(1==textSize)break;
+        }
+        mTVclassic_time.setText(time_now_str);
+	}
+	
 	public void showView(){
 		if(mTVAddedParams.isShowAddView){
 			if(!mTVAddedParams.isAddViewInit){
@@ -262,11 +268,6 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener =new ViewTreeObserver.OnGlobalLayoutListener(){
 		@Override
 		public void onGlobalLayout() {
-	        int widthTVclassic_time = mTVclassic_time.getWidth();
-	        ALog.Log("widthTVclassic_time_Listener:"+widthTVclassic_time);
-	        if(0!=widthTVclassic_time){
-	        	mTVclassic_time.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
-	        }
 		}
 	};			
 }
