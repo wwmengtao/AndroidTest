@@ -9,20 +9,20 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
 		<Button
-	    android:id="@+id/btn_showview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/show_view" />   
+		    android:id="@+id/btn_showview"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/show_view" />   
 		<Button
-		android:id="@+id/btn_showfixedlength1"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/show_fix1" />	
+			android:id="@+id/btn_showfixedlength"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/show_fixedlength" />	
 		<Button
-		android:id="@+id/btn_showfixedlength2"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/show_fix2" />			
+			android:id="@+id/btn_showtextsize"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/show_textsize" />			
     </LinearLayout>         
 	<!-- 下列布局文件内没有指定任何内容 -->
 	<LinearLayout

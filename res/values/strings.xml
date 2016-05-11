@@ -34,8 +34,8 @@
     <string name="shut_down">Shut down</string>
     <string name="go_to_sleep">Go to sleep</string>
     <string name="show_view">Show view</string>
-    <string name="show_fix1">Show fixed1</string>
-    <string name="show_fix2">Show fixed2</string>
+    <string name="show_fixedlength">Show fixed</string>
+    <string name="show_textsize">Show size</string>
     <string name="title_activity_show_view">ShowViewActivity</string>
 
 </resources>

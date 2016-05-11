@@ -15,8 +15,8 @@ import android.widget.TextView;
 public class ShowViewActivity extends Activity implements Handler.Callback, View.OnClickListener{
 	int [] buttonID = {
 			  R.id.btn_showview,
-			  R.id.btn_showfixedlength1,
-			  R.id.btn_showfixedlength2};
+			  R.id.btn_showfixedlength,
+			  R.id.btn_showtextsize};
 	private LinearLayout mLayout=null;
 	private TextView mTextViewAdded=null;
     private Handler mHandler;
@@ -61,11 +61,11 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 				mHandler.removeMessages(MSG_SHOW_VIEW_BY_ADD_VIEW);
 				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_BY_ADD_VIEW);
 			break;		
-			case R.id.btn_showfixedlength1:
+			case R.id.btn_showfixedlength:
 				mHandler.removeMessages(MSG_SHOW_VIEW_BY_ADD_VIEW);
 				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_FIXED_LENGTH);
 			break;
-			case R.id.btn_showfixedlength2:
+			case R.id.btn_showtextsize:
 		
 			break;		
 		}
@@ -116,7 +116,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	}	
 
 	public void setAddViewBtnClickable(boolean isClickable){
-		int [] btn_ids={R.id.btn_showview,R.id.btn_showfixedlength1};
+		int [] btn_ids={R.id.btn_showview,R.id.btn_showfixedlength};
 		Button btn=null;
 		for(int i=0;i<btn_ids.length;i++){
 			btn = (Button)findViewById(btn_ids[i]);
@@ -241,6 +241,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener =new ViewTreeObserver.OnGlobalLayoutListener(){
 		@Override
 		public void onGlobalLayout() {
+			//mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
 		}
 	};			
 }

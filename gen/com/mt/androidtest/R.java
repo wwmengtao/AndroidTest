@@ -574,10 +574,10 @@ public final class R {
         public static final int btn_getresource=0x7f090008;
         public static final int btn_gotosleep=0x7f09000c;
         public static final int btn_showdialog=0x7f090009;
-        public static final int btn_showfixedlength1=0x7f090012;
-        public static final int btn_showfixedlength2=0x7f090013;
+        public static final int btn_showfixedlength=0x7f090012;
         public static final int btn_showswitcher=0x7f090006;
         public static final int btn_showsysapp=0x7f090005;
+        public static final int btn_showtextsize=0x7f090013;
         public static final int btn_showview=0x7f090011;
         public static final int btn_showview_test=0x7f090017;
         public static final int btn_shutdown=0x7f09000b;
@@ -640,10 +640,10 @@ public final class R {
         public static final int permission_not_granted=0x7f060004;
         public static final int relative_textview=0x7f06001b;
         public static final int show_dialog=0x7f060006;
-        public static final int show_fix1=0x7f060021;
-        public static final int show_fix2=0x7f060022;
+        public static final int show_fixedlength=0x7f060021;
         public static final int show_switcher=0x7f06000d;
         public static final int show_sysapp=0x7f060005;
+        public static final int show_textsize=0x7f060022;
         public static final int show_view=0x7f060020;
         public static final int shut_down=0x7f06001e;
         public static final int start_activity=0x7f060009;
