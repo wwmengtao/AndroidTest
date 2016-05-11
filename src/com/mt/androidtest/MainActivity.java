@@ -48,6 +48,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.mt.androidtest.R;
 
 public class MainActivity extends Activity implements View.OnClickListener,DialogInterface.OnClickListener{
 	boolean isLogRun=false;
