@@ -32,17 +32,12 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Xml;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -53,6 +48,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 public class MainActivity extends Activity implements View.OnClickListener,DialogInterface.OnClickListener{
 	boolean isLogRun=false;
 	boolean isPermissionGranted = false;
@@ -65,9 +61,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     private ImageView mImageView=null;
     private RelativeLayout mRelativeLayout=null;
 	private LinearLayout mLayout=null;
-	private TextView mTextViewAdded=null;
 	private LinearLayout mLayout_linear_buttons=null;
-	Button btn=null;
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity,
 								  R.id.btn_start_documentsactivity,
@@ -77,12 +71,11 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 								  R.id.btn_showdialog,
 								  R.id.btn_shutdown,
 								  R.id.btn_gotosleep,
-								  R.id.btn_showview,
-								  R.id.btn_showfixedlength1,
-								  R.id.btn_showfixedlength2};
+								  R.id.btn_showview_test};
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
     private PowerManager mPowerManager =null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,8 +87,9 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		mEditText.setText(mText);  
 		mEditText.setSelection(mText.length()); //光标一直位于内容后面，方便输入
 		mRelativeLayout=(RelativeLayout) findViewById(R.id.layout_relative);  
-		mLayout=(LinearLayout) findViewById(R.id.layout_linear);
+		mLayout=(LinearLayout) findViewById(R.id.layout_linear_test);
 		mLayout_linear_buttons=(LinearLayout) findViewById(R.id.layout_linear_buttons21);
+		Button btn=null;
 		for(int i=0;i<buttonID.length;i++){
 			btn = (Button)findViewById(buttonID[i]);
 			btn.setOnClickListener(this);
@@ -136,7 +130,6 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		//2、检测组件是否存在
 		//checkComponentExist();
 		//3、从其他应用获取资源，参照onClick函数中case R.id.btn_getresource:
-
 	}
 	
 	public void testFunctionsRegister(){
@@ -500,8 +493,6 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		}
 		return null;
 	}
-	
-
 
 	@Override
 	public void onClick(View v) {
@@ -541,140 +532,12 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				//powerOperate("goToSleep");
 				powerOperate2("goToSleep");
 			break;
-			case R.id.btn_showview:
-				mTVAddedParams.ifShowView = false;
-				showViewByAddView();
-			break;		
-			case R.id.btn_showfixedlength1:
-				mTVAddedParams.ifShowView = false;
-				showViewFixedLength();
-			break;				
-			case R.id.btn_showfixedlength2:
-				mTVAddedParams.ifShowView = false;
-				showViewByAddView();
+			case R.id.btn_showview_test:		
+				intent=new Intent();
+				intent.setClass(MainActivity.this, ShowViewActivity.class);
+				startActivity(intent);
 			break;					
 		}
-	}
-	
-	public class textViewAddedParams{
-		int widthOfTextViewAdded=0;
-		boolean ifShowView = false;
-	}
-	textViewAddedParams mTVAddedParams = new textViewAddedParams();
-	/**
-	 * showViewFixedLength：根据要显示的内容以及间距精确控制控件的宽度
-	 */
-	public void showViewFixedLength(){
-		if(!mLayout.isShown()){
-			mLayout.setVisibility(View.VISIBLE);
-			if(!mTVAddedParams.ifShowView){
-				if(null==mTextViewAdded){
-					initTextViewAdded();
-				}
-				if(0!=mTVAddedParams.widthOfTextViewAdded){
-					ALog.Log("0!=mTVAddedParams.widthOfTextViewAdded");
-					showViewSetView();
-					mTVAddedParams.ifShowView = true;
-				}else{
-					ALog.Log("0=mTVAddedParams.widthOfTextViewAdded");
-				}
-			}
-		}else{
-			mLayout.setVisibility(View.GONE);
-		}
-	}
-
-	public void showViewSetView(){
-		String test_str = "123456789123456789123456789123456789";
-		TextView mTextView=new TextView(this);
-		//方法一
-		/*
-        Rect bounds = new Rect();
-        Paint mTextPaint = mTextView.getPaint();
-        mTextPaint.getTextBounds(test_str,0,0,bounds);*/
-        //方法二
-        TextPaint mTextPaint = mTextView.getPaint(); 
-        //widthOfView：控件的精确宽度
-        int widthOfView = (int)mTextPaint.measureText(test_str)+2*getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
-		mTextViewAdded.setWidth(widthOfView);
-		mTextViewAdded.setGravity(Gravity.CENTER_HORIZONTAL);
-		mTextViewAdded.setText(test_str);
-	}
-
-	public void showViewByAddView(){
-		if(!mLayout.isShown()){
-			mLayout.setVisibility(View.VISIBLE);
-			if(!mTVAddedParams.ifShowView){
-				if(null==mTextViewAdded){
-					initTextViewAdded();
-				}
-				/**
-				 * 为了使得首次点击即可获取mTextViewAdded的宽度数值，措施如下：
-				 * 1)onCreate函数中执行：mLayout.setVisibility(View.VISIBLE);initTextViewAdded();
-				 * 2)onWindowFocusChanged(boolean).showWidthAndHeightLog中增加：showWidthAndHeight(mTextViewAdded, "mTextViewAdded");	
-				 */
-				if(0!=mTVAddedParams.widthOfTextViewAdded){
-					ALog.Log("0!=mTVAddedParams.widthOfTextViewAdded");
-					mTextViewAdded.setWidth(mTVAddedParams.widthOfTextViewAdded);
-					mTextViewAdded.setGravity(Gravity.CENTER_HORIZONTAL);
-					mTextViewAdded.setText("showViewByAddView");
-					mTVAddedParams.ifShowView = true;		
-				}else{
-					ALog.Log("0=mTVAddedParams.widthOfTextViewAdded");
-				}
-			}
-		}else{
-			mLayout.setVisibility(View.GONE);
-		}
-	}
-	
-	public void initTextViewAdded(){
-		//第一个参数为宽的设置，第二个参数为高的设置。   
-		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(      
-				LinearLayout.LayoutParams.WRAP_CONTENT,      
-				LinearLayout.LayoutParams.WRAP_CONTENT );      
-		//调用addView()方法增加一个TextView到线性布局中   
-		//往mLayout里边添加一个TextView
-		mTextViewAdded = new TextView(this);      
-		//下列直接获取控件宽度为0，必须使用ViewTreeObserver.OnGlobalLayoutListener监听器
-		/*
-		textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getMeasuredWidth();
-		ALog.Log("mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
-		*/
-		//方法1.1、mTextViewAdded直接设置监听器
-		setOnGlobalLayoutListener();
-		//方法1.2、mTextViewAdded设置mOnGlobalLayoutListener监听器
-		//setOnGlobalLayoutListener2();
-		//方法2、将一个runnable添加到Layout队列中：View.post()。runnable对象中的方法会在View的measure、layout等事件后触发
-		/*
-		mTextViewAdded.post(new Runnable() {
-			 public void run() {
-				 int widthOfView = mTextViewAdded.getWidth();
-				 ALog.Log("post_widthOfView:"+widthOfView);	
-			 }
-		});
-		*/
-		mTextViewAdded.setBackgroundColor(getResources().getColor(R.color.wheat));				
-		mLayout.addView(mTextViewAdded, p); //引起onGlobalLayout函数的调用
-		mTextViewAdded.setSingleLine(true);
-		mTextViewAdded.setText("View added");
-	}
-
-	public void setOnGlobalLayoutListener(){
-		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-			@Override 
-			public void onGlobalLayout() { 
-				int widthOfView=0;			
-				if(null!=mTextViewAdded){
-					widthOfView = mTextViewAdded.getWidth();
-					ALog.Log("onGlobalLayout_widthOfView:"+widthOfView);	
-					if(0!=widthOfView){
-						mTVAddedParams.widthOfTextViewAdded = widthOfView; 
-						mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(this); 
-					}
-				}
-			} 
-		}); 
 	}
 
 	ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener =new ViewTreeObserver.OnGlobalLayoutListener(){
@@ -705,9 +568,6 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		mLayout_linear_buttons.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
 	}
 	
-	public void setOnGlobalLayoutListener2(){
-		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
-	}
 	/**
 	 * onWindowFocusChanged：
 		1、进入组件时执行顺序如下：

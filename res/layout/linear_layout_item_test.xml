@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    <EditText  
+        android:id="@+id/editText"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:ems="10" />  
+    <TextView
+        android:id="@+id/textview"  
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />   
+	<Button
+       android:id="@+id/btn_showview_test"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/show_view" />       
+	<!-- 下列布局文件内没有指定任何内容 -->
+	<LinearLayout
+	    android:id="@+id/layout_linear_test"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:visibility="gone"
+		android:orientation="horizontal" />       
+</LinearLayout>
