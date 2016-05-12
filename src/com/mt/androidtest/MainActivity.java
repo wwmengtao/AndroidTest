@@ -63,6 +63,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     private RelativeLayout mRelativeLayout=null;
 	private LinearLayout mLayout=null;
 	private LinearLayout mLayout_linear_buttons=null;
+	private LinearLayout mLayout_linear_switchbar=null;
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity,
 								  R.id.btn_start_documentsactivity,
@@ -90,6 +91,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		mRelativeLayout=(RelativeLayout) findViewById(R.id.layout_relative);  
 		mLayout=(LinearLayout) findViewById(R.id.layout_linear_test);
 		mLayout_linear_buttons=(LinearLayout) findViewById(R.id.layout_linear_buttons21);
+		mLayout_linear_switchbar=(LinearLayout) findViewById(R.id.switch_bar);
 		Button btn=null;
 		for(int i=0;i<buttonID.length;i++){
 			btn = (Button)findViewById(buttonID[i]);
@@ -130,7 +132,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		//reflectCallListAll();
 		//2、检测组件是否存在
 		//checkComponentExist();
-		//3、从其他应用获取资源，参照onClick函数中case R.id.btn_getresource:
+		//3、从其他应用获取资源，参照onClick函数中case R.id.btn_getresource或者下列实例
+		setSwitchBarBackground();
 	}
 	
 	public void testFunctionsRegister(){
@@ -224,6 +227,14 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
         return mDrawable;
     }
     
+    /**
+     * 获取指定packageName中的资源
+     * @param context
+     * @param name
+     * @param type
+     * @param packageName
+     * @return
+     */
 	private Object getResourceType0(Context context,String name,String type,String packageName) {
 		Object obj=null;
 		int resID = 0;
@@ -245,6 +256,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	    	break;
 	    	case "string":
 	    		obj = mContext.getResources().getString(resID);
+	    	case "color":
+	    		obj = mContext.getResources().getColor(resID);	    		
     	break;    		
     	}
 		return obj;
@@ -671,6 +684,29 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		//mDrawable = getDrawableFromResourcesXml();//从系统xml资源获取图片
 		mImageView.setBackground(mDrawable);
 	}
+	
+	public void setSwitchBarBackground(){
+		//以下为系统设置WiFi的SwitchBar的背景设置
+    	//K5M：android:background="@color/switchbar_background_color"
+    	//Sisley2M：android:background="@drawable/bg_switchbar"
+		String packageName="com.android.settings";
+		String [][]type_name = {	{"color","switchbar_background_color"},
+												{"drawable","bg_switchbar"}};
+		Object obj=null;
+		for(int i=0;i<type_name.length;i++){
+			if(null!=(obj=getResourceType0(this,type_name[i][1],type_name[i][0],packageName))){
+				switch(type_name[i][0]){
+				case "color":
+					mLayout_linear_switchbar.setBackgroundColor((Integer)obj);
+					break;
+				case "drawable":
+					mLayout_linear_switchbar.setBackground((Drawable)obj);
+					break;
+				}
+				break;
+			}
+		}
+	}	
 	
     public void setLayoutParams(View mView){
     	ViewGroup.LayoutParams lp = mView.getLayoutParams();
