@@ -7,11 +7,14 @@
         android:id="@+id/editText"  
         android:layout_width="wrap_content"  
         android:layout_height="wrap_content"  
+        android:textColor="@color/k5m_dark"        
+        android:background="@color/royalblue"
         android:ems="10" />  
     <TextView
         android:id="@+id/textview"  
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/sisley2m_color"
         android:text="id/textview" />   
 	<Button
        android:id="@+id/btn_showview_test"

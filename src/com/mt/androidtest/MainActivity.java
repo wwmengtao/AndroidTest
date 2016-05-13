@@ -779,7 +779,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	}	
 	
 	/**
-	 * 获取指定控件字体颜色、背景，只适用于本应用，无法跨应用
+	 * 获取指定控件字体颜色、背景。只适用于本应用中已经绘制完成的控件，无法跨应用
 	 */
 	public void getViewColors(){
 		TextView mTvTemp =(TextView)this.findViewById(R.id.tv_relative_color);

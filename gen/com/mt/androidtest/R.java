@@ -197,6 +197,7 @@ public final class R {
         /** 白色 
          */
         public static final int ivory=0x7f040001;
+        public static final int k5m_dark=0x7f040094;
         /** 艾利斯兰 
          */
         public static final int khaki=0x7f04002d;
@@ -401,6 +402,9 @@ public final class R {
         /** 中紫罗兰色 
          */
         public static final int silver=0x7f040043;
+        /**  K5M 
+         */
+        public static final int sisley2m_color=0x7f040095;
         /** 亮天蓝色 
          */
         public static final int skyblue=0x7f04005d;
