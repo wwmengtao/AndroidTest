@@ -71,9 +71,15 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		setEditText();
 	}
 	
+	boolean isSwitchBarClicked=false;
 	public void updateSwitchBarStatus(){
-		mLayout_linear_switchbar.setBackgroundColor(mResource.getColor(R.color.switchbar_background_color));
-		mTextView_Switchbar.setTextColor(mResource.getColor(R.color.k5m_textcolor));
+		if(!isSwitchBarClicked){
+			mTextView_Switchbar.setTextColor(mResource.getColor(R.color.k5m_textcolor));
+			isSwitchBarClicked=true;
+		}else{
+			mTextView_Switchbar.setTextColor(mResource.getColor(R.color.sisley2m_color));
+			isSwitchBarClicked=false;
+		}
 	}
 	
 	public void setEditText(){
@@ -91,6 +97,9 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     	mView.setLayoutParams(lp);
     }
 	
+    /**
+     * 从系统设置中获取参数设置SwitchBar的背景参数
+     */
 	public void setSwitchBarBackground(){
 		//以下为系统设置WiFi的SwitchBar的背景设置
     	//K5M：android:background="@color/switchbar_background_color"
