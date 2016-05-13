@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.mt.androidtest.ResourceActivity" >
+    <include layout="@layout/linear_layout_switchbar" />      
+    <EditText  
+        android:id="@+id/editText"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:textColor="@color/k5m_textcolor"        
+        android:background="@color/royalblue"
+        android:ems="10" />  
+    <TextView
+        android:id="@+id/textview"  
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/sisley2m_color"
+        android:text="id/textview" />  
+	<Button
+       android:id="@+id/btn_showresource"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/show_resource" />   
+    <include layout="@layout/relative_layout" />              
+</LinearLayout>

@@ -197,7 +197,7 @@ public final class R {
         /** 白色 
          */
         public static final int ivory=0x7f040001;
-        public static final int k5m_dark=0x7f040094;
+        public static final int k5m_textcolor=0x7f040094;
         /** 艾利斯兰 
          */
         public static final int khaki=0x7f04002d;
@@ -585,71 +585,74 @@ public final class R {
         public static final int toolbar_wifi_off=0x7f02006f;
     }
     public static final class id {
-        public static final int action_settings=0x7f090029;
-        public static final int btn_getresource=0x7f090008;
-        public static final int btn_gotosleep=0x7f09000d;
-        public static final int btn_showdialog=0x7f090009;
-        public static final int btn_showfixedlength=0x7f090013;
-        public static final int btn_shownotification=0x7f09000a;
-        public static final int btn_showswitcher=0x7f090006;
-        public static final int btn_showsysapp=0x7f090005;
-        public static final int btn_showtextsize=0x7f090014;
-        public static final int btn_showview=0x7f090012;
-        public static final int btn_showview_test=0x7f090018;
-        public static final int btn_shutdown=0x7f09000c;
-        public static final int btn_start_activity=0x7f09000f;
-        public static final int btn_start_documentsactivity=0x7f090010;
-        public static final int btn_start_downloadproviderui=0x7f090011;
-        public static final int className=0x7f090027;
-        public static final int classic_content_layout=0x7f09001a;
-        public static final int editText=0x7f090016;
-        public static final int gridview_sysapp=0x7f090000;
-        public static final int icon=0x7f090024;
-        public static final int img_relative=0x7f090022;
-        public static final int layout_linear=0x7f090015;
-        public static final int layout_linear_buttons21=0x7f090004;
-        public static final int layout_linear_buttons22=0x7f090007;
-        public static final int layout_linear_buttons23=0x7f09000b;
-        public static final int layout_linear_buttons3=0x7f09000e;
-        public static final int layout_linear_test=0x7f090019;
-        public static final int layout_relative=0x7f090020;
-        public static final int lenovo_switch=0x7f09001f;
-        public static final int list_lvp_switchers=0x7f090001;
-        public static final int menu_img=0x7f090002;
-        public static final int menu_label=0x7f090003;
-        public static final int name=0x7f090025;
-        public static final int packageName=0x7f090026;
-        public static final int sourceDir=0x7f090028;
-        public static final int switch_bar=0x7f09001d;
-        public static final int textview=0x7f090017;
-        public static final int textview_textsize1=0x7f09001b;
-        public static final int textview_textsize2=0x7f09001c;
-        public static final int tv_relative=0x7f090021;
-        public static final int tv_relative_color=0x7f090023;
-        public static final int txStatus=0x7f09001e;
+        public static final int action_settings=0x7f09002a;
+        public static final int btn_getresource=0x7f09000b;
+        public static final int btn_gotosleep=0x7f090010;
+        public static final int btn_showdialog=0x7f09000c;
+        public static final int btn_showfixedlength=0x7f090016;
+        public static final int btn_shownotification=0x7f09000d;
+        public static final int btn_showresource=0x7f090002;
+        public static final int btn_showswitcher=0x7f090009;
+        public static final int btn_showsysapp=0x7f090008;
+        public static final int btn_showtextsize=0x7f090017;
+        public static final int btn_showview=0x7f090015;
+        public static final int btn_showview_test=0x7f090019;
+        public static final int btn_shutdown=0x7f09000f;
+        public static final int btn_start_activity=0x7f090012;
+        public static final int btn_start_documentsactivity=0x7f090013;
+        public static final int btn_start_downloadproviderui=0x7f090014;
+        public static final int className=0x7f090028;
+        public static final int classic_content_layout=0x7f09001b;
+        public static final int editText=0x7f090000;
+        public static final int gridview_sysapp=0x7f090003;
+        public static final int icon=0x7f090025;
+        public static final int img_relative=0x7f090023;
+        public static final int layout_linear=0x7f090018;
+        public static final int layout_linear_buttons21=0x7f090007;
+        public static final int layout_linear_buttons22=0x7f09000a;
+        public static final int layout_linear_buttons23=0x7f09000e;
+        public static final int layout_linear_buttons3=0x7f090011;
+        public static final int layout_linear_test=0x7f09001a;
+        public static final int layout_relative=0x7f090021;
+        public static final int lenovo_switch=0x7f090020;
+        public static final int list_lvp_switchers=0x7f090004;
+        public static final int menu_img=0x7f090005;
+        public static final int menu_label=0x7f090006;
+        public static final int name=0x7f090026;
+        public static final int packageName=0x7f090027;
+        public static final int sourceDir=0x7f090029;
+        public static final int switch_bar=0x7f09001e;
+        public static final int textview=0x7f090001;
+        public static final int textview_textsize1=0x7f09001c;
+        public static final int textview_textsize2=0x7f09001d;
+        public static final int tv_relative=0x7f090022;
+        public static final int tv_relative_color=0x7f090024;
+        public static final int txStatus=0x7f09001f;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int activity_show_view=0x7f030001;
-        public static final int activity_switcher_demo=0x7f030002;
-        public static final int activity_sys_apps=0x7f030003;
-        public static final int getview_item=0x7f030004;
-        public static final int linear_layout_buttons21=0x7f030005;
-        public static final int linear_layout_buttons22=0x7f030006;
-        public static final int linear_layout_buttons23=0x7f030007;
-        public static final int linear_layout_buttons3=0x7f030008;
-        public static final int linear_layout_item=0x7f030009;
-        public static final int linear_layout_item_test=0x7f03000a;
-        public static final int linear_layout_item_textsize=0x7f03000b;
-        public static final int linear_layout_switchbar=0x7f03000c;
-        public static final int relative_layout=0x7f03000d;
-        public static final int sys_app_details=0x7f03000e;
+        public static final int activity_resource=0x7f030001;
+        public static final int activity_show_view=0x7f030002;
+        public static final int activity_switcher_demo=0x7f030003;
+        public static final int activity_sys_apps=0x7f030004;
+        public static final int getview_item=0x7f030005;
+        public static final int linear_layout_buttons21=0x7f030006;
+        public static final int linear_layout_buttons22=0x7f030007;
+        public static final int linear_layout_buttons23=0x7f030008;
+        public static final int linear_layout_buttons3=0x7f030009;
+        public static final int linear_layout_item=0x7f03000a;
+        public static final int linear_layout_item_test=0x7f03000b;
+        public static final int linear_layout_item_textsize=0x7f03000c;
+        public static final int linear_layout_switchbar=0x7f03000d;
+        public static final int relative_layout=0x7f03000e;
+        public static final int sys_app_details=0x7f03000f;
     }
     public static final class menu {
         public static final int main=0x7f080000;
-        public static final int show_view=0x7f080001;
-        public static final int switcher_demo=0x7f080002;
-        public static final int sys_apps=0x7f080003;
+        public static final int resource=0x7f080001;
+        public static final int show_view=0x7f080002;
+        public static final int switcher_demo=0x7f080003;
+        public static final int sys_apps=0x7f080004;
     }
     public static final class string {
         public static final int action_settings=0x7f060002;
@@ -665,6 +668,7 @@ public final class R {
         public static final int show_dialog=0x7f060006;
         public static final int show_fixedlength=0x7f060021;
         public static final int show_notification=0x7f060024;
+        public static final int show_resource=0x7f060026;
         public static final int show_switcher=0x7f06000d;
         public static final int show_sysapp=0x7f060005;
         public static final int show_textsize=0x7f060022;
@@ -685,6 +689,7 @@ public final class R {
         public static final int switch_smart_rotation=0x7f060013;
         public static final int switch_wifi=0x7f060011;
         public static final int switchers_demo=0x7f06001c;
+        public static final int title_activity_resource=0x7f060025;
         public static final int title_activity_show_view=0x7f060023;
         public static final int title_activity_switcher_demo=0x7f06000c;
         public static final int title_activity_sys_apps=0x7f060007;

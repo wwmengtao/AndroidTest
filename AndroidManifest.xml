@@ -42,6 +42,10 @@
             android:name=".ShowViewActivity"
             android:label="@string/title_activity_show_view" >
         </activity>
+        <activity
+            android:name=".ResourceActivity"
+            android:label="@string/title_activity_resource" >
+        </activity>
     </application>
 
 </manifest>

@@ -38,4 +38,7 @@
     <string name="show_textsize">Show size</string>
     <string name="title_activity_show_view">ShowViewActivity</string>
     <string name="show_notification">Notification</string>
+    <string name="title_activity_resource">ResourceActivity</string>
+    <string name="show_resource">Show resource</string>    
+
 </resources>

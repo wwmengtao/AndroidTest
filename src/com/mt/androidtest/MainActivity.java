@@ -33,27 +33,18 @@ import android.content.pm.ResolveInfo;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.DisplayMetrics;
 import android.util.Xml;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.mt.androidtest.R;
 
 public class MainActivity extends Activity implements View.OnClickListener,DialogInterface.OnClickListener{
@@ -62,15 +53,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	TelephonyManager telephonyManager=null;
 	PackageManager mPackageManager=null;
 	IntentFilter mUrgentFilter=null;
-	String mText=null;
-	private TextView mTextView=null;
-    private EditText mEditText=null;
-    private ImageView mImageView=null;
-    private RelativeLayout mRelativeLayout=null;
 	private LinearLayout mLayout=null;
 	private LinearLayout mLayout_linear_buttons=null;
-	private LinearLayout mLayout_linear_switchbar=null;
-	private TextView mTextView_Switchbar=null;
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity,
 								  R.id.btn_start_documentsactivity,
@@ -82,8 +66,6 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 								  R.id.btn_shutdown,
 								  R.id.btn_gotosleep,
 								  R.id.btn_showview_test};
-    private int mDensityDpi = 0;
-    private DisplayMetrics metric=null;
     private PowerManager mPowerManager =null;
     private NotificationManager mNotificationManager = null;
 	@Override
@@ -91,16 +73,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		super.onCreate(savedInstanceState);
 		if(isLogRun)ALog.Log("====onCreate");
 		setContentView(R.layout.activity_main);
-		mTextView = (TextView) findViewById(R.id.textview);  
-		mText = mTextView.getText().toString();
-		mEditText = (EditText) findViewById(R.id.editText);  
-		mEditText.setText(mText);  
-		mEditText.setSelection(mText.length()); //光标一直位于内容后面，方便输入
-		mRelativeLayout=(RelativeLayout) findViewById(R.id.layout_relative);  
 		mLayout=(LinearLayout) findViewById(R.id.layout_linear_test);
 		mLayout_linear_buttons=(LinearLayout) findViewById(R.id.layout_linear_buttons21);
-		mTextView_Switchbar=(TextView) findViewById(R.id.txStatus);
-		mLayout_linear_switchbar=(LinearLayout) findViewById(R.id.switch_bar);
 		Button btn=null;
 		for(int i=0;i<buttonID.length;i++){
 			btn = (Button)findViewById(buttonID[i]);
@@ -110,8 +84,6 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		mPackageManager = getPackageManager();
 		mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        metric = getResources().getDisplayMetrics();
-        mDensityDpi = metric.densityDpi;
 		//testFunctionsRegister();
 		//addOnGlobalLayoutListener();//视图树监听器
 	}
@@ -142,8 +114,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		//reflectCallListAll();
 		//2、检测组件是否存在
 		//checkComponentExist();
-		//3、从其他应用获取资源，参照onClick函数中case R.id.btn_getresource或者下列实例
-		setSwitchBarBackground();
+		//3、从其他应用获取资源，参照onClick函数中case R.id.btn_getresource
 	}
 	
 	public void testFunctionsRegister(){
@@ -235,91 +206,6 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 			e.printStackTrace();
 		}
         return mDrawable;
-    }
-    
-    /**
-     * 获取指定packageName中的资源
-     * @param context
-     * @param name
-     * @param type
-     * @param packageName
-     * @return
-     */
-	private Object getResourceType0(Context context,String name,String type,String packageName) {
-		Object obj=null;
-		int resID = 0;
-		Context mContext = null;
-		try {
-			mContext = context.createPackageContext(packageName,
-					Context.CONTEXT_IGNORE_SECURITY);
-			if (mContext != null) {
-				resID = getResourceID1(mContext.getResources(), name, type ,packageName);
-			}
-		} catch (NameNotFoundException e) {
-			ALog.Log(packageName + " not found！-->" + e.getMessage());
-			return null;
-		}
-		if(0==resID)return null;
-    	switch(type){
-	    	case "drawable":
-	    		obj = mContext.getResources().getDrawable(resID);
-	    	break;
-	    	case "string":
-	    		obj = mContext.getResources().getString(resID);
-	    	break;
-	    	case "color":
-	    		obj = mContext.getResources().getColor(resID);	    		
-	    	break;    		
-    	}
-		return obj;
-    	
-	}
-    
-	
-	
-    public Object getResourceType1(Context context,String name,String type,String packageName){
-		Object obj=null;
-    	int resID = 0;
-        Resources mResources=null;
-        PackageManager pm=context.getPackageManager();
-        try {
-        	mResources=pm.getResourcesForApplication(packageName);
-        	if (mResources != null) {
-        		resID = getResourceID0(mResources, name, type ,packageName);
-        	}
-        } catch(NameNotFoundException e) {
-        	 e.printStackTrace();
-        	 return null;
-         }
-		if(0==resID)return null;
-    	switch(type){
-	    	case "drawable":
-	    		obj = mResources.getDrawable(resID);
-	    	break;
-	    	case "string":
-	    		obj = mResources.getString(resID);
-    	break;    		
-    	}
-		return obj;
-	}
-    
-    public int getResourceID0(Resources mResources, String name, String type, String packageName){
-    	return mResources.getIdentifier(name, type ,packageName);
-    }
-    
-    public int getResourceID1(Resources mResources, String name, String type, String packageName){
-    	return mResources.getIdentifier(packageName+":"+type+"/"+name,null,null);
-
-    }
-    
-    public void getSystemResource(){
-    	//无需任何权限可以直接获取
-        boolean isCellBroadcastAppLinkEnabled = false;
-        int resId = getResources().getIdentifier("config_cellBroadcastAppLinks", "bool", "android");
-        if (resId > 0) {
-            isCellBroadcastAppLinkEnabled = this.getResources().getBoolean(resId);
-        }
-        ALog.Log("android_isCellBroadcastAppLinkEnabled:"+isCellBroadcastAppLinkEnabled);
     }
     
     /**
@@ -544,7 +430,9 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				startDownloadProviderUI();
 			break;					
 			case R.id.btn_getresource:
-				getResourceBtn();
+				intent=new Intent();
+				intent.setClass(MainActivity.this, ResourceActivity.class);
+				startActivity(intent);
 			break;
 			case	R.id.btn_showdialog:
 				showDialog();
@@ -628,8 +516,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		@Override
 		public void onGlobalLayout() {
 			ALog.Log("/------------------------onGlobalLayout------------------------/");
-			showWidthAndHeight_onGlobalLayout(mEditText, "mEditText");	
-			showWidthAndHeight_onGlobalLayout(mRelativeLayout, "mRelativeLayout");	
+			//showWidthAndHeight_onGlobalLayout(mEditText, "mEditText");	
+			//showWidthAndHeight_onGlobalLayout(mRelativeLayout, "mRelativeLayout");	
 			showWidthAndHeight_onGlobalLayout(mLayout, "mLayout");
 			showWidthAndHeight_onGlobalLayout(mLayout_linear_buttons, "mLayout_linear_buttons");
 			ALog.Log("/************************onGlobalLayout************************/");
@@ -646,8 +534,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	}
 	
 	public void addOnGlobalLayoutListener(){
-		mEditText.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
-		mRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+		//mEditText.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+		//mRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
 		mLayout.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
 		mLayout_linear_buttons.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
 	}
@@ -672,8 +560,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     
     public void showWidthAndHeightLog(){
     	//showWidthAndHeight(mTextViewAdded, "mTextViewAdded");	
-		showWidthAndHeight(mEditText, "mEditText");				
-		showWidthAndHeight(mRelativeLayout, "mRelativeLayout");					
+		//showWidthAndHeight(mEditText, "mEditText");				
+		//showWidthAndHeight(mRelativeLayout, "mRelativeLayout");					
 		showWidthAndHeight(mLayout, "mLayout");			
 		showWidthAndHeight(mLayout_linear_buttons, "mLayout_linear_buttons");	
     }
@@ -712,110 +600,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		ALog.Log(String.format("%-5d",mView.getMeasuredHeight())+":getMeasuredHeight");	
 		*/
     }
-    
-	public void getResourceBtn(){
-		if(!mRelativeLayout.isShown()){
-			mRelativeLayout.setVisibility(View.VISIBLE);
-			mTextView = (TextView) findViewById(R.id.tv_relative);
-			mImageView = (ImageView) findViewById(R.id.img_relative);
-    		setLayoutParams(mImageView);
-    		setTextView();
-    		setImageView();
-    		getViewColors();
-		}else{
-			mRelativeLayout.setVisibility(View.GONE);
-		}
-	}
-	
-	public void setTextView(){
-		String packageName = "com.lenovo.powersetting";//其他应用的包名
-    	String name="app_name";
-    	String type = "string";
-    	Object obj1 = getResourceType0(this, name, type ,packageName);
-    	if(null!=obj1){
-    		mTextView.setText((String)obj1);
-    	}
-	}
-	
-	public void setImageView(){
-		Drawable mDrawable=null;
-		//
-		String packageName = "com.lenovo.powersetting";//其他应用的包名
-    	//packageName = getPackageName();//本应用的包名
-    	String name = "ic_launcher";
-    	String type = "drawable";
-    	Object obj0 = getResourceType1(this, name, type ,packageName);
-    	if(null!=obj0){
-    		mDrawable = (Drawable)obj0;//getIdentifier获取图片资源
-    	}
-		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
-		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
-		//mDrawable = getDrawableFromResourcesXml();//从系统xml资源获取图片
-    	//mDrawable = getDrawbleFromAssetXml();//方法暂时FC！！！！！
-		mImageView.setBackground(mDrawable);
-	}
-	
-	public void setSwitchBarBackground(){
-		//以下为系统设置WiFi的SwitchBar的背景设置
-    	//K5M：android:background="@color/switchbar_background_color"
-    	//Sisley2M：android:background="@drawable/bg_switchbar"
-		String packageName="com.android.settings";
-		String [][]type_name = {	{"color","switchbar_background_color"},
-												{"drawable","bg_switchbar"}};
-		Object obj=null;
-		for(int i=0;i<type_name.length;i++){
-			if(null!=(obj=getResourceType0(this,type_name[i][1],type_name[i][0],packageName))){
-				switch(type_name[i][0]){
-				case "color":
-					mLayout_linear_switchbar.setBackgroundColor((Integer)obj);
-					break;
-				case "drawable":
-					mLayout_linear_switchbar.setBackground((Drawable)obj);
-					break;
-				}
-				break;
-			}
-		}
-	}	
-	
-	/**
-	 * 获取指定控件字体颜色、背景。只适用于本应用中已经绘制完成的控件，无法跨应用
-	 */
-	public void getViewColors(){
-		TextView mTvTemp =(TextView)this.findViewById(R.id.tv_relative_color);
-		String packageName=null;
-		packageName=this.getPackageName();
-		int textViewId =0;
-		textViewId=this.getResources().getIdentifier("tv_relative", "id", packageName);
-		ALog.Log("textViewId:"+ALog.toHexString(textViewId));		
-		mTextView= (TextView)findViewById(textViewId);
-		mTvTemp.setTextColor(mTextView.getCurrentTextColor());
-		mTvTemp.setBackground(mTextView.getBackground());
-		//获取其他package中控件，但是只能获取ID，无法加载得到控件，因为其他应用还没有show Activity
-		packageName="com.android.settings";
-		Context mContext;
-		try {
-			mContext = this.createPackageContext(packageName,Context.CONTEXT_IGNORE_SECURITY);
-			if (mContext != null) {
-				textViewId = mContext.getResources().getIdentifier("switch_text", "id", packageName);
-				ALog.Log("textViewId:"+ALog.toHexString(textViewId));		
-				//mTvTemp =(TextView)mContext.findViewById(textViewId);//语法错误，findViewById只能是Activity使用，而不是Context
-				//mTvTemp= (TextView) LayoutInflater.from(mContext).inflate(textViewId, null);//错误，LayoutInflater只能解析布局文件
-			}
-		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		//ALog.Log("mTextView.getText:"+mTextView.getText());
-	}
-	
-    public void setLayoutParams(View mView){
-    	ViewGroup.LayoutParams lp = mView.getLayoutParams();
-    	lp.width= (int)(mDensityDpi*0.3);//144;
-    	lp.height = (int)(mDensityDpi*0.3);//144;
-    	mView.setLayoutParams(lp);
-    }
     private DialogInterface mShowDialog;
     private void showDialog() {
         // TODO: DialogFragment?

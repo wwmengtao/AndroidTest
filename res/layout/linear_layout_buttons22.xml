@@ -29,5 +29,4 @@
 	        android:singleLine="true"
 	        android:text="@string/show_notification" />		        
     </LinearLayout>  	
-    <include layout="@layout/relative_layout" />      
 </LinearLayout>
