@@ -7,7 +7,7 @@
     <string name="permission_granted">"Permission %1$s granted!"</string>
     <string name="permission_not_granted">"Permission %1$s not granted!"</string>
     <string name="show_sysapp">Show device apps</string>
-    <string name="show_dialog">Show dialog</string>
+    <string name="show_dialog">Dialog</string>
     <string name="title_activity_sys_apps">SysAppsActivity</string>
     <string name="msg_loading">loading...</string>
     <string name="start_activity">Activity</string>
@@ -27,7 +27,7 @@
     <string name="switch_flightmode">Airplane mode</string>
     <string name="switch_mobile">Data Connection</string>
     <string name="switch_gps">GPS</string>
-    <string name="get_resource">Get resource</string>
+    <string name="get_resource">Resource</string>
     <string name="relative_textview">Relative textview</string>
     <string name="switchers_demo">Switchers demo</string>
     <string name="lvp_switchers_demo">LVP switchers demo</string>
@@ -37,5 +37,5 @@
     <string name="show_fixedlength">Show fixed</string>
     <string name="show_textsize">Show size</string>
     <string name="title_activity_show_view">ShowViewActivity</string>
-
+    <string name="show_notification">Notification</string>
 </resources>

@@ -14,12 +14,20 @@
 		    android:id="@+id/btn_getresource"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:singleLine="true"
 	        android:text="@string/get_resource" />	  
 		<Button
 		    android:id="@+id/btn_showdialog"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:singleLine="true"
 	        android:text="@string/show_dialog" />	
+		<Button
+		    android:id="@+id/btn_shownotification"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	        android:text="@string/show_notification" />		        
     </LinearLayout>  	
     <include layout="@layout/relative_layout" />      
 </LinearLayout>

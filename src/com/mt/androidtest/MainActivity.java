@@ -15,6 +15,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -48,6 +51,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.mt.androidtest.R;
 
 public class MainActivity extends Activity implements View.OnClickListener,DialogInterface.OnClickListener{
@@ -71,13 +75,14 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 								  R.id.btn_showswitcher,
 								  R.id.btn_getresource,
 								  R.id.btn_showdialog,
+								  R.id.btn_shownotification,
 								  R.id.btn_shutdown,
 								  R.id.btn_gotosleep,
 								  R.id.btn_showview_test};
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
     private PowerManager mPowerManager =null;
-
+    private NotificationManager mNotificationManager = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,6 +105,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		mPackageManager = getPackageManager();
 		mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         metric = getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
 		//testFunctionsRegister();
@@ -538,6 +544,14 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 			case	R.id.btn_showdialog:
 				showDialog();
 			break;
+			case R.id.btn_shownotification:
+				if(!isNotificationShown){
+					showNotification(this,1,null);
+				}
+				else{
+					cancelNotification(this, 1);
+				}
+			break;
 			case	R.id.btn_shutdown:
 				powerOperate("shutdown");
 				//powerOperate2("shutdown");
@@ -553,7 +567,58 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 			break;					
 		}
 	}
+	
+	String NOTIFICATION_ID="AndroidTest.Notification";
+	boolean isNotificationShown=false;
+	/**
+	 * 显示通知
+	 * @param mContext
+	 * @param id
+	 * @param intent
+	 */
+	private void showNotification(Context mContext,int id,PendingIntent intent) {
+        	CharSequence title0 = "AndroidTest";
+	        CharSequence title = "title";
+	        CharSequence details = "details";
+	        int icon = R.drawable.toolbar_brightness_off;
+	        Notification notification = new Notification.Builder(mContext)
+	                .setWhen(0)
+	                .setSmallIcon(icon)
+	                .setAutoCancel(true)
+	                .setTicker(title0)
+	                //.setColor(mContext.getColor(R.color.wheat))
+	                .setContentTitle(title)
+	                .setContentText(details)
+	                .setContentIntent(intent)
+	                .setLocalOnly(true)
+	                .setPriority(Notification.PRIORITY_DEFAULT)
+	                .setDefaults(Notification.DEFAULT_ALL)
+	                .setOnlyAlertOnce(true)
+	                .build();
+	        try {
+	        	mNotificationManager.notify(NOTIFICATION_ID, id, notification);
+	        	isNotificationShown=true;
+	        } catch (NullPointerException npe) {
+	            npe.printStackTrace();
+	        }
+	    }
+	
+	/**
+	 * cancelNotification：取消状态栏内容的显示
+	 * @param mContext
+	 * @param id
+	 */
+	public void cancelNotification(Context mContext,int id){
 
+	    try {
+	    	mNotificationManager.cancel(NOTIFICATION_ID, id);
+	    	isNotificationShown=false;
+	    } catch (NullPointerException npe) {
+	        ALog.Log("setNotificationVisible: cancel notificationManager npe=" + npe);
+	        npe.printStackTrace();
+	    }
+	}
+	
 	ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener =new ViewTreeObserver.OnGlobalLayoutListener(){
 		@Override
 		public void onGlobalLayout() {
