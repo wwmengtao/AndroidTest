@@ -586,7 +586,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	                .setSmallIcon(icon)
 	                .setAutoCancel(true)
 	                .setTicker(title0)
-	                //.setColor(mContext.getColor(R.color.wheat))
+	                .setColor(mContext.getColor(R.color.wheat))
 	                .setContentTitle(title)
 	                .setContentText(details)
 	                .setContentIntent(intent)
