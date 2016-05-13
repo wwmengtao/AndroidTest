@@ -250,7 +250,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		int resID = 0;
 		Context mContext = null;
 		try {
-			mContext = this.createPackageContext(packageName,
+			mContext = context.createPackageContext(packageName,
 					Context.CONTEXT_IGNORE_SECURITY);
 			if (mContext != null) {
 				resID = getResourceID1(mContext.getResources(), name, type ,packageName);
