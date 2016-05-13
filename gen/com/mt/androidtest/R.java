@@ -581,7 +581,7 @@ public final class R {
         public static final int toolbar_wifi_off=0x7f02006f;
     }
     public static final class id {
-        public static final int action_settings=0x7f090028;
+        public static final int action_settings=0x7f090029;
         public static final int btn_getresource=0x7f090008;
         public static final int btn_gotosleep=0x7f09000d;
         public static final int btn_showdialog=0x7f090009;
@@ -596,11 +596,11 @@ public final class R {
         public static final int btn_start_activity=0x7f09000f;
         public static final int btn_start_documentsactivity=0x7f090010;
         public static final int btn_start_downloadproviderui=0x7f090011;
-        public static final int className=0x7f090026;
+        public static final int className=0x7f090027;
         public static final int classic_content_layout=0x7f09001a;
         public static final int editText=0x7f090016;
         public static final int gridview_sysapp=0x7f090000;
-        public static final int icon=0x7f090023;
+        public static final int icon=0x7f090024;
         public static final int img_relative=0x7f090022;
         public static final int layout_linear=0x7f090015;
         public static final int layout_linear_buttons21=0x7f090004;
@@ -613,14 +613,15 @@ public final class R {
         public static final int list_lvp_switchers=0x7f090001;
         public static final int menu_img=0x7f090002;
         public static final int menu_label=0x7f090003;
-        public static final int name=0x7f090024;
-        public static final int packageName=0x7f090025;
-        public static final int sourceDir=0x7f090027;
+        public static final int name=0x7f090025;
+        public static final int packageName=0x7f090026;
+        public static final int sourceDir=0x7f090028;
         public static final int switch_bar=0x7f09001d;
         public static final int textview=0x7f090017;
         public static final int textview_textsize1=0x7f09001b;
         public static final int textview_textsize2=0x7f09001c;
         public static final int tv_relative=0x7f090021;
+        public static final int tv_relative_color=0x7f090023;
         public static final int txStatus=0x7f09001e;
     }
     public static final class layout {

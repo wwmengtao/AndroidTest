@@ -10,11 +10,19 @@
         android:id="@+id/tv_relative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/wheat"
         android:text="@string/relative_textview" />
 	<ImageView
         android:id="@+id/img_relative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_relative"
+        android:text="@string/relative_textview" />
+	<TextView
+        android:id="@+id/tv_relative_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/wheat"
+        android:layout_below="@id/img_relative"
         android:text="@string/relative_textview" />
 </RelativeLayout>

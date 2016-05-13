@@ -33,6 +33,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -41,6 +42,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Xml;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -68,6 +70,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	private LinearLayout mLayout=null;
 	private LinearLayout mLayout_linear_buttons=null;
 	private LinearLayout mLayout_linear_switchbar=null;
+	private TextView mTextView_Switchbar=null;
 	int [] buttonID = {R.id.btn_showsysapp,
 								  R.id.btn_start_activity,
 								  R.id.btn_start_documentsactivity,
@@ -96,6 +99,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		mRelativeLayout=(RelativeLayout) findViewById(R.id.layout_relative);  
 		mLayout=(LinearLayout) findViewById(R.id.layout_linear_test);
 		mLayout_linear_buttons=(LinearLayout) findViewById(R.id.layout_linear_buttons21);
+		mTextView_Switchbar=(TextView) findViewById(R.id.txStatus);
 		mLayout_linear_switchbar=(LinearLayout) findViewById(R.id.switch_bar);
 		Button btn=null;
 		for(int i=0;i<buttonID.length;i++){
@@ -262,9 +266,10 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	    	break;
 	    	case "string":
 	    		obj = mContext.getResources().getString(resID);
+	    	break;
 	    	case "color":
 	    		obj = mContext.getResources().getColor(resID);	    		
-    	break;    		
+	    	break;    		
     	}
 		return obj;
     	
@@ -711,12 +716,12 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	public void getResourceBtn(){
 		if(!mRelativeLayout.isShown()){
 			mRelativeLayout.setVisibility(View.VISIBLE);
-    		mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.wheat));
 			mTextView = (TextView) findViewById(R.id.tv_relative);
 			mImageView = (ImageView) findViewById(R.id.img_relative);
     		setLayoutParams(mImageView);
     		setTextView();
     		setImageView();
+    		getViewColors();
 		}else{
 			mRelativeLayout.setVisibility(View.GONE);
 		}
@@ -745,8 +750,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     	}
 		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
 		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
-    	//mDrawable = getDrawbleFromAssetXml();
 		//mDrawable = getDrawableFromResourcesXml();//从系统xml资源获取图片
+    	//mDrawable = getDrawbleFromAssetXml();//方法暂时FC！！！！！
 		mImageView.setBackground(mDrawable);
 	}
 	
@@ -772,6 +777,37 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 			}
 		}
 	}	
+	
+	/**
+	 * 获取指定控件的内容以及字体颜色，只适用于本应用，无法跨应用
+	 */
+	public void getViewColors(){
+		TextView mTvTemp =(TextView)this.findViewById(R.id.tv_relative_color);
+		String packageName=null;
+		packageName=this.getPackageName();
+		int textViewId =0;
+		textViewId=this.getResources().getIdentifier("tv_relative", "id", packageName);
+		ALog.Log("textViewId:"+ALog.toHexString(textViewId));		
+		mTextView= (TextView)findViewById(textViewId);
+		mTvTemp.setTextColor(mTextView.getCurrentTextColor());
+		//获取其他package中控件，但是只能获取ID，无法加载得到控件，因为其他应用还没有show Activity
+		packageName="com.android.settings";
+		Context mContext;
+		try {
+			mContext = this.createPackageContext(packageName,Context.CONTEXT_IGNORE_SECURITY);
+			if (mContext != null) {
+				textViewId = mContext.getResources().getIdentifier("switch_text", "id", packageName);
+				ALog.Log("textViewId:"+ALog.toHexString(textViewId));		
+				//mTvTemp =(TextView)mContext.findViewById(textViewId);//语法错误，findViewById只能是Activity使用，而不是Context
+				//mTvTemp= (TextView) LayoutInflater.from(mContext).inflate(textViewId, null);//错误，LayoutInflater只能解析布局文件
+			}
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		//ALog.Log("mTextView.getText:"+mTextView.getText());
+	}
 	
     public void setLayoutParams(View mView){
     	ViewGroup.LayoutParams lp = mView.getLayoutParams();
