@@ -581,7 +581,7 @@ public final class R {
         public static final int toolbar_wifi_off=0x7f02006f;
     }
     public static final class id {
-        public static final int action_settings=0x7f090026;
+        public static final int action_settings=0x7f090027;
         public static final int btn_getresource=0x7f090008;
         public static final int btn_gotosleep=0x7f09000c;
         public static final int btn_showdialog=0x7f090009;
@@ -614,6 +614,7 @@ public final class R {
         public static final int menu_label=0x7f090003;
         public static final int name=0x7f090023;
         public static final int packageName=0x7f090024;
+        public static final int sourceDir=0x7f090026;
         public static final int switch_bar=0x7f09001c;
         public static final int textview=0x7f090016;
         public static final int textview_textsize1=0x7f09001a;

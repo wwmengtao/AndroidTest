@@ -12,7 +12,7 @@
         android:id="@+id/icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_rowSpan="3"
+        android:layout_rowSpan="4"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="16dip"
         android:scaleType="centerInside"
@@ -43,4 +43,11 @@
          android:layout_marginEnd="16dip"
          android:textAppearance="?android:attr/textAppearanceSmall"
          android:textAlignment="viewStart" />
+     <TextView
+         android:id="@+id/sourceDir"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginEnd="16dip"
+         android:textAppearance="?android:attr/textAppearanceSmall"
+         android:textAlignment="viewStart" />     
 </GridLayout>

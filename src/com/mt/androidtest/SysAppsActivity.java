@@ -32,6 +32,7 @@ public class SysAppsActivity extends Activity {
 	TextView mtvName = null;
 	TextView mtvPackage = null;
 	TextView mtvClass = null;
+	TextView mtvSourceDir = null;	
 	PackageManager mPackageManager=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class SysAppsActivity extends Activity {
 		mtvName = (TextView)findViewById(R.id.name);
 		mtvPackage = (TextView)findViewById(R.id.packageName);
 		mtvClass = (TextView)findViewById(R.id.className);
+		mtvSourceDir  = (TextView)findViewById(R.id.sourceDir);
 		mPackageManager = getPackageManager();
 	}
 
@@ -72,6 +74,7 @@ public class SysAppsActivity extends Activity {
 					it.addCategory(Intent.CATEGORY_LAUNCHER);
 					List<ResolveInfo> resolveInfos = mPackageManager.queryIntentActivities(it,PackageManager.GET_ACTIVITIES);
 					Collections.sort(resolveInfos,new ResolveInfo.DisplayNameComparator(mPackageManager));
+					String sourceDir=null;
 					for(ResolveInfo info : resolveInfos) {
 						if(!"com.lenovo.lesnapshot".equals(info.activityInfo.packageName)){
 							HashMap<String,Object> map = new HashMap<String,Object>();
@@ -79,7 +82,15 @@ public class SysAppsActivity extends Activity {
 							boolean isAppIcon=true;
 							map.put("itemText",info.loadLabel(mPackageManager));
 		                    map.put("packname", info.activityInfo.packageName);
-		                    map.put("classname", info.activityInfo.name);		
+		                    map.put("classname", info.activityInfo.name);
+		                    try {
+								sourceDir=mPackageManager.getApplicationInfo(info.activityInfo.packageName,PackageManager.GET_ACTIVITIES).sourceDir;
+								ALog.Log("sourceDir:"+sourceDir);
+								map.put("sourceDir", sourceDir);
+							} catch (NameNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 		                    if(!isAppIcon){
 		                    	mDrawable = info.loadIcon(mPackageManager);//Indicate the icon of each activity
 		                    }else{
@@ -128,6 +139,7 @@ public class SysAppsActivity extends Activity {
 					        mtvName.setText((String) mSysAppList.get(position).get("itemText"));
 					        mtvPackage.setText((String) mSysAppList.get(position).get("packname"));
 					        mtvClass.setText((String) mSysAppList.get(position).get("classname"));
+					        mtvSourceDir.setText((String) mSysAppList.get(position).get("sourceDir"));
 						}
 					});
 			  	break;			
