@@ -779,7 +779,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	}	
 	
 	/**
-	 * 获取指定控件的内容以及字体颜色，只适用于本应用，无法跨应用
+	 * 获取指定控件字体颜色、背景，只适用于本应用，无法跨应用
 	 */
 	public void getViewColors(){
 		TextView mTvTemp =(TextView)this.findViewById(R.id.tv_relative_color);
@@ -790,6 +790,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		ALog.Log("textViewId:"+ALog.toHexString(textViewId));		
 		mTextView= (TextView)findViewById(textViewId);
 		mTvTemp.setTextColor(mTextView.getCurrentTextColor());
+		mTvTemp.setBackground(mTextView.getBackground());
 		//获取其他package中控件，但是只能获取ID，无法加载得到控件，因为其他应用还没有show Activity
 		packageName="com.android.settings";
 		Context mContext;
