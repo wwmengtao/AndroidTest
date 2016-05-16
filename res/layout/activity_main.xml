@@ -4,9 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.mt.androidtest.MainActivity" >
-    <include layout="@layout/linear_layout_item_test" /> 
-    <include layout="@layout/linear_layout_buttons23" />      
-    <include layout="@layout/linear_layout_buttons22" />
-    <include layout="@layout/linear_layout_buttons21" />    
-    <include layout="@layout/linear_layout_buttons3" />    
+    <include layout="@layout/buttons_power" />      
+    <include layout="@layout/buttons_resource" />
+    <include layout="@layout/buttons_device" />    
+    <include layout="@layout/buttons_component" />    
 </LinearLayout>

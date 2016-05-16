@@ -40,10 +40,8 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		mRelativeLayout=(RelativeLayout) findViewById(R.id.layout_relative);  
         metric = getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
-		Button btn=null;
 		for(int i=0;i<buttonID.length;i++){
-			btn = (Button)findViewById(buttonID[i]);
-			btn.setOnClickListener(this);
+			((Button)findViewById(buttonID[i])).setOnClickListener(this);
 		}
 	}
 
