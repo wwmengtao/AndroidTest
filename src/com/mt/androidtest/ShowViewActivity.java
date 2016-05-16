@@ -20,7 +20,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 			  R.id.btn_showtextsize};
 	private LinearLayout mLayout=null;
 	private TextView mTextViewAdded=null;
-	private View mContentLayout=null;
+	private View mLinearLayout_TextSize=null;
     private TextView mTV1_TextSize=null;
     private TextView mTV2_TextSize=null;    
     private Handler mHandler;
@@ -33,13 +33,13 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_show_view);
-		mLayout=(LinearLayout) findViewById(R.id.layout_linear);
+		mLayout=(LinearLayout) findViewById(R.id.linearlayout_showview);
 		Button btn=null;
 		for(int i=0;i<buttonID.length;i++){
 			btn = (Button)findViewById(buttonID[i]);
 			btn.setOnClickListener(this);
 		}
-		mContentLayout = findViewById(R.id.classic_content_layout);
+		mLinearLayout_TextSize = findViewById(R.id.linearlayout_textsize);
 	    mTV1_TextSize = (TextView) findViewById(R.id.textview_textsize1);
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
 	}
@@ -70,10 +70,10 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_FIXED_LENGTH);
 			break;
 			case R.id.btn_showtextsize:
-				if(!mContentLayout.isShown()){
-					mContentLayout.setVisibility(View.VISIBLE);
+				if(!mLinearLayout_TextSize.isShown()){
+					mLinearLayout_TextSize.setVisibility(View.VISIBLE);
 				}else{
-					mContentLayout.setVisibility(View.GONE);
+					mLinearLayout_TextSize.setVisibility(View.GONE);
 				}
 			break;		
 		}

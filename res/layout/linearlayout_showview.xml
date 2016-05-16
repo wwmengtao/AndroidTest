@@ -26,7 +26,7 @@
     </LinearLayout>         
 	<!-- 下列布局文件内没有指定任何内容 -->
 	<LinearLayout
-	    android:id="@+id/layout_linear"
+	    android:id="@+id/linearlayout_showview"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:visibility="gone"

@@ -37,7 +37,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		mTextView_Switchbar=(TextView) findViewById(R.id.txStatus);
 		mLayout_linear_switchbar=(LinearLayout) findViewById(R.id.switch_bar);	
 		mLayout_linear_switchbar.setOnClickListener(this);
-		mRelativeLayout=(RelativeLayout) findViewById(R.id.layout_relative);  
+		mRelativeLayout=(RelativeLayout) findViewById(R.id.relativelayout_resource);  
         metric = getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
 		for(int i=0;i<buttonID.length;i++){

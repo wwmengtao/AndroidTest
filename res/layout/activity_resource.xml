@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.mt.androidtest.ResourceActivity" >
-    <include layout="@layout/linear_layout_switchbar" />      
+    <include layout="@layout/linearlayout_switchbar" />      
     <EditText  
         android:id="@+id/editText"  
         android:layout_width="wrap_content"  
@@ -23,5 +23,5 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:text="@string/show_resource" />   
-    <include layout="@layout/relative_layout" />              
+    <include layout="@layout/relativelayout_resource" />              
 </LinearLayout>
