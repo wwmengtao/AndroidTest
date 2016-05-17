@@ -27,10 +27,10 @@ public class ALog {
 		return Integer.parseInt(mData,16);
 	}	
 	
-	public static String toStringThisActivity(Activity mActivity){
+	public static void Log(String info, Activity mActivity){
 		String str = mActivity.toString();
 		String packageName = mActivity.getPackageName();
-		if(null==str||null==packageName)return null;
+		if(null==str||null==packageName)return;
 		String str_return=null;
 		String regShowWidthAndHeight = "@[a-zA-Z0-9]+";//仅仅获取控件id，其他内容不要
 	    Pattern mPatternShowWidthAndHeight = Pattern.compile(regShowWidthAndHeight);
@@ -39,6 +39,6 @@ public class ALog {
         if(mMatcher.find()){
         	str_return = str.replace(mMatcher.group(),"").replace(packageName+".", "");
         }
-		return "===="+str_return;
+		Log(info+"===="+str_return);
 	}
 }

@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ShowViewActivity extends Activity implements Handler.Callback, View.OnClickListener{
-	private String ALogTag=null;
 	int [] buttonID = {
 			  R.id.btn_showview,
 			  R.id.btn_showfixedlength,
@@ -35,9 +34,8 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	private final int MSG_SHOW_VIEW_FINALLY=0x004;	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		ALogTag = ALog.toStringThisActivity(this);
 		super.onCreate(savedInstanceState);
-		ALog.Log("onCreate"+ALogTag);
+		ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_show_view);
 		mLayout=(LinearLayout) findViewById(R.id.linearlayout_showview);
 		Button btn=null;
@@ -53,7 +51,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	@Override
 	protected void onResume(){	
 		super.onResume();
-		ALog.Log("onResume"+ALogTag);
+		ALog.Log("onResume",this);
         if (mHandler == null) {
         	mHandler = new Handler(this);
         }
@@ -62,7 +60,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	@Override
 	protected void onPause(){
 		super.onPause();
-		ALog.Log("onPause"+ALogTag);
+		ALog.Log("onPause",this);
         if (mHandler != null) {
         	mHandler.removeCallbacksAndMessages(null);
         }
@@ -72,7 +70,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ALog.Log("onDestroy"+ALogTag);
+		ALog.Log("onDestroy",this);
 	}		
 	
 	@Override

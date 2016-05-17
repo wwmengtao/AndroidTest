@@ -32,7 +32,6 @@ import com.mt.androidtest.R;
 
 public class MainActivity extends Activity implements View.OnClickListener,DialogInterface.OnClickListener{
 	boolean isLogRun=true;
-	private String ALogTag=null;
 	PackageManager mPackageManager=null;
 	int [] buttonID = {
 								  R.id.btn_permission,					
@@ -49,9 +48,8 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
     private NotificationManager mNotificationManager = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		ALogTag=ALog.toStringThisActivity(this);
 		super.onCreate(savedInstanceState);
-		if(isLogRun)ALog.Log("onCreate"+ALogTag);
+		if(isLogRun)ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_main);
 		Button btn=null;
 		for(int i=0;i<buttonID.length;i++){
@@ -66,20 +64,20 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	@Override
 	protected void onResume(){	
 		super.onResume();
-		if(isLogRun)ALog.Log("onResume"+ALogTag);
+		if(isLogRun)ALog.Log("onResume",this);
 		testFunctions();
 	}
 	
 	@Override
 	protected void onPause(){
 		super.onPause();
-		if(isLogRun)ALog.Log("onPause"+ALogTag);
+		if(isLogRun)ALog.Log("onPause",this);
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if(isLogRun)ALog.Log("onDestroy"+ALogTag);
+		if(isLogRun)ALog.Log("onDestroy",this);
 	}	
 	
 	public void testFunctions(){
