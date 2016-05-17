@@ -1,13 +1,11 @@
 package com.mt.androidtest;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -25,27 +23,20 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import com.mt.androidtest.R;
-
-public class MainActivity extends Activity implements View.OnClickListener,DialogInterface.OnClickListener{
+public class MainActivity extends ListActivity implements View.OnClickListener,DialogInterface.OnClickListener{
 	boolean isLogRun=true;
 	PackageManager mPackageManager=null;
 	int [] buttonID = {
-								  R.id.btn_permission,					
-								  R.id.btn_showsysapp,
-								  R.id.btn_start_activity,
-								  R.id.btn_start_documentsactivity,
-								  R.id.btn_start_downloadproviderui,
-								  R.id.btn_showswitcher,
-								  R.id.btn_getresource,
 								  R.id.btn_showdialog,
-								  R.id.btn_shownotification,
-								  R.id.btn_showview_test};
+								  R.id.btn_shownotification};
 
     private NotificationManager mNotificationManager = null;
+	private List<String> listActivities;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,7 +49,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		}
 		mPackageManager = getPackageManager();
 		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-		//addOnGlobalLayoutListener();//视图树监听器
+		initListData();
 	}
 	
 	@Override
@@ -79,6 +70,72 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 		super.onDestroy();
 		if(isLogRun)ALog.Log("onDestroy",this);
 	}	
+	
+	public void initListData(){
+		listActivities = new ArrayList<String>();
+		listActivities.add("PermissionActivity");
+		listActivities.add("ResourceActivity");
+		listActivities.add("ShowViewActivity");
+		listActivities.add("SwitcherDemoActivity");
+		listActivities.add("SysAppsActivity");
+		listActivities.add("StartActivity");
+		listActivities.add("DocumentsActivity");
+		listActivities.add("DownloadProviderUI");
+		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.list_row, R.id.listText, listActivities);
+        // assign the list adapter
+        setListAdapter(myAdapter);
+	}
+	
+	@Override
+	protected void onListItemClick(ListView list, View view, int position, long id) {
+		super.onListItemClick(list, view, position, id);
+		String selectedItem = (String) getListView().getItemAtPosition(position);
+		Intent mIntent = null;
+		String packname = null;
+		String classname = null;
+		switch(selectedItem){
+		case "DocumentsActivity":
+			mIntent = getIntent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
+			break;
+		case "DownloadProviderUI":
+			mIntent = getIntent("android.intent.action.VIEW_DOWNLOADS");
+			break;
+		case "StartActivity"://打开其他应用的activity
+			mIntent=new Intent();
+			packname = "com.mt.androidtest2";
+			classname = "com.mt.androidtest2.MainActivity";
+			mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+					| ActivityManager.MOVE_TASK_WITH_HOME
+					| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+					| Intent.FLAG_ACTIVITY_TASK_ON_HOME
+					| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+					);
+			mIntent.setComponent(new ComponentName(packname, classname));
+			break;
+			default://打开本应用的Activity
+				mIntent=new Intent();
+				packname = "com.mt.androidtest";
+				classname = "com.mt.androidtest."+selectedItem;
+				mIntent.setComponent(new ComponentName(packname, classname));
+				break;
+		}
+		try{
+			startActivity(mIntent);
+		}catch(ActivityNotFoundException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public Intent getIntent(String IntentInfo){
+		Intent mIntent = new Intent(IntentInfo);
+		mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| ActivityManager.MOVE_TASK_WITH_HOME
+				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+				| Intent.FLAG_ACTIVITY_TASK_ON_HOME
+				| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+				);
+		return mIntent;
+	}
 	
 	public void testFunctions(){
 		//1、反射调用
@@ -229,32 +286,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		Intent intent=null;
 		switch(v.getId()){
-			case	R.id.btn_showsysapp:
-				intent=new Intent();
-				intent.setClass(MainActivity.this, SysAppsActivity.class);
-				startActivity(intent);
-			break;
-			case	R.id.btn_showswitcher:
-				intent=new Intent();
-				intent.setClass(MainActivity.this, SwitcherDemoActivity.class);
-				startActivity(intent);
-			break;
-			case	R.id.btn_start_activity:
-				startActivityByFlags();
-			break;
-			case	R.id.btn_start_documentsactivity:
-				startDocumentsActivity();
-			break;			
-			case	R.id.btn_start_downloadproviderui:
-				startDownloadProviderUI();
-			break;					
-			case R.id.btn_getresource:
-				intent=new Intent();
-				intent.setClass(MainActivity.this, ResourceActivity.class);
-				startActivity(intent);
-			break;
 			case	R.id.btn_showdialog:
 				showDialog();
 			break;
@@ -265,16 +297,6 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
 				else{
 					cancelNotification(this, 1);
 				}
-			break;
-			case R.id.btn_showview_test:		
-				intent=new Intent();
-				intent.setClass(MainActivity.this, ShowViewActivity.class);
-				startActivity(intent);
-			break;			
-			case R.id.btn_permission:
-				intent=new Intent();
-				intent.setClass(MainActivity.this, PermissionActivity.class);
-				startActivity(intent);
 			break;
 		}
 	}

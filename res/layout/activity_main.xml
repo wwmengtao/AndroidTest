@@ -4,12 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.mt.androidtest.MainActivity" >  
-	<Button
-	    android:id="@+id/btn_permission"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_activity_permission" />	    
-    <include layout="@layout/buttons_resource" />
-    <include layout="@layout/buttons_device" />    
-    <include layout="@layout/buttons_component" />    
+		<Button
+		    android:id="@+id/btn_showdialog"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	        android:text="@string/show_dialog" />	
+		<Button
+		    android:id="@+id/btn_shownotification"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	        android:text="@string/show_notification" />
+     <ListView 
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:id="@android:id/list"
+	     android:background="@color/wheat" />
 </LinearLayout>
