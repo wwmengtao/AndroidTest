@@ -39,6 +39,6 @@
     <string name="title_activity_show_view">ShowViewActivity</string>
     <string name="show_notification">Notification</string>
     <string name="title_activity_resource">ResourceActivity</string>
-    <string name="show_resource">Show resource</string>    
-
+    <string name="show_resource">Show resource</string>
+    <string name="title_activity_permission">PermissionActivity</string>
 </resources>

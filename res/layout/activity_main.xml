@@ -3,8 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mt.androidtest.MainActivity" >
-    <include layout="@layout/buttons_power" />      
+    tools:context="com.mt.androidtest.MainActivity" >  
+	<Button
+	    android:id="@+id/btn_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_permission" />	    
     <include layout="@layout/buttons_resource" />
     <include layout="@layout/buttons_device" />    
     <include layout="@layout/buttons_component" />    

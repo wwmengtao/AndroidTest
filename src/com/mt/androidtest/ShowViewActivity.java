@@ -1,5 +1,8 @@
 package com.mt.androidtest;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ShowViewActivity extends Activity implements Handler.Callback, View.OnClickListener{
+	private String ALogTag=null;
 	int [] buttonID = {
 			  R.id.btn_showview,
 			  R.id.btn_showfixedlength,
@@ -31,7 +35,9 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	private final int MSG_SHOW_VIEW_FINALLY=0x004;	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		ALogTag = ALog.toStringThisActivity(this);
 		super.onCreate(savedInstanceState);
+		ALog.Log("onCreate"+ALogTag);
 		setContentView(R.layout.activity_show_view);
 		mLayout=(LinearLayout) findViewById(R.id.linearlayout_showview);
 		Button btn=null;
@@ -47,6 +53,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	@Override
 	protected void onResume(){	
 		super.onResume();
+		ALog.Log("onResume"+ALogTag);
         if (mHandler == null) {
         	mHandler = new Handler(this);
         }
@@ -54,11 +61,19 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	
 	@Override
 	protected void onPause(){
+		super.onPause();
+		ALog.Log("onPause"+ALogTag);
         if (mHandler != null) {
         	mHandler.removeCallbacksAndMessages(null);
         }
 		super.onPause();
 	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		ALog.Log("onDestroy"+ALogTag);
+	}		
 	
 	@Override
 	public void onClick(View v) {
@@ -140,6 +155,16 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	}
 	textViewAddedParams mTVAddedParams = new textViewAddedParams();
 
+	/**
+	 * onWindowFocusChanged：
+		1、进入组件时执行顺序如下：
+		onStart--->onResume--->onAttachedToWindow--->onWindowVisibilityChanged--visibility=0--->onWindowFocusChanged(true)--->
+		执行到onWindowFocusChanged表明已经获取焦点，此时View的绘制工作已经完成，可以获取View控件的宽度、高度。
+		2、离开组件时
+		2.1)onPause---->onStop---->onWindowFocusChanged(false)  --- (lockscreen)
+		2.2)onPause--->onWindowFocusChanged(false)--->onWindowVisibilityChanged--visibility=8--->onStop(to another activity)
+	 * @param hasFocus
+	 */
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
@@ -147,6 +172,9 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 		showTextSizeView(mTV1_TextSize,time_now_str);
 		time_now_str = "123456789123456789123456789";
 		showTextSizeView(mTV2_TextSize,time_now_str);
+		//ALog.Log("/------------------------onWindowFocusChanged------------------------/");
+		showWidthAndHeightLog();
+		//ALog.Log("/************************onWindowFocusChanged************************/");
 	}	
 	
 	/**
@@ -275,6 +303,44 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener =new ViewTreeObserver.OnGlobalLayoutListener(){
 		@Override
 		public void onGlobalLayout() {
+
 		}
-	};			
+	};
+    
+    public void showWidthAndHeightLog(){
+    	showWidthAndHeight(mTextViewAdded, "mTextViewAdded");	
+    	showWidthAndHeight(mLinearLayout_TextSize, "mLinearLayout_TextSize");	
+    	showWidthAndHeight(mLayout, "mLayout");
+    	showWidthAndHeight(mTV1_TextSize, "mTV1_TextSize");
+    }
+    
+	String regShowWidthAndHeight = "id\\/[a-zA-Z]+.+\\}";//仅仅获取控件id，其他内容不要
+    Pattern mPatternShowWidthAndHeight = Pattern.compile(regShowWidthAndHeight);
+    Matcher mMatcher = null;
+	boolean is_onWindowFocusChanged = false;
+    public void showWidthAndHeight(View mView, String objName){
+    	if(null==mView)return;
+    	if(!is_onWindowFocusChanged){
+    		String betweenTitle=" ";
+    		ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle+"getMeasuredHeight");
+    		is_onWindowFocusChanged = true;
+    	}
+    	String str_ALog=null;
+        String str = mView.toString();
+        mMatcher = mPatternShowWidthAndHeight.matcher(str);
+        while(mMatcher.find()){
+        	str_ALog = mMatcher.group().replace("}", "");
+            break;
+        }
+        String format="%-14d";
+        String strgetWidth = String.format(format,mView.getWidth());
+        String strgetMeasuredWidth = String.format(format,mView.getMeasuredWidth());
+        String strgetHeight = String.format(format,mView.getHeight());
+        String strgetMeasuredHeight = String.format(format,mView.getMeasuredHeight());
+        ALog.Log(strgetWidth+
+        				 strgetMeasuredWidth+
+        				 strgetHeight+
+        				 strgetMeasuredHeight+
+        				 str_ALog+":"+objName);
+    }	
 }

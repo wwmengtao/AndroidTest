@@ -46,6 +46,10 @@
             android:name=".ResourceActivity"
             android:label="@string/title_activity_resource" >
         </activity>
+        <activity
+            android:name=".PermissionActivity"
+            android:label="@string/title_activity_permission" >
+        </activity>
     </application>
 
 </manifest>
