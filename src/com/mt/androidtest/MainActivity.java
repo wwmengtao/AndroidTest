@@ -26,12 +26,11 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends ListActivity implements View.OnClickListener,DialogInterface.OnClickListener{
+public class MainActivity extends ListActivity implements View.OnClickListener,DialogInterface.OnClickListener,AdapterView.OnItemClickListener{
 	boolean isLogRun=true;
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
@@ -39,7 +38,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 	private ListView mListViewFT=null;
 	private ListViewAdapter mListViewAdapterFT = null;
 	private ArrayList<HashMap<String, Object>> mListViewAdapterFTData = new ArrayList<HashMap<String, Object>>();
-	private String [] mArrayFT={"Dialog","Notification"};
+	private String [] mArrayFT={"Dialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
 	String NOTIFICATION_ID="AndroidTest.Notification";
 	boolean isNotificationShown=false;
 	@Override
@@ -49,38 +48,14 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		setContentView(R.layout.activity_main);
 		mPackageManager = getPackageManager();
 		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-		initListData();
-		mListViewFT=(ListView)findViewById(R.id.listview_functions);
-		mListViewAdapterFT = new ListViewAdapter(this);
-		loadListViewAdapterFTData();
+		initListActivityData();
+		initListFTData();
 	}
 	
 	@Override
 	protected void onResume(){	
 		super.onResume();
 		if(isLogRun)ALog.Log("onResume",this);
-		testFunctions();
-		mListViewAdapterFT.setMode(2);		
-		mListViewAdapterFT.setupList(mListViewAdapterFTData);
-		mListViewFT.setAdapter(mListViewAdapterFT);
-		mListViewFT.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View view,
-					int position, long id) {
-				switch(mArrayFT[position]){
-				case "Dialog":
-					showDialog();
-					break;
-				case "Notification":
-					if(!isNotificationShown){
-						showNotification(MainActivity.this,1,null);
-					}else{
-						cancelNotification(MainActivity.this, 1);
-					}
-					break;
-				}
-			}
-		});
 	}
 
 	@Override
@@ -95,7 +70,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		if(isLogRun)ALog.Log("onDestroy",this);
 	}	
 	
-	public void initListData(){
+	public void initListActivityData(){
 		listActivities = new ArrayList<String>();
 		listActivities.add("PermissionActivity");
 		listActivities.add("ResourceActivity");
@@ -109,6 +84,16 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
         setListAdapter(myAdapter);
 	}
 	
+	public void initListFTData(){
+		mListViewFT=(ListView)findViewById(R.id.listview_functions);
+		mListViewAdapterFT = new ListViewAdapter(this);
+		loadListViewAdapterFTData();
+		mListViewAdapterFT.setMode(2);		
+		mListViewAdapterFT.setupList(mListViewAdapterFTData);
+		mListViewFT.setAdapter(mListViewAdapterFT);
+		mListViewFT.setOnItemClickListener(this);
+	}
+	
 	public void loadListViewAdapterFTData(){
 		mListViewAdapterFTData.clear();
 		HashMap<String, Object> map = null;
@@ -117,6 +102,33 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 			map.put("itemText", mArrayFT[i]);
 			mListViewAdapterFTData.add(map);
 		}
+	}
+	
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
+		// TODO Auto-generated method stub
+		switch(mArrayFT[position]){
+		case "Dialog":
+			showDialog();
+			break;
+		case "Notification":
+			if(!isNotificationShown){
+				showNotification(MainActivity.this,1,null);
+			}else{
+				cancelNotification(MainActivity.this, 1);
+			}
+			break;
+		case "checkComponentExist"://检测组件是否存在
+			checkComponentExist();
+			break;
+		case "reflectCall":
+			reflectCall();
+			break;					
+		case "reflectCallListAll":
+			reflectCallListAll();
+			break;		
+		}
+	
 	}
 	
 	@Override
@@ -168,15 +180,6 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 				| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
 				);
 		return mIntent;
-	}
-	
-	public void testFunctions(){
-		//1、反射调用
-		//reflectCall();
-		//reflectCallListAll();
-		//2、检测组件是否存在
-		checkComponentExist();
-		//3、从其他应用获取资源，参照onClick函数中case R.id.btn_getresource
 	}
 	
     @Override
@@ -294,7 +297,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 			try{
 				m.invoke(telephonyManager, subId, true);//打开卡槽subId的数据连接
 			}catch(Exception ex){
-				
+				ALog.Log("reflectCallListAll_Exception");
 			}
 		}
 
@@ -444,6 +447,4 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 			e.printStackTrace();
 		}
 	}
-
 }
-

@@ -3,26 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mt.androidtest.MainActivity" >  
-
-     <TextView
-	     android:layout_width="match_parent"
-	     android:layout_height="wrap_content"      
-	     android:text="Start activity"   
-	     android:gravity="start"/>
+    tools:context="com.mt.androidtest.MainActivity" >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="start"
+        android:text="Functions test"/>  
+     <ListView 
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:id="@+id/listview_functions"
+	     android:background="@color/wheat" />          
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="start"
+        android:text="Start activity"/>
      <ListView 
 	     android:layout_width="match_parent"
 	     android:layout_height="wrap_content"
 	     android:id="@android:id/list"
 	     android:background="@color/wheat" />   
-     <TextView
-	     android:layout_width="match_parent"
-	     android:layout_height="wrap_content"      
-	     android:text="Functions test"   
-	     android:gravity="start"/>	     
-     <ListView 
-	     android:layout_width="wrap_content"
-	     android:layout_height="wrap_content"
-	     android:id="@+id/listview_functions"
-	     android:background="@color/wheat" />     
 </LinearLayout>
