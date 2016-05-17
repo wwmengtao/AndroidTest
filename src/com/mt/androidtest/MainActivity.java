@@ -1,16 +1,9 @@
 package com.mt.androidtest;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -30,16 +23,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Xml;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -141,73 +130,7 @@ public class MainActivity extends Activity implements View.OnClickListener,Dialo
         	if(isLogRun)ALog.Log("====ORIENTATION_PORTRAIT");
         }
     }
-    
-    /**
-     * getDrawbleFromSrc：从src文件夹中获取图片
-     * @return
-     */
-    public Drawable getDrawbleFromSrc(){
-    	String path = "com/drawable/resource/test.png"; 
-    	InputStream is = getClassLoader().getResourceAsStream(path); 
-    	return Drawable.createFromStream(is, "src"); 
-    }
-    /**
-     * getDrawbleFromAsset：从assets目录中获取png类型图片
-     * @return
-     */
-    public Drawable getDrawbleFromAsset(){
-    	InputStream is=null;
-    	AssetManager asm=this.getAssets();
-    	Drawable mDrawable=null;
-    	try {
-			is=asm.open("pic_switcher/ic_notfound.png");
-			mDrawable=Drawable.createFromStream(is, null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return mDrawable;
-    }
-    
-    public Drawable getDrawbleFromAssetXml(){
-    	Drawable mDrawable = null;
-    	XmlPullParser mXmlPullParser = null;
-        InputStream mInputStream = null;
-        Resources mResources = getResources();
-        AssetManager mAM=null;
-        try {
-        	mAM = mResources.getAssets();
-        	mInputStream = mAM.open("pic_switcher/vpn.xml"); 
-        	mXmlPullParser = Xml.newPullParser();
-        	mXmlPullParser.setInput(mInputStream, StandardCharsets.UTF_8.name());
-            mDrawable = Drawable.createFromXml(mResources,  mXmlPullParser);
-        } catch (XmlPullParserException e) {
-        	ALog.fillInStackTrace("getDrawbleFromAssetXml.XmlPullParserException");
-        } catch (IOException e) {
-        	ALog.fillInStackTrace("getDrawbleFromAssetXml.Exception");
-        }finally {
-            try {
-            	if(null!=mInputStream)mInputStream.close();
-            } catch (IOException e) {
-            	ALog.fillInStackTrace("getDrawbleFromAssetXml.IOException");
-            }
-        }
-        return mDrawable;
-    }
-    
-    public Drawable getDrawableFromResourcesXml(){
-    	Resources mResources = this.getResources();
-    	XmlPullParser parser = mResources.getXml(R.drawable.ic_qs_bluetooth_on);
-        Drawable mDrawable = null;
-		try {
-			mDrawable = Drawable.createFromXml(mResources, parser);
-		} catch (XmlPullParserException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return mDrawable;
-    }
-    
+
     /**
      * checkComponentExist：试验检测组件是否存在的几种方法
      */
