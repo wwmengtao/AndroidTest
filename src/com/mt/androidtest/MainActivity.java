@@ -82,7 +82,6 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		listActivities.add("DocumentsActivity");
 		listActivities.add("DownloadProviderUI");
 		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.list_row, R.id.listText, listActivities);
-        // assign the list adapter
         setListAdapter(myAdapter);
 	}
 	
