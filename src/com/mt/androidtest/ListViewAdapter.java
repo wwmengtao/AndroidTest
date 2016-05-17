@@ -1,9 +1,7 @@
 package com.mt.androidtest;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import com.mt.androidtest.R;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
@@ -60,21 +58,29 @@ public class ListViewAdapter extends BaseAdapter {
         	case 1:
         		view = listContainer.inflate(R.layout.item_getview, parent,false);
            	break;
+        	case 2:
+        		view = listContainer.inflate(R.layout.item_ft_getview, parent,false);
+           	break;           	
             }
         }else {
         	view = convertView;
         }
-		ImageView image = (ImageView)view.findViewById(R.id.menu_img);
-        TextView title = (TextView)view.findViewById(R.id.menu_label);
-        Object obj = mList.get(position).get("itemImage");
-        if(obj instanceof Drawable){
-        	image.setImageDrawable((Drawable)obj);
-        }else if(obj instanceof Integer){
-        	image.setImageResource((Integer)obj);
-			view.setBackgroundColor(mContext.getResources().getColor(R.color.wheat));
+        if(1==mMode){
+			ImageView image = (ImageView)view.findViewById(R.id.menu_img);
+	        TextView title = (TextView)view.findViewById(R.id.menu_label);
+	        Object obj = mList.get(position).get("itemImage");
+	        if(obj instanceof Drawable){
+	        	image.setImageDrawable((Drawable)obj);
+	        }else if(obj instanceof Integer){
+	        	image.setImageResource((Integer)obj);
+				view.setBackgroundColor(mContext.getResources().getColor(R.color.wheat));
+	        }
+	        title.setText((String) mList.get(position).get("itemText"));
+	        setLayoutParams(image);
+        }else if(2==mMode){
+        	TextView mTvFT = (TextView)view.findViewById(R.id.text_ft);
+        	mTvFT.setText((String) mList.get(position).get("itemText"));
         }
-        title.setText((String) mList.get(position).get("itemText"));
-        setLayoutParams(image);
         return view;
     }
     /**

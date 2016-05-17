@@ -2,7 +2,9 @@ package com.mt.androidtest;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -23,33 +25,34 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends ListActivity implements View.OnClickListener,DialogInterface.OnClickListener{
 	boolean isLogRun=true;
-	PackageManager mPackageManager=null;
-	int [] buttonID = {
-								  R.id.btn_showdialog,
-								  R.id.btn_shownotification};
-
+	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
 	private List<String> listActivities;
+	private ListView mListViewFT=null;
+	private ListViewAdapter mListViewAdapterFT = null;
+	private ArrayList<HashMap<String, Object>> mListViewAdapterFTData = new ArrayList<HashMap<String, Object>>();
+	private String [] mArrayFT={"Dialog","Notification"};
+	String NOTIFICATION_ID="AndroidTest.Notification";
+	boolean isNotificationShown=false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(isLogRun)ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_main);
-		Button btn=null;
-		for(int i=0;i<buttonID.length;i++){
-			btn = (Button)findViewById(buttonID[i]);
-			btn.setOnClickListener(this);
-		}
 		mPackageManager = getPackageManager();
 		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		initListData();
+		mListViewFT=(ListView)findViewById(R.id.listview_functions);
+		mListViewAdapterFT = new ListViewAdapter(this);
+		loadListViewAdapterFTData();
 	}
 	
 	@Override
@@ -57,8 +60,29 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		super.onResume();
 		if(isLogRun)ALog.Log("onResume",this);
 		testFunctions();
+		mListViewAdapterFT.setMode(2);		
+		mListViewAdapterFT.setupList(mListViewAdapterFTData);
+		mListViewFT.setAdapter(mListViewAdapterFT);
+		mListViewFT.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View view,
+					int position, long id) {
+				switch(mArrayFT[position]){
+				case "Dialog":
+					showDialog();
+					break;
+				case "Notification":
+					if(!isNotificationShown){
+						showNotification(MainActivity.this,1,null);
+					}else{
+						cancelNotification(MainActivity.this, 1);
+					}
+					break;
+				}
+			}
+		});
 	}
-	
+
 	@Override
 	protected void onPause(){
 		super.onPause();
@@ -83,6 +107,16 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		listActivities.add("DownloadProviderUI");
 		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.list_row, R.id.listText, listActivities);
         setListAdapter(myAdapter);
+	}
+	
+	public void loadListViewAdapterFTData(){
+		mListViewAdapterFTData.clear();
+		HashMap<String, Object> map = null;
+		for(int i=0;i<mArrayFT.length;i++){
+			map = new HashMap<String, Object>();
+			map.put("itemText", mArrayFT[i]);
+			mListViewAdapterFTData.add(map);
+		}
 	}
 	
 	@Override
@@ -285,23 +319,8 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		switch(v.getId()){
-			case	R.id.btn_showdialog:
-				showDialog();
-			break;
-			case R.id.btn_shownotification:
-				if(!isNotificationShown){
-					showNotification(this,1,null);
-				}
-				else{
-					cancelNotification(this, 1);
-				}
-			break;
-		}
 	}
-	
-	String NOTIFICATION_ID="AndroidTest.Notification";
-	boolean isNotificationShown=false;
+
 	/**
 	 * ÏÔÊ¾Í¨Öª
 	 * @param mContext
