@@ -634,8 +634,9 @@ public final class R {
         public static final int linearlayout_showview=0x7f03000b;
         public static final int linearlayout_switchbar=0x7f03000c;
         public static final int linearlayout_textsize=0x7f03000d;
-        public static final int listview_functions=0x7f03000e;
-        public static final int relativelayout_resource=0x7f03000f;
+        public static final int listview_android=0x7f03000e;
+        public static final int listview_functions=0x7f03000f;
+        public static final int relativelayout_resource=0x7f030010;
     }
     public static final class menu {
         public static final int main=0x7f080000;

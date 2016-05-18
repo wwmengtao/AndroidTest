@@ -1,21 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.mt.androidtest.MainActivity" >
+<ScrollView  
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+	xmlns:tools="http://schemas.android.com/tools"    
+	tools:context="com.mt.androidtest.MainActivity" 	
+    android:layout_width="match_parent"  
+    android:layout_height="wrap_content"  
+    android:scrollbars="vertical"  
+    android:fadingEdge="vertical">  
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		>
 	<include layout="@layout/listview_functions"/>    
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="start"
-        android:text="Start activity"/>
-     <ListView 
-	     android:layout_width="match_parent"
-	     android:layout_height="wrap_content"
-	     android:id="@android:id/list"
-	     android:background="@color/wheat" />   
-</LinearLayout>
+	<include layout="@layout/listview_android"/>
+	</LinearLayout>
+</ScrollView>  

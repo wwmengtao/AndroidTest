@@ -2,6 +2,7 @@ package com.mt.androidtest;
 
 import java.lang.reflect.Method;
 import java.util.List;
+
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -22,8 +23,10 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -70,16 +73,30 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 	public void initListFTData(){
 		mListViewAdapterFT = new ListViewAdapter(this);
 		mListViewAdapterFT.setMode(2);
-		mListViewAdapterFT.setupList(mMethodNameFT);
-		mListViewFT=(ListView)findViewById(R.id.listview_functions);		
+		mListViewAdapterFT.setupList(this);
+		mListViewFT=(ListView)findViewById(R.id.listview_functions);	
+		mListViewFT.setOnItemClickListener(this);		
 		mListViewFT.setAdapter(mListViewAdapterFT);
-		mListViewFT.setOnItemClickListener(this);
+		ListViewAdapter.setListViewHeightBasedOnChildren(mListViewFT);
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
 		// TODO Auto-generated method stub
-		switch(mMethodNameFT[position]){
+		String methodName = (String)mListViewAdapterFT.mList.get(position).get("itemText");
+		Class<?> mActivityClass = this.getClass();
+		Method [] mActivityMethods = mActivityClass.getDeclaredMethods();
+		Method m = getExistedMethod(mActivityMethods,methodName);
+		if(null!=m){
+			m.setAccessible(true);
+			try{
+				m.invoke(this);
+			}catch(Exception ex){
+				ALog.Log("Exception:"+m.getName());
+			}
+		}
+		/*
+		switch(methodName){
 		case "Dialog":
 			showDialog();
 			break;
@@ -99,18 +116,19 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		case "reflectCallListAll":
 			reflectCallListAll();
 			break;		
-		}
+		}*/
 	}
 	
 	public void initListActivityData(){
 		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.item_getview_android, R.id.listText, mActivitiesName);
         setListAdapter(myAdapter);
+        ListViewAdapter.setListViewHeightBasedOnChildren(getListView());
 	}	
 	
 	@Override
 	protected void onListItemClick(ListView list, View view, int position, long id) {
 		super.onListItemClick(list, view, position, id);
-		String selectedItem = (String) getListView().getItemAtPosition(position);
+		String selectedItem = (String) list.getItemAtPosition(position);
 		Intent mIntent = null;
 		String packname = null;
 		String classname = null;
