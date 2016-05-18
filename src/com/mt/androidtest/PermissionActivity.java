@@ -1,7 +1,6 @@
 package com.mt.androidtest;
 
 import java.lang.reflect.Method;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -15,72 +14,94 @@ import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-public class PermissionActivity extends Activity implements View.OnClickListener{
+public class PermissionActivity extends Activity implements AdapterView.OnItemClickListener{
     private PowerManager mPowerManager =null;
 	private TelephonyManager telephonyManager=null;
 	private PackageManager mPackageManager=null;
 	private IntentFilter mUrgentFilter=null;
 	boolean isPermissionGranted = false;
-	int [] buttonID ={
-			  R.id.btn_shutdown,
-			  R.id.btn_gotosleep
-	};
+	private ListView mListViewFT=null;
+	private ListViewAdapter mListViewAdapterFT = null;
+	private String [] mMethodNameFT={"setListenCall","unSetListenCall","setListenCallAnother","unSetListenCallAnother"
+			,"shutdown","gotosleep"};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_permission);
 		mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		mPackageManager = getPackageManager();
-		for(int i=0;i<buttonID.length;i++){
-			((Button)findViewById(buttonID[i])).setOnClickListener(this);
-		}
-		testFunctionsRegister();
+		initListFTData();
 	}
 
+	@Override
+	protected void onResume(){	
+		super.onResume();
+		ALog.Log("onResume",this);
+	}
+
+	@Override
+	protected void onPause(){
+		super.onPause();
+		ALog.Log("onPause",this);
+	}	
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		testFunctionsUnRegister();
+		ALog.Log("onDestroy",this);
 	}	
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		Intent intent=null;
-		switch(v.getId()){
-		case	R.id.btn_shutdown:
-			powerOperate("shutdown");
-			//powerOperate2("shutdown");
-		break;
-		case R.id.btn_gotosleep:
-			//powerOperate("goToSleep");
-			powerOperate2("goToSleep");
-		break;
-		}
-	}
-
-	public void testFunctionsRegister(){
-		//1、监听来电状态
-		setListenCall();
-		setListenCallAnother();
+	
+	public void initListFTData(){
+		mListViewAdapterFT = new ListViewAdapter(this);
+		mListViewAdapterFT.setMode(2);		
+		mListViewAdapterFT.setupList(mMethodNameFT);
+		mListViewFT=(ListView)findViewById(R.id.listview_functions);		
+		mListViewFT.setAdapter(mListViewAdapterFT);
+		mListViewFT.setOnItemClickListener(this);
 	}
 	
-	public void testFunctionsUnRegister(){
-		//1、取消监听来电状态
-		unSetListenCall();
-		unSetListenCallAnother();
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
+		// TODO Auto-generated method stub
+		switch(mMethodNameFT[position]){
+		case "setListenCall":
+			setListenCall();
+			break;
+		case "unSetListenCall":
+			unSetListenCall();
+			break;
+		case "setListenCallAnother"://检测组件是否存在
+			setListenCallAnother();
+			break;
+		case "unSetListenCallAnother":
+			unSetListenCallAnother();
+			break;					
+		case "shutdown":
+			powerOperate("shutdown");
+			//powerOperate2("shutdown");
+			break;		
+		case "gotosleep":
+			//powerOperate("goToSleep");
+			powerOperate2("goToSleep");
+			break;					
+		}
+	
 	}
     
     /**
      *setListenCall：不需要权限<uses-permission android:name="android.permission.READ_PHONE_STATE" />
      */
-    public void setListenCall(){
+    public void setListenCall(){//监听来电状态
         telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
     
-    public void unSetListenCall(){
+    public void unSetListenCall(){//取消监听来电状态
     	 telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
     }
     private PhoneStateListener phoneStateListener = new PhoneStateListener() {
@@ -106,7 +127,7 @@ public class PermissionActivity extends Activity implements View.OnClickListener
      * 注意：满足1)测试机是android6.0以上版本;2)编译环境的 targetSdkVersion大于22这两个条件，上述READ_PHONE_STATE权限申请不到，需要设置
      * 用户交互界面让用户手动授权
      */
-    public void setListenCallAnother(){
+    public void setListenCallAnother(){//监听来电状态
     	String permissionDes = Manifest.permission.READ_PHONE_STATE;
     	isPermissionGranted = checkPermissionGranted(permissionDes);
     	if(!isPermissionGranted)return;
@@ -115,7 +136,7 @@ public class PermissionActivity extends Activity implements View.OnClickListener
 		this.registerReceiver(mIncallReceiver, mUrgentFilter);
     }
     
-    public void unSetListenCallAnother(){
+    public void unSetListenCallAnother(){//取消监听来电状态
     	if(isPermissionGranted){
     		this.unregisterReceiver(mIncallReceiver);
     	}

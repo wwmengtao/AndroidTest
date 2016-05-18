@@ -2,7 +2,6 @@ package com.mt.androidtest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.GridView;
 import android.widget.ListView;
+
 public class SwitcherDemoActivity extends Activity   implements Handler.Callback{
 	GridView mGridView = null;
 	ListView mListView = null;

@@ -51,6 +51,16 @@ public class ListViewAdapter extends BaseAdapter {
     	}
     }
 
+	public void setupList(String [] mArrayFT){
+		mList.clear();
+		HashMap<String, Object> map = null;
+		for(int i=0;i<mArrayFT.length;i++){
+			map = new HashMap<String, Object>();
+			map.put("itemText", mArrayFT[i]);
+			mList.add(map);
+		}
+	}
+    
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = null;
         if (convertView == null) {

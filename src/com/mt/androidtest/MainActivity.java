@@ -2,9 +2,7 @@ package com.mt.androidtest;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -37,8 +35,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 	private List<String> listActivities;
 	private ListView mListViewFT=null;
 	private ListViewAdapter mListViewAdapterFT = null;
-	private ArrayList<HashMap<String, Object>> mListViewAdapterFTData = new ArrayList<HashMap<String, Object>>();
-	private String [] mArrayFT={"Dialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
+	private String [] mMethodNameFT={"Dialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
 	String NOTIFICATION_ID="AndroidTest.Notification";
 	boolean isNotificationShown=false;
 	@Override
@@ -70,44 +67,19 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		if(isLogRun)ALog.Log("onDestroy",this);
 	}	
 	
-	public void initListActivityData(){
-		listActivities = new ArrayList<String>();
-		listActivities.add("PermissionActivity");
-		listActivities.add("ResourceActivity");
-		listActivities.add("ShowViewActivity");
-		listActivities.add("SwitcherDemoActivity");
-		listActivities.add("SysAppsActivity");
-		listActivities.add("StartActivity");
-		listActivities.add("DocumentsActivity");
-		listActivities.add("DownloadProviderUI");
-		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.list_row, R.id.listText, listActivities);
-        setListAdapter(myAdapter);
-	}
-	
 	public void initListFTData(){
-		mListViewFT=(ListView)findViewById(R.id.listview_functions);
 		mListViewAdapterFT = new ListViewAdapter(this);
-		loadListViewAdapterFTData();
-		mListViewAdapterFT.setMode(2);		
-		mListViewAdapterFT.setupList(mListViewAdapterFTData);
+		mListViewAdapterFT.setMode(2);
+		mListViewAdapterFT.setupList(mMethodNameFT);
+		mListViewFT=(ListView)findViewById(R.id.listview_functions);		
 		mListViewFT.setAdapter(mListViewAdapterFT);
 		mListViewFT.setOnItemClickListener(this);
-	}
-	
-	public void loadListViewAdapterFTData(){
-		mListViewAdapterFTData.clear();
-		HashMap<String, Object> map = null;
-		for(int i=0;i<mArrayFT.length;i++){
-			map = new HashMap<String, Object>();
-			map.put("itemText", mArrayFT[i]);
-			mListViewAdapterFTData.add(map);
-		}
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
 		// TODO Auto-generated method stub
-		switch(mArrayFT[position]){
+		switch(mMethodNameFT[position]){
 		case "Dialog":
 			showDialog();
 			break;
@@ -128,8 +100,21 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 			reflectCallListAll();
 			break;		
 		}
-	
 	}
+	
+	public void initListActivityData(){
+		listActivities = new ArrayList<String>();
+		listActivities.add("PermissionActivity");
+		listActivities.add("ResourceActivity");
+		listActivities.add("ShowViewActivity");
+		listActivities.add("SwitcherDemoActivity");
+		listActivities.add("SysAppsActivity");
+		listActivities.add("StartActivity");
+		listActivities.add("DocumentsActivity");
+		listActivities.add("DownloadProviderUI");
+		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.list_row, R.id.listText, listActivities);
+        setListAdapter(myAdapter);
+	}	
 	
 	@Override
 	protected void onListItemClick(ListView list, View view, int position, long id) {
