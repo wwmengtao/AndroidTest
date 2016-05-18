@@ -37,7 +37,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 	private ListViewAdapter mListViewAdapterFT = null;
 	private String [] mMethodNameFT={"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
 	private String [] mActivitiesName={"PermissionActivity","ResourceActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
-			"SysAppsActivity","StartActivity","DocumentsActivity","DownloadProviderUI"};		
+			"StartActivity","DocumentsActivity","DownloadProviderUI"};		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
