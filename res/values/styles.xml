@@ -17,16 +17,10 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
-	<style name="classicmode_base_text_style">
-        <item name="android:textColor">@color/black</item>
-    </style>
-	<style name="classicmode_remaintime_text_style" parent="classicmode_base_text_style">
-	     <item name="android:textColor">@color/black</item>
-	     <item name="android:textSize">12sp</item>
-    </style>
-    
-    <style name="classicmode_remaintime_number_style">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">20sp</item>
+    <style name="textview_1">
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
     </style>    
+            
 </resources>

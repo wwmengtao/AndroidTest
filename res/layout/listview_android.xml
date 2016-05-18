@@ -7,11 +7,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
         android:gravity="start"
-        android:text="Start activity"/>
+        android:text="Start activity"
+        style="@style/textview_1"/>
      <ListView 
 	     android:layout_width="match_parent"
 	     android:layout_height="wrap_content"
