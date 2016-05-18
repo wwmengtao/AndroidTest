@@ -2,7 +2,6 @@ package com.mt.androidtest;
 
 import java.lang.reflect.Method;
 import java.util.List;
-
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -23,10 +22,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -38,7 +35,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
     private NotificationManager mNotificationManager = null;
 	private ListView mListViewFT=null;
 	private ListViewAdapter mListViewAdapterFT = null;
-	private String [] mMethodNameFT={"Dialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
+	private String [] mMethodNameFT={"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
 	private String [] mActivitiesName={"PermissionActivity","ResourceActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
 			"SysAppsActivity","StartActivity","DocumentsActivity","DownloadProviderUI"};		
 	@Override
@@ -73,7 +70,8 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 	public void initListFTData(){
 		mListViewAdapterFT = new ListViewAdapter(this);
 		mListViewAdapterFT.setMode(2);
-		mListViewAdapterFT.setupList(this);
+		//mListViewAdapterFT.setupList(this);
+		mListViewAdapterFT.setupList(mMethodNameFT);
 		mListViewFT=(ListView)findViewById(R.id.listview_functions);	
 		mListViewFT.setOnItemClickListener(this);		
 		mListViewFT.setAdapter(mListViewAdapterFT);
@@ -83,21 +81,9 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
 		// TODO Auto-generated method stub
-		String methodName = (String)mListViewAdapterFT.mList.get(position).get("itemText");
-		Class<?> mActivityClass = this.getClass();
-		Method [] mActivityMethods = mActivityClass.getDeclaredMethods();
-		Method m = getExistedMethod(mActivityMethods,methodName);
-		if(null!=m){
-			m.setAccessible(true);
-			try{
-				m.invoke(this);
-			}catch(Exception ex){
-				ALog.Log("Exception:"+m.getName());
-			}
-		}
-		/*
+		String methodName = (String)mListViewAdapterFT.mList.get(position).get("itemText"); 
 		switch(methodName){
-		case "Dialog":
+		case "showDialog":
 			showDialog();
 			break;
 		case "Notification":
@@ -116,6 +102,21 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		case "reflectCallListAll":
 			reflectCallListAll();
 			break;		
+		}
+		/*
+		Method m = (Method)mListViewAdapterFT.mMethodList.get(position);
+		Class[]ParameterTypes = m.getParameterTypes();
+		for(int i=0;i<ParameterTypes.length;i++){
+			ALog.Log("ParameterTypes[i]:"+ParameterTypes[i]);
+		}
+		if(null!=m){
+			m.setAccessible(true);
+			
+			try{
+				m.invoke(this,ParameterTypes);
+			}catch(Exception ex){
+				ALog.Log("Exception:"+m.getName());
+			}
 		}*/
 	}
 	

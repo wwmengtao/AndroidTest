@@ -2,9 +2,7 @@ package com.mt.androidtest;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import com.mt.androidtest.R;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
@@ -20,6 +18,7 @@ import android.widget.TextView;
 public class ListViewAdapter extends BaseAdapter {
 //    private Context mContext;
     ArrayList <HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
+    ArrayList <Method> mMethodList = new ArrayList<Method>();
     private LayoutInflater listContainer;
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
@@ -66,16 +65,23 @@ public class ListViewAdapter extends BaseAdapter {
 		}
 	}
     
+	/**
+	 * 反射获取对象内部的所有方法
+	 * @param obj
+	 */
 	public void setupList(Object obj){
 		mList.clear();
+		mMethodList.clear();
+		String methodName=null;
 		HashMap<String, Object> map = null;
 		Class<?> mClass = obj.getClass();
 		Method [] mMethods = mClass.getDeclaredMethods();
 		for(Method mMethod:mMethods){
+			methodName = mMethod.getName();
 			map = new HashMap<String, Object>();
-			//ALog.Log("mMethod:"+mMethod.getName());
-			map.put("itemText", mMethod.getName());
+			map.put("itemText", methodName);
 			mList.add(map);
+			mMethodList.add(mMethod);
 		}
 	}
 	
