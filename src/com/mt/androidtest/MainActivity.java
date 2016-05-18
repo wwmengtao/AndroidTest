@@ -103,7 +103,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 	}
 	
 	public void initListActivityData(){
-		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.list_row, R.id.listText, mActivitiesName);
+		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.item_getview_android, R.id.listText, mActivitiesName);
         setListAdapter(myAdapter);
 	}	
 	

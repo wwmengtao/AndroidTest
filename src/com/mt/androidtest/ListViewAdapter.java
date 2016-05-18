@@ -69,7 +69,7 @@ public class ListViewAdapter extends BaseAdapter {
         		view = listContainer.inflate(R.layout.item_getview, parent,false);
            	break;
         	case 2:
-        		view = listContainer.inflate(R.layout.item_ft_getview, parent,false);
+        		view = listContainer.inflate(R.layout.item_getview_function, parent,false);
            	break;           	
             }
         }else {
