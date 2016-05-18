@@ -1,7 +1,6 @@
 package com.mt.androidtest;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -30,14 +29,15 @@ import android.widget.Toast;
 
 public class MainActivity extends ListActivity implements View.OnClickListener,DialogInterface.OnClickListener,AdapterView.OnItemClickListener{
 	boolean isLogRun=true;
+	boolean isNotificationShown=false;	
+	private String NOTIFICATION_ID="AndroidTest.Notification";
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
-	private List<String> listActivities;
 	private ListView mListViewFT=null;
 	private ListViewAdapter mListViewAdapterFT = null;
 	private String [] mMethodNameFT={"Dialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
-	String NOTIFICATION_ID="AndroidTest.Notification";
-	boolean isNotificationShown=false;
+	private String [] mActivitiesName={"PermissionActivity","ResourceActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
+			"SysAppsActivity","StartActivity","DocumentsActivity","DownloadProviderUI"};		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,16 +103,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 	}
 	
 	public void initListActivityData(){
-		listActivities = new ArrayList<String>();
-		listActivities.add("PermissionActivity");
-		listActivities.add("ResourceActivity");
-		listActivities.add("ShowViewActivity");
-		listActivities.add("SwitcherDemoActivity");
-		listActivities.add("SysAppsActivity");
-		listActivities.add("StartActivity");
-		listActivities.add("DocumentsActivity");
-		listActivities.add("DownloadProviderUI");
-		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.list_row, R.id.listText, listActivities);
+		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.list_row, R.id.listText, mActivitiesName);
         setListAdapter(myAdapter);
 	}	
 	
