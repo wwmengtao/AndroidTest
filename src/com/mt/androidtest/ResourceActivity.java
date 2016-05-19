@@ -21,6 +21,7 @@ import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +36,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     private EditText mEditText=null;
 	private TextView mTextView_Switchbar=null;	
     private ImageView mImageView=null;	
+    private CheckBox mCheckBox=null;
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
     private Resources mResource=null;
@@ -47,7 +49,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		mTextView_Switchbar=(TextView) findViewById(R.id.txStatus);
 		mLayout_linear_switchbar=(LinearLayout) findViewById(R.id.switch_bar);	
 		mLayout_linear_switchbar.setOnClickListener(this);
-		mRelativeLayout=(RelativeLayout) findViewById(R.id.relativelayout_resource);  
+		mRelativeLayout=(RelativeLayout) findViewById(R.id.relativelayout_resource); 
         metric = getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
 		for(int i=0;i<buttonID.length;i++){
@@ -77,6 +79,12 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 	public void testFunctions(){
 		setSwitchBarBackground();
 		setEditText();
+		setCheckBoxParams();
+	}
+	
+	public void setCheckBoxParams(){
+		mCheckBox = (CheckBox)findViewById(R.id.checkbox);
+		setLayoutParams(mCheckBox,0.6);
 	}
 	
 	boolean isSwitchBarClicked=false;
@@ -99,10 +107,10 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		mEditText.setSelection(mText.length()); //光标一直位于内容后面，方便输入
 	}
 	
-    public void setLayoutParams(View mView){
+    public void setLayoutParams(View mView, double multi){
     	ViewGroup.LayoutParams lp = mView.getLayoutParams();
-    	lp.width= (int)(mDensityDpi*0.3);//144;
-    	lp.height = (int)(mDensityDpi*0.3);//144;
+    	lp.width= (int)(mDensityDpi*multi);
+    	lp.height = (int)(mDensityDpi*multi);
     	mView.setLayoutParams(lp);
     }
 	
@@ -224,7 +232,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 			mRelativeLayout.setVisibility(View.VISIBLE);
 			mTextView = (TextView) findViewById(R.id.tv_relative);
 			mImageView = (ImageView) findViewById(R.id.img_relative);
-    		setLayoutParams(mImageView);
+    		setLayoutParams(mImageView,0.3);
     		setTextView();
     		setImageView();
     		getViewColors();
