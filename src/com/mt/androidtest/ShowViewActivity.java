@@ -61,7 +61,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 		super.onPause();
 		ALog.Log("onPause",this);
         if (mHandler != null) {
-        	mHandler.removeCallbacksAndMessages(null);
+        	mHandler.removeCallbacksAndMessages(null);//¿ÉÒÔ±ÜÃâÄÚ´æĞ¹Â¶
         }
 		super.onPause();
 	}
