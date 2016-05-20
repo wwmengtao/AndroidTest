@@ -626,23 +626,21 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_base=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_permission=0x7f030002;
-        public static final int activity_resource=0x7f030003;
-        public static final int activity_show_view=0x7f030004;
-        public static final int activity_switcher_demo=0x7f030005;
-        public static final int activity_sys_apps=0x7f030006;
-        public static final int buttons_power=0x7f030007;
-        public static final int item_getview=0x7f030008;
-        public static final int item_getview_android=0x7f030009;
-        public static final int item_getview_function=0x7f03000a;
-        public static final int item_sysappdetails=0x7f03000b;
-        public static final int linearlayout_showview=0x7f03000c;
-        public static final int linearlayout_switchbar=0x7f03000d;
-        public static final int linearlayout_textsize=0x7f03000e;
-        public static final int listview_android=0x7f03000f;
-        public static final int listview_functions=0x7f030010;
-        public static final int relativelayout_resource=0x7f030011;
+        public static final int activity_resource=0x7f030001;
+        public static final int activity_show_view=0x7f030002;
+        public static final int activity_switcher_demo=0x7f030003;
+        public static final int activity_sys_apps=0x7f030004;
+        public static final int buttons_power=0x7f030005;
+        public static final int item_getview=0x7f030006;
+        public static final int item_getview_android=0x7f030007;
+        public static final int item_getview_function=0x7f030008;
+        public static final int item_sysappdetails=0x7f030009;
+        public static final int linearlayout_showview=0x7f03000a;
+        public static final int linearlayout_switchbar=0x7f03000b;
+        public static final int linearlayout_textsize=0x7f03000c;
+        public static final int listview_android=0x7f03000d;
+        public static final int listview_functions=0x7f03000e;
+        public static final int relativelayout_resource=0x7f03000f;
     }
     public static final class menu {
         public static final int main=0x7f080000;
