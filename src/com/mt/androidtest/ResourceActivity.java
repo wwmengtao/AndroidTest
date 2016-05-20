@@ -299,7 +299,8 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		//mDrawable = getDrawbleFromSrc();//从src中获取图片资源
 		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
 		//mDrawable = getDrawableFromResourcesXml();//从系统xml资源获取图片
-    	//mDrawable = getDrawbleFromAssetXml();//方法暂时FC！！！！！
+    	//mDrawable = getDrawbleFromAssetXml();//方法不可行：无法在运行时加载纯的xml文件
+    	//mDrawable = getDrawbleFromAssetAaptXml();//此方法仍然不成功，提示java.io.FileNotFoundException: pic_switcher/ic_qs_flashlight_on.xml
 		mImageView.setBackground(mDrawable);
 	}    
     
@@ -329,7 +330,12 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		}
     	return mDrawable;
     }
-    
+    /**
+	 * Important For performance reasons, view inflation relies heavily on pre-processing of XML files that is done at build time. 
+	 * Therefore, it is not currently possible to use an XmlPullParser over a plain XML file at runtime.
+	 * 出于性能方面的考虑，试图加载主要依赖于编译阶段的预处理xml文件。因此，当前不可能在运行时使用XmlPullParser解析纯的xml文件。
+	 * @return
+	 */
     public Drawable getDrawbleFromAssetXml(){
     	Drawable mDrawable = null;
     	XmlPullParser mXmlPullParser = null;
@@ -354,6 +360,22 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
             }
         }
         return mDrawable;
+    }
+    
+    /**
+     * 使用aapt命令生成编译过的ic_qs_flashlight_on.xml后，拷贝进assets目录。但是此方法仍然不成功。
+     * 注意：下列openXmlResourceParser方法要求“Retrieve a parser for a compiled XML file.”
+     * @return 
+     */
+    public Drawable getDrawbleFromAssetAaptXml(){
+    	Drawable mDrawable = null;
+    	try {
+    	    String filename = "pic_switcher/ic_qs_flashlight_on.xml";
+    	    mDrawable = Drawable.createFromXml(getResources(), getAssets().openXmlResourceParser(filename));
+    	} catch (Exception e) {
+    	    e.printStackTrace();
+    	}
+    	return mDrawable;
     }
     
     public Drawable getDrawableFromResourcesXml(){
