@@ -1,8 +1,8 @@
 package com.mt.androidtest;
 
 import java.lang.reflect.Method;
+
 import android.Manifest;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,38 +15,35 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
-public class PermissionActivity extends Activity implements AdapterView.OnItemClickListener{
+public class PermissionActivity extends BaseActivity{
     private PowerManager mPowerManager =null;
 	private TelephonyManager telephonyManager=null;
 	private PackageManager mPackageManager=null;
 	private IntentFilter mUrgentFilter=null;
 	boolean isPermissionGranted = false;
-	private ListView mListViewFT=null;
-	private ListViewAdapter mListViewAdapterFT = null;
 	private String [] mMethodNameFT={"setListenCall","unSetListenCall","setListenCallAnother","unSetListenCallAnother"
 			,"shutdown","gotosleep"};
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ALog.Log("onCreate",this);
-		setContentView(R.layout.activity_permission);
 		mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		mPackageManager = getPackageManager();
-		initListFTData();
+		initListFTData(mMethodNameFT);
+		initListActivityData(null);
 	}
 
 	@Override
-	protected void onResume(){	
+	public void onResume(){	
 		super.onResume();
 		ALog.Log("onResume",this);
 	}
 
 	@Override
-	protected void onPause(){
+	public void onPause(){
 		super.onPause();
 		ALog.Log("onPause",this);
 	}	
@@ -57,13 +54,9 @@ public class PermissionActivity extends Activity implements AdapterView.OnItemCl
 		ALog.Log("onDestroy",this);
 	}	
 	
-	public void initListFTData(){
-		mListViewAdapterFT = new ListViewAdapter(this);
-		mListViewAdapterFT.setMode(2);		
-		mListViewAdapterFT.setupList(mMethodNameFT);
-		mListViewFT=(ListView)findViewById(R.id.listview_functions);		
-		mListViewFT.setAdapter(mListViewAdapterFT);
-		mListViewFT.setOnItemClickListener(this);
+	@Override
+	public void initListFTData(String [] mMethodNameFT){
+		super.initListFTData(mMethodNameFT);
 	}
 	
 	@Override

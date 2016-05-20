@@ -2,9 +2,9 @@ package com.mt.androidtest;
 
 import java.lang.reflect.Method;
 import java.util.List;
+
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,40 +23,39 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends ListActivity implements View.OnClickListener,DialogInterface.OnClickListener,AdapterView.OnItemClickListener{
+public class MainActivity extends BaseActivity implements DialogInterface.OnClickListener{
 	boolean isLogRun=true;
 	boolean isNotificationShown=false;	
+	private String packageName = null;
+	private String className = null;		
 	private String NOTIFICATION_ID="AndroidTest.Notification";
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
-	private ListView mListViewFT=null;
-	private ListViewAdapter mListViewAdapterFT = null;
 	private String [] mMethodNameFT={"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
 	private String [] mActivitiesName={"PermissionActivity","ResourceActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
 			"StartActivity","DocumentsActivity","DownloadProviderUI"};		
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(isLogRun)ALog.Log("onCreate",this);
-		setContentView(R.layout.activity_main);
 		mPackageManager = getPackageManager();
+		packageName = this.getPackageName();
 		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-		initListActivityData();
-		initListFTData();
+		initListFTData(mMethodNameFT);
+		initListActivityData(mActivitiesName);
 	}
 	
 	@Override
-	protected void onResume(){	
+	public void onResume(){	
 		super.onResume();
 		if(isLogRun)ALog.Log("onResume",this);
 	}
 
 	@Override
-	protected void onPause(){
+	public void onPause(){
 		super.onPause();
 		if(isLogRun)ALog.Log("onPause",this);
 	}
@@ -67,21 +66,15 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		if(isLogRun)ALog.Log("onDestroy",this);
 	}	
 	
-	public void initListFTData(){
-		mListViewAdapterFT = new ListViewAdapter(this);
-		mListViewAdapterFT.setMode(2);
-		//mListViewAdapterFT.setupList(this);
-		mListViewAdapterFT.setupList(mMethodNameFT);
-		mListViewFT=(ListView)findViewById(R.id.listview_functions);	
-		mListViewFT.setOnItemClickListener(this);		
-		mListViewFT.setAdapter(mListViewAdapterFT);
-		ListViewAdapter.setListViewHeightBasedOnChildren(mListViewFT);
+	@Override
+	public void initListFTData(String [] mMethodNameFT){
+		super.initListFTData(mMethodNameFT);
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
 		// TODO Auto-generated method stub
-		String methodName = (String)mListViewAdapterFT.mList.get(position).get("itemText"); 
+		String methodName = (String)getListViewAdapterFT().mList.get(position).get("itemText"); 
 		switch(methodName){
 		case "showDialog":
 			showDialog();
@@ -120,11 +113,9 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		}*/
 	}
 	
-	public void initListActivityData(){
-		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.item_getview_android, R.id.listText, mActivitiesName);
-        setListAdapter(myAdapter);
-        ListViewAdapter.setListViewHeightBasedOnChildren(getListView());
-	}	
+	public void initListActivityData(String [] mActivitiesName){
+		super.initListActivityData(mActivitiesName);
+	}
 	
 	@Override
 	protected void onListItemClick(ListView list, View view, int position, long id) {
@@ -134,30 +125,29 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 		String packname = null;
 		String classname = null;
 		switch(selectedItem){
-		case "DocumentsActivity":
-			mIntent = getIntent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
-			break;
-		case "DownloadProviderUI":
-			mIntent = getIntent("android.intent.action.VIEW_DOWNLOADS");
-			break;
-		case "StartActivity"://打开其他应用的activity
-			mIntent=new Intent();
-			packname = "com.mt.androidtest2";
-			classname = "com.mt.androidtest2.MainActivity";
-			mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-					| ActivityManager.MOVE_TASK_WITH_HOME
-					| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-					| Intent.FLAG_ACTIVITY_TASK_ON_HOME
-					| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-					);
-			mIntent.setComponent(new ComponentName(packname, classname));
-			break;
-			default://打开本应用的Activity
+			case "DocumentsActivity":
+				mIntent = getIntent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
+				break;
+			case "DownloadProviderUI":
+				mIntent = getIntent("android.intent.action.VIEW_DOWNLOADS");
+				break;
+			case "StartActivity"://打开其他应用的activity
 				mIntent=new Intent();
-				packname = "com.mt.androidtest";
-				classname = "com.mt.androidtest."+selectedItem;
+				packname = "com.mt.androidtest2";
+				classname = "com.mt.androidtest2.MainActivity";
+				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+						| ActivityManager.MOVE_TASK_WITH_HOME
+						| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+						| Intent.FLAG_ACTIVITY_TASK_ON_HOME
+						| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+						);
 				mIntent.setComponent(new ComponentName(packname, classname));
 				break;
+			default://打开本应用的Activity
+				mIntent=new Intent();
+				className = packageName+"."+selectedItem;
+				mIntent.setComponent(new ComponentName(packageName, className));
+				break;				
 		}
 		try{
 			startActivity(mIntent);
@@ -312,11 +302,6 @@ public class MainActivity extends ListActivity implements View.OnClickListener,D
 			}
 		}
 		return null;
-	}
-
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
 	}
 
 	/**
