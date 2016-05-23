@@ -101,8 +101,14 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 			break;		
 			case R.id.btn_asynctask_cancel:
 		        if (mAsyncTask != null) {
-		        	//下列cancel(false)和cancel(true)区别：true可以中断可中断操作，比如Sleep等，但是二者都不能终止doInBackground的调用完成
-		        	//二者的调用都会使得onPostExecute不被调用而调用onCancelled
+		        	/**
+		        	 * 1)在java的线程中，没有办法停止一个正在运行中的线程。在Android的AsyncTask中也是一样的。
+		        	 * 2)下列cancel(false)和cancel(true)区别：true可以中断可中断操作，比如Sleep等，但是二者都不能终止
+		        	 * doInBackground的调用完成。二者的调用都会使得onPostExecute不被调用而调用onCancelled.
+		        	 * 3)cancel()方法不一定能成功，所以 onCancel() 回调方法不一定被调用。
+		        	 */
+		        	
+		        	//
 		        	mAsyncTask.cancel(false);
 		        	//mAsyncTask.cancel(true);
 		        	ALog.Log("mAsyncTask.isCancelled():"+mAsyncTask.isCancelled());
