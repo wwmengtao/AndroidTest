@@ -2,7 +2,9 @@ package com.mt.androidtest;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,10 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ShowViewActivity extends Activity implements Handler.Callback, View.OnClickListener{
+	boolean isLogRunAll=false;
+	boolean isLogRunSpec=true;
 	int [] buttonID = {
 			  R.id.btn_showview,
 			  R.id.btn_showfixedlength,
-			  R.id.btn_showtextsize};
+			  R.id.btn_showtextsize,
+			  R.id.btn_asynctask_cancel};
 	private LinearLayout mLayout=null;
 	private TextView mTextViewAdded=null;
 	private View mLinearLayout_TextSize=null;
@@ -31,10 +36,12 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	private final int MSG_SHOW_VIEW_ADD_VIEW=0x002;
 	private final int MSG_SHOW_VIEW_FIXED_LENGTH=0x003;
 	private final int MSG_SHOW_VIEW_FINALLY=0x004;	
+	boolean mIsProcessTaskRuning = false;
+    private ConsumptionRefreshTask mAsyncTask=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ALog.Log("onCreate",this);
+		if(isLogRunAll)ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_show_view);
 		mLayout=(LinearLayout) findViewById(R.id.linearlayout_showview);
 		Button btn=null;
@@ -50,16 +57,20 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	@Override
 	protected void onResume(){	
 		super.onResume();
-		ALog.Log("onResume",this);
+		if(isLogRunAll)ALog.Log("onResume",this);
         if (mHandler == null) {
         	mHandler = new Handler(this);
+        }
+        if (!mIsProcessTaskRuning) {//此时自动转屏
+        	mAsyncTask = new ConsumptionRefreshTask();
+        	mAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);	
         }
 	}
 	
 	@Override
 	protected void onPause(){
 		super.onPause();
-		ALog.Log("onPause",this);
+		if(isLogRunAll)ALog.Log("onPause",this);
         if (mHandler != null) {
         	mHandler.removeCallbacksAndMessages(null);//可以避免内存泄露
         }
@@ -69,7 +80,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ALog.Log("onDestroy",this);
+		if(isLogRunAll)ALog.Log("onDestroy",this);
 	}		
 	
 	@Override
@@ -88,9 +99,54 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 					mLinearLayout_TextSize.setVisibility(View.GONE);
 				}
 			break;		
+			case R.id.btn_asynctask_cancel:
+		        if (mAsyncTask != null) {
+		        	mAsyncTask.cancel(mAsyncTask.isCancelled()?false:true);
+		        	mIsProcessTaskRuning = false;
+		    	}
+				break;
 		}
 	}
-	
+    private class ConsumptionRefreshTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(isLogRunSpec)ALog.Log("onPreExecute");
+            mIsProcessTaskRuning = true ;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+        	if(isLogRunSpec)ALog.Log("doInBackground");
+        	//一、下列代码说明：mAsyncTask.cancel(true)可以打断sleep，直接跳到if(isLogRunAll)ALog.Log("doInBackground:sleep end");
+        	try {
+				Thread.sleep(1000*3);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	if(isLogRunSpec)ALog.Log("doInBackground:sleep end");
+        	//二、下列代码说明：mAsyncTask.cancel(true)不可以打断for循环，除非添加标记位判断
+        	int j=0;
+        	for(int i=0;i<0xFFFFFF;i++){
+         		//if(!mIsProcessTaskRuning)break;//只能通过标记位判断跳出for循环
+        	}
+        	if(isLogRunSpec)ALog.Log("doInBackground:for end");
+        	return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            mIsProcessTaskRuning = false;
+            if(isLogRunSpec)ALog.Log("onPostExecute");
+            super.onPostExecute(result);
+        }
+        
+        @Override
+        protected void onCancelled(Void result){
+        	if(isLogRunSpec)ALog.Log("onCancelled");
+        }
+    }  
 	@Override
 	public boolean handleMessage(Message msg) {
 		// TODO Auto-generated method stub
@@ -115,7 +171,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 			}
 			break;
 		case MSG_SHOW_VIEW_FIXED_LENGTH:
-			ALog.Log("MSG_SHOW_VIEW_FIXED_LENGTH");
+			if(isLogRunAll)ALog.Log("MSG_SHOW_VIEW_FIXED_LENGTH");
 			mTVAddedParams.isShowAddView=false;
 			if(null==mTextViewAdded){
 				mHandler.sendEmptyMessage(MSG_INIT_TEXT_VIEW_ADDED);
@@ -169,9 +225,9 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 		showTextSizeView(mTV1_TextSize,time_now_str);
 		time_now_str = "123456789123456789123456789";
 		showTextSizeView(mTV2_TextSize,time_now_str);
-		//ALog.Log("/------------------------onWindowFocusChanged------------------------/");
+		//if(isLogRunAll)ALog.Log("/------------------------onWindowFocusChanged------------------------/");
 		showWidthAndHeightLog();
-		//ALog.Log("/************************onWindowFocusChanged************************/");
+		//if(isLogRunAll)ALog.Log("/************************onWindowFocusChanged************************/");
 	}	
 	
 	/**
@@ -257,7 +313,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 		//下列直接获取控件宽度为0，必须使用ViewTreeObserver.OnGlobalLayoutListener监听器
 		/*
 		textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getMeasuredWidth();
-		ALog.Log("mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
+		if(isLogRunAll)ALog.Log("mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
 		*/
 		//方法1.1、mTextViewAdded直接设置监听器
 		setOnGlobalLayoutListener();
@@ -268,11 +324,11 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 		mTextViewAdded.post(new Runnable() {
 			 public void run() {
 				 int widthOfView = mTextViewAdded.getWidth();
-				 ALog.Log("post_widthOfView:"+widthOfView);	
+				 if(isLogRunAll)ALog.Log("post_widthOfView:"+widthOfView);	
 			 }
 		});
 		*/
-		ALog.Log("initTextViewAdded_end");
+		if(isLogRunAll)ALog.Log("initTextViewAdded_end");
 	}
 
 	public void setOnGlobalLayoutListener(){
@@ -282,7 +338,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 				int widthOfView=0;			
 				if(null!=mTextViewAdded){
 					widthOfView = mTextViewAdded.getWidth();
-					ALog.Log("onGlobalLayout_widthOfView:"+widthOfView);	
+					if(isLogRunAll)ALog.Log("onGlobalLayout_widthOfView:"+widthOfView);	
 					if(0!=widthOfView){
 						mTVAddedParams.widthOfTextViewAdded = widthOfView; 
 						mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -319,7 +375,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
     	if(null==mView)return;
     	if(!is_onWindowFocusChanged){
     		String betweenTitle=" ";
-    		ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle+"getMeasuredHeight");
+    		if(isLogRunAll)ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle+"getMeasuredHeight");
     		is_onWindowFocusChanged = true;
     	}
     	String str_ALog=null;
@@ -334,7 +390,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
         String strgetMeasuredWidth = String.format(format,mView.getMeasuredWidth());
         String strgetHeight = String.format(format,mView.getHeight());
         String strgetMeasuredHeight = String.format(format,mView.getMeasuredHeight());
-        ALog.Log(strgetWidth+
+        if(isLogRunAll)ALog.Log(strgetWidth+
         				 strgetMeasuredWidth+
         				 strgetHeight+
         				 strgetMeasuredHeight+
