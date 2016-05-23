@@ -101,7 +101,9 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 			break;		
 			case R.id.btn_asynctask_cancel:
 		        if (mAsyncTask != null) {
-		        	mAsyncTask.cancel(mAsyncTask.isCancelled()?false:true);
+		        	if(!mAsyncTask.isCancelled()){
+		        		mAsyncTask.cancel(true);
+		        	}
 		        	mIsProcessTaskRuning = false;
 		    	}
 				break;
@@ -120,7 +122,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
         	if(isLogRunSpec)ALog.Log("doInBackground");
         	//一、下列代码说明：mAsyncTask.cancel(true)可以打断sleep，直接跳到if(isLogRunAll)ALog.Log("doInBackground:sleep end");
         	try {
-				Thread.sleep(1000*3);
+				Thread.sleep(1000*5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -128,7 +130,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
         	if(isLogRunSpec)ALog.Log("doInBackground:sleep end");
         	//二、下列代码说明：mAsyncTask.cancel(true)不可以打断for循环，除非添加标记位判断
         	int j=0;
-        	for(int i=0;i<0xFFFFFF;i++){
+        	for(int i=0;i<0x1F00000;i++){
          		//if(!mIsProcessTaskRuning)break;//只能通过标记位判断跳出for循环
         	}
         	if(isLogRunSpec)ALog.Log("doInBackground:for end");
