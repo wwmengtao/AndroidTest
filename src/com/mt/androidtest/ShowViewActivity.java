@@ -61,7 +61,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
         if (mHandler == null) {
         	mHandler = new Handler(this);
         }
-        if (!mIsProcessTaskRuning) {//此时自动转屏
+        if (!mIsProcessTaskRuning) {//此时自动转屏，那么将会生成新的AsyncTask，并且之前的AsyncTask仍将继续执行
         	mAsyncTask = new ConsumptionRefreshTask();
         	mAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);	
         }
