@@ -50,6 +50,10 @@
             android:name=".PermissionActivity"
             android:label="@string/title_activity_permission" >
         </activity>
+        <activity
+            android:name=".MyPreferenceActivity"
+            android:label="@string/title_activity_my_preference" >
+        </activity>
     </application>
 
 </manifest>

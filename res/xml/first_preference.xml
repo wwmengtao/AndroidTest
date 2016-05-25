@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+ 
+    <PreferenceCategory android:title="第一组" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/number1_b"
+            android:key="checkbox_key1"
+            android:summary="true"
+            android:title="CheckBoxPreference" />
+ 
+        <EditTextPreference
+            android:defaultValue="M.T"
+            android:icon="@drawable/number1_b"
+            android:key="edit_key1"
+            android:summary="M.T"
+            android:title="EditTextPreference" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="第二组" >
+        <ListPreference
+            android:dialogIcon="@drawable/number2_b"
+            android:entries="@array/citys"
+            android:entryValues="@array/citys_code"
+            android:icon="@drawable/number2_b"
+            android:key="listPreferenc_key"
+            android:summary="圆形的选择(单项选择)"
+            android:title="ListPreference" />
+ 
+        <!-- entries和entryValues对应关系 -->
+        <MultiSelectListPreference
+            android:dialogIcon="@drawable/number2_b"
+            android:entries="@array/citys"
+            android:entryValues="@array/citys_code"
+            android:icon="@drawable/number2_b"
+            android:key="multiSelectListPreference_key"
+            android:summary="方形的选择(多项选择)"
+            android:title="MultiSelectListPreference" />
+    </PreferenceCategory>
+ 
+    <RingtonePreference
+        android:icon="@drawable/number2_b"
+        android:key="RingtonePreference_key1"
+        android:summary="默认铃声"
+        android:title="铃声设置" >
+    </RingtonePreference>
+ 
+    <!-- 点击将浏览和打开网页 -->
+    <Preference
+        android:icon="@drawable/number2_b"
+        android:summary="http://www.baidu.com"
+        android:title="浏览网页" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="http://www.baidu.com" />
+    </Preference>
+ 
+    <SwitchPreference
+        android:defaultValue="false"
+        android:icon="@drawable/number2_b"
+        android:key="switchPreference_key1"
+        android:summary="Wi-Fi开关"
+        android:title="Wi-Fi" />
+ 
+    <!-- 此处将跳转到下一屏设置 -->
+    <PreferenceScreen
+        android:icon="@drawable/number2_b"
+        android:key="preferenceScreen_key"
+        android:persistent="false"
+        android:title="其他设置" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="checkbox_key2"
+            android:summary="false"
+            android:title="CheckBoxPreference" />
+ 
+        <EditTextPreference
+            android:defaultValue="M.T"
+            android:key="edit_key2"
+            android:summary="M.T"
+            android:title="EditTextPreference" />
+    </PreferenceScreen>
+ 
+</PreferenceScreen>
