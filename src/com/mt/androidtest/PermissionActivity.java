@@ -28,6 +28,7 @@ public class PermissionActivity extends BaseActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_base);
 		ALog.Log("onCreate",this);
 		mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);

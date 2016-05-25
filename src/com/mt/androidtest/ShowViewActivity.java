@@ -13,18 +13,14 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ShowViewActivity extends Activity implements Handler.Callback, View.OnClickListener{
+public class ShowViewActivity extends BaseActivity{
 	boolean isLogRunAll=false;
 	boolean isLogRunSpec=true;
-	int [] buttonID = {
-			  R.id.btn_showview,
-			  R.id.btn_showfixedlength,
-			  R.id.btn_showtextsize,
-			  R.id.btn_asynctask_cancel};
 	private LinearLayout mLayout=null;
 	private TextView mTextViewAdded=null;
 	private View mLinearLayout_TextSize=null;
@@ -38,29 +34,26 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	private final int MSG_SHOW_VIEW_FINALLY=0x004;	
 	boolean mIsProcessTaskRuning = false;
     private ConsumptionRefreshTask mAsyncTask=null;
+	private String [] mMethodNameFT={"showViewAdded","showViewFixedLength","showViewFixedSize",
+			"AsynctaskCancel"};
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(isLogRunAll)ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_show_view);
+		super.initListActivityData(null);
+		super.initListFTData(mMethodNameFT);
 		mLayout=(LinearLayout) findViewById(R.id.linearlayout_showview);
-		Button btn=null;
-		for(int i=0;i<buttonID.length;i++){
-			btn = (Button)findViewById(buttonID[i]);
-			btn.setOnClickListener(this);
-		}
 		mLinearLayout_TextSize = findViewById(R.id.linearlayout_textsize);
 	    mTV1_TextSize = (TextView) findViewById(R.id.textview_textsize1);
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
 	}
 
 	@Override
-	protected void onResume(){	
+	public void onResume(){	
 		super.onResume();
 		if(isLogRunAll)ALog.Log("onResume",this);
-        if (mHandler == null) {
-        	mHandler = new Handler(this);
-        }
+		mHandler=getHandler();
         if (!mIsProcessTaskRuning) {//此时自动转屏，那么将会生成新的AsyncTask，并且之前的AsyncTask仍将继续执行
         	mAsyncTask = new ConsumptionRefreshTask();
         	mAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);	
@@ -68,7 +61,7 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	}
 	
 	@Override
-	protected void onPause(){
+	public void onPause(){
 		super.onPause();
 		if(isLogRunAll)ALog.Log("onPause",this);
         if (mHandler != null) {
@@ -81,42 +74,43 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 	public void onDestroy() {
 		super.onDestroy();
 		if(isLogRunAll)ALog.Log("onDestroy",this);
-	}		
+	}
 	
 	@Override
-	public void onClick(View v) {
-		switch(v.getId()){
-			case R.id.btn_showview:		
-				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_ADD_VIEW);
+	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
+		// TODO Auto-generated method stub
+		switch(mMethodNameFT[position]){
+		case "showViewAdded":
+			mHandler.sendEmptyMessage(MSG_SHOW_VIEW_ADD_VIEW);
+			break;	
+		case "showViewFixedLength":
+			mHandler.sendEmptyMessage(MSG_SHOW_VIEW_FIXED_LENGTH);
 			break;		
-			case R.id.btn_showfixedlength:
-				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_FIXED_LENGTH);
+		case "showViewFixedSize":
+			if(!mLinearLayout_TextSize.isShown()){
+				mLinearLayout_TextSize.setVisibility(View.VISIBLE);
+			}else{
+				mLinearLayout_TextSize.setVisibility(View.GONE);
+			}
 			break;
-			case R.id.btn_showtextsize:
-				if(!mLinearLayout_TextSize.isShown()){
-					mLinearLayout_TextSize.setVisibility(View.VISIBLE);
-				}else{
-					mLinearLayout_TextSize.setVisibility(View.GONE);
-				}
-			break;		
-			case R.id.btn_asynctask_cancel:
-		        if (mAsyncTask != null) {
-		        	/**
-		        	 * 1)在java的线程中，没有办法停止一个正在运行中的线程。在Android的AsyncTask中也是一样的。
-		        	 * 2)下列cancel(false)和cancel(true)区别：true可以中断可中断操作，比如Sleep等，但是二者都不能终止
-		        	 * doInBackground的调用完成。二者的调用都会使得onPostExecute不被调用而调用onCancelled.
-		        	 * 3)cancel()方法不一定能成功，所以 onCancel() 回调方法不一定被调用。
-		        	 */
-		        	
-		        	//
-		        	mAsyncTask.cancel(false);
-		        	//mAsyncTask.cancel(true);
-		        	ALog.Log("mAsyncTask.isCancelled():"+mAsyncTask.isCancelled());
-		        	mIsProcessTaskRuning = false;
-		    	}
-				break;
+		case "AsynctaskCancel":
+	        if (mAsyncTask != null) {
+	        	/**
+	        	 * 1)在java的线程中，没有办法停止一个正在运行中的线程。在Android的AsyncTask中也是一样的。
+	        	 * 2)下列cancel(false)和cancel(true)区别：true可以中断可中断操作，比如Sleep等，但是二者都不能终止
+	        	 * doInBackground的调用完成。二者的调用都会使得onPostExecute不被调用而调用onCancelled.
+	        	 * 3)cancel()方法不一定能成功，所以 onCancel() 回调方法不一定被调用。
+	        	 */
+	        	//
+	        	mAsyncTask.cancel(false);
+	        	//mAsyncTask.cancel(true);
+	        	ALog.Log("mAsyncTask.isCancelled():"+mAsyncTask.isCancelled());
+	        	mIsProcessTaskRuning = false;
+	    	}
+	        break;				
 		}
 	}
+	
     private class ConsumptionRefreshTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -162,14 +156,12 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 		// TODO Auto-generated method stub
 		switch(msg.what){
 		case MSG_INIT_TEXT_VIEW_ADDED:
-			setAddViewBtnClickable(false);
 			initTextViewAdded();
 			if(!mLayout.isShown()){
 				mLayout.setVisibility(View.VISIBLE);
 			}
 			break;
 		case MSG_INIT_TEXT_VIEW_ADDED_WIDTH:
-			setAddViewBtnClickable(true);
 			showView();
 			break;
 		case MSG_SHOW_VIEW_ADD_VIEW:
@@ -199,15 +191,6 @@ public class ShowViewActivity extends Activity implements Handler.Callback, View
 			break;
 		}		
 		return false;
-	}	
-
-	public void setAddViewBtnClickable(boolean isClickable){
-		int [] btn_ids={R.id.btn_showview,R.id.btn_showfixedlength};
-		Button btn=null;
-		for(int i=0;i<btn_ids.length;i++){
-			btn = (Button)findViewById(btn_ids[i]);
-			btn.setClickable(isClickable);
-		}
 	}
 	
 	public class textViewAddedParams{
