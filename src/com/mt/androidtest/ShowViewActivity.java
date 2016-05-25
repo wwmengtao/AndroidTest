@@ -11,10 +11,13 @@ import android.os.Message;
 import android.text.TextPaint;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +29,8 @@ public class ShowViewActivity extends BaseActivity{
 	private View mLinearLayout_TextSize=null;
     private TextView mTV1_TextSize=null;
     private TextView mTV2_TextSize=null;    
+    private LinearLayout mParentView=null;    
+    private GridLayout mGridLayout=null;    
     private Handler mHandler;
 	private final int MSG_INIT_TEXT_VIEW_ADDED=0x000;
 	private final int MSG_INIT_TEXT_VIEW_ADDED_WIDTH=0x001;
@@ -35,7 +40,7 @@ public class ShowViewActivity extends BaseActivity{
 	boolean mIsProcessTaskRuning = false;
     private ConsumptionRefreshTask mAsyncTask=null;
 	private String [] mMethodNameFT={"showViewAdded","showViewFixedLength","showViewFixedSize",
-			"AsynctaskCancel"};
+			"AsynctaskCancel","showCalculator"};
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +52,9 @@ public class ShowViewActivity extends BaseActivity{
 		mLinearLayout_TextSize = findViewById(R.id.linearlayout_textsize);
 	    mTV1_TextSize = (TextView) findViewById(R.id.textview_textsize1);
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
+	    mParentView= (LinearLayout) findViewById(R.id.parentView);
+	    mGridLayout=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,null);
+	    mParentView.addView(mGridLayout);
 	}
 
 	@Override
@@ -107,7 +115,14 @@ public class ShowViewActivity extends BaseActivity{
 	        	ALog.Log("mAsyncTask.isCancelled():"+mAsyncTask.isCancelled());
 	        	mIsProcessTaskRuning = false;
 	    	}
-	        break;				
+	        break;		
+		case "showCalculator":
+			if(mParentView.isShown()){
+				mParentView.setVisibility(View.GONE);
+			}else{
+				mParentView.setVisibility(View.VISIBLE);
+			}
+			break;
 		}
 	}
 	
