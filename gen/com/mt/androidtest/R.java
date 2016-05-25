@@ -598,11 +598,11 @@ public final class R {
         public static final int icon=0x7f09000d;
         public static final int img_relative=0x7f09001e;
         public static final int layout_linear_buttons23=0x7f090006;
-        public static final int lenovo_switch=0x7f090015;
+        public static final int lenovo_switch=0x7f090018;
         public static final int linearlayout_listview_android=0x7f090019;
         public static final int linearlayout_listview_functions=0x7f09001a;
         public static final int linearlayout_showview=0x7f090012;
-        public static final int linearlayout_textsize=0x7f090016;
+        public static final int linearlayout_textsize=0x7f090013;
         public static final int listText=0x7f09000b;
         public static final int list_lvp_switchers=0x7f090005;
         public static final int listview_functions=0x7f09001b;
@@ -612,14 +612,14 @@ public final class R {
         public static final int packageName=0x7f09000f;
         public static final int relativelayout_resource=0x7f09001c;
         public static final int sourceDir=0x7f090011;
-        public static final int switch_bar=0x7f090013;
+        public static final int switch_bar=0x7f090016;
         public static final int text_ft=0x7f09000c;
         public static final int textview=0x7f090001;
-        public static final int textview_textsize1=0x7f090017;
-        public static final int textview_textsize2=0x7f090018;
+        public static final int textview_textsize1=0x7f090014;
+        public static final int textview_textsize2=0x7f090015;
         public static final int tv_relative=0x7f09001d;
         public static final int tv_relative_color=0x7f09001f;
-        public static final int txStatus=0x7f090014;
+        public static final int txStatus=0x7f090017;
     }
     public static final class layout {
         public static final int activity_base=0x7f030000;
@@ -634,10 +634,9 @@ public final class R {
         public static final int item_sysappdetails=0x7f030009;
         public static final int linearlayout_showview=0x7f03000a;
         public static final int linearlayout_switchbar=0x7f03000b;
-        public static final int linearlayout_textsize=0x7f03000c;
-        public static final int listview_android=0x7f03000d;
-        public static final int listview_functions=0x7f03000e;
-        public static final int relativelayout_resource=0x7f03000f;
+        public static final int listview_android=0x7f03000c;
+        public static final int listview_functions=0x7f03000d;
+        public static final int relativelayout_resource=0x7f03000e;
     }
     public static final class menu {
         public static final int main=0x7f080000;
