@@ -43,4 +43,6 @@
     <string name="title_activity_permission">PermissionActivity</string>
     <string name="asynctask_cancel">AsyncTask_Cancel</string>
     <string name="title_activity_my_preference">MyPreferenceActivity</string>
+    <string name="title_activity_list_view">ListViewActivity</string>
+
 </resources>

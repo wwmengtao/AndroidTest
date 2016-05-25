@@ -54,6 +54,10 @@
             android:name=".MyPreferenceActivity"
             android:label="@string/title_activity_my_preference" >
         </activity>
+        <activity
+            android:name=".ListViewTestActivity"
+            android:label="@string/title_activity_list_view" >
+        </activity>
     </application>
 
 </manifest>
