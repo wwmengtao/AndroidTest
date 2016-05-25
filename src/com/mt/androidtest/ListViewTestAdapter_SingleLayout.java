@@ -49,7 +49,6 @@ public class ListViewTestAdapter_SingleLayout  extends BaseAdapter{
 			holder3 = new ViewHolder.viewHolder3();
 			holder3.textView = (TextView)convertView.findViewById(R.id.textview);
 			holder3.imageView = (ImageView)convertView.findViewById(R.id.imageview);
-			holder3.textView.setText(""+Integer.toString(position));
 			holder3.imageView.setBackgroundResource(R.drawable.icon);
 			convertView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
 			convertView.setTag(holder3);
@@ -57,6 +56,7 @@ public class ListViewTestAdapter_SingleLayout  extends BaseAdapter{
 			ALog.Log("getView:convertView²»Îªnull");
 			holder3=(ViewHolder.viewHolder3)convertView.getTag();
 		}
+		holder3.textView.setText(""+Integer.toString(position));
 		return convertView;
 	}
 }
