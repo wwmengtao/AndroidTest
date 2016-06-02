@@ -25,7 +25,7 @@ public class ShowViewActivity extends BaseActivity{
 	private View mLinearLayout_TextSize=null;
     private TextView mTV1_TextSize=null;
     private TextView mTV2_TextSize=null;    
-    private LinearLayout mParentView=null;    
+    private GridLayout mParentView=null;    
     private GridLayout mGridLayout=null;    
     private Handler mHandler;
 	private final int MSG_INIT_TEXT_VIEW_ADDED=0x000;
@@ -48,7 +48,11 @@ public class ShowViewActivity extends BaseActivity{
 		mLinearLayout_TextSize = findViewById(R.id.linearlayout_textsize);
 	    mTV1_TextSize = (TextView) findViewById(R.id.textview_textsize1);
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
-	    mParentView= (LinearLayout) findViewById(R.id.parentView);
+	    mParentView= (GridLayout) findViewById(R.id.parentView);
+	    //下列两种添加计算器GridLayout布局方法都可以：
+	    //方法1：
+	    //mGridLayout=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mParentView);
+	    //方法2：
 	    mGridLayout=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,null);
 	    mParentView.addView(mGridLayout);
 	}

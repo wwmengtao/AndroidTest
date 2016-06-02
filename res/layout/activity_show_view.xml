@@ -7,7 +7,7 @@
     <include layout="@layout/linearlayout_showview" /> 
 	<include layout="@layout/listview_functions"/>    
 	<include layout="@layout/listview_android"/>  
-	<LinearLayout
+	<GridLayout
 		android:id="@+id/parentView"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
