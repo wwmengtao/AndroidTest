@@ -19,13 +19,13 @@ public class ListViewAdapter extends BaseAdapter {
 //    private Context mContext;
     ArrayList <HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
     ArrayList <Method> mMethodList = new ArrayList<Method>();
-    private LayoutInflater listContainer;
+    private LayoutInflater mLayoutInflater;
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
     private int mMode=0;
     private Context mContext=null;
     public ListViewAdapter(Context context) {
-        listContainer = LayoutInflater.from(context);
+    	mLayoutInflater = LayoutInflater.from(context);
         metric  = context.getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
         mContext = context;
@@ -115,10 +115,10 @@ public class ListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             switch(mMode){
         	case 1:
-        		view = listContainer.inflate(R.layout.item_getview, parent,false);
+        		view = mLayoutInflater.inflate(R.layout.item_getview, parent,false);
            	break;
         	case 2:
-        		view = listContainer.inflate(R.layout.item_getview_function, parent,false);
+        		view = mLayoutInflater.inflate(R.layout.item_getview_function, parent,false);
            	break;           	
             }
         }else {

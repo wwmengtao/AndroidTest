@@ -15,6 +15,12 @@
             android:key="edit_key1"
             android:summary="M.T"
             android:title="EditTextPreference" />
+        <Preference
+            android:defaultValue="M.T"
+            android:icon="@drawable/number1_b"
+            android:key="edit_key2"
+            android:summary="M.T"
+            android:title="Preference" />        
     </PreferenceCategory>
     <PreferenceCategory android:title="第二组" >
         <ListPreference
