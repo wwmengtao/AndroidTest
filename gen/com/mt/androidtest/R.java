@@ -13,6 +13,55 @@ public final class R {
         public static final int citys_code=0x7f050001;
     }
     public static final class attr {
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int custom_color1=0x7f010001;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int custom_color2=0x7f010002;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int custom_color3=0x7f010003;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int custom_color4=0x7f010004;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int custom_color5=0x7f010005;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int custom_style=0x7f010000;
     }
     public static final class color {
         /** 蜜色 
@@ -593,90 +642,97 @@ public final class R {
         public static final int toolbar_wifi_off=0x7f020072;
     }
     public static final class id {
-        public static final int action_settings=0x7f060039;
-        public static final int btn_gotosleep=0x7f06000d;
-        public static final int btn_showresource=0x7f060006;
-        public static final int btn_shutdown=0x7f06000c;
-        public static final int checkbox=0x7f060007;
-        public static final int className=0x7f060027;
-        public static final int devide=0x7f060011;
-        public static final int editText=0x7f060004;
-        public static final int eight=0x7f060017;
-        public static final int equal=0x7f06001d;
-        public static final int five=0x7f060013;
-        public static final int four=0x7f060012;
-        public static final int gridview_sysapp=0x7f060009;
+        public static final int action_settings=0x7f06003d;
+        public static final int btn_gotosleep=0x7f06000f;
+        public static final int btn_showresource=0x7f060007;
+        public static final int btn_shutdown=0x7f06000e;
+        public static final int button_left=0x7f060010;
+        public static final int checkbox=0x7f060008;
+        public static final int className=0x7f06002b;
+        public static final int delete_button=0x7f06000c;
+        public static final int devide=0x7f060015;
+        public static final int editText=0x7f060005;
+        public static final int eight=0x7f06001b;
+        public static final int equal=0x7f060021;
+        public static final int five=0x7f060017;
+        public static final int four=0x7f060016;
+        public static final int gridview_sysapp=0x7f06000a;
         public static final int holder0=0x7f060000;
         public static final int holder1=0x7f060001;
-        public static final int icon=0x7f060024;
-        public static final int imageview=0x7f060023;
-        public static final int img_relative=0x7f060035;
-        public static final int iv_media_menu_icon=0x7f060037;
-        public static final int layout_linear_buttons23=0x7f06000b;
-        public static final int lenovo_switch=0x7f06002f;
-        public static final int linearlayout_inflater=0x7f060002;
-        public static final int linearlayout_listview_android=0x7f060030;
-        public static final int linearlayout_listview_functions=0x7f060031;
-        public static final int linearlayout_showview=0x7f060029;
-        public static final int linearlayout_textsize=0x7f06002a;
-        public static final int listText=0x7f060020;
-        public static final int list_lvp_switchers=0x7f06000a;
-        public static final int listview=0x7f060003;
-        public static final int listview_functions=0x7f060032;
-        public static final int menu_img=0x7f06001e;
-        public static final int menu_label=0x7f06001f;
-        public static final int minus=0x7f060019;
-        public static final int multiply=0x7f060015;
-        public static final int name=0x7f060025;
-        public static final int nine=0x7f060018;
-        public static final int one=0x7f06000e;
-        public static final int packageName=0x7f060026;
-        public static final int parentView=0x7f060008;
-        public static final int plus=0x7f06001c;
-        public static final int point=0x7f06001b;
-        public static final int relativelayout_resource=0x7f060033;
-        public static final int seven=0x7f060016;
-        public static final int six=0x7f060014;
-        public static final int sourceDir=0x7f060028;
-        public static final int switch_bar=0x7f06002d;
-        public static final int text_ft=0x7f060021;
-        public static final int textview=0x7f060005;
-        public static final int textview_layout=0x7f060022;
-        public static final int textview_textsize1=0x7f06002b;
-        public static final int textview_textsize2=0x7f06002c;
-        public static final int three=0x7f060010;
-        public static final int tv_media_menu_text=0x7f060038;
-        public static final int tv_relative=0x7f060034;
-        public static final int tv_relative_color=0x7f060036;
-        public static final int two=0x7f06000f;
-        public static final int txStatus=0x7f06002e;
-        public static final int zero=0x7f06001a;
+        public static final int icon=0x7f060028;
+        public static final int imageview=0x7f060027;
+        public static final int img_relative=0x7f060039;
+        public static final int iv_media_menu_icon=0x7f06003b;
+        public static final int layout_linear_buttons23=0x7f06000d;
+        public static final int lenovo_switch=0x7f060033;
+        public static final int linearlayout_inflater=0x7f060003;
+        public static final int linearlayout_listview_android=0x7f060034;
+        public static final int linearlayout_listview_functions=0x7f060035;
+        public static final int linearlayout_showview=0x7f06002d;
+        public static final int linearlayout_textsize=0x7f06002e;
+        public static final int listText=0x7f060024;
+        public static final int list_lvp_switchers=0x7f06000b;
+        public static final int listview=0x7f060004;
+        public static final int listview_functions=0x7f060036;
+        public static final int menu_img=0x7f060022;
+        public static final int menu_label=0x7f060023;
+        public static final int minus=0x7f06001d;
+        public static final int multiply=0x7f060019;
+        public static final int name=0x7f060029;
+        public static final int nine=0x7f06001c;
+        public static final int one=0x7f060012;
+        public static final int packageName=0x7f06002a;
+        public static final int parentView=0x7f060009;
+        public static final int plus=0x7f060020;
+        public static final int point=0x7f06001f;
+        public static final int relativelayout_resource=0x7f060037;
+        public static final int seven=0x7f06001a;
+        public static final int six=0x7f060018;
+        public static final int sourceDir=0x7f06002c;
+        public static final int switch_bar=0x7f060031;
+        public static final int text_ft=0x7f060025;
+        public static final int textview=0x7f060006;
+        public static final int textview_layout=0x7f060026;
+        public static final int textview_textsize1=0x7f06002f;
+        public static final int textview_textsize2=0x7f060030;
+        public static final int three=0x7f060014;
+        public static final int title_text=0x7f060011;
+        public static final int title_view=0x7f060002;
+        public static final int tv_media_menu_text=0x7f06003c;
+        public static final int tv_relative=0x7f060038;
+        public static final int tv_relative_color=0x7f06003a;
+        public static final int two=0x7f060013;
+        public static final int txStatus=0x7f060032;
+        public static final int zero=0x7f06001e;
     }
     public static final class layout {
         public static final int activity_base=0x7f030000;
-        public static final int activity_inflate=0x7f030001;
-        public static final int activity_listview_test=0x7f030002;
-        public static final int activity_my_preference=0x7f030003;
-        public static final int activity_resource=0x7f030004;
-        public static final int activity_show_view=0x7f030005;
-        public static final int activity_switcher_demo=0x7f030006;
-        public static final int activity_sys_apps=0x7f030007;
-        public static final int buttons_power=0x7f030008;
-        public static final int gridlayout_calculator=0x7f030009;
-        public static final int item_getview=0x7f03000a;
-        public static final int item_getview_android=0x7f03000b;
-        public static final int item_getview_function=0x7f03000c;
-        public static final int item_getview_test_1=0x7f03000d;
-        public static final int item_getview_test_2=0x7f03000e;
-        public static final int item_getview_test_3=0x7f03000f;
-        public static final int item_sysappdetails=0x7f030010;
-        public static final int linearlayout_showview=0x7f030011;
-        public static final int linearlayout_switchbar=0x7f030012;
-        public static final int listview_android=0x7f030013;
-        public static final int listview_functions=0x7f030014;
-        public static final int relativelayout_resource=0x7f030015;
-        public static final int view_inflate=0x7f030016;
-        public static final int view_inflate_relativelayout=0x7f030017;
+        public static final int activity_customed_controller=0x7f030001;
+        public static final int activity_inflate=0x7f030002;
+        public static final int activity_listview_test=0x7f030003;
+        public static final int activity_my_preference=0x7f030004;
+        public static final int activity_resource=0x7f030005;
+        public static final int activity_show_view=0x7f030006;
+        public static final int activity_switcher_demo=0x7f030007;
+        public static final int activity_sys_apps=0x7f030008;
+        public static final int button_delete=0x7f030009;
+        public static final int buttons_power=0x7f03000a;
+        public static final int customview_title=0x7f03000b;
+        public static final int gridlayout_calculator=0x7f03000c;
+        public static final int item_getview=0x7f03000d;
+        public static final int item_getview_android=0x7f03000e;
+        public static final int item_getview_function=0x7f03000f;
+        public static final int item_getview_test_1=0x7f030010;
+        public static final int item_getview_test_2=0x7f030011;
+        public static final int item_getview_test_3=0x7f030012;
+        public static final int item_sysappdetails=0x7f030013;
+        public static final int linearlayout_showview=0x7f030014;
+        public static final int linearlayout_switchbar=0x7f030015;
+        public static final int listview_android=0x7f030016;
+        public static final int listview_functions=0x7f030017;
+        public static final int relativelayout_resource=0x7f030018;
+        public static final int view_inflate=0x7f030019;
+        public static final int view_inflate_relativelayout=0x7f03001a;
     }
     public static final class menu {
         public static final int main=0x7f0b0000;
@@ -722,6 +778,7 @@ public final class R {
         public static final int switch_smart_rotation=0x7f090013;
         public static final int switch_wifi=0x7f090011;
         public static final int switchers_demo=0x7f09001c;
+        public static final int title_activity_customed_controller=0x7f09002c;
         public static final int title_activity_inflate=0x7f09002b;
         public static final int title_activity_list_view=0x7f09002a;
         public static final int title_activity_my_preference=0x7f090029;
@@ -756,12 +813,115 @@ public final class R {
          */
         public static final int AppBaseTheme=0x7f0a0000;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0a0001;
-        public static final int textview_1=0x7f0a0002;
+        public static final int custom_theme=0x7f0a0002;
+        public static final int default_style=0x7f0a0004;
+        /**  layout中指定布局 
+         */
+        public static final int myStyle=0x7f0a0003;
+        public static final int textview_1=0x7f0a0005;
     }
     public static final class xml {
         public static final int first_preference=0x7f040000;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a custom_attrs.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #custom_attrs_custom_color1 com.mt.androidtest:custom_color1}</code></td><td></td></tr>
+           <tr><td><code>{@link #custom_attrs_custom_color2 com.mt.androidtest:custom_color2}</code></td><td></td></tr>
+           <tr><td><code>{@link #custom_attrs_custom_color3 com.mt.androidtest:custom_color3}</code></td><td></td></tr>
+           <tr><td><code>{@link #custom_attrs_custom_color4 com.mt.androidtest:custom_color4}</code></td><td></td></tr>
+           <tr><td><code>{@link #custom_attrs_custom_color5 com.mt.androidtest:custom_color5}</code></td><td></td></tr>
+           </table>
+           @see #custom_attrs_custom_color1
+           @see #custom_attrs_custom_color2
+           @see #custom_attrs_custom_color3
+           @see #custom_attrs_custom_color4
+           @see #custom_attrs_custom_color5
+         */
+        public static final int[] custom_attrs = {
+            0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004,
+            0x7f010005
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#custom_color1}
+          attribute's value can be found in the {@link #custom_attrs} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.mt.androidtest:custom_color1
+        */
+        public static final int custom_attrs_custom_color1 = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#custom_color2}
+          attribute's value can be found in the {@link #custom_attrs} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.mt.androidtest:custom_color2
+        */
+        public static final int custom_attrs_custom_color2 = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#custom_color3}
+          attribute's value can be found in the {@link #custom_attrs} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.mt.androidtest:custom_color3
+        */
+        public static final int custom_attrs_custom_color3 = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#custom_color4}
+          attribute's value can be found in the {@link #custom_attrs} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.mt.androidtest:custom_color4
+        */
+        public static final int custom_attrs_custom_color4 = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#custom_color5}
+          attribute's value can be found in the {@link #custom_attrs} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.mt.androidtest:custom_color5
+        */
+        public static final int custom_attrs_custom_color5 = 4;
+    };
 }

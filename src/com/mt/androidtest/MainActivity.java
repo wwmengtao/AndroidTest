@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
 	private String [] mMethodNameFT={"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
-	private String [] mActivitiesName={"PermissionActivity","ResourceActivity","ShowViewActivity","SwitcherDemoActivity","MyPreferenceActivity","SysAppsActivity",
+	private String [] mActivitiesName={"PermissionActivity","ResourceActivity","CustomedControllerActivity","ShowViewActivity","SwitcherDemoActivity","MyPreferenceActivity","SysAppsActivity",
 			"ListViewTestActivity",
 			"StartActivity","DocumentsActivity","DownloadProviderUI"};		
 	@Override
