@@ -2,6 +2,9 @@ package com.mt.androidtest;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -303,15 +306,20 @@ public class ShowViewActivity extends BaseActivity{
 
 	public int getWidthByString(String str){
 		TextView mTextView=new TextView(this);
-		//方法一
-		/*
-        Rect bounds = new Rect();
-        Paint mTextPaint = mTextView.getPaint();
-        mTextPaint.getTextBounds(test_str,0,0,bounds);*/
-        //方法二
-        TextPaint mTextPaint = mTextView.getPaint(); 
-        //widthOfView：根据字符串内容确定控件的精确宽度
-        int widthOfView = (int)mTextPaint.measureText(str);
+		boolean method1=true;
+		//widthOfView：根据字符串内容确定控件的精确宽度
+		int widthOfView=0;
+		if(method1){
+			//方法一
+	        Rect bounds = new Rect();
+	        Paint mTextPaint = mTextView.getPaint();
+	        mTextPaint.getTextBounds(str,0,0,bounds);
+	        widthOfView = (int)mTextPaint.measureText(str);    
+		}else{
+	        //方法二
+	        TextPaint mTextPaint = mTextView.getPaint(); 
+	        widthOfView = (int)mTextPaint.measureText(str);
+		}
         return widthOfView;
 	}
 
