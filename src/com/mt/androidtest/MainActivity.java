@@ -125,9 +125,21 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 		switch(selectedItem){
 			case "DocumentsActivity":
 				mIntent = getIntent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
+				ComponentName componentName = mIntent.resolveActivity(mPackageManager);
+				if(componentName != null) {
+					mIntent.setComponent(componentName);
+				}else{
+					return;
+				}
 				break;
 			case "DownloadProviderUI":
 				mIntent = getIntent("android.intent.action.VIEW_DOWNLOADS");
+				ComponentName componentName2 = mIntent.resolveActivity(mPackageManager);
+				if(componentName2 != null) {
+					mIntent.setComponent(componentName2);
+				}else{
+					return;
+				}				
 				break;
 			case "StartActivity"://打开其他应用的activity
 				mIntent=new Intent();
