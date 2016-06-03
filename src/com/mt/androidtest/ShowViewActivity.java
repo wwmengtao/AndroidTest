@@ -15,6 +15,7 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ShowViewActivity extends BaseActivity{
@@ -25,8 +26,8 @@ public class ShowViewActivity extends BaseActivity{
 	private View mLinearLayout_TextSize=null;
     private TextView mTV1_TextSize=null;
     private TextView mTV2_TextSize=null;    
-    private GridLayout mParentView=null;    
-    private GridLayout mGridLayout=null;    
+    private GridLayout mGridLayout_Parent=null;    
+    private GridLayout mGridLayout_Calculator=null;    
     private Handler mHandler;
 	private final int MSG_INIT_TEXT_VIEW_ADDED=0x000;
 	private final int MSG_INIT_TEXT_VIEW_ADDED_WIDTH=0x001;
@@ -37,24 +38,27 @@ public class ShowViewActivity extends BaseActivity{
     private ConsumptionRefreshTask mAsyncTask=null;
 	private String [] mMethodNameFT={"showViewAdded","showViewFixedLength","showViewFixedSize",
 			"AsynctaskCancel","showCalculator"};
+	private String [] mActivitiesName={"InflateActivity"};			
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(isLogRunAll)ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_show_view);
-		super.initListActivityData(null);
 		super.initListFTData(mMethodNameFT);
+		super.initListActivityData(mActivitiesName);
 		mLayout=(LinearLayout) findViewById(R.id.linearlayout_showview);
 		mLinearLayout_TextSize = findViewById(R.id.linearlayout_textsize);
 	    mTV1_TextSize = (TextView) findViewById(R.id.textview_textsize1);
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
-	    mParentView= (GridLayout) findViewById(R.id.parentView);
+	    mGridLayout_Parent= (GridLayout) findViewById(R.id.parentView);
 	    //下列两种添加计算器GridLayout布局方法都可以：
 	    //方法1：
-	    //mGridLayout=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mParentView);
+	    //mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mGridLayout_Parent);
 	    //方法2：
-	    mGridLayout=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,null);
-	    mParentView.addView(mGridLayout);
+	    //mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,null);
+	    //或者使用下列语句：
+	    mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mGridLayout_Parent,false);
+	    mGridLayout_Parent.addView(mGridLayout_Calculator);
 	}
 
 	@Override
@@ -82,6 +86,11 @@ public class ShowViewActivity extends BaseActivity{
 	public void onDestroy() {
 		super.onDestroy();
 		if(isLogRunAll)ALog.Log("onDestroy",this);
+	}
+	
+	@Override
+	protected void onListItemClick(ListView list, View view, int position, long id) {
+		super.onListItemClick(list, view, position, id);
 	}
 	
 	@Override
@@ -117,10 +126,10 @@ public class ShowViewActivity extends BaseActivity{
 	    	}
 	        break;		
 		case "showCalculator":
-			if(mParentView.isShown()){
-				mParentView.setVisibility(View.GONE);
+			if(mGridLayout_Parent.isShown()){
+				mGridLayout_Parent.setVisibility(View.GONE);
 			}else{
-				mParentView.setVisibility(View.VISIBLE);
+				mGridLayout_Parent.setVisibility(View.VISIBLE);
 			}
 			break;
 		}

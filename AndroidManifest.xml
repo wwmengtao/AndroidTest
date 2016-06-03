@@ -58,6 +58,10 @@
             android:name=".ListViewTestActivity"
             android:label="@string/title_activity_list_view" >
         </activity>
+        <activity
+            android:name=".InflateActivity"
+            android:label="@string/title_activity_inflate" >
+        </activity>
     </application>
 
 </manifest>

@@ -28,9 +28,7 @@ import android.widget.Toast;
 
 public class MainActivity extends BaseActivity implements DialogInterface.OnClickListener{
 	boolean isLogRun=true;
-	boolean isNotificationShown=false;	
-	private String packageName = null;
-	private String className = null;		
+	boolean isNotificationShown=false;
 	private String NOTIFICATION_ID="AndroidTest.Notification";
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
@@ -44,7 +42,6 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 		setContentView(R.layout.activity_base);
 		if(isLogRun)ALog.Log("onCreate",this);
 		mPackageManager = getPackageManager();
-		packageName = this.getPackageName();
 		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		initListFTData(mMethodNameFT);
 		initListActivityData(mActivitiesName);
@@ -121,7 +118,6 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	
 	@Override
 	protected void onListItemClick(ListView list, View view, int position, long id) {
-		super.onListItemClick(list, view, position, id);
 		String selectedItem = (String) list.getItemAtPosition(position);
 		Intent mIntent = null;
 		String packname = null;
@@ -146,10 +142,8 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 				mIntent.setComponent(new ComponentName(packname, classname));
 				break;
 			default://打开本应用的Activity
-				mIntent=new Intent();
-				className = packageName+"."+selectedItem;
-				mIntent.setComponent(new ComponentName(packageName, className));
-				break;				
+				super.onListItemClick(list, view, position, id);
+				return;		
 		}
 		try{
 			startActivity(mIntent);

@@ -1,6 +1,9 @@
 package com.mt.androidtest;
 
 import android.app.ListActivity;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,10 +20,15 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	private ListView mListViewFT=null;
 	private ListViewAdapter mListViewAdapterFT = null;	
     private Handler mHandler=null;
+	private Intent mIntent = null;
+	private String packageName = null;
+	private String className = null;		    
+	private String selectedItem=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ALog.Log("BaseActivity_onCreate");
+		packageName = this.getPackageName();
 	}
 	
 	@Override
@@ -70,6 +78,16 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	@Override
 	protected void onListItemClick(ListView list, View view, int position, long id) {
 		super.onListItemClick(list, view, position, id);
+		//以下操作为打开本应用内部的Activity
+		mIntent = new Intent();
+		selectedItem = (String) list.getItemAtPosition(position);
+		className = packageName+"."+selectedItem;
+		mIntent.setComponent(new ComponentName(packageName, className));
+		try{
+			startActivity(mIntent);
+		}catch(ActivityNotFoundException e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void initListActivityData(String [] mActivitiesName){
