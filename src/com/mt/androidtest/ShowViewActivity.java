@@ -44,7 +44,7 @@ public class ShowViewActivity extends BaseActivity{
 	boolean mIsProcessTaskRuning = false;
     private ConsumptionRefreshTask mAsyncTask=null;
 	private String [] mMethodNameFT={"showViewAdded","showViewFixedLength","showViewFixedSize",
-			"AsynctaskCancel","showCalculator"};
+			"AsynctaskCancel","showChildView"};
 	private String [] mActivitiesName={"InflateActivity"};			
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,17 +100,28 @@ public class ShowViewActivity extends BaseActivity{
 	    mLinearLayout_Parent.addView(mGridLayout_Calculator);
 	    //2、添加preference线性布局
 	    mLinearLayout_Child=(LinearLayout) mLayoutInflater.inflate(R.layout.linearlayout_preference,mLinearLayout_Parent);
-	    //注释掉下列代码，会发现文字靠左显示；反之，图片靠左显示
+	    //2.1、设置开头的图标。注释掉下列代码，会发现文字靠左显示；反之，图片靠左显示
 	    View imageFrame = mLinearLayout_Child.findViewById(R.id.icon_frame);
+	    ViewGroup.LayoutParams lp=null;
 	    if(!imageFrame.isShown()){
 	    	imageFrame.setVisibility(View.VISIBLE);
-		    ImageView mIMG = (ImageView)imageFrame.findViewById(R.id.icon_img);
+	    	ImageView mIMG = (ImageView)imageFrame.findViewById(R.id.icon_img);
 		    mIMG.setBackgroundResource(R.drawable.number1_g);
-	    	ViewGroup.LayoutParams lp = mIMG.getLayoutParams();
+	    	lp = mIMG.getLayoutParams();
 	    	lp.width= (int)(getDensityDpi()*0.3);
 	    	lp.height = (int)(getDensityDpi()*0.3);
 	    	mIMG.setLayoutParams(lp);
 	    }
+	    //2.2、设置结尾的布局内容
+	    LinearLayout widget_frame=(LinearLayout)mLinearLayout_Child.findViewById(R.id.widget_frame);
+	    if(null!=widget_frame){
+	    	lp = widget_frame.getLayoutParams();
+	    	lp.width= (int)(getDensityDpi()*0.3);
+	    	lp.height = (int)(getDensityDpi()*0.3);
+		    widget_frame.setLayoutParams(lp);
+		    widget_frame.setBackgroundResource(R.drawable.number1_r);
+	    }
+	    
 	}
 	
 	@Override
@@ -145,7 +156,7 @@ public class ShowViewActivity extends BaseActivity{
 	        	mIsProcessTaskRuning = false;
 	    	}
 	        break;		
-		case "showCalculator":
+		case "showChildView":
 			if(mLinearLayout_Parent.isShown()){
 				mLinearLayout_Parent.setVisibility(View.GONE);
 			}else{
