@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -121,7 +122,9 @@ public class ShowViewActivity extends BaseActivity{
 		    widget_frame.setLayoutParams(lp);
 		    widget_frame.setBackgroundResource(R.drawable.number1_r);
 	    }
-	    
+	    //3¡¢Ìí¼ÓFrameLayout
+	    FrameLayout mFrameLayout = (FrameLayout) mLayoutInflater.inflate(R.layout.framelayout_lmr,mLinearLayout_Parent,false);
+	    mLinearLayout_Parent.addView(mFrameLayout);
 	}
 	
 	@Override
