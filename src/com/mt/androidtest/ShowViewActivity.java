@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,7 +32,9 @@ public class ShowViewActivity extends BaseActivity{
     private TextView mTV2_TextSize=null;    
     private LinearLayout mLinearLayout_Parent=null;    
     private GridLayout mGridLayout_Calculator=null;    
-    private Handler mHandler;
+    private LinearLayout mLinearLayout_Child=null;
+    private Handler mHandler=null;
+    private LayoutInflater mLayoutInflater=null;
 	private final int MSG_INIT_TEXT_VIEW_ADDED=0x000;
 	private final int MSG_INIT_TEXT_VIEW_ADDED_WIDTH=0x001;
 	private final int MSG_SHOW_VIEW_ADD_VIEW=0x002;
@@ -47,6 +50,7 @@ public class ShowViewActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		if(isLogRunAll)ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_show_view);
+		mLayoutInflater=LayoutInflater.from(this);
 		super.initListFTData(mMethodNameFT);
 		super.initListActivityData(mActivitiesName);
 		mLayout=(LinearLayout) findViewById(R.id.linearlayout_showview);
@@ -54,14 +58,7 @@ public class ShowViewActivity extends BaseActivity{
 	    mTV1_TextSize = (TextView) findViewById(R.id.textview_textsize1);
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
 	    mLinearLayout_Parent= (LinearLayout) findViewById(R.id.parentView);
-	    //下列两种添加计算器GridLayout布局方法都可以：
-	    //方法1：
-	    //mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mLinearLayout_Parent);
-	    //方法2：
-	    //mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,null);
-	    //或者使用下列语句：
-	    mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mLinearLayout_Parent,false);
-	    mLinearLayout_Parent.addView(mGridLayout_Calculator);
+	    initParentView();
 	}
 
 	@Override
@@ -94,6 +91,20 @@ public class ShowViewActivity extends BaseActivity{
 	@Override
 	protected void onListItemClick(ListView list, View view, int position, long id) {
 		super.onListItemClick(list, view, position, id);
+	}
+	
+	public void initParentView(){
+		//1、添加计算器GridLayout布局，直接
+	    mGridLayout_Calculator=(GridLayout) mLayoutInflater.inflate(R.layout.gridlayout_calculator,mLinearLayout_Parent,false);
+	    mLinearLayout_Parent.addView(mGridLayout_Calculator);
+	    //2、添加preference线性布局
+	    mLinearLayout_Child=(LinearLayout) mLayoutInflater.inflate(R.layout.linearlayout_preference,mLinearLayout_Parent);
+	    View imageFrame = mLinearLayout_Child.findViewById(R.id.icon_frame);
+	    if(!imageFrame.isShown()){//帧布局如果没有background的话，默认是不可见的
+	    	imageFrame.setVisibility(View.VISIBLE);
+		    ImageView mIMG = (ImageView)imageFrame.findViewById(R.id.icon_img);
+		    mIMG.setBackgroundResource(R.drawable.number1_g);
+	    }
 	}
 	
 	@Override

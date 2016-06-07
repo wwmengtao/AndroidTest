@@ -1,9 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content" >
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.mt.androidtest.MainActivity" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <include layout="@layout/linearlayout_showview" /> 
 	<include layout="@layout/listview_functions"/>    
 	<LinearLayout
@@ -15,3 +16,4 @@
 	/>        
 	<include layout="@layout/listview_android"/>  	
 </LinearLayout>
+</ScrollView>

@@ -642,7 +642,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int toolbar_wifi_off=0x7f020072;
     }
     public static final class id {
-        public static final int action_settings=0x7f06003d;
+        public static final int action_settings=0x7f06003f;
         public static final int btn_gotosleep=0x7f06000f;
         public static final int btn_showresource=0x7f060007;
         public static final int btn_shutdown=0x7f06000e;
@@ -660,20 +660,22 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int holder0=0x7f060000;
         public static final int holder1=0x7f060001;
         public static final int icon=0x7f060028;
+        public static final int icon_frame=0x7f06002d;
+        public static final int icon_img=0x7f06002e;
         public static final int imageview=0x7f060027;
-        public static final int img_relative=0x7f060039;
-        public static final int iv_media_menu_icon=0x7f06003b;
+        public static final int img_relative=0x7f06003b;
+        public static final int iv_media_menu_icon=0x7f06003d;
         public static final int layout_linear_buttons23=0x7f06000d;
-        public static final int lenovo_switch=0x7f060033;
+        public static final int lenovo_switch=0x7f060035;
         public static final int linearlayout_inflater=0x7f060003;
-        public static final int linearlayout_listview_android=0x7f060034;
-        public static final int linearlayout_listview_functions=0x7f060035;
-        public static final int linearlayout_showview=0x7f06002d;
-        public static final int linearlayout_textsize=0x7f06002e;
+        public static final int linearlayout_listview_android=0x7f060036;
+        public static final int linearlayout_listview_functions=0x7f060037;
+        public static final int linearlayout_showview=0x7f06002f;
+        public static final int linearlayout_textsize=0x7f060030;
         public static final int listText=0x7f060024;
         public static final int list_lvp_switchers=0x7f06000b;
         public static final int listview=0x7f060004;
-        public static final int listview_functions=0x7f060036;
+        public static final int listview_functions=0x7f060038;
         public static final int menu_img=0x7f060022;
         public static final int menu_label=0x7f060023;
         public static final int minus=0x7f06001d;
@@ -685,24 +687,24 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int parentView=0x7f060009;
         public static final int plus=0x7f060020;
         public static final int point=0x7f06001f;
-        public static final int relativelayout_resource=0x7f060037;
+        public static final int relativelayout_resource=0x7f060039;
         public static final int seven=0x7f06001a;
         public static final int six=0x7f060018;
         public static final int sourceDir=0x7f06002c;
-        public static final int switch_bar=0x7f060031;
+        public static final int switch_bar=0x7f060033;
         public static final int text_ft=0x7f060025;
         public static final int textview=0x7f060006;
         public static final int textview_layout=0x7f060026;
-        public static final int textview_textsize1=0x7f06002f;
-        public static final int textview_textsize2=0x7f060030;
+        public static final int textview_textsize1=0x7f060031;
+        public static final int textview_textsize2=0x7f060032;
         public static final int three=0x7f060014;
         public static final int title_text=0x7f060011;
         public static final int title_view=0x7f060002;
-        public static final int tv_media_menu_text=0x7f06003c;
-        public static final int tv_relative=0x7f060038;
-        public static final int tv_relative_color=0x7f06003a;
+        public static final int tv_media_menu_text=0x7f06003e;
+        public static final int tv_relative=0x7f06003a;
+        public static final int tv_relative_color=0x7f06003c;
         public static final int two=0x7f060013;
-        public static final int txStatus=0x7f060032;
+        public static final int txStatus=0x7f060034;
         public static final int zero=0x7f06001e;
     }
     public static final class layout {
@@ -726,13 +728,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int item_getview_test_2=0x7f030011;
         public static final int item_getview_test_3=0x7f030012;
         public static final int item_sysappdetails=0x7f030013;
-        public static final int linearlayout_showview=0x7f030014;
-        public static final int linearlayout_switchbar=0x7f030015;
-        public static final int listview_android=0x7f030016;
-        public static final int listview_functions=0x7f030017;
-        public static final int relativelayout_resource=0x7f030018;
-        public static final int view_inflate=0x7f030019;
-        public static final int view_inflate_relativelayout=0x7f03001a;
+        public static final int linearlayout_preference=0x7f030014;
+        public static final int linearlayout_showview=0x7f030015;
+        public static final int linearlayout_switchbar=0x7f030016;
+        public static final int listview_android=0x7f030017;
+        public static final int listview_functions=0x7f030018;
+        public static final int relativelayout_resource=0x7f030019;
+        public static final int view_inflate=0x7f03001a;
+        public static final int view_inflate_relativelayout=0x7f03001b;
     }
     public static final class menu {
         public static final int main=0x7f0b0000;
