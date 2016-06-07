@@ -29,7 +29,7 @@ public class ShowViewActivity extends BaseActivity{
 	private View mLinearLayout_TextSize=null;
     private TextView mTV1_TextSize=null;
     private TextView mTV2_TextSize=null;    
-    private GridLayout mGridLayout_Parent=null;    
+    private LinearLayout mLinearLayout_Parent=null;    
     private GridLayout mGridLayout_Calculator=null;    
     private Handler mHandler;
 	private final int MSG_INIT_TEXT_VIEW_ADDED=0x000;
@@ -53,15 +53,15 @@ public class ShowViewActivity extends BaseActivity{
 		mLinearLayout_TextSize = findViewById(R.id.linearlayout_textsize);
 	    mTV1_TextSize = (TextView) findViewById(R.id.textview_textsize1);
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
-	    mGridLayout_Parent= (GridLayout) findViewById(R.id.parentView);
+	    mLinearLayout_Parent= (LinearLayout) findViewById(R.id.parentView);
 	    //下列两种添加计算器GridLayout布局方法都可以：
 	    //方法1：
-	    //mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mGridLayout_Parent);
+	    //mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mLinearLayout_Parent);
 	    //方法2：
 	    //mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,null);
 	    //或者使用下列语句：
-	    mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mGridLayout_Parent,false);
-	    mGridLayout_Parent.addView(mGridLayout_Calculator);
+	    mGridLayout_Calculator=(GridLayout) LayoutInflater.from(this).inflate(R.layout.gridlayout_calculator,mLinearLayout_Parent,false);
+	    mLinearLayout_Parent.addView(mGridLayout_Calculator);
 	}
 
 	@Override
@@ -129,10 +129,10 @@ public class ShowViewActivity extends BaseActivity{
 	    	}
 	        break;		
 		case "showCalculator":
-			if(mGridLayout_Parent.isShown()){
-				mGridLayout_Parent.setVisibility(View.GONE);
+			if(mLinearLayout_Parent.isShown()){
+				mLinearLayout_Parent.setVisibility(View.GONE);
 			}else{
-				mGridLayout_Parent.setVisibility(View.VISIBLE);
+				mLinearLayout_Parent.setVisibility(View.VISIBLE);
 			}
 			break;
 		}

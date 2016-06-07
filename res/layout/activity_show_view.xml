@@ -6,9 +6,9 @@
     tools:context="com.mt.androidtest.MainActivity" >
     <include layout="@layout/linearlayout_showview" /> 
 	<include layout="@layout/listview_functions"/>    
-	<GridLayout
+	<LinearLayout
 		android:id="@+id/parentView"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:visibility="gone"
 		android:orientation="vertical"
