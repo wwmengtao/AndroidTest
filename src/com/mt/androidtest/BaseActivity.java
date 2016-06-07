@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,11 +26,17 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	private String packageName = null;
 	private String className = null;		    
 	private String selectedItem=null;
+	private LayoutInflater mLayoutInflater = null;
+    private DisplayMetrics metric=null;
+    private int mDensityDpi = 0;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ALog.Log("BaseActivity_onCreate");
 		packageName = this.getPackageName();
+		mLayoutInflater=LayoutInflater.from(this);
+		metric  = getResources().getDisplayMetrics();
+		mDensityDpi = metric.densityDpi;
 	}
 	
 	@Override
@@ -45,6 +53,18 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 			mHandler.removeCallbacksAndMessages(0);
 		}		
 		super.onPause();
+	}
+	
+	public DisplayMetrics getDisplayMetrics(){
+		return metric;
+	}
+	
+	public int getDensityDpi(){
+		return mDensityDpi;
+	}
+	
+	public LayoutInflater getLayoutInflater(){
+		return mLayoutInflater;
 	}
 	
 	public Handler getHandler(){

@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.GridLayout;
@@ -50,7 +51,7 @@ public class ShowViewActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		if(isLogRunAll)ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_show_view);
-		mLayoutInflater=LayoutInflater.from(this);
+		mLayoutInflater=getLayoutInflater();
 		super.initListFTData(mMethodNameFT);
 		super.initListActivityData(mActivitiesName);
 		mLayout=(LinearLayout) findViewById(R.id.linearlayout_showview);
@@ -99,11 +100,16 @@ public class ShowViewActivity extends BaseActivity{
 	    mLinearLayout_Parent.addView(mGridLayout_Calculator);
 	    //2、添加preference线性布局
 	    mLinearLayout_Child=(LinearLayout) mLayoutInflater.inflate(R.layout.linearlayout_preference,mLinearLayout_Parent);
+	    //注释掉下列代码，会发现文字靠左显示；反之，图片靠左显示
 	    View imageFrame = mLinearLayout_Child.findViewById(R.id.icon_frame);
-	    if(!imageFrame.isShown()){//帧布局如果没有background的话，默认是不可见的
+	    if(!imageFrame.isShown()){
 	    	imageFrame.setVisibility(View.VISIBLE);
 		    ImageView mIMG = (ImageView)imageFrame.findViewById(R.id.icon_img);
 		    mIMG.setBackgroundResource(R.drawable.number1_g);
+	    	ViewGroup.LayoutParams lp = mIMG.getLayoutParams();
+	    	lp.width= (int)(getDensityDpi()*0.3);
+	    	lp.height = (int)(getDensityDpi()*0.3);
+	    	mIMG.setLayoutParams(lp);
 	    }
 	}
 	
