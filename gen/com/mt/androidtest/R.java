@@ -21,7 +21,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int custom_color1=0x7f010007;
+        public static final int custom_color1=0x7f010001;
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
 <p>This may also be a reference to a resource (in the form
@@ -30,7 +30,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int custom_color2=0x7f010008;
+        public static final int custom_color2=0x7f010002;
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
 <p>This may also be a reference to a resource (in the form
@@ -39,7 +39,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int custom_color3=0x7f010009;
+        public static final int custom_color3=0x7f010003;
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
 <p>This may also be a reference to a resource (in the form
@@ -48,7 +48,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int custom_color4=0x7f01000a;
+        public static final int custom_color4=0x7f010004;
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
 <p>This may also be a reference to a resource (in the form
@@ -57,53 +57,11 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int custom_color5=0x7f01000b;
+        public static final int custom_color5=0x7f010005;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int custom_style=0x7f010006;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int hasSubPreference=0x7f010000;
-        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int settings_key=0x7f010001;
-        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-         */
-        public static final int statusCloseSummary=0x7f010005;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int statusDefault=0x7f010003;
-        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-         */
-        public static final int statusOpenSummary=0x7f010004;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int statusState=0x7f010002;
+        public static final int custom_style=0x7f010000;
     }
     public static final class color {
         /** 蜜色 
@@ -687,7 +645,7 @@ containing a value of this type.
         public static final int toolbar_wifi_off=0x7f020074;
     }
     public static final class id {
-        public static final int action_settings=0x7f060043;
+        public static final int action_settings=0x7f060044;
         public static final int btn_gotosleep=0x7f06000f;
         public static final int btn_showresource=0x7f060007;
         public static final int btn_shutdown=0x7f06000e;
@@ -708,11 +666,10 @@ containing a value of this type.
         public static final int icon_frame=0x7f06002d;
         public static final int icon_img=0x7f06002e;
         public static final int imageview=0x7f060027;
-        public static final int img_relative=0x7f06003e;
-        public static final int iv_media_menu_icon=0x7f060040;
+        public static final int img_next=0x7f06003a;
+        public static final int img_relative=0x7f06003f;
+        public static final int iv_media_menu_icon=0x7f060041;
         public static final int layout_linear_buttons23=0x7f06000d;
-        public static final int lenovo_has_next=0x7f06003a;
-        public static final int lenovo_status_summary=0x7f06003b;
         public static final int lenovo_switch=0x7f060036;
         public static final int linearlayout_inflater=0x7f060003;
         public static final int linearlayout_listview_android=0x7f060037;
@@ -734,23 +691,25 @@ containing a value of this type.
         public static final int parentView=0x7f060009;
         public static final int plus=0x7f060020;
         public static final int point=0x7f06001f;
-        public static final int relativelayout_resource=0x7f06003c;
+        public static final int relativelayout_resource=0x7f06003d;
         public static final int seven=0x7f06001a;
         public static final int six=0x7f060018;
         public static final int sourceDir=0x7f06002c;
-        public static final int status_preference_id=0x7f060042;
+        public static final int status_preference_id=0x7f060043;
         public static final int switch_bar=0x7f060034;
         public static final int text_ft=0x7f060025;
         public static final int textview=0x7f060006;
+        public static final int textview_index=0x7f06003b;
         public static final int textview_layout=0x7f060026;
         public static final int textview_textsize1=0x7f060032;
         public static final int textview_textsize2=0x7f060033;
         public static final int three=0x7f060014;
         public static final int title_text=0x7f060011;
         public static final int title_view=0x7f060002;
-        public static final int tv_media_menu_text=0x7f060041;
-        public static final int tv_relative=0x7f06003d;
-        public static final int tv_relative_color=0x7f06003f;
+        public static final int tv_media_menu_text=0x7f060042;
+        public static final int tv_relative=0x7f06003e;
+        public static final int tv_relative_color=0x7f060040;
+        public static final int tv_status_summary=0x7f06003c;
         public static final int two=0x7f060013;
         public static final int txStatus=0x7f060035;
         public static final int widget_frame=0x7f06002f;
@@ -812,6 +771,7 @@ containing a value of this type.
         public static final int permission_not_granted=0x7f090004;
         public static final int preference_on=0x7f09002d;
         public static final int preference_selfcheckbox_summary=0x7f090030;
+        public static final int preference_status_summary=0x7f090031;
         public static final int preference_summary=0x7f09002f;
         public static final int preference_title=0x7f09002e;
         public static final int relative_textview=0x7f09001b;
@@ -887,204 +847,6 @@ containing a value of this type.
         public static final int mypreference=0x7f040000;
     }
     public static final class styleable {
-        /** Attributes that can be used with a CharacterSettingsK7.
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #CharacterSettingsK7_hasSubPreference com.mt.androidtest:hasSubPreference}</code></td><td></td></tr>
-           <tr><td><code>{@link #CharacterSettingsK7_settings_key com.mt.androidtest:settings_key}</code></td><td></td></tr>
-           <tr><td><code>{@link #CharacterSettingsK7_statusCloseSummary com.mt.androidtest:statusCloseSummary}</code></td><td></td></tr>
-           <tr><td><code>{@link #CharacterSettingsK7_statusDefault com.mt.androidtest:statusDefault}</code></td><td></td></tr>
-           <tr><td><code>{@link #CharacterSettingsK7_statusOpenSummary com.mt.androidtest:statusOpenSummary}</code></td><td></td></tr>
-           <tr><td><code>{@link #CharacterSettingsK7_statusState com.mt.androidtest:statusState}</code></td><td></td></tr>
-           </table>
-           @see #CharacterSettingsK7_hasSubPreference
-           @see #CharacterSettingsK7_settings_key
-           @see #CharacterSettingsK7_statusCloseSummary
-           @see #CharacterSettingsK7_statusDefault
-           @see #CharacterSettingsK7_statusOpenSummary
-           @see #CharacterSettingsK7_statusState
-         */
-        public static final int[] CharacterSettingsK7 = {
-            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003,
-            0x7f010004, 0x7f010005
-        };
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#hasSubPreference}
-          attribute's value can be found in the {@link #CharacterSettingsK7} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name com.mt.androidtest:hasSubPreference
-        */
-        public static final int CharacterSettingsK7_hasSubPreference = 0;
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#settings_key}
-          attribute's value can be found in the {@link #CharacterSettingsK7} array.
-
-
-          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name com.mt.androidtest:settings_key
-        */
-        public static final int CharacterSettingsK7_settings_key = 1;
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#statusCloseSummary}
-          attribute's value can be found in the {@link #CharacterSettingsK7} array.
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-          @attr name com.mt.androidtest:statusCloseSummary
-        */
-        public static final int CharacterSettingsK7_statusCloseSummary = 5;
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#statusDefault}
-          attribute's value can be found in the {@link #CharacterSettingsK7} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name com.mt.androidtest:statusDefault
-        */
-        public static final int CharacterSettingsK7_statusDefault = 3;
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#statusOpenSummary}
-          attribute's value can be found in the {@link #CharacterSettingsK7} array.
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-          @attr name com.mt.androidtest:statusOpenSummary
-        */
-        public static final int CharacterSettingsK7_statusOpenSummary = 4;
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#statusState}
-          attribute's value can be found in the {@link #CharacterSettingsK7} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name com.mt.androidtest:statusState
-        */
-        public static final int CharacterSettingsK7_statusState = 2;
-        /** Attributes that can be used with a LenovoPreference.
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #LenovoPreference_hasSubPreference com.mt.androidtest:hasSubPreference}</code></td><td></td></tr>
-           </table>
-           @see #LenovoPreference_hasSubPreference
-         */
-        public static final int[] LenovoPreference = {
-            0x7f010000
-        };
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#hasSubPreference}
-          attribute's value can be found in the {@link #LenovoPreference} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name com.mt.androidtest:hasSubPreference
-        */
-        public static final int LenovoPreference_hasSubPreference = 0;
-        /** Attributes that can be used with a LenovoStatusPreference.
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #LenovoStatusPreference_statusCloseSummary com.mt.androidtest:statusCloseSummary}</code></td><td></td></tr>
-           <tr><td><code>{@link #LenovoStatusPreference_statusDefault com.mt.androidtest:statusDefault}</code></td><td></td></tr>
-           <tr><td><code>{@link #LenovoStatusPreference_statusOpenSummary com.mt.androidtest:statusOpenSummary}</code></td><td></td></tr>
-           <tr><td><code>{@link #LenovoStatusPreference_statusState com.mt.androidtest:statusState}</code></td><td></td></tr>
-           </table>
-           @see #LenovoStatusPreference_statusCloseSummary
-           @see #LenovoStatusPreference_statusDefault
-           @see #LenovoStatusPreference_statusOpenSummary
-           @see #LenovoStatusPreference_statusState
-         */
-        public static final int[] LenovoStatusPreference = {
-            0x7f010002, 0x7f010003, 0x7f010004, 0x7f010005
-        };
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#statusCloseSummary}
-          attribute's value can be found in the {@link #LenovoStatusPreference} array.
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-          @attr name com.mt.androidtest:statusCloseSummary
-        */
-        public static final int LenovoStatusPreference_statusCloseSummary = 3;
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#statusDefault}
-          attribute's value can be found in the {@link #LenovoStatusPreference} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name com.mt.androidtest:statusDefault
-        */
-        public static final int LenovoStatusPreference_statusDefault = 1;
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#statusOpenSummary}
-          attribute's value can be found in the {@link #LenovoStatusPreference} array.
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-          @attr name com.mt.androidtest:statusOpenSummary
-        */
-        public static final int LenovoStatusPreference_statusOpenSummary = 2;
-        /**
-          <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#statusState}
-          attribute's value can be found in the {@link #LenovoStatusPreference} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name com.mt.androidtest:statusState
-        */
-        public static final int LenovoStatusPreference_statusState = 0;
         /** Attributes that can be used with a custom_attrs.
            <p>Includes the following attributes:</p>
            <table>
@@ -1104,8 +866,8 @@ containing a value of this type.
            @see #custom_attrs_custom_color5
          */
         public static final int[] custom_attrs = {
-            0x7f010007, 0x7f010008, 0x7f010009, 0x7f01000a,
-            0x7f01000b
+            0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004,
+            0x7f010005
         };
         /**
           <p>This symbol is the offset where the {@link com.mt.androidtest.R.attr#custom_color1}

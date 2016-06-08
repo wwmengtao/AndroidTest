@@ -13,7 +13,7 @@
 		android:layout_height="wrap_content"
 		android:visibility="gone"
 		android:orientation="vertical"
-	/>        
+	/>
 	<include layout="@layout/listview_android"/>  	
 </LinearLayout>
 </ScrollView>

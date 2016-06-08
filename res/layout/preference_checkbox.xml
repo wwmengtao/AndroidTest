@@ -7,7 +7,9 @@
 	android:gravity="center_vertical"
 	android:paddingStart="?android:attr/scrollbarSize"
 	android:paddingEnd="?android:attr/scrollbarSize"
-	android:baselineAligned="false">
+	android:baselineAligned="false"
+	android:background="@color/greenyellow"	
+	>
 	<RelativeLayout 
 	    android:layout_width="0dip"
 		android:layout_height="wrap_content"
@@ -22,14 +24,16 @@
 			android:singleLine="true"
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:ellipsize="marquee"
-			android:fadingEdge="horizontal"/>
+			android:fadingEdge="horizontal"
+			android:background="@color/green"/>
 		<TextView android:id="@+android:id/summary"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_below="@android:id/title"
 			android:layout_alignStart="@android:id/title"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:maxLines="4" />
+			android:maxLines="4" 
+			android:background="@color/gold"/>
 	</RelativeLayout>
 
 	<!-- Preference should place its actual preference widget here. -->
@@ -37,5 +41,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="fill_parent"
 		android:gravity="center_vertical"
-		android:orientation="vertical" />
+		android:orientation="vertical" 
+		android:background="@color/wheat"/>
 </LinearLayout>

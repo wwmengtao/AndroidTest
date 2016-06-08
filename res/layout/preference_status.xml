@@ -5,8 +5,10 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
-     android:paddingStart="@dimen/item_preference_pading_left"
-	android:paddingEnd="@dimen/item_preference_pading_right">
+    android:paddingStart="@dimen/item_preference_pading_left"
+	android:paddingEnd="@dimen/item_preference_pading_right"
+	android:background="@color/greenyellow"
+	>
 
 	<ImageView
 		android:id="@*android:id/icon"
@@ -32,7 +34,8 @@
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:ellipsize="marquee"
-            android:fadingEdge="horizontal" />
+            android:fadingEdge="horizontal" 
+            android:background="@color/green"/>
 
         <TextView android:id="@+android:id/summary"
             android:layout_width="wrap_content"
@@ -41,6 +44,7 @@
             android:layout_alignStart="@android:id/title"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"
+            android:background="@color/gold"
              />
 
     </RelativeLayout>
@@ -50,14 +54,23 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:orientation="vertical" />
+        android:background="@color/wheat"/>
 
     <ImageView
-        android:id="@+id/lenovo_has_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|right"
+        android:id="@+id/img_next"
+        android:layout_width="24dip"
+        android:layout_height="24dip"
+        android:layout_gravity="center_vertical|end"
         android:duplicateParentState="true"
         android:src="@drawable/right_arrow_select"
         />
+    <TextView
+        android:id="@+id/textview_index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/royalblue"
+        android:text="index"
+        android:focusable="false"
+	/>
 </LinearLayout>
