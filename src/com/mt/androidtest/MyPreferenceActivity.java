@@ -32,7 +32,7 @@ public class MyPreferenceActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 添加设置的选项
-        addPreferencesFromResource(R.xml.first_preference);
+        addPreferencesFromResource(R.xml.mypreference);
         // 获取SharedPreferences对象
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mOnSharedPreferenceChangeListener = new MyOnSharedPreferenceChangeListener();
