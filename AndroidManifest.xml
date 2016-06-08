@@ -63,7 +63,7 @@
             android:label="@string/title_activity_inflate" >
         </activity>
         <activity
-            android:name=".CustomedControllerActivity"
+            android:name=".MySelfViewActivity"
             android:label="@string/title_activity_customed_controller" >
         </activity>
     </application>

@@ -7,7 +7,7 @@ import android.os.Bundle;
  * @author Mengtao1
  *
  */
-public class CustomedControllerActivity extends Activity {
+public class MySelfViewActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
