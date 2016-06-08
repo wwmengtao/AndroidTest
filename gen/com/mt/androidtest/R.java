@@ -687,7 +687,7 @@ containing a value of this type.
         public static final int toolbar_wifi_off=0x7f020074;
     }
     public static final class id {
-        public static final int action_settings=0x7f060045;
+        public static final int action_settings=0x7f060043;
         public static final int btn_gotosleep=0x7f06000f;
         public static final int btn_showresource=0x7f060007;
         public static final int btn_shutdown=0x7f06000e;
@@ -707,13 +707,12 @@ containing a value of this type.
         public static final int icon=0x7f060028;
         public static final int icon_frame=0x7f06002d;
         public static final int icon_img=0x7f06002e;
-        public static final int icon_layout=0x7f06003a;
         public static final int imageview=0x7f060027;
-        public static final int img_relative=0x7f060040;
-        public static final int iv_media_menu_icon=0x7f060042;
+        public static final int img_relative=0x7f06003e;
+        public static final int iv_media_menu_icon=0x7f060040;
         public static final int layout_linear_buttons23=0x7f06000d;
-        public static final int lenovo_has_next=0x7f06003c;
-        public static final int lenovo_status_summary=0x7f06003d;
+        public static final int lenovo_has_next=0x7f06003a;
+        public static final int lenovo_status_summary=0x7f06003b;
         public static final int lenovo_switch=0x7f060036;
         public static final int linearlayout_inflater=0x7f060003;
         public static final int linearlayout_listview_android=0x7f060037;
@@ -724,7 +723,6 @@ containing a value of this type.
         public static final int list_lvp_switchers=0x7f06000b;
         public static final int listview=0x7f060004;
         public static final int listview_functions=0x7f060039;
-        public static final int main_frame=0x7f06003b;
         public static final int menu_img=0x7f060022;
         public static final int menu_label=0x7f060023;
         public static final int minus=0x7f06001d;
@@ -736,11 +734,11 @@ containing a value of this type.
         public static final int parentView=0x7f060009;
         public static final int plus=0x7f060020;
         public static final int point=0x7f06001f;
-        public static final int relativelayout_resource=0x7f06003e;
+        public static final int relativelayout_resource=0x7f06003c;
         public static final int seven=0x7f06001a;
         public static final int six=0x7f060018;
         public static final int sourceDir=0x7f06002c;
-        public static final int status_preference_id=0x7f060044;
+        public static final int status_preference_id=0x7f060042;
         public static final int switch_bar=0x7f060034;
         public static final int text_ft=0x7f060025;
         public static final int textview=0x7f060006;
@@ -750,9 +748,9 @@ containing a value of this type.
         public static final int three=0x7f060014;
         public static final int title_text=0x7f060011;
         public static final int title_view=0x7f060002;
-        public static final int tv_media_menu_text=0x7f060043;
-        public static final int tv_relative=0x7f06003f;
-        public static final int tv_relative_color=0x7f060041;
+        public static final int tv_media_menu_text=0x7f060041;
+        public static final int tv_relative=0x7f06003d;
+        public static final int tv_relative_color=0x7f06003f;
         public static final int two=0x7f060013;
         public static final int txStatus=0x7f060035;
         public static final int widget_frame=0x7f06002f;

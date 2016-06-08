@@ -11,7 +11,7 @@
 			android:defaultValue="true"
 			android:title="自动搜素"			
 			android:summaryOff="禁止自动搜索"
-			android:summaryOn="允许自动搜素"
+			android:summaryOn="允许自动搜索"
 			android:disableDependentsState="false"
 			android:layout="@layout/preference_checkbox"
 			android:widgetLayout="@layout/preference_checkbox_widget">
