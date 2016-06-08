@@ -46,5 +46,7 @@
     <string name="title_activity_list_view">ListViewActivity</string>
     <string name="title_activity_inflate">InflateActivity</string>
     <string name="title_activity_customed_controller">CustomedControllerActivity</string>
-
+    <string name="preference_status_on">On</string>
+    <string name="preference_status_title">Preference status title</string>
+    <string name="preference_status_summary">Preference status summary</string>
 </resources>
