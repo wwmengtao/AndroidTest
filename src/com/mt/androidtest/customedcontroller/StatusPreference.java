@@ -40,7 +40,7 @@ public class StatusPreference extends Preference{
 			TextView statusSummary = (TextView) view.findViewById(R.id.lenovo_status_summary);
 			if(statusSummary != null){
 				if(mLenovoStatusSummary == null){
-					mLenovoStatusSummary = getContext().getString(R.string.preference_status_on);
+					mLenovoStatusSummary = getContext().getString(R.string.preference_on);
 				}
 				if(!TextUtils.isEmpty(mLenovoStatusSummary)){
 					if(statusSummary.getVisibility() != View.VISIBLE){

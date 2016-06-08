@@ -46,7 +46,8 @@
     <string name="title_activity_list_view">ListViewActivity</string>
     <string name="title_activity_inflate">InflateActivity</string>
     <string name="title_activity_customed_controller">CustomedControllerActivity</string>
-    <string name="preference_status_on">On</string>
-    <string name="preference_status_title">Preference status title</string>
-    <string name="preference_status_summary">Preference status summary</string>
+    <string name="preference_on">On</string>
+    <string name="preference_title">Title</string>
+    <string name="preference_summary">Summary</string>
+    <string name="preference_selfcheckbox_summary">右侧checkbox改成箭头，前提是android:widgetLayout中的CheckBox必须使用Android原生的\"@+android:id/checkbox\"</string>    
 </resources>

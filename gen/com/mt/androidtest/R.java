@@ -810,9 +810,10 @@ containing a value of this type.
         public static final int msg_loading=0x7f090008;
         public static final int permission_granted=0x7f090003;
         public static final int permission_not_granted=0x7f090004;
-        public static final int preference_status_on=0x7f09002d;
-        public static final int preference_status_summary=0x7f09002f;
-        public static final int preference_status_title=0x7f09002e;
+        public static final int preference_on=0x7f09002d;
+        public static final int preference_selfcheckbox_summary=0x7f090030;
+        public static final int preference_summary=0x7f09002f;
+        public static final int preference_title=0x7f09002e;
         public static final int relative_textview=0x7f09001b;
         public static final int show_dialog=0x7f090006;
         public static final int show_fixedlength=0x7f090021;

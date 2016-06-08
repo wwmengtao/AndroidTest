@@ -29,7 +29,6 @@
 			android:layout_below="@android:id/title"
 			android:layout_alignStart="@android:id/title"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:textStyle="bold|italic"
 			android:maxLines="4" />
 	</RelativeLayout>
 
