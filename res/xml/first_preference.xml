@@ -22,7 +22,12 @@
             android:summary="M.T"
             android:title="Preference" />        
     </PreferenceCategory>
-    <PreferenceCategory android:title="第二组" >
+    <PreferenceCategory android:title="第二组：自定义preference" >
+		<com.mt.androidtest.customedcontroller.SwitchPreference
+			android:key = "widetouch_turn_on_of"
+			android:widgetLayout = "@layout/preference_widget_switch"/>
+    </PreferenceCategory>    
+    <PreferenceCategory android:title="第三组" >
         <ListPreference
             android:dialogIcon="@drawable/number2_b"
             android:entries="@array/citys"

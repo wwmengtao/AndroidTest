@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+android:id/widget_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="56dp"
+        android:background="#FF37474f"
+        android:gravity="center_vertical"
+        android:paddingStart="16dip"
+		android:paddingEnd="16dip">
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+        android:gravity="center_vertical">
+       
+    <TextView android:id = "@+id/status_tv"
+        android:layout_width="wrap_content"
+       android:layout_height="fill_parent"
+       android:layout_alignParentStart="true"
+       android:gravity="center"
+       android:textSize="20sp"
+       android:textColor="#FFFFFFFF"
+       android:text="start"
+        />
+    
+    <Switch android:id="@+id/switch_bt"
+       android:layout_width="56dp"
+       android:layout_height="48dp"
+       android:layout_alignParentEnd="true"
+       android:layout_centerVertical="true"
+       android:focusable="false"
+       android:clickable="true" />
+    
+    </RelativeLayout>
+    </LinearLayout>
