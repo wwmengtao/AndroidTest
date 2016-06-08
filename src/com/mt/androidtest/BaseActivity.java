@@ -10,6 +10,7 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -128,5 +129,13 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	@Override
 	public void onClick(View v) {
 		
+	}
+	
+	public void setLayoutParams(View mView,double paraWidth,double paraHeight){
+		if(null==mView)return;
+		ViewGroup.LayoutParams lp = mView.getLayoutParams();
+    	lp.width= (int)(mDensityDpi*paraWidth);
+    	lp.height = (int)(mDensityDpi*paraHeight);
+    	mView.setLayoutParams(lp);
 	}
 }

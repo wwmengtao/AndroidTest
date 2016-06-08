@@ -5,7 +5,19 @@
         android:key="preferenceScreen_selfdefined"
         android:persistent="false"
         android:title="自定义preference">
-	<PreferenceCategory android:title="StatusPreference" >
+	<PreferenceCategory android:title="CheckBoxPreference" >
+		<CheckBoxPreference
+			android:key="auto_search_enable_key"		    
+			android:defaultValue="true"
+			android:title="自动搜素"			
+			android:summaryOff="禁止自动搜索"
+			android:summaryOn="允许自动搜素"
+			android:disableDependentsState="false"
+			android:layout="@layout/preference_checkbox"
+			android:widgetLayout="@layout/preference_checkbox_widget">
+		</CheckBoxPreference>
+	</PreferenceCategory> 	
+	<PreferenceCategory android:title="StatusPreference" >		
 		<com.mt.androidtest.customedcontroller.StatusPreference
 		    android:key="status_preference"
 			android:defaultValue="false"
@@ -15,7 +27,7 @@
             android:widgetLayout="@layout/preference_status_widget"
             android:title="@string/preference_status_title"
             android:summary="@string/preference_status_summary"/>
- 		</PreferenceCategory> 		
+	</PreferenceCategory> 		
    	</PreferenceScreen>
    	
     <PreferenceScreen

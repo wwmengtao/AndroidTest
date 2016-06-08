@@ -6,12 +6,12 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+
 import com.mt.androidtest.R;
 
 public class StatusPreference extends Preference{
 		private static final boolean sShowIcon = false;
 		private boolean hasSubPreference = true;
-		private int mLenovoStatusSummaryDefault = R.string.preference_status_on;
 		private CharSequence mLenovoStatusSummary = null;
 		public StatusPreference(Context context, AttributeSet attrs, int defStyle) {
 			super(context, attrs, defStyle);
@@ -40,7 +40,7 @@ public class StatusPreference extends Preference{
 			TextView statusSummary = (TextView) view.findViewById(R.id.lenovo_status_summary);
 			if(statusSummary != null){
 				if(mLenovoStatusSummary == null){
-					mLenovoStatusSummary = getContext().getString(mLenovoStatusSummaryDefault);
+					mLenovoStatusSummary = getContext().getString(R.string.preference_status_on);
 				}
 				if(!TextUtils.isEmpty(mLenovoStatusSummary)){
 					if(statusSummary.getVisibility() != View.VISIBLE){
@@ -49,13 +49,16 @@ public class StatusPreference extends Preference{
 					statusSummary.setText(mLenovoStatusSummary);
 				}
 			}
+			
+			View icon = view.findViewById(android.R.id.icon);
+			if(icon != null){
+				icon.setBackgroundResource(R.drawable.right_arrow_select);
+				icon.setVisibility(sShowIcon?View.VISIBLE:View.GONE);
+			}
+			
 			View nextIcon = view.findViewById(R.id.lenovo_has_next);
 			if(nextIcon != null){
 				nextIcon.setVisibility(hasSubPreference?View.VISIBLE:View.GONE);
-			}
-			View icon = view.findViewById(android.R.id.icon);
-			if(icon != null){
-				icon.setVisibility(sShowIcon?View.VISIBLE:View.GONE);
 			}
 		}
 	}

@@ -785,11 +785,13 @@ containing a value of this type.
         public static final int linearlayout_switchbar=0x7f030017;
         public static final int listview_android=0x7f030018;
         public static final int listview_functions=0x7f030019;
-        public static final int preference_status=0x7f03001a;
-        public static final int preference_status_widget=0x7f03001b;
-        public static final int relativelayout_resource=0x7f03001c;
-        public static final int view_inflate=0x7f03001d;
-        public static final int view_inflate_relativelayout=0x7f03001e;
+        public static final int preference_checkbox=0x7f03001a;
+        public static final int preference_checkbox_widget=0x7f03001b;
+        public static final int preference_status=0x7f03001c;
+        public static final int preference_status_widget=0x7f03001d;
+        public static final int relativelayout_resource=0x7f03001e;
+        public static final int view_inflate=0x7f03001f;
+        public static final int view_inflate_relativelayout=0x7f030020;
     }
     public static final class menu {
         public static final int main=0x7f0b0000;

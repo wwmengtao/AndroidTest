@@ -108,20 +108,12 @@ public class ShowViewActivity extends BaseActivity{
 	    	imageFrame.setVisibility(View.VISIBLE);
 	    	ImageView mIMG = (ImageView)imageFrame.findViewById(R.id.icon_img);
 		    mIMG.setBackgroundResource(R.drawable.number1_g);
-	    	lp = mIMG.getLayoutParams();
-	    	lp.width= (int)(getDensityDpi()*0.3);
-	    	lp.height = (int)(getDensityDpi()*0.3);
-	    	mIMG.setLayoutParams(lp);
+		    setLayoutParams(mIMG,0.3,0.3);
 	    }
 	    //2.2、设置结尾的布局内容
 	    LinearLayout widget_frame=(LinearLayout)mLinearLayout_Child.findViewById(R.id.widget_frame);
-	    if(null!=widget_frame){
-	    	lp = widget_frame.getLayoutParams();
-	    	lp.width= (int)(getDensityDpi()*0.3);
-	    	lp.height = (int)(getDensityDpi()*0.3);
-		    widget_frame.setLayoutParams(lp);
-		    widget_frame.setBackgroundResource(R.drawable.number1_r);
-	    }
+	    setLayoutParams(widget_frame,0.3,0.3);
+	    widget_frame.setBackgroundResource(R.drawable.number1_r);
 	    //3、添加FrameLayout
 	    FrameLayout mFrameLayout = (FrameLayout) mLayoutInflater.inflate(R.layout.framelayout_lmr,mLinearLayout_Parent,false);
 	    mLinearLayout_Parent.addView(mFrameLayout);
