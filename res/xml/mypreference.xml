@@ -7,26 +7,27 @@
         android:title="自定义preference">
 	<PreferenceCategory android:title="CheckBoxPreference" >
 		<CheckBoxPreference
-			android:key="auto_search_enable_key"		    
-			android:defaultValue="true"
+			android:key="checkboxpreference_key1"		    
 			android:title="@string/preference_title"			
 			android:summary="@string/preference_selfcheckbox_summary"
-			android:disableDependentsState="false"
 			android:layout="@layout/preference_checkbox"
 			android:widgetLayout="@layout/preference_checkbox_widget">
 		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="checkboxpreference_key2"		    
+			android:title="@string/preference_title"			
+			android:summary="@string/preference_selfcheckbox_summary"
+			android:widgetLayout="@layout/preference_checkbox_widget">
+		</CheckBoxPreference>		
 	</PreferenceCategory> 	
 	<PreferenceCategory android:title="StatusPreference" >		
 		<com.mt.androidtest.customedcontroller.StatusPreference
 		    android:key="status_preference"
-			android:defaultValue="false"
-            android:id="@+id/status_preference_id"
-            style="?android:preferenceStyle"
-            android:layout="@layout/preference_status"
-            android:widgetLayout="@layout/preference_status_widget"
             android:title="@string/preference_title"
-            android:summary="@string/preference_status_summary"/>
-	</PreferenceCategory> 		
+            android:summary="@string/preference_status_summary"
+            android:layout="@layout/preference_status"
+            android:widgetLayout="@layout/preference_status_widget"/>
+	</PreferenceCategory>
    	</PreferenceScreen>
    	
     <PreferenceScreen

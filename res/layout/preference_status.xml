@@ -55,7 +55,17 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:background="@color/wheat"/>
-
+    <TextView
+        android:id="@+id/textview_index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dip"
+        android:layout_marginStart="6dip"
+        android:layout_gravity="center"
+        android:background="@color/royalblue"
+        android:text="index"
+        android:focusable="false"
+	/>
     <ImageView
         android:id="@+id/img_next"
         android:layout_width="24dip"
@@ -64,13 +74,4 @@
         android:duplicateParentState="true"
         android:src="@drawable/right_arrow_select"
         />
-    <TextView
-        android:id="@+id/textview_index"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@color/royalblue"
-        android:text="index"
-        android:focusable="false"
-	/>
 </LinearLayout>
