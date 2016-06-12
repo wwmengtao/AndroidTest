@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+android:id/widget_frame"
+	android:layout_width="fill_parent"
+	android:layout_height="56dp"
+	android:gravity="center_vertical"
+	android:background="@color/wheat">
+	
+	<TextView android:id = "@+id/status_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:layout_alignParentStart="true"
+		android:gravity="center"
+		android:layout_marginStart="16dp"
+		android:textSize="20sp"
+        />
+
+    <Switch android:id="@+id/switch_bt"
+       android:layout_width="56dp"
+       android:layout_height="48dp"
+       android:layout_alignParentEnd="true"
+       android:layout_centerVertical="true"
+       android:layout_marginEnd="16dp"/>
+</RelativeLayout>

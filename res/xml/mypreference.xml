@@ -28,6 +28,10 @@
             android:layout="@layout/preference_status"
             android:widgetLayout="@layout/preference_status_widget"/>
 	</PreferenceCategory>
+	<PreferenceCategory android:title="MySwitchPreference" >		
+		<com.mt.androidtest.customedcontroller.MySwitchPreference
+		    android:key="myswitchpreference"/>
+	</PreferenceCategory>	
    	</PreferenceScreen>
    	
     <PreferenceScreen

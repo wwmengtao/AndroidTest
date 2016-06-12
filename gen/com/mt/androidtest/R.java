@@ -645,7 +645,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int toolbar_wifi_off=0x7f020074;
     }
     public static final class id {
-        public static final int action_settings=0x7f060043;
+        public static final int action_settings=0x7f060045;
         public static final int btn_gotosleep=0x7f06000f;
         public static final int btn_showresource=0x7f060007;
         public static final int btn_shutdown=0x7f06000e;
@@ -667,8 +667,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int icon_img=0x7f06002e;
         public static final int imageview=0x7f060027;
         public static final int img_next=0x7f06003b;
-        public static final int img_relative=0x7f06003f;
-        public static final int iv_media_menu_icon=0x7f060041;
+        public static final int img_relative=0x7f060041;
+        public static final int iv_media_menu_icon=0x7f060043;
         public static final int layout_linear_buttons23=0x7f06000d;
         public static final int lenovo_switch=0x7f060036;
         public static final int linearlayout_inflater=0x7f060003;
@@ -691,11 +691,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int parentView=0x7f060009;
         public static final int plus=0x7f060020;
         public static final int point=0x7f06001f;
-        public static final int relativelayout_resource=0x7f06003d;
+        public static final int relativelayout_resource=0x7f06003f;
         public static final int seven=0x7f06001a;
         public static final int six=0x7f060018;
         public static final int sourceDir=0x7f06002c;
+        public static final int status_tv=0x7f06003d;
         public static final int switch_bar=0x7f060034;
+        public static final int switch_bt=0x7f06003e;
         public static final int text_ft=0x7f060025;
         public static final int textview=0x7f060006;
         public static final int textview_index=0x7f06003a;
@@ -705,9 +707,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int three=0x7f060014;
         public static final int title_text=0x7f060011;
         public static final int title_view=0x7f060002;
-        public static final int tv_media_menu_text=0x7f060042;
-        public static final int tv_relative=0x7f06003e;
-        public static final int tv_relative_color=0x7f060040;
+        public static final int tv_media_menu_text=0x7f060044;
+        public static final int tv_relative=0x7f060040;
+        public static final int tv_relative_color=0x7f060042;
         public static final int tv_status_summary=0x7f06003c;
         public static final int two=0x7f060013;
         public static final int txStatus=0x7f060035;
@@ -745,9 +747,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int preference_checkbox_widget=0x7f03001b;
         public static final int preference_status=0x7f03001c;
         public static final int preference_status_widget=0x7f03001d;
-        public static final int relativelayout_resource=0x7f03001e;
-        public static final int view_inflate=0x7f03001f;
-        public static final int view_inflate_relativelayout=0x7f030020;
+        public static final int preference_switchview=0x7f03001e;
+        public static final int relativelayout_resource=0x7f03001f;
+        public static final int view_inflate=0x7f030020;
+        public static final int view_inflate_relativelayout=0x7f030021;
     }
     public static final class menu {
         public static final int main=0x7f0b0000;
