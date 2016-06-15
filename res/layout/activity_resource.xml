@@ -30,5 +30,9 @@
        android:layout_height="wrap_content"
 	   android:background="@drawable/bg_btn_selector"
        android:textColor="@color/text_btn_selector"        
-       android:text="Selector资源测试" />              
+       android:text="Selector资源测试" />      
+    <TextView
+        android:id="@+id/textviewxliff"  
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>                 
 </LinearLayout>

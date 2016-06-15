@@ -30,6 +30,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     private RelativeLayout mRelativeLayout=null;
 	String mText=null;
 	private TextView mTextView=null;
+	private TextView mTextViewXliff=null;
     private EditText mEditText=null;
 	private TextView mTextView_Switchbar=null;	
     private ImageView mImageView=null;	
@@ -77,6 +78,17 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		setSwitchBarBackground();
 		setEditText();
 		setCheckBoxParams();
+		setTextViewXliff();
+	}
+	
+	/**
+	 * textviewxliff显示的内容是使用xliff字符串组合的内容
+	 */
+	public void setTextViewXliff(){
+		mTextViewXliff=(TextView)findViewById(R.id.textviewxliff);
+		String str_xliff_other=mResource.getString(R.string.text_xliff_other);
+		String str_xliff=mResource.getString(R.string.text_xliff,str_xliff_other);
+		mTextViewXliff.setText(str_xliff);
 	}
 	
 	public void setCheckBoxParams(){
