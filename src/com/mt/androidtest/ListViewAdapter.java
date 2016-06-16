@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class ListViewAdapter extends BaseAdapter {
-//    private Context mContext;
     ArrayList <HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
     ArrayList <Method> mMethodList = new ArrayList<Method>();
     private LayoutInflater mLayoutInflater;
@@ -25,10 +24,10 @@ public class ListViewAdapter extends BaseAdapter {
     private int mMode=0;
     private Context mContext=null;
     public ListViewAdapter(Context context) {
-    	mLayoutInflater = LayoutInflater.from(context);
-        metric  = context.getResources().getDisplayMetrics();
+    	mContext=context.getApplicationContext();
+    	mLayoutInflater = LayoutInflater.from(mContext);
+        metric  = mContext.getResources().getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
-        mContext = context;
     }
 
     public int getCount() {

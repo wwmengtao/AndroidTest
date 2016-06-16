@@ -16,7 +16,7 @@ public class SwitchersInfo {
 	WifiManager mWifiManager=null;
 	boolean isVibeUI35=false;//表明当前是VIBEUI3.5资源环境
 	public SwitchersInfo(Context mContex){
-		this.mContext = mContex;
+		this.mContext = mContex.getApplicationContext();
 		mWifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
 		isVibeUI35 = isVibeUI35();
 	}

@@ -29,6 +29,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 	private LinearLayout mLayout_linear_switchbar=null;
     private RelativeLayout mRelativeLayout=null;
 	String mText=null;
+	private Context mContext=null;
 	private TextView mTextView=null;
 	private TextView mTextViewXliff=null;
     private EditText mEditText=null;
@@ -43,7 +44,8 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_resource);
-		mResource=this.getResources();
+		mContext=this.getApplicationContext();
+		mResource=mContext.getResources();
 		mTextView_Switchbar=(TextView) findViewById(R.id.txStatus);
 		mLayout_linear_switchbar=(LinearLayout) findViewById(R.id.switch_bar);	
 		mLayout_linear_switchbar.setOnClickListener(this);
@@ -135,7 +137,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 												{"drawable","bg_switchbar"}};
 		Object obj=null;
 		for(int i=0;i<type_name.length;i++){
-			if(null!=(obj=getResourceType0(this,type_name[i][1],type_name[i][0],packageName))){
+			if(null!=(obj=getResourceType0(mContext,type_name[i][1],type_name[i][0],packageName))){
 				switch(type_name[i][0]){
 				case "color":
 					mLayout_linear_switchbar.setBackgroundColor((Integer)obj);
@@ -230,7 +232,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
         boolean isCellBroadcastAppLinkEnabled = false;
         int resId = getResources().getIdentifier("config_cellBroadcastAppLinks", "bool", "android");
         if (resId > 0) {
-            isCellBroadcastAppLinkEnabled = this.getResources().getBoolean(resId);
+            isCellBroadcastAppLinkEnabled = mContext.getResources().getBoolean(resId);
         }
         ALog.Log("android_isCellBroadcastAppLinkEnabled:"+isCellBroadcastAppLinkEnabled);
     }	
@@ -255,25 +257,25 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 	 * 获取指定控件字体颜色、背景。只适用于本应用中已经绘制完成的控件，无法跨应用
 	 */
 	public void getViewColors(){
-		TextView mTvTemp =(TextView)this.findViewById(R.id.tv_relative_color);
+		TextView mTvTemp =(TextView)findViewById(R.id.tv_relative_color);
 		String packageName=null;
-		packageName=this.getPackageName();
+		packageName=mContext.getPackageName();
 		int textViewId =0;
-		textViewId=this.getResources().getIdentifier("tv_relative", "id", packageName);
+		textViewId=mContext.getResources().getIdentifier("tv_relative", "id", packageName);
 		ALog.Log("textViewId:"+ALog.toHexString(textViewId));		
 		mTextView= (TextView)findViewById(textViewId);
 		mTvTemp.setTextColor(mTextView.getCurrentTextColor());
 		mTvTemp.setBackground(mTextView.getBackground());
 		//获取其他package中控件，但是只能获取ID，无法加载得到控件，因为其他应用还没有show Activity
 		packageName="com.android.settings";
-		Context mContext;
 		try {
-			mContext = this.createPackageContext(packageName,Context.CONTEXT_IGNORE_SECURITY);
-			if (mContext != null) {
-				textViewId = mContext.getResources().getIdentifier("switch_text", "id", packageName);
+			Context mContext_getView;
+			mContext_getView = mContext.createPackageContext(packageName,Context.CONTEXT_IGNORE_SECURITY);
+			if (mContext_getView != null) {
+				textViewId = mContext_getView.getResources().getIdentifier("switch_text", "id", packageName);
 				ALog.Log("textViewId:"+ALog.toHexString(textViewId));		
-				//mTvTemp =(TextView)mContext.findViewById(textViewId);//语法错误，findViewById只能是Activity使用，而不是Context
-				//mTvTemp= (TextView) LayoutInflater.from(mContext).inflate(textViewId, null);//错误，LayoutInflater只能解析布局文件
+				//mTvTemp =(TextView)mContext_getView.findViewById(textViewId);//语法错误，findViewById只能是Activity使用，而不是Context
+				//mTvTemp= (TextView) LayoutInflater.from(mContext_getView).inflate(textViewId, null);//错误，LayoutInflater只能解析布局文件
 			}
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -288,7 +290,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		String packageName = "com.lenovo.powersetting";//其他应用的包名
     	String name="app_name";
     	String type = "string";
-    	Object obj1 = getResourceType0(this, name, type ,packageName);
+    	Object obj1 = getResourceType0(mContext, name, type ,packageName);
     	if(null!=obj1){
     		mTextView.setText((String)obj1);
     	}
@@ -301,7 +303,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     	//packageName = getPackageName();//本应用的包名
     	String name = "ic_launcher";
     	String type = "drawable";
-    	Object obj0 = getResourceType1(this, name, type ,packageName);
+    	Object obj0 = getResourceType1(mContext, name, type ,packageName);
     	if(null!=obj0){
     		mDrawable = (Drawable)obj0;//getIdentifier获取图片资源
     	}
@@ -328,7 +330,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
      */
     public Drawable getDrawbleFromAsset(){
     	InputStream is=null;
-    	AssetManager asm=this.getAssets();
+    	AssetManager asm=mContext.getAssets();
     	Drawable mDrawable=null;
     	try {
 			is=asm.open("pic_switcher/ic_notfound.png");
@@ -388,7 +390,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     }
     
     public Drawable getDrawableFromResourcesXml(){
-    	Resources mResources = this.getResources();
+    	Resources mResources = mContext.getResources();
     	XmlPullParser parser = mResources.getXml(R.drawable.ic_qs_bluetooth_on);
         Drawable mDrawable = null;
 		try {

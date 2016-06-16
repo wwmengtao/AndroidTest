@@ -15,7 +15,7 @@ public class ListViewTestAdapter_SingleLayout  extends BaseAdapter{
 	ArrayList<String> listString = new ArrayList<String>();
 	public ListViewTestAdapter_SingleLayout(Context context) {
 	// TODO Auto-generated constructor stub
-		mContext = context;
+		mContext = context.getApplicationContext();
 		inflater = LayoutInflater.from(mContext);
 		for(int i = 0 ; i < 100 ; i++){
 			listString.add(Integer.toString(i)+"  ++++");

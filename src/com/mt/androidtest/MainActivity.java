@@ -29,6 +29,7 @@ import android.widget.Toast;
 public class MainActivity extends BaseActivity implements DialogInterface.OnClickListener{
 	boolean isLogRun=true;
 	boolean isNotificationShown=false;
+	private Context mContext=null;
 	private String NOTIFICATION_ID="AndroidTest.Notification";
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
@@ -39,9 +40,10 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
+		mContext=this.getApplicationContext();
 		if(isLogRun)ALog.Log("onCreate",this);
 		mPackageManager = getPackageManager();
-		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 		initListFTData(mMethodNameFT);
 		initListActivityData(mActivitiesName);
 	}
@@ -79,9 +81,9 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 			break;
 		case "Notification":
 			if(!isNotificationShown){
-				showNotification(MainActivity.this,1,null);
+				showNotification(mContext,1,null);
 			}else{
-				cancelNotification(MainActivity.this, 1);
+				cancelNotification(mContext, 1);
 			}
 			break;
 		case "checkComponentExist"://检测组件是否存在
@@ -179,7 +181,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
     //如果没有上述android:configChanges属性，那么手机横竖屏时，Activity将重绘从而调用onCreate、onResume等函数
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        int mOrientation = this.getResources().getConfiguration().orientation;
+        int mOrientation = mContext.getResources().getConfiguration().orientation;
         if(mOrientation == Configuration.ORIENTATION_LANDSCAPE){
         	if(isLogRun)ALog.Log("====ORIENTATION_LANDSCAPE");
         }
@@ -257,7 +259,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	 * reflectCall：测试setDataEnabledUsingSubId和setDataEnabled哪个方法存在
 	 */
 	public void reflectCall(){
-		TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+		TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(TELEPHONY_SERVICE);
 		Class<?> mClass = telephonyManager.getClass();
 		Method mMethod = null;
 		try {
@@ -279,7 +281,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	 * reflectCallListAll：罗列出所有的待调用方法，这样可以省去reflectCall中的try-catch结构以及罗列有关方法参数的麻烦
 	 */
 	public void reflectCallListAll(){
-		TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+		TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(TELEPHONY_SERVICE);
 		Class<?> mClass = telephonyManager.getClass();
 		Method [] mMethods = mClass.getDeclaredMethods();
 		Method m = getExistedMethod(mMethods,"setDataEnabled");
@@ -363,7 +365,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
     private DialogInterface mShowDialog;
     private void showDialog() {
         // TODO: DialogFragment?
-    	mShowDialog = new AlertDialog.Builder(this).setTitle(
+    	mShowDialog = new AlertDialog.Builder(mContext).setTitle(
                 getResources().getString(R.string.app_name))
                 .setIcon(R.drawable.ic_notfound)
                 .setMessage(getResources().getString(R.string.title_activity_switcher_demo))
@@ -382,7 +384,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
             }else if(which == DialogInterface.BUTTON_NEUTRAL){
             	str = "DialogInterface.BUTTON_NEUTRAL";
             }
-            Toast.makeText(this, str, Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, str, Toast.LENGTH_LONG).show();
         }
     }
 	public void startActivityByFlags(){
