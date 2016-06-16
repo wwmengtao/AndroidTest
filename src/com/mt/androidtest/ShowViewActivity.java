@@ -35,7 +35,7 @@ public class ShowViewActivity extends BaseActivity{
     private LinearLayout mLinearLayout_Parent=null;    
     private GridLayout mGridLayout_Calculator=null;    
     private LinearLayout mLinearLayout_Child=null;
-    private Handler mHandler=null;
+    private static Handler mHandler=null;
     private LayoutInflater mLayoutInflater=null;
 	private final int MSG_INIT_TEXT_VIEW_ADDED=0x000;
 	private final int MSG_INIT_TEXT_VIEW_ADDED_WIDTH=0x001;
@@ -78,9 +78,6 @@ public class ShowViewActivity extends BaseActivity{
 	public void onPause(){
 		super.onPause();
 		if(isLogRunAll)ALog.Log("onPause",this);
-        if (mHandler != null) {
-        	mHandler.removeCallbacksAndMessages(null);//ø…“‘±‹√‚ƒ⁄¥Ê–π¬∂
-        }
 		super.onPause();
 	}
 	
