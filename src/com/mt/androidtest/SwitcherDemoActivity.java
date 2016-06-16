@@ -10,7 +10,7 @@ import android.os.Message;
 import android.widget.GridView;
 import android.widget.ListView;
 
-public class SwitcherDemoActivity extends Activity   implements Handler.Callback{
+public class SwitcherDemoActivity extends Activity implements Handler.Callback{
 	GridView mGridView = null;
 	ListView mListView = null;
 	ListViewAdapter mListViewAdapter = null;
@@ -37,6 +37,7 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
     private static final int UPDATE_MESSAGE = 3;
     private static final int RESCAN_INTERVAL_MS = 1000;
     private Handler mUpdater=null;
+    private Handler mAnimationHandler=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,12 +49,16 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
 		mListViewAdapterLVP = new ListViewAdapter(this);
 		mSwitchersInfo = new SwitchersInfo(this);
 	}
+	
 	@Override
 	protected void onResume(){	
 		super.onResume();
         if (mUpdater == null) {
             mUpdater = new Handler(this);
         }
+        if (mAnimationHandler == null) {
+        	mAnimationHandler = new Handler(this);
+        }        
         initData(false);
 	}
 	
@@ -63,6 +68,9 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
         if (mUpdater != null) {
             mUpdater.removeCallbacksAndMessages(null);
         }
+        if (mAnimationHandler != null) {
+        	mAnimationHandler.removeCallbacksAndMessages(null);
+        }        
 	}
 	
 	/**
@@ -88,41 +96,37 @@ public class SwitcherDemoActivity extends Activity   implements Handler.Callback
          }.start();
 	}
 	
- 	Handler mAnimationHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case 1:
-				mProgressDialog.setMessage(getString(R.string.msg_loading));
-				mProgressDialog.setCancelable(false);
-				mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-				mProgressDialog.show();
-			break;	
-			case 2:
-				mProgressDialog.dismiss();
-				//
-				mListViewAdapter.setMode(1);
-				mListViewAdapter.setupList(mSwitchersList);
-				mGridView.setNumColumns(3);
-				mGridView.setAdapter(mListViewAdapter);
-				//
-				mListViewAdapterLVP.setMode(1);
-				mListViewAdapterLVP.setupList(mLVPSwitchersList);
-				mListView.setAdapter(mListViewAdapterLVP);
-				//
-				mUpdater.sendEmptyMessage(UPDATE_MESSAGE);
-			break;		
-			}
-		}
- 	};
- 
 	@Override
 	public boolean handleMessage(Message msg) {
 		// TODO Auto-generated method stub
-		mUpdater.removeMessages(UPDATE_MESSAGE);//
-		mListViewAdapter.setupList(mSwitchersList);
-		mListViewAdapter.notifyDataSetChanged();
-		initData(true);
+		switch (msg.what) {
+		case 1:
+			mProgressDialog.setMessage(getString(R.string.msg_loading));
+			mProgressDialog.setCancelable(false);
+			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			mProgressDialog.show();
+			break;	
+		case 2:
+			mProgressDialog.dismiss();
+			//
+			mListViewAdapter.setMode(1);
+			mListViewAdapter.setupList(mSwitchersList);
+			mGridView.setNumColumns(3);
+			mGridView.setAdapter(mListViewAdapter);
+			//
+			mListViewAdapterLVP.setMode(1);
+			mListViewAdapterLVP.setupList(mLVPSwitchersList);
+			mListView.setAdapter(mListViewAdapterLVP);
+			//
+			mUpdater.sendEmptyMessage(UPDATE_MESSAGE);
+			break;		
+		case 3:
+			mUpdater.removeMessages(UPDATE_MESSAGE);//
+			mListViewAdapter.setupList(mSwitchersList);
+			mListViewAdapter.notifyDataSetChanged();
+			initData(true);
+			break;
+		}
         return true;
 	}
  	
