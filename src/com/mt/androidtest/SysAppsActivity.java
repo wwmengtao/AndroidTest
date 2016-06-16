@@ -1,9 +1,11 @@
 package com.mt.androidtest;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -20,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.mt.androidtest.R;
 
 public class SysAppsActivity extends Activity {
@@ -33,6 +36,7 @@ public class SysAppsActivity extends Activity {
 	TextView mtvClass = null;
 	TextView mtvSourceDir = null;	
 	PackageManager mPackageManager=null;
+	AnimationHandler mAnimationHandler=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +50,7 @@ public class SysAppsActivity extends Activity {
 		mtvClass = (TextView)findViewById(R.id.className);
 		mtvSourceDir  = (TextView)findViewById(R.id.sourceDir);
 		mPackageManager = getPackageManager();
+		mAnimationHandler=new AnimationHandler(this);
 	}
 
 	@Override
@@ -114,31 +119,45 @@ public class SysAppsActivity extends Activity {
          }.start();
          
     }
- 	Handler mAnimationHandler = new Handler() {
+ 	static class AnimationHandler extends Handler{
+ 		WeakReference<SysAppsActivity>mActivityWR=null;
+ 		SysAppsActivity mActivity=null;
+ 		ProgressDialog mProgressDialogH=null;
+ 		ListViewAdapter mListViewAdapterH=null;
+ 		ArrayList<HashMap<String, Object>> mSysAppListH=null;
+ 		GridView mGridViewH=null;
+ 		AnimationHandler(SysAppsActivity activity){
+ 			mActivityWR = new WeakReference<SysAppsActivity>(activity);
+ 		}
 		@Override
 		public void handleMessage(Message msg) {
+			if(null==(mActivity=mActivityWR.get()))return;
+			mProgressDialogH=mActivity.mProgressDialog;
+			mListViewAdapterH=mActivity.mListViewAdapter;
+			mSysAppListH=mActivity.mSysAppList;
+			mGridViewH=mActivity.mGridView;
 			switch (msg.what) {
 			case 1:
-				  mProgressDialog.setMessage(getString(R.string.msg_loading));
-				  mProgressDialog.setCancelable(false);
-				  mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-				  mProgressDialog.show();
+				mProgressDialogH.setMessage(mActivity.getApplicationContext().getString(R.string.msg_loading));
+				mProgressDialogH.setCancelable(false);
+				mProgressDialogH.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				mProgressDialogH.show();
 				  break;			
 				case 2:
-					mProgressDialog.dismiss();
-					mListViewAdapter.setMode(1);
-					mListViewAdapter.setupList(mSysAppList);
-					mGridView.setNumColumns(4);
-					mGridView.setAdapter(mListViewAdapter);
-					mGridView.setOnItemClickListener(new OnItemClickListener() {
+					mProgressDialogH.dismiss();
+					mListViewAdapterH.setMode(1);
+					mListViewAdapterH.setupList(mSysAppListH);
+					mGridViewH.setNumColumns(4);
+					mGridViewH.setAdapter(mListViewAdapterH);
+					mGridViewH.setOnItemClickListener(new OnItemClickListener() {
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View view,
 								int position, long id) {
-							mImageView.setImageDrawable((Drawable)mSysAppList.get(position).get("itemImage"));
-					        mtvName.setText((String) mSysAppList.get(position).get("itemText"));
-					        mtvPackage.setText((String) mSysAppList.get(position).get("packname"));
-					        mtvClass.setText((String) mSysAppList.get(position).get("classname"));
-					        mtvSourceDir.setText((String) mSysAppList.get(position).get("sourceDir"));
+							mActivity.mImageView.setImageDrawable((Drawable)mSysAppListH.get(position).get("itemImage"));
+							mActivity.mtvName.setText((String) mSysAppListH.get(position).get("itemText"));
+							mActivity.mtvPackage.setText((String) mSysAppListH.get(position).get("packname"));
+							mActivity.mtvClass.setText((String) mSysAppListH.get(position).get("classname"));
+							mActivity.mtvSourceDir.setText((String) mSysAppListH.get(position).get("sourceDir"));
 						}
 					});
 			  	break;			
