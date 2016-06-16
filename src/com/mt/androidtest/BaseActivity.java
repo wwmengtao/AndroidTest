@@ -1,5 +1,7 @@
 package com.mt.androidtest;
 
+import java.lang.ref.WeakReference;
+
 import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -22,7 +24,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	private LinearLayout mLinearlayout_listview_functions=null;
 	private ListView mListViewFT=null;
 	private ListViewAdapter mListViewAdapterFT = null;	
-    private Handler mHandler=null;
+    private static Handler mHandler=null;
 	private Intent mIntent = null;
 	private String packageName = null;
 	private String className = null;		    
@@ -30,6 +32,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	private LayoutInflater mLayoutInflater = null;
     private DisplayMetrics metric=null;
     private int mDensityDpi = 0;
+    private static WeakReference<BaseActivity>mBaseActivityWR=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,21 +41,19 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		mLayoutInflater=LayoutInflater.from(this);
 		metric  = getResources().getDisplayMetrics();
 		mDensityDpi = metric.densityDpi;
+		mBaseActivityWR=new WeakReference<BaseActivity>(this);
 	}
 	
 	@Override
 	public void onResume(){
 		super.onResume();
-        if (mHandler == null) {
-        	mHandler = new Handler(this);
-        }
 	}	
 	
 	@Override
 	public void onPause(){
 		if(null!=mHandler){
-			mHandler.removeCallbacksAndMessages(0);
-		}		
+			mHandler.removeCallbacksAndMessages(null);//±ÜÃâÄÚ´æÐ¹Â¶
+		}
 		super.onPause();
 	}
 	
@@ -68,7 +69,13 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		return mLayoutInflater;
 	}
 	
-	public Handler getHandler(){
+	public static Handler getHandler(){
+        if (mHandler == null) {
+        	BaseActivity mBaseActivity=mBaseActivityWR.get();
+        	if(null!=mBaseActivity){
+        		mHandler = new Handler(mBaseActivity);
+        	}
+        }
 		return mHandler;
 	}
 	
