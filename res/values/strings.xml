@@ -49,8 +49,10 @@
     <string name="preference_on">On</string>
     <string name="preference_title">Title</string>
     <string name="preference_summary">Summary</string>
-    <string name="preference_selfcheckbox_summary">右侧checkbox改成箭头，前提是android:widgetLayout中的CheckBox必须使用Android原生的\"@+android:id/checkbox\"</string>    
+    <string name="preference_selfcheckbox_summary">右侧checkbox改成箭头，前提是android:widgetLayout中的CheckBox必须使用Android原生的\"@+android:id/checkbox\"</string>
     <string name="preference_status_summary">右侧使用\"@+id/tv_status_summary\"的TextView(内容为\"On\")来填充mypreference.xml中android:widgetLayout=\"@layout/preference_status_widget\"布局，后面的箭头和另一个textview不在android:widgetLayout范围内</string>
-	<string name="text_xliff">Text combined: <xliff:g id="time">%1$s</xliff:g></string>
-	<string name="text_xliff_other">other xliff</string>
+    <string name="text_xliff">Text combined: <xliff:g id="time">%1$s</xliff:g></string>
+    <string name="text_xliff_other">other xliff</string>
+    <string name="title_activity_asynchronous">AsynchronousActivity</string>
+
 </resources>

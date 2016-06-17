@@ -66,6 +66,10 @@
             android:name=".MySelfViewActivity"
             android:label="@string/title_activity_customed_controller" >
         </activity>
+        <activity
+            android:name=".AsynchronousActivity"
+            android:label="@string/title_activity_asynchronous" >
+        </activity>
     </application>
 
 </manifest>
