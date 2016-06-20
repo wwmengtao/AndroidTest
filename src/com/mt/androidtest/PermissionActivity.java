@@ -2,7 +2,10 @@ package com.mt.androidtest;
 
 import java.lang.reflect.Method;
 
+import com.mt.androidtest.permission.RequestPermissionsActivity;
+
 import android.Manifest;
+import android.Manifest.permission;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,8 +31,11 @@ public class PermissionActivity extends BaseActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        if (RequestPermissionsActivity.startPermissionActivity(this)) {
+        	//return;
+        }
 		setContentView(R.layout.activity_base);
-		ALog.Log("onCreate",this);
+		//ALog.Log("onCreate",this);
 		mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		mPackageManager = getPackageManager();
@@ -40,19 +46,19 @@ public class PermissionActivity extends BaseActivity{
 	@Override
 	public void onResume(){	
 		super.onResume();
-		ALog.Log("onResume",this);
+		//ALog.Log("onResume",this);
 	}
 
 	@Override
 	public void onPause(){
 		super.onPause();
-		ALog.Log("onPause",this);
+		//ALog.Log("onPause",this);
 	}	
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ALog.Log("onDestroy",this);
+		//ALog.Log("onDestroy",this);
 	}	
 	
 	@Override
@@ -150,12 +156,10 @@ public class PermissionActivity extends BaseActivity{
 	public boolean checkPermissionGranted(String permissionDes){
 		boolean isGranted = false;
 		Context context = getApplicationContext();  
-		if (mPackageManager.checkPermission(permissionDes,
-		        context.getPackageName()) == PackageManager.PERMISSION_GRANTED){  
+		if (mPackageManager.checkPermission(permissionDes, context.getPackageName()) == PackageManager.PERMISSION_GRANTED){  
 			isGranted = true;
 		    ALog.Log(getApplicationContext().getString(R.string.permission_granted,permissionDes));  
-		}  
-		else{  
+		}else{  
 			isGranted = false;
 		    ALog.Log(getApplicationContext().getString(R.string.permission_not_granted,permissionDes));  
 		}  
