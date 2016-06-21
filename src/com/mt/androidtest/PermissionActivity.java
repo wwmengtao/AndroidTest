@@ -1,19 +1,24 @@
 package com.mt.androidtest;
 
 import java.lang.reflect.Method;
+
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.mt.androidtest.permission.RequestPermissionsActivity;
 
@@ -24,7 +29,7 @@ public class PermissionActivity extends BaseActivity{
 	private IntentFilter mUrgentFilter=null;
 	boolean isPermissionGranted = false;
 	private String [] mMethodNameFT={"setListenCall","unSetListenCall","setListenCallAnother","unSetListenCallAnother"
-			,"shutdown","gotosleep","requestPermissions"};
+			,"shutdown","gotosleep","requestPermissions","requestPermissionSAW"};
 	private Context mContext = null; 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +93,10 @@ public class PermissionActivity extends BaseActivity{
 			break;		
 		case "requestPermissions":
 			requestPermissions();
-			break;			
+			break;		
+		case "requestPermissionSAW":
+			requestPermissionSAW();
+			break;					
 		}
 	}
     
@@ -96,6 +104,39 @@ public class PermissionActivity extends BaseActivity{
         if (RequestPermissionsActivity.startPermissionActivity(this)) {
         	return;
         }
+	}
+	
+	/**
+	 * requestPermissionSAW：申请SYSTEM_ALERT_WINDOW权限
+	 * SYSTEM_ALERT_WINDOW and WRITE_SETTINGS, 这两个权限为Special Permissions(特殊权限)，不能通过代码申请方式获取，
+	 * 必须得用户打开软件设置页手动打开，才能授权。路径是：Settings->Apps->App Setting->Draw over other apps。
+	 * 可以使用Settings.canDrawOverlays判断当前是否允许显示悬浮框，Manifest申请该权限是无效的。
+	 */
+	public static int OVERLAY_PERMISSION_REQ_CODE = 1234;
+	public void requestPermissionSAW(){
+		if(Build.VERSION.SDK_INT <= 22)return;
+		if (!Settings.canDrawOverlays(this)) {
+	        Toast.makeText(this, "Can not DrawOverlays", Toast.LENGTH_SHORT).show();
+	        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
+	        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+	    }else{
+	    	Toast.makeText(this, "Permission already got!", Toast.LENGTH_SHORT).show();
+	    }
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(Build.VERSION.SDK_INT <= 22)return;
+	    if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+	    	ALog.Log("resultCode:"+resultCode);
+	        if (!Settings.canDrawOverlays(this)) {
+	            // SYSTEM_ALERT_WINDOW permission not granted...
+	            Toast.makeText(this, "Permission Denieddd by user, Please Check it in Settings!", Toast.LENGTH_SHORT).show();
+	        } else {
+	            Toast.makeText(this, "Permission Allowed!", Toast.LENGTH_SHORT).show();
+	            // Already hold the SYSTEM_ALERT_WINDOW permission, do addview or something.
+	        }
+	    }
 	}
 	
     /**

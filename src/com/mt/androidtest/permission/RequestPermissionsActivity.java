@@ -36,6 +36,12 @@ public class RequestPermissionsActivity extends RequestPermissionsActivityBase {
      * @return
      */
     public static boolean startPermissionActivity(Activity activity) {
+    	/**
+    	 * 下列checkSelfPermission和Settings.canDrawOverlays数值如下：
+    	 * 1)普通应用：false,false
+    	 * 2)签名应用+system/priv-app：true,false
+    	 * 3)签名应用+system/priv-app+android:sharedUserId="android.uid.system"：true,true
+    	 */
 		ALog.Log("RequestPermissionsActivity_checkSelfPermission:"+checkSelfPermission(activity,permission.SYSTEM_ALERT_WINDOW));
 		ALog.Log("RequestPermissionsActivity_Settings.canDrawOverlays:"+Settings.canDrawOverlays(activity));
         return startPermissionActivity(activity, REQUIRED_PERMISSIONS, RequestPermissionsActivity.class);
