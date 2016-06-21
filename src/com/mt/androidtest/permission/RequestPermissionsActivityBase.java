@@ -1,5 +1,7 @@
 package com.mt.androidtest.permission;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,79 +10,49 @@ import android.os.Bundle;
 import android.os.Trace;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
-/**
- * Activity that asks the user for all {@link #getDesiredPermissions} if any of
- * {@link #getRequiredPermissions} are missing.
- *
- * NOTE: As a result of b/22095159, this can behave oddly in the case where the final permission
- * you are requesting causes an application restart.
- */
 public abstract class RequestPermissionsActivityBase extends Activity {
     public static final String PREVIOUS_ACTIVITY_INTENT = "previous_intent";
     private static final int PERMISSIONS_REQUEST_ALL_PERMISSIONS = 1;
-
-    /**
-     * @return list of permissions that are needed in order for {@link #PREVIOUS_ACTIVITY_INTENT} to
-     * operate. You only need to return a single permission per permission group you care about.
-     */
     protected abstract String[] getRequiredPermissions();
-
-    /**
-     * @return list of permissions that would be useful for {@link #PREVIOUS_ACTIVITY_INTENT} to
-     * operate. You only need to return a single permission per permission group you care about.
-     */
     protected abstract String[] getDesiredPermissions();
-
-    private Intent mPreviousActivityIntent;
+    private Intent mPreviousActivityIntent=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPreviousActivityIntent = (Intent) getIntent().getExtras().get(PREVIOUS_ACTIVITY_INTENT);
-
-        // Only start a requestPermissions() flow when first starting this activity the first time.
-        // The process is likely to be restarted during the permission flow (necessary to enable
-        // permissions) so this is important to track.
         if (savedInstanceState == null) {
             requestPermissions();
         }
     }
 
-    /**
-     * If any permissions the Contacts app needs are missing, open an Activity
-     * to prompt the user for these permissions. Moreover, finish the current activity.
-     *
-     * This is designed to be called inside {@link android.app.Activity#onCreate}
-     */
-	protected static boolean startPermissionActivity(Activity activity,
-			String[] requiredPermissions, Class<?> newActivityClass) {
-		if (!RequestPermissionsActivity.hasPermissions(activity, requiredPermissions)) {
-			final Intent intent = new Intent(activity,  newActivityClass);
-		    intent.putExtra(PREVIOUS_ACTIVITY_INTENT, activity.getIntent());
-		    activity.startActivity(intent);
-		    activity.finish();
-		    return true;
+    private void requestPermissions() {
+    	Trace.beginSection("requestPermissions");
+        try {
+			// Construct a list of missing permissions
+			final ArrayList<String> unsatisfiedPermissions = new ArrayList<>();
+			for (String permission : getDesiredPermissions()) {
+			    if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+			        unsatisfiedPermissions.add(permission);
+			        ALog.Log("Requested permission:"+permission);
+			    }
+			}
+			if (unsatisfiedPermissions.size() == 0) {
+			    throw new RuntimeException("Request permission activity was called even though all permissions are satisfied.");
+			}
+			requestPermissions(unsatisfiedPermissions.toArray(new String[unsatisfiedPermissions.size()]), PERMISSIONS_REQUEST_ALL_PERMISSIONS);
+		} finally {
+		    Trace.endSection();
 		}
-
-        // Account type initialization must be delayed until the Contacts permission group
-        // has been granted (since GET_ACCOUNTS) falls under that groups.  Previously it
-        // was initialized in ContactApplication which would cause problems as
-        // AccountManager.getAccounts would return an empty array. See b/22690336
-
-        return false;
     }
-
+    
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[],
-            int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (permissions != null && permissions.length > 0 && isAllGranted(permissions, grantResults)) {
-            mPreviousActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            mPreviousActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);//FLAG_ACTIVITY_NO_ANIMATION：禁止掉系统切换动画
             startActivity(mPreviousActivityIntent);
             finish();
             overridePendingTransition(0, 0);
@@ -91,48 +63,35 @@ public abstract class RequestPermissionsActivityBase extends Activity {
     }
 
     private boolean isAllGranted(String permissions[], int[] grantResult) {
-    	boolean isAllGranted=true;
         for (int i = 0; i < permissions.length; i++) {
             if (grantResult[i] != PackageManager.PERMISSION_GRANTED && isPermissionRequired(permissions[i])) {
-            	ALog.Log("Requested fail permission:"+permissions[i]);
-            	isAllGranted = false;
+            	return false;
             }
         }
-        return isAllGranted;
+        return true;
     }
 
     private boolean isPermissionRequired(String p) {
         return Arrays.asList(getRequiredPermissions()).contains(p);
     }
-
-    private void requestPermissions() {
-        Trace.beginSection("requestPermissions");
-        try {
-            // Construct a list of missing permissions
-            final ArrayList<String> unsatisfiedPermissions = new ArrayList<>();
-            for (String permission : getDesiredPermissions()) {
-                if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                    unsatisfiedPermissions.add(permission);
-                    ALog.Log("To be requested permission:"+permission);
-                }
-            }
-            if (unsatisfiedPermissions.size() == 0) {
-                throw new RuntimeException("Request permission activity was called even"
-                        + " though all permissions are satisfied.");
-            }
-            requestPermissions(unsatisfiedPermissions.toArray(new String[unsatisfiedPermissions.size()]),
-                    PERMISSIONS_REQUEST_ALL_PERMISSIONS);
-        } finally {
-            Trace.endSection();
-        }
-    }
-
-    protected static boolean hasPermissions(Context context, String[] permissions) {
+    
+	protected static boolean startPermissionActivity(Activity activity, String[] requiredPermissions, Class<?> newActivityClass) {
+		if (!hasAllPermissions(activity, requiredPermissions)) {//如果所要求的权限没有全部允许，那么需要申请权限
+			final Intent intent = new Intent(activity,  newActivityClass);
+			Intent mIntentGet=activity.getIntent();
+		    intent.putExtra(PREVIOUS_ACTIVITY_INTENT, mIntentGet);
+		    activity.startActivity(intent);
+		    activity.finish();
+		    return true;
+		}
+        return false;
+    }    
+	
+    protected static boolean hasAllPermissions(Context context, String[] permissions) {
         Trace.beginSection("hasPermission");
         try {
             for (String permission : permissions) {
-                if (context.checkSelfPermission(permission)
-                        != PackageManager.PERMISSION_GRANTED) {
+                if (!checkSelfPermission(context,permission)) {
                     return false;
                 }
             }
@@ -140,5 +99,13 @@ public abstract class RequestPermissionsActivityBase extends Activity {
         } finally {
             Trace.endSection();
         }
+    }	
+    
+    public static boolean checkSelfPermission(Activity activity, String permission){
+    	return activity.getApplicationContext().checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
+    }
+    
+    public static boolean checkSelfPermission(Context context, String permission){
+    	return context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }
 }

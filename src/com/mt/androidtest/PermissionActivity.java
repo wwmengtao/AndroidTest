@@ -1,11 +1,7 @@
 package com.mt.androidtest;
 
 import java.lang.reflect.Method;
-
-import com.mt.androidtest.permission.RequestPermissionsActivity;
-
 import android.Manifest;
-import android.Manifest.permission;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +15,8 @@ import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.mt.androidtest.permission.RequestPermissionsActivity;
+
 public class PermissionActivity extends BaseActivity{
     private PowerManager mPowerManager =null;
 	private TelephonyManager telephonyManager=null;
@@ -26,16 +24,14 @@ public class PermissionActivity extends BaseActivity{
 	private IntentFilter mUrgentFilter=null;
 	boolean isPermissionGranted = false;
 	private String [] mMethodNameFT={"setListenCall","unSetListenCall","setListenCallAnother","unSetListenCallAnother"
-			,"shutdown","gotosleep"};
-	
+			,"shutdown","gotosleep","requestPermissions"};
+	private Context mContext = null; 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        if (RequestPermissionsActivity.startPermissionActivity(this)) {
-        	//return;
-        }
 		setContentView(R.layout.activity_base);
 		//ALog.Log("onCreate",this);
+		mContext = getApplicationContext();
 		mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		telephonyManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		mPackageManager = getPackageManager();
@@ -89,11 +85,19 @@ public class PermissionActivity extends BaseActivity{
 		case "gotosleep":
 			//powerOperate("goToSleep");
 			powerOperate2("goToSleep");
-			break;					
+			break;		
+		case "requestPermissions":
+			requestPermissions();
+			break;			
 		}
-	
 	}
     
+	public void requestPermissions(){
+        if (RequestPermissionsActivity.startPermissionActivity(this)) {
+        	return;
+        }
+	}
+	
     /**
      *setListenCall：不需要权限<uses-permission android:name="android.permission.READ_PHONE_STATE" />
      */
@@ -154,14 +158,13 @@ public class PermissionActivity extends BaseActivity{
 	 * @return
 	 */
 	public boolean checkPermissionGranted(String permissionDes){
-		boolean isGranted = false;
-		Context context = getApplicationContext();  
-		if (mPackageManager.checkPermission(permissionDes, context.getPackageName()) == PackageManager.PERMISSION_GRANTED){  
+		boolean isGranted = false; 
+		if (mPackageManager.checkPermission(permissionDes, mContext.getPackageName()) == PackageManager.PERMISSION_GRANTED){  
 			isGranted = true;
-		    ALog.Log(getApplicationContext().getString(R.string.permission_granted,permissionDes));  
+		    ALog.Log(mContext.getString(R.string.permission_granted,permissionDes));  
 		}else{  
 			isGranted = false;
-		    ALog.Log(getApplicationContext().getString(R.string.permission_not_granted,permissionDes));  
+		    ALog.Log(mContext.getString(R.string.permission_not_granted,permissionDes));  
 		}  
 		return isGranted;
 	}
