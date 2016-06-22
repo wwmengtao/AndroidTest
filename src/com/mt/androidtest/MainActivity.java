@@ -26,7 +26,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends BaseActivity implements DialogInterface.OnClickListener{
-	boolean isLogRun=true;
+	boolean isLogRun=false;
 	boolean isNotificationShown=false;
 	private Context mContext=null;
 	private String NOTIFICATION_ID="AndroidTest.Notification";
@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
+		isLogRun=getLogRun();
 		mContext=this.getApplicationContext();
 		if(isLogRun)ALog.Log("onCreate",this);
 		mPackageManager = getPackageManager();

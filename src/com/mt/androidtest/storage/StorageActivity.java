@@ -39,7 +39,7 @@ public class StorageActivity extends BaseActivity {
 			"listAssets",
 			"getFromAssets",
 			"copyFilesInAssets"};
-
+	private String [] mActivitiesName={"SDCardActivity"};
 	private static final int MSG_writeToFile=0x000;		
 	private static final int MSG_readFromFile=0x001;
 	private static final int MSG_readRawResources=0x002;
@@ -57,7 +57,7 @@ public class StorageActivity extends BaseActivity {
 		ALog.Log("FileOperateActivity_onCreate");
 		mContext=this.getApplicationContext();
 		initListFTData(mMethodNameFT);
-		initListActivityData(null);
+		initListActivityData(mActivitiesName);
 		initHandlerThread();
 	}
 	
@@ -150,7 +150,7 @@ public class StorageActivity extends BaseActivity {
 	}
 	
 	public void initHandlerThread(){
-		mHandlerThread = new HandlerThread("FileOperateActivity",
+		mHandlerThread = new HandlerThread("StorageActivity",
                 android.os.Process.THREAD_PRIORITY_FOREGROUND);
 		mHandlerThread.start();
 		mHandlerCostTime=new HandlerCostTime(mHandlerThread.getLooper());

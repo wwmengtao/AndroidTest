@@ -56,6 +56,7 @@
     <string name="title_activity_asynchronous">AsynchronousActivity</string>
     <string name="title_activity_request_permissions">RequestPermissionsActivity</string>
     <string name="missing_required_permission">You have disabled a required permission.</string>
-    <string name="title_activity_file_operate">FileOperateActivity</string>
+    <string name="title_activity_storage">StorageActivity</string>
+    <string name="title_activity_sdcard">SDCardActivity</string>
 
 </resources>

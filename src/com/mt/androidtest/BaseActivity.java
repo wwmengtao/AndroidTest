@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class BaseActivity extends ListActivity implements AdapterView.OnItemClickListener, Handler.Callback, View.OnClickListener{
-	boolean isLogRun=true;
+	private boolean isLogRun=false;
 	private LinearLayout mLinearlayout_listview_android=null;
 	private LinearLayout mLinearlayout_listview_functions=null;
 	private ListView mListViewFT=null;
@@ -42,7 +42,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ALog.Log("BaseActivity_onCreate");
+		if(isLogRun)ALog.Log("BaseActivity_onCreate");
 		packageName = this.getPackageName();
 		mLayoutInflater=LayoutInflater.from(this);
 		metric  = getResources().getDisplayMetrics();
@@ -64,6 +64,10 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		super.onPause();
 	}
 	
+	public boolean getLogRun(){
+		return isLogRun;
+	}
+	
 	/**
 	 * getActivities：获取当前应用AndroidManifest.xml文件中所有<activity>节点信息
 	 * @param mContext
@@ -83,7 +87,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	      for (int i=0;i<activities.length;i++) {
 	    	  mActivityInfo=activities[i];
 	    	  if(null!=mActivityInfo){
-	    		  ALog.Log(""+mActivityInfo.name);
+	    		  //ALog.Log(""+mActivityInfo.name);
 	    		  mActivitiesName.add(mActivityInfo.name);
 	    	  }
 	      }

@@ -34,44 +34,44 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mt.androidtest.showview.SysAppsActivity"
+            android:name=".showview.SysAppsActivity"
             android:label="@string/title_activity_sys_apps" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.showview.SwitcherDemoActivity"
+            android:name=".showview.SwitcherDemoActivity"
             android:label="@string/title_activity_switcher_demo" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.showview.ShowViewActivity"
+            android:name=".showview.ShowViewActivity"
             android:label="@string/title_activity_show_view" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.showview.ResourceActivity"
+            android:name=".showview.ResourceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_resource" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.permission.PermissionActivity"
+            android:name=".permission.PermissionActivity"
             android:label="@string/title_activity_permission" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.customedcontroller.MyPreferenceActivity"
+            android:name=".customedcontroller.MyPreferenceActivity"
             android:label="@string/title_activity_my_preference" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.listview.ListViewTestActivity"
+            android:name=".listview.ListViewTestActivity"
             android:label="@string/title_activity_list_view" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.showview.InflateActivity"
+            android:name=".showview.InflateActivity"
             android:label="@string/title_activity_inflate" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.customedcontroller.MySelfViewActivity"
+            android:name=".customedcontroller.MySelfViewActivity"
             android:label="@string/title_activity_customed_controller" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.asynchronous.AsynchronousActivity"
+            android:name=".asynchronous.AsynchronousActivity"
             android:label="@string/title_activity_asynchronous" >
         </activity>
         <activity
@@ -79,8 +79,12 @@
             android:label="@string/title_activity_request_permissions" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.storage.StorageActivity"
-            android:label="@string/title_activity_file_operate" >
+            android:name=".storage.StorageActivity"
+            android:label="@string/title_activity_storage" >
+        </activity>
+        <activity
+            android:name="com.mt.androidtest.storage.SDCardActivity"
+            android:label="@string/title_activity_sdcard" >
         </activity>
     </application>
 
