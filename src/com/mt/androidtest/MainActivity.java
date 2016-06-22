@@ -2,7 +2,6 @@ package com.mt.androidtest;
 
 import java.lang.reflect.Method;
 import java.util.List;
-
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Notification;

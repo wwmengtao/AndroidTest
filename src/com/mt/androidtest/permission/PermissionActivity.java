@@ -1,4 +1,4 @@
-package com.mt.androidtest;
+package com.mt.androidtest.permission;
 
 import java.lang.reflect.Method;
 
@@ -20,7 +20,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.mt.androidtest.permission.RequestPermissionsActivity;
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.R;
+import com.mt.androidtest.R.layout;
+import com.mt.androidtest.R.string;
 
 public class PermissionActivity extends BaseActivity{
     private PowerManager mPowerManager =null;

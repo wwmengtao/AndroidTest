@@ -1,7 +1,9 @@
-package com.mt.androidtest;
+package com.mt.androidtest.showview;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import com.mt.androidtest.ALog;
 
 public class SysProp {
     private static Method sysPropGet;

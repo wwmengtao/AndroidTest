@@ -1,4 +1,4 @@
-package com.mt.androidtest;
+package com.mt.androidtest.showview;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.R;
 
 public class ResourceActivity extends Activity  implements View.OnClickListener{
 	private LinearLayout mLayout_linear_switchbar=null;

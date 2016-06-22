@@ -1,15 +1,13 @@
-package com.mt.androidtest;
+package com.mt.androidtest.showview;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,9 +25,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
+import com.mt.androidtest.listview.ListViewAdapter;
 
 public class SysAppsActivity extends Activity implements DialogInterface.OnClickListener{
 	GridView mGridView = null;

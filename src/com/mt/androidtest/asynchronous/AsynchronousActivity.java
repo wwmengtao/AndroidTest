@@ -1,4 +1,4 @@
-package com.mt.androidtest;
+package com.mt.androidtest.asynchronous;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -11,8 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.mt.androidtest.asynchronous.AsyncTaskDemo;
-import com.mt.androidtest.asynchronous.AsyncTaskProgressBar;
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.R;
+import com.mt.androidtest.R.id;
+import com.mt.androidtest.R.layout;
 
 public class AsynchronousActivity extends BaseActivity{
     private String [] mMethodNameFT={"startAsyncTaskDemo","cancelAsyncTaskDemo","startAsyncTaskProgressBar","cancelAsyncTaskProgressBar"};

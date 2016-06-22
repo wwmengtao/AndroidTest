@@ -1,7 +1,6 @@
-package com.mt.androidtest;
+package com.mt.androidtest.listview;
 
 import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.widget.AbsListView.RecyclerListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.mt.androidtest.R;
 
 public class ListViewTestActivity extends Activity implements RecyclerListener{
 	ListView listView;

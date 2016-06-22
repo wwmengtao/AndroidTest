@@ -1,4 +1,4 @@
-package com.mt.androidtest;
+package com.mt.androidtest.showview;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.R;
 
 public class ShowViewActivity extends BaseActivity{
 	boolean isLogRunAll=false;

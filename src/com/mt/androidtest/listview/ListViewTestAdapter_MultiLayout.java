@@ -1,4 +1,5 @@
-package com.mt.androidtest;
+package com.mt.androidtest.listview;
+
 import java.util.ArrayList;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.R;
 import com.mt.androidtest.R.id;
 
 public class ListViewTestAdapter_MultiLayout extends BaseAdapter{

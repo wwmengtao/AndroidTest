@@ -1,4 +1,4 @@
-package com.mt.androidtest;
+package com.mt.androidtest.storage;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,6 +21,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.R;
 
 public class StorageActivity extends BaseActivity {
 	private Context mContext = null;

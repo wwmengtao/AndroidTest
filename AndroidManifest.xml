@@ -34,44 +34,44 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SysAppsActivity"
+            android:name="com.mt.androidtest.showview.SysAppsActivity"
             android:label="@string/title_activity_sys_apps" >
         </activity>
         <activity
-            android:name=".SwitcherDemoActivity"
+            android:name="com.mt.androidtest.showview.SwitcherDemoActivity"
             android:label="@string/title_activity_switcher_demo" >
         </activity>
         <activity
-            android:name=".ShowViewActivity"
+            android:name="com.mt.androidtest.showview.ShowViewActivity"
             android:label="@string/title_activity_show_view" >
         </activity>
         <activity
-            android:name=".ResourceActivity"
+            android:name="com.mt.androidtest.showview.ResourceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_resource" >
         </activity>
         <activity
-            android:name=".PermissionActivity"
+            android:name="com.mt.androidtest.permission.PermissionActivity"
             android:label="@string/title_activity_permission" >
         </activity>
         <activity
-            android:name=".MyPreferenceActivity"
+            android:name="com.mt.androidtest.customedcontroller.MyPreferenceActivity"
             android:label="@string/title_activity_my_preference" >
         </activity>
         <activity
-            android:name=".ListViewTestActivity"
+            android:name="com.mt.androidtest.listview.ListViewTestActivity"
             android:label="@string/title_activity_list_view" >
         </activity>
         <activity
-            android:name=".InflateActivity"
+            android:name="com.mt.androidtest.showview.InflateActivity"
             android:label="@string/title_activity_inflate" >
         </activity>
         <activity
-            android:name=".MySelfViewActivity"
+            android:name="com.mt.androidtest.customedcontroller.MySelfViewActivity"
             android:label="@string/title_activity_customed_controller" >
         </activity>
         <activity
-            android:name=".AsynchronousActivity"
+            android:name="com.mt.androidtest.asynchronous.AsynchronousActivity"
             android:label="@string/title_activity_asynchronous" >
         </activity>
         <activity
@@ -79,7 +79,7 @@
             android:label="@string/title_activity_request_permissions" >
         </activity>
         <activity
-            android:name=".StorageActivity"
+            android:name="com.mt.androidtest.storage.StorageActivity"
             android:label="@string/title_activity_file_operate" >
         </activity>
     </application>

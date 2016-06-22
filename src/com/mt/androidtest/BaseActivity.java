@@ -2,6 +2,8 @@ package com.mt.androidtest;
 
 import java.lang.ref.WeakReference;
 
+import com.mt.androidtest.listview.ListViewAdapter;
+
 import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;

@@ -7,7 +7,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.AsynchronousActivity;
 
 public class AsyncTaskProgressBar extends AsyncTask<Void, Integer, Integer>{  
     private TextView mTextView=null;  

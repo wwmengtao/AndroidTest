@@ -1,4 +1,4 @@
-package com.mt.androidtest;
+package com.mt.androidtest.showview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.GridView;
 import android.widget.ListView;
+import com.mt.androidtest.R;
+import com.mt.androidtest.listview.ListViewAdapter;
 
 public class SwitcherDemoActivity extends Activity implements Handler.Callback{
 	GridView mGridView = null;

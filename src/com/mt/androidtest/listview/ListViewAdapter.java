@@ -1,8 +1,8 @@
-package com.mt.androidtest;
+package com.mt.androidtest.listview;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.mt.androidtest.R;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
@@ -14,9 +14,10 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.mt.androidtest.R;
 
 public class ListViewAdapter extends BaseAdapter {
-    ArrayList <HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
+    public ArrayList <HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
     ArrayList <Method> mMethodList = new ArrayList<Method>();
     private LayoutInflater mLayoutInflater;
     private int mDensityDpi = 0;

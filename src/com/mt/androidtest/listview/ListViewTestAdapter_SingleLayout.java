@@ -1,4 +1,4 @@
-package com.mt.androidtest;
+package com.mt.androidtest.listview;
 
 import java.util.ArrayList;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.R;
 
 public class ListViewTestAdapter_SingleLayout  extends BaseAdapter{
 	Context mContext;

@@ -1,4 +1,7 @@
-package com.mt.androidtest;
+package com.mt.androidtest.customedcontroller;
+
+import com.mt.androidtest.R;
+import com.mt.androidtest.R.layout;
 
 import android.app.Activity;
 import android.os.Bundle;

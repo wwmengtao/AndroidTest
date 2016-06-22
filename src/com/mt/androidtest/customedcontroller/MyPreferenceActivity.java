@@ -1,6 +1,10 @@
-package com.mt.androidtest;
+package com.mt.androidtest.customedcontroller;
 import java.util.Iterator;
 import java.util.Set;
+
+import com.mt.androidtest.R;
+import com.mt.androidtest.R.xml;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;

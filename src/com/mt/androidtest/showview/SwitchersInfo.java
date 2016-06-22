@@ -1,4 +1,4 @@
-package com.mt.androidtest;
+package com.mt.androidtest.showview;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,6 +10,8 @@ import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.os.IPowerManager;
 import android.provider.Settings;
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.R;
 
 public class SwitchersInfo {
 	Context mContext;
