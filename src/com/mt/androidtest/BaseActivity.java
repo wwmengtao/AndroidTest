@@ -1,13 +1,16 @@
 package com.mt.androidtest;
 
 import java.lang.ref.WeakReference;
-
+import java.util.ArrayList;
 import com.mt.androidtest.listview.ListViewAdapter;
-
 import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +38,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
     private DisplayMetrics metric=null;
     private int mDensityDpi = 0;
     private static WeakReference<BaseActivity>mBaseActivityWR=null;
+    private ArrayList<String>mActivitiesName=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +48,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		metric  = getResources().getDisplayMetrics();
 		mDensityDpi = metric.densityDpi;
 		mBaseActivityWR=new WeakReference<BaseActivity>(this);
+		getActivities(this);
 	}
 	
 	@Override
@@ -57,6 +62,41 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 			mHandler.removeCallbacksAndMessages(null);//避免内存泄露
 		}
 		super.onPause();
+	}
+	
+	/**
+	 * getActivities：获取当前应用AndroidManifest.xml文件中所有<activity>节点信息
+	 * @param mContext
+	 */
+	public void getActivities(Context mContext) {
+		ActivityInfo[] activities=null;
+		try {
+			activities = mContext.getPackageManager().getPackageInfo(this.getPackageName(),PackageManager.GET_ACTIVITIES).activities;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			finish();
+		}
+		if(null==activities)finish();
+		mActivitiesName = new ArrayList<String>();
+		ActivityInfo mActivityInfo=null;
+	      for (int i=0;i<activities.length;i++) {
+	    	  mActivityInfo=activities[i];
+	    	  if(null!=mActivityInfo){
+	    		  ALog.Log(""+mActivityInfo.name);
+	    		  mActivitiesName.add(mActivityInfo.name);
+	    	  }
+	      }
+	  }
+	
+	public String getActivityName(String str){
+		if(null==str||null==mActivitiesName)return null;
+		for(String mStr : mActivitiesName){
+			if(mStr.endsWith(str)){
+				return mStr;
+			}
+		}
+		return null;
 	}
 	
 	public DisplayMetrics getDisplayMetrics(){
@@ -111,7 +151,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		//以下操作为打开本应用内部的Activity
 		mIntent = new Intent();
 		selectedItem = (String) list.getItemAtPosition(position);
-		className = packageName+"."+selectedItem;
+		if(null==(className = getActivityName(selectedItem)))return;
 		mIntent.setComponent(new ComponentName(packageName, className));
 		try{
 			startActivity(mIntent);
