@@ -7,25 +7,31 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mt.androidtest.R;
 
-public class SysAppsActivity extends Activity {
+public class SysAppsActivity extends Activity implements DialogInterface.OnClickListener{
 	GridView mGridView = null;
 	ListViewAdapter mListViewAdapter = null;
 	private ArrayList<HashMap<String, Object>> mSysAppList = new ArrayList<HashMap<String, Object>>();
@@ -37,6 +43,10 @@ public class SysAppsActivity extends Activity {
 	TextView mtvSourceDir = null;	
 	PackageManager mPackageManager=null;
 	AnimationHandler mAnimationHandler=null;
+	static final int MSG_SHOW_INIT_ANIMATION = 1;
+	static final int MSG_SHOW_SYS_APPS = 2;
+	static int mPosition=0;
+	static SysAppsActivity mSysAppsActivity=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,6 +61,7 @@ public class SysAppsActivity extends Activity {
 		mtvSourceDir  = (TextView)findViewById(R.id.sourceDir);
 		mPackageManager = getPackageManager();
 		mAnimationHandler=new AnimationHandler(this);
+		mSysAppsActivity=this;
 	}
 
 	@Override
@@ -137,13 +148,13 @@ public class SysAppsActivity extends Activity {
 			mSysAppListH=mActivity.mSysAppList;
 			mGridViewH=mActivity.mGridView;
 			switch (msg.what) {
-			case 1:
-				mProgressDialogH.setMessage(mActivity.getApplicationContext().getString(R.string.msg_loading));
-				mProgressDialogH.setCancelable(false);
-				mProgressDialogH.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-				mProgressDialogH.show();
-				  break;			
-				case 2:
+				case MSG_SHOW_INIT_ANIMATION:
+					mProgressDialogH.setMessage(mActivity.getApplicationContext().getString(R.string.msg_loading));
+					mProgressDialogH.setCancelable(false);
+					mProgressDialogH.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+					mProgressDialogH.show();
+					break;			
+				case MSG_SHOW_SYS_APPS:
 					mProgressDialogH.dismiss();
 					mListViewAdapterH.setMode(1);
 					mListViewAdapterH.setupList(mSysAppListH);
@@ -158,10 +169,38 @@ public class SysAppsActivity extends Activity {
 							mActivity.mtvPackage.setText((String) mSysAppListH.get(position).get("packname"));
 							mActivity.mtvClass.setText((String) mSysAppListH.get(position).get("classname"));
 							mActivity.mtvSourceDir.setText((String) mSysAppListH.get(position).get("sourceDir"));
+							mPosition=position;
+							showDialog();
 						}
 					});
-			  	break;			
+					break;
 			}
 		}
  	};
+ 	
+    private static DialogInterface mShowDialog;
+    private static void showDialog() {
+        // TODO: DialogFragment?
+    	if(null==mSysAppsActivity)return;
+    	mShowDialog = new AlertDialog.Builder(mSysAppsActivity).setTitle(
+    			mSysAppsActivity.getResources().getString(R.string.app_name))
+                .setMessage("Show what kind of info?")
+                .setPositiveButton("AppInfo", mSysAppsActivity)
+                .setNeutralButton("Overlay", mSysAppsActivity)
+                .setNegativeButton(android.R.string.no, mSysAppsActivity)
+                .show();
+    }
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (dialog == mShowDialog) {
+        	Intent intent = null;
+            if(which == DialogInterface.BUTTON_POSITIVE){
+            	intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" +mSysAppList.get(mPosition).get("packname")));
+            }else if(which == DialogInterface.BUTTON_NEGATIVE){
+            }else if(which == DialogInterface.BUTTON_NEUTRAL){
+            	intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" +mSysAppList.get(mPosition).get("packname")));
+            }
+        	if(null!=intent)startActivity(intent);
+        }
+    }
 }
