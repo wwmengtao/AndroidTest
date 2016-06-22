@@ -35,6 +35,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
     private NotificationManager mNotificationManager = null;
 	private String [] mMethodNameFT={"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
 	private String [] mActivitiesName={"AsynchronousActivity","ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","PermissionActivity","ResourceActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
+			"StorageActivity",
 			"StartActivity","DocumentsActivity","DownloadProviderUI"};		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
