@@ -83,8 +83,12 @@
             android:label="@string/title_activity_storage" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.storage.ExtStorageActivity"
+            android:name=".storage.ExtStorageActivity"
             android:label="@string/title_activity_sdcard" >
+        </activity>
+        <activity
+            android:name="com.mt.androidtest.storage.IntStorageActivity"
+            android:label="@string/title_activity_int_storage" >
         </activity>
     </application>
 

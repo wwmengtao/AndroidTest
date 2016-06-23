@@ -816,6 +816,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_asynchronous=0x7f0a0034;
         public static final int title_activity_customed_controller=0x7f0a002c;
         public static final int title_activity_inflate=0x7f0a002b;
+        public static final int title_activity_int_storage=0x7f0a0039;
         public static final int title_activity_list_view=0x7f0a002a;
         public static final int title_activity_my_preference=0x7f0a0029;
         public static final int title_activity_permission=0x7f0a0027;
