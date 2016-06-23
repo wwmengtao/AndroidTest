@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -29,13 +30,17 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	boolean isLogRun=false;
 	boolean isNotificationShown=false;
 	private Context mContext=null;
+	private Intent mIntent = null;
+	private String packname = null;
+	private ComponentName componentName = null;
 	private String NOTIFICATION_ID="AndroidTest.Notification";
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
-	private String [] mMethodNameFT={"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll"};
+	private String [] mMethodNameFT={
+			"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll",
+			"StartActivity","DocumentsActivity","DownloadProviderUI"};
 	private String [] mActivitiesName={"AsynchronousActivity","ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","PermissionActivity","ResourceActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
-			"StorageActivity",
-			"StartActivity","DocumentsActivity","DownloadProviderUI"};		
+			"StorageActivity"};		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,87 +82,50 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 		// TODO Auto-generated method stub
 		String methodName = (String)getListViewAdapterFT().mList.get(position).get("itemText"); 
 		switch(methodName){
-		case "showDialog":
-			showDialog();
-			break;
-		case "Notification":
-			if(!isNotificationShown){
-				showNotification(mContext,1,null);
-			}else{
-				cancelNotification(mContext, 1);
-			}
-			break;
-		case "checkComponentExist"://检测组件是否存在
-			checkComponentExist();
-			break;
-		case "reflectCall":
-			reflectCall();
-			break;					
-		case "reflectCallListAll":
-			reflectCallListAll();
-			break;		
-		}
-		/*
-		Method m = (Method)mListViewAdapterFT.mMethodList.get(position);
-		Class[]ParameterTypes = m.getParameterTypes();
-		for(int i=0;i<ParameterTypes.length;i++){
-			ALog.Log("ParameterTypes[i]:"+ParameterTypes[i]);
-		}
-		if(null!=m){
-			m.setAccessible(true);
-			
-			try{
-				m.invoke(this,ParameterTypes);
-			}catch(Exception ex){
-				ALog.Log("Exception:"+m.getName());
-			}
-		}*/
-	}
-	
-	public void initListActivityData(String [] mActivitiesName){
-		super.initListActivityData(mActivitiesName);
-	}
-	
-	@Override
-	protected void onListItemClick(ListView list, View view, int position, long id) {
-		String selectedItem = (String) list.getItemAtPosition(position);
-		Intent mIntent = null;
-		String packname = null;
-		String classname = null;
-		switch(selectedItem){
-			case "DocumentsActivity":
-				mIntent = getIntentSetFlags(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
-				ComponentName componentName = mIntent.resolveActivity(mPackageManager);
-				if(componentName != null) {//必须判断和mIntent对应的Activity组件是否存在，然后再startActivity
-					mIntent.setComponent(componentName);
+			case "showDialog":
+				showDialog();
+				break;
+			case "Notification":
+				if(!isNotificationShown){
+					showNotification(mContext,1,null);
 				}else{
-					return;
+					cancelNotification(mContext, 1);
 				}
 				break;
+			case "checkComponentExist"://检测组件是否存在
+				checkComponentExist();
+				break;
+			case "reflectCall":
+				reflectCall();
+				break;					
+			case "reflectCallListAll":
+				reflectCallListAll();
+				break;		
+			case "DocumentsActivity":
+				mIntent = getIntentSetFlags(new Intent(Intent.ACTION_OPEN_DOCUMENT)).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
+				startActivity();
+				break;
 			case "DownloadProviderUI":
-				mIntent = getIntentSetFlags("android.intent.action.VIEW_DOWNLOADS");
-				ComponentName componentName2 = mIntent.resolveActivity(mPackageManager);
-				if(componentName2 != null) {
-					mIntent.setComponent(componentName2);
-				}else{
-					return;
-				}				
+				mIntent = getIntentSetFlags(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+				startActivity();
 				break;
 			case "StartActivity"://打开其他应用的activity
-				mIntent=new Intent();
-				packname = "com.mt.androidtest2";
-				classname = "com.mt.androidtest2.MainActivity";
-				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-						| ActivityManager.MOVE_TASK_WITH_HOME
-						| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-						| Intent.FLAG_ACTIVITY_TASK_ON_HOME
-						| Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-						);
-				mIntent.setComponent(new ComponentName(packname, classname));
-				break;
-			default://打开本应用的Activity
-				super.onListItemClick(list, view, position, id);
-				return;		
+				packname = "com.mt.androidtest2";				
+				mIntent=mPackageManager.getLaunchIntentForPackage(packname);
+				mIntent = getIntentSetFlags(mIntent);
+				startActivity();
+				break;			
+		}
+
+	}
+	
+	public void startActivity(){
+		if(null==mIntent)return;
+		componentName = mIntent.resolveActivity(mPackageManager);
+		if(componentName != null) {//必须判断和mIntent对应的Activity组件是否存在，然后再startActivity
+			mIntent.setComponent(componentName);
+		}else{
+			return;
 		}
 		try{
 			startActivity(mIntent);
@@ -166,8 +134,17 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 		}
 	}
 	
-	public Intent getIntentSetFlags(String IntentInfo){
-		Intent mIntent = new Intent(IntentInfo);
+	public void initListActivityData(String [] mActivitiesName){
+		super.initListActivityData(mActivitiesName);
+	}
+	
+	@Override
+	protected void onListItemClick(ListView list, View view, int position, long id) {
+		super.onListItemClick(list, view, position, id);
+	}
+	
+	public Intent getIntentSetFlags(Intent mIntent){
+		if(null==mIntent)return null;
 		mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| ActivityManager.MOVE_TASK_WITH_HOME
 				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
