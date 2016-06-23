@@ -85,31 +85,6 @@ public class ListViewAdapter extends BaseAdapter {
 		}
 	}
 	
-	/**
-	 * 在有ScrollView存在的时候，ListView显示全部内容而不是收缩。
-	 * 说明：默认情况下Android是禁止在ScrollView中放入另外的ScrollView的，它的高度是无法计算的。
-	 * 解决思路：在设置完ListView的Adapter后，根据ListView的子项目重新计算ListView的高度，然后把高度再作为LayoutParams设置给ListView，这样它的高度就正确了
-	 * 注意事项：
-	 * 1)子ListView的每个Item必须是LinearLayout，不能是其他的，因为其他的Layout(如RelativeLayout)没有重写onMeasure()，所以会在onMeasure()时抛出异常。
-	 * 2)在ScrollView中嵌套ListView(或者ScrollView)的另外一个问题就是，子ScrollView中无法滑动的(如果它没有显示完全的话)，因为滑动事件会被父ScrollView吃掉，如果想要让子ScrollView也可以滑动，只能强行截取滑动事件
-	 * @param listView
-	 */
-	public static void setListViewHeightBasedOnChildren(ListView listView) {
-		ListAdapter listAdapter = listView.getAdapter();
-		if (listAdapter == null) {
-			return;
-		}
-		int totalHeight = 0;
-		for (int i = 0; i < listAdapter.getCount(); i++) {
-			View listItem = listAdapter.getView(i, null, listView);
-			listItem.measure(0, 0);
-			totalHeight += listItem.getMeasuredHeight();
-		}
-		ViewGroup.LayoutParams params = listView.getLayoutParams();
-		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-		listView.setLayoutParams(params);
-	}
-	
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = null;
         if (convertView == null) {
