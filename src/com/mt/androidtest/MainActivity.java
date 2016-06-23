@@ -126,16 +126,16 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 		String classname = null;
 		switch(selectedItem){
 			case "DocumentsActivity":
-				mIntent = getIntent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
+				mIntent = getIntentSetFlags(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
 				ComponentName componentName = mIntent.resolveActivity(mPackageManager);
-				if(componentName != null) {
+				if(componentName != null) {//必须判断和mIntent对应的Activity组件是否存在，然后再startActivity
 					mIntent.setComponent(componentName);
 				}else{
 					return;
 				}
 				break;
 			case "DownloadProviderUI":
-				mIntent = getIntent("android.intent.action.VIEW_DOWNLOADS");
+				mIntent = getIntentSetFlags("android.intent.action.VIEW_DOWNLOADS");
 				ComponentName componentName2 = mIntent.resolveActivity(mPackageManager);
 				if(componentName2 != null) {
 					mIntent.setComponent(componentName2);
@@ -166,7 +166,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 		}
 	}
 	
-	public Intent getIntent(String IntentInfo){
+	public Intent getIntentSetFlags(String IntentInfo){
 		Intent mIntent = new Intent(IntentInfo);
 		mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| ActivityManager.MOVE_TASK_WITH_HOME
