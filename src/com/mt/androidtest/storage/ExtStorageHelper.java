@@ -7,15 +7,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-
-import com.mt.androidtest.ALog;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.os.StatFs;
+
+import com.mt.androidtest.ALog;
 
 /**
  * External Storage操作工具类
@@ -23,15 +21,19 @@ import android.os.StatFs;
  *
  */
 public class ExtStorageHelper {
-	 
+	Context mContext=null;
+	public ExtStorageHelper(Context Context){
+		mContext = Context;
+	}
+	
 	/* Checks if external storage is available for read and write */
-    public static boolean isExternalStorageWritable() {
+    public boolean isExternalStorageWritable() {
     	return Environment.getExternalStorageState().equals(
     			Environment.MEDIA_MOUNTED);
    }
 
     /* Checks if external storage is available to at least read */
-    public static boolean isExternalStorageReadable() {
+    public boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state) ||
         		Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
@@ -46,7 +48,7 @@ public class ExtStorageHelper {
     * getBlockSizeLong()：获取文件系统中，每块的大小(字节数)
     * @return
     */
-   public static long getExtStorageSize() {
+   public long getExtStorageSize() {
         if (isExternalStorageReadable()) {
              StatFs fs = new StatFs(getExternalStorageDirectory().getAbsolutePath());
              long count = fs.getBlockCountLong();
@@ -57,7 +59,7 @@ public class ExtStorageHelper {
    }
 
    // 获取External Storage的剩余空间大小，返回MB
-   public static long getExtStorageFreeSize() {
+   public long getExtStorageFreeSize() {
         if (isExternalStorageReadable()) {
               StatFs fs = new StatFs(getExternalStorageDirectory().getAbsolutePath());
               long count = fs.getFreeBlocksLong();
@@ -68,7 +70,7 @@ public class ExtStorageHelper {
    }
 
    // 获取External Storage的可用空间大小，返回MB
-   public static long getExtStorageAvailableSize() {
+   public long getExtStorageAvailableSize() {
         if (isExternalStorageReadable()) {
               StatFs fs = new StatFs(getExternalStorageDirectory().getAbsolutePath());
               long count = fs.getAvailableBlocksLong();
@@ -79,7 +81,7 @@ public class ExtStorageHelper {
    }
 
    // 获取External Storage的根目录
-   public static File getExternalStorageDirectory() {
+   public File getExternalStorageDirectory() {
         if (isExternalStorageReadable()) {
               return Environment.getExternalStorageDirectory();
         }
@@ -87,7 +89,7 @@ public class ExtStorageHelper {
    }
    
    // 获取External Storage公有目录
-	public static File getExternalStoragePublicDirectory(String type) {
+	public File getExternalStoragePublicDirectory(String type) {
 	   if (isExternalStorageReadable()) {
 		   return Environment.getExternalStoragePublicDirectory(type);
 	   }
@@ -95,43 +97,43 @@ public class ExtStorageHelper {
 	}
 
    // 获取External Storage私有Cache目录的路径
-   public static File getExternalCacheDir(Context context) {
-        return context.getExternalCacheDir();
+   public File getExternalCacheDir() {
+        return mContext.getExternalCacheDir();
    }
 
    // 获取External Storage私有Files目录的路径
-   public static File getExternalFilesDir(Context context, String type) {
-        return context.getExternalFilesDir(type);
+   public File getExternalFilesDir(String type) {
+        return mContext.getExternalFilesDir(type);
    }
    
    /**
     *Android6.0之后，Environment.getExternalStorageDirectory目录下除了私有数据存储区(Android/data/包名下
     *的cache和files目录)外，写其他公共区域需要动态申请WRITE_EXTERNAL_STORAGE权限
     */
-	public static File saveFileToExtStoragePublicDir(byte[] data, String type, String fileName) {
+	public File saveFileToExtStoragePublicDir(byte[] data, String type, String fileName) {
 		File dir = getExternalStoragePublicDirectory(type);
     	return saveFile(data,dir,fileName);
 	}
 
-    public static File saveFileToExtStorageCustomDir(byte[] data, String dir_custome, String fileName) {
+    public File saveFileToExtStorageCustomDir(byte[] data, String dir_custome, String fileName) {
         File dir = new File(getExternalStorageDirectory(),dir_custome);
     	return saveFile(data,dir,fileName);
 
     }
 
     // 往External Storage的私有Files目录下保存文件
-    public static File saveFileToExtStoragePrivateFilesDir(byte[] data, String type, String fileName, Context context) {
-        File dir = context.getExternalFilesDir(type);
+    public File saveFileToExtStoragePrivateFilesDir(byte[] data, String type, String fileName) {
+        File dir = mContext.getExternalFilesDir(type);
     	return saveFile(data,dir,fileName);
     }
 
     // 往External Storage的私有Cache目录下保存文件
-    public static File saveFileToExtStoragePrivateCacheDir(byte[] data, String fileName, Context context) {
-    	File dir = context.getExternalCacheDir();
+    public File saveFileToExtStoragePrivateCacheDir(byte[] data, String fileName) {
+    	File dir = mContext.getExternalCacheDir();
     	return saveFile(data,dir,fileName);
     }
 
-    public static File saveFile(byte[] data,File dir,String fileName){
+    public File saveFile(byte[] data,File dir,String fileName){
 		boolean savedSucceed=false;
 		File mFile=null;
     	if(null!=dir&&null!=fileName){
@@ -147,7 +149,6 @@ public class ExtStorageHelper {
     		mFile=new File(dir,fileName);
 	    	BufferedOutputStream bos = null;
 	    	if (isExternalStorageWritable()) {
-	    		ALog.Log("ExternalStorage is writable!");
 		        try {
 		              bos = new BufferedOutputStream(new FileOutputStream(mFile));
 		              bos.write(data);
@@ -175,11 +176,11 @@ public class ExtStorageHelper {
 	}
     
     // 保存bitmap图片到External Storage的私有Cache目录
-    public static boolean saveBitmapToExtStoragePrivateCacheDir(Bitmap bitmap, String fileName, Context context) {
+    public boolean saveBitmapToExtStoragePrivateCacheDir(Bitmap bitmap, String fileName) {
          if (isExternalStorageWritable()) {
                BufferedOutputStream bos = null;
                // 获取私有的Cache缓存目录
-               File file = context.getExternalCacheDir();
+               File file = mContext.getExternalCacheDir();
                try {
                       bos = new BufferedOutputStream(new FileOutputStream(new File(file, fileName)));
                       if (fileName != null && (fileName.contains(".png") || fileName.contains(".PNG"))) {
@@ -206,7 +207,7 @@ public class ExtStorageHelper {
     }
 
     // 从External Storage获取文件
-    public static byte[] loadFileFromExtStorage(String fileDir) {
+    public byte[] loadFileFromExtStorage(String fileDir) {
          BufferedInputStream bis = null;
          ByteArrayOutputStream baos = new ByteArrayOutputStream();
          try {
@@ -243,13 +244,13 @@ public class ExtStorageHelper {
          return null;
     }
 
-    public static boolean isFileExist(String filePath) {
+    public boolean isFileExist(String filePath) {
          File file = new File(filePath);
          return file.isFile();
     }
 
     // 从sdcard中删除文件
-    public static boolean removeFileFromExtStorage(String filePath) {
+    public boolean removeFileFromExtStorage(String filePath) {
          File file = new File(filePath);
          if (file.exists()) {
               try {
