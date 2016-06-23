@@ -19,12 +19,9 @@ import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
-
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
-import com.mt.androidtest.R.layout;
-import com.mt.androidtest.R.string;
 
 public class PermissionActivity extends BaseActivity{
     private PowerManager mPowerManager =null;
@@ -35,6 +32,7 @@ public class PermissionActivity extends BaseActivity{
 	private String [] mMethodNameFT={"setListenCall","unSetListenCall","setListenCallAnother","unSetListenCallAnother"
 			,"shutdown","gotosleep","requestPermissions","requestPermissionSAW"};
 	private Context mContext = null; 
+    private int AndroidVersion=-1;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +44,7 @@ public class PermissionActivity extends BaseActivity{
 		mPackageManager = getPackageManager();
 		initListFTData(mMethodNameFT);
 		initListActivityData(null);
+		AndroidVersion=getAndroidVersion();
 	}
 
 	@Override
@@ -118,7 +117,7 @@ public class PermissionActivity extends BaseActivity{
 	 */
 	public static int OVERLAY_PERMISSION_REQ_CODE = 1234;
 	public void requestPermissionSAW(){
-		if(Build.VERSION.SDK_INT <= 22)return;
+		if(AndroidVersion <= 22)return;
 		if (!Settings.canDrawOverlays(this)) {
 	        Toast.makeText(this, "Can not DrawOverlays", Toast.LENGTH_SHORT).show();
 	        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));

@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,6 +43,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
     private int mDensityDpi = 0;
     private static WeakReference<BaseActivity>mBaseActivityWR=null;
     private ArrayList<String>mActivitiesName=null;
+    private int AndroidVersion=-1;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +54,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		mDensityDpi = metric.densityDpi;
 		mBaseActivityWR=new WeakReference<BaseActivity>(this);
 		getActivities(this);
+		AndroidVersion =Build.VERSION.SDK_INT;
 	}
 	
 	@Override
@@ -69,6 +72,10 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	
 	public boolean getLogRun(){
 		return isLogRun;
+	}
+	
+	public int getAndroidVersion(){
+		return AndroidVersion;
 	}
 	
 	/**

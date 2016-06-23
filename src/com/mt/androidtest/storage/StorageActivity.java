@@ -26,6 +26,7 @@ import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
 public class StorageActivity extends BaseActivity {
+	private boolean isLogRun=false;
 	private Context mContext = null;
 	private Handler mHandler=null;
 	private HandlerThread mHandlerThread=null;
@@ -39,7 +40,7 @@ public class StorageActivity extends BaseActivity {
 			"listAssets",
 			"getFromAssets",
 			"copyFilesInAssets"};
-	private String [] mActivitiesName={"SDCardActivity"};
+	private String [] mActivitiesName={"ExtStorageActivity"};
 	private static final int MSG_writeToFile=0x000;		
 	private static final int MSG_readFromFile=0x001;
 	private static final int MSG_readRawResources=0x002;
@@ -54,7 +55,8 @@ public class StorageActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
-		ALog.Log("FileOperateActivity_onCreate");
+		isLogRun=getLogRun();
+		if(isLogRun)ALog.Log("StorageActivity_onCreate");
 		mContext=this.getApplicationContext();
 		initListFTData(mMethodNameFT);
 		initListActivityData(mActivitiesName);
@@ -64,7 +66,7 @@ public class StorageActivity extends BaseActivity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		ALog.Log("FileOperateActivity_onResume");
+		if(isLogRun)ALog.Log("StorageActivity_onResume");
 		mHandler = getHandler();
 	}
 
@@ -74,6 +76,7 @@ public class StorageActivity extends BaseActivity {
 			mHandlerCostTime.removeCallbacksAndMessages(0);
 		}
 		super.onPause();
+		if(isLogRun)ALog.Log("StorageActivity_onPause");
 	}
 	
 	@Override

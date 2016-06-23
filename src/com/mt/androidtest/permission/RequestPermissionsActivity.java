@@ -9,7 +9,7 @@ import com.mt.androidtest.ALog;
  * Activity that requests permissions needed for activities exported from Contacts.
  */
 public class RequestPermissionsActivity extends RequestPermissionsActivityBase {
-
+	static boolean isLogRun = false;
     private static final String[] REQUIRED_PERMISSIONS = new String[]{
     	permission.READ_EXTERNAL_STORAGE,
     	permission.WRITE_EXTERNAL_STORAGE,
@@ -42,8 +42,8 @@ public class RequestPermissionsActivity extends RequestPermissionsActivityBase {
     	 * 2)签名应用+system/priv-app：true,false
     	 * 3)签名应用+system/priv-app+android:sharedUserId="android.uid.system"：true,true
     	 */
-		ALog.Log("RequestPermissionsActivity_checkSelfPermission:"+checkSelfPermission(activity,permission.SYSTEM_ALERT_WINDOW));
-		ALog.Log("RequestPermissionsActivity_Settings.canDrawOverlays:"+Settings.canDrawOverlays(activity));
+		if(isLogRun)ALog.Log("RequestPermissionsActivity_checkSelfPermission:"+checkSelfPermission(activity,permission.SYSTEM_ALERT_WINDOW));
+		if(isLogRun)ALog.Log("RequestPermissionsActivity_Settings.canDrawOverlays:"+Settings.canDrawOverlays(activity));
         return startPermissionActivity(activity, REQUIRED_PERMISSIONS, RequestPermissionsActivity.class);
     }
  
