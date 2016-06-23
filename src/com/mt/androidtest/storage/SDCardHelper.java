@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import com.mt.androidtest.ALog;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,24 +23,30 @@ import android.os.StatFs;
  */
 public class SDCardHelper {
 	 
-    // 判断SD卡是否被挂载
-    public static boolean isSDCardMounted() {
-        // return Environment.getExternalStorageState().equals("mounted");
+	/* Checks if external storage is available for read and write */
+    public static boolean isExternalStorageWritable() {
         return Environment.getExternalStorageState().equals(
         Environment.MEDIA_MOUNTED);
    }
 
-   // 获取SD卡的根目录
-   public static String getSDCardBaseDir() {
-        if (isSDCardMounted()) {
-              return Environment.getExternalStorageDirectory().getAbsolutePath();
+    /* Checks if external storage is available to at least read */
+    public static boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+            Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
         }
-        return null;
-   }
+        return false;
+    }
 
    // 获取SD卡的完整空间大小，返回MB
+   /**
+    * getBlockCountLong()：获取文件系统中，总块数
+    * getBlockSizeLong()：获取文件系统中，每块的大小(字节数)
+    * @return
+    */
    public static long getSDCardSize() {
-        if (isSDCardMounted()) {
+        if (isExternalStorageReadable()) {
              StatFs fs = new StatFs(getSDCardBaseDir());
              long count = fs.getBlockCountLong();
              long size = fs.getBlockSizeLong();
@@ -46,9 +55,9 @@ public class SDCardHelper {
         return 0;
    }
 
-   // 获取SD卡的剩余空间大小
+   // 获取SD卡的剩余空间大小，返回MB
    public static long getSDCardFreeSize() {
-        if (isSDCardMounted()) {
+        if (isExternalStorageReadable()) {
               StatFs fs = new StatFs(getSDCardBaseDir());
               long count = fs.getFreeBlocksLong();
               long size = fs.getBlockSizeLong();
@@ -57,9 +66,9 @@ public class SDCardHelper {
         return 0;
    }
 
-   // 获取SD卡的可用空间大小
+   // 获取SD卡的可用空间大小，返回MB
    public static long getSDCardAvailableSize() {
-        if (isSDCardMounted()) {
+        if (isExternalStorageReadable()) {
               StatFs fs = new StatFs(getSDCardBaseDir());
               long count = fs.getAvailableBlocksLong();
               long size = fs.getBlockSizeLong();
@@ -68,112 +77,95 @@ public class SDCardHelper {
         return 0;
    }
 
+   // 获取SD卡的根目录
+   public static String getSDCardBaseDir() {
+        if (isExternalStorageReadable()) {
+              return Environment.getExternalStorageDirectory().getAbsolutePath();
+        }
+        return null;
+   }
+   
+   // 获取SD卡公有目录的路径
+   public static String getSDCardPublicDir(String type) {
+        return Environment.getExternalStoragePublicDirectory(type).toString();
+   }
+
+   // 获取SD卡私有Cache目录的路径
+   public static String getSDCardPrivateCacheDir(Context context) {
+        return context.getExternalCacheDir().getAbsolutePath();
+   }
+
+   // 获取SD卡私有Files目录的路径
+   public static String getSDCardPrivateFilesDir(Context context, String type) {
+        return context.getExternalFilesDir(type).getAbsolutePath();
+   }
+   
    // 往SD卡的公有目录下保存文件
-   public static boolean saveFileToSDCardPublicDir(byte[] data, String type, String fileName) {
-        BufferedOutputStream bos = null;
-        if (isSDCardMounted()) {
-              File file = Environment.getExternalStoragePublicDirectory(type);
-              try {
-                   bos = new BufferedOutputStream(new FileOutputStream(new File(file, fileName)));
-                   bos.write(data);
-                   bos.flush();
-                   return true;
-              } catch (Exception e) {
-                   e.printStackTrace();
-              } finally {
-                   try {
-                         bos.close();
-                   } catch (IOException e) {
-                         // TODO Auto-generated catch block
-                         e.printStackTrace();
-                   }
-              }
-         }
-         return false;
-    }
+	public static File saveFileToSDCardPublicDir(byte[] data, String type, String fileName) {
+		File file = Environment.getExternalStoragePublicDirectory(type);
+		file = new File(file, fileName);
+        return saveFile(data,file);
+	}
 
     // 往SD卡的自定义目录下保存文件
-    public static boolean saveFileToSDCardCustomDir(byte[] data, String dir, String fileName) {
-         BufferedOutputStream bos = null;
-         if (isSDCardMounted()) {
-               File file = new File(getSDCardBaseDir() + File.separator + dir);
-               if (!file.exists()) {
-                     file.mkdirs();// 递归创建自定义目录
-               }
-               try {
-                     bos = new BufferedOutputStream(new FileOutputStream(new File(file, fileName)));
-                     bos.write(data);
-                     bos.flush();
-                     return true;
-               } catch (Exception e) {
-                     e.printStackTrace();
-               } finally {
-                     try {
-                           bos.close();
-                     } catch (IOException e) {
-                           // TODO Auto-generated catch block
-                           e.printStackTrace();
-                     }
-               }
-          }
-          return false;
+    public static File saveFileToSDCardCustomDir(byte[] data, String dir, String fileName) {
+        File file = new File(getSDCardBaseDir() + File.separator + dir);
+        file = new File(file, fileName);
+        return saveFile(data,file);
+
     }
 
     // 往SD卡的私有Files目录下保存文件
-    public static boolean saveFileToSDCardPrivateFilesDir(byte[] data, String type, String fileName, Context context) {
-        BufferedOutputStream bos = null;
-        if (isSDCardMounted()) {
-              File file = context.getExternalFilesDir(type);
-              try {
-                     bos = new BufferedOutputStream(new FileOutputStream(new File(file, fileName)));
-                     bos.write(data);
-                     bos.flush();
-                     return true;
-              } catch (Exception e) {
-                     e.printStackTrace();
-              } finally {
-                     try {
-                           bos.close();
-                     } catch (IOException e) {
-                           // TODO Auto-generated catch block
-                           e.printStackTrace();
-                     }
-              }
-         }
-         return false;
+    public static File saveFileToSDCardPrivateFilesDir(byte[] data, String type, String fileName, Context context) {
+        File file = context.getExternalFilesDir(type);
+        file = new File(file, fileName);
+        return saveFile(data,file);
     }
 
     // 往SD卡的私有Cache目录下保存文件
-    public static boolean saveFileToSDCardPrivateCacheDir(byte[] data, String fileName, Context context) {
-         BufferedOutputStream bos = null;
-         if (isSDCardMounted()) {
-               File file = context.getExternalCacheDir();
-               try {
-                     bos = new BufferedOutputStream(new FileOutputStream(new File(file, fileName)));
-                     bos.write(data);
-                     bos.flush();
-                     return true;
-               } catch (Exception e) {
-                     e.printStackTrace();
-               } finally {
-                     try {
-                           bos.close();
-                     } catch (IOException e) {
-                           // TODO Auto-generated catch block
-                           e.printStackTrace();
-                     }
-              }
-         }
-         return false;
+    public static File saveFileToSDCardPrivateCacheDir(byte[] data, String fileName, Context context) {
+    	File file = context.getExternalCacheDir();
+    	file = new File(file, fileName);
+    	return saveFile(data,file);
     }
 
+    public static File saveFile(byte[] data,File file){
+		boolean savedSucceed=false;
+    	if(null!=file){
+	    	BufferedOutputStream bos = null;
+	    	if (isExternalStorageWritable()) {
+		        try {
+		              bos = new BufferedOutputStream(new FileOutputStream(file));
+		              bos.write(data);
+		              bos.flush();
+		              savedSucceed = true;
+		        } catch (Exception e) {
+		              e.printStackTrace();
+		              savedSucceed = false;
+		        } finally {
+	                if (bos != null) {
+	                    try {
+	                         bos.close();
+	                    } catch (IOException e) {
+	                         e.printStackTrace();
+	                    }//catch
+	               }//if
+		        }//finally
+	    	}//if
+    	}//if
+        ALog.Log("File saved:"+file.getAbsolutePath()+" Status:"+savedSucceed);
+        if(!savedSucceed){
+        	return null;
+        }
+        return file;
+	}
+    
     // 保存bitmap图片到SDCard的私有Cache目录
     public static boolean saveBitmapToSDCardPrivateCacheDir(Bitmap bitmap, String fileName, Context context) {
-         if (isSDCardMounted()) {
+         if (isExternalStorageWritable()) {
                BufferedOutputStream bos = null;
                // 获取私有的Cache缓存目录
                File file = context.getExternalCacheDir();
-
                try {
                       bos = new BufferedOutputStream(new FileOutputStream(new File(file, fileName)));
                       if (fileName != null && (fileName.contains(".png") || fileName.contains(".PNG"))) {
@@ -203,7 +195,6 @@ public class SDCardHelper {
     public static byte[] loadFileFromSDCard(String fileDir) {
          BufferedInputStream bis = null;
          ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
          try {
                bis = new BufferedInputStream(new FileInputStream(new File(fileDir)));
                byte[] buffer = new byte[8 * 1024];
@@ -236,21 +227,6 @@ public class SDCardHelper {
               }
          }
          return null;
-    }
-
-    // 获取SD卡公有目录的路径
-    public static String getSDCardPublicDir(String type) {
-         return Environment.getExternalStoragePublicDirectory(type).toString();
-    }
-
-    // 获取SD卡私有Cache目录的路径
-    public static String getSDCardPrivateCacheDir(Context context) {
-         return context.getExternalCacheDir().getAbsolutePath();
-    }
-
-    // 获取SD卡私有Files目录的路径
-    public static String getSDCardPrivateFilesDir(Context context, String type) {
-         return context.getExternalFilesDir(type).getAbsolutePath();
     }
 
     public static boolean isFileExist(String filePath) {
