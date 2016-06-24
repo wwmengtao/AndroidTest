@@ -87,8 +87,19 @@
             android:label="@string/title_activity_sdcard" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.storage.IntStorageActivity"
+            android:name=".storage.IntStorageActivity"
             android:label="@string/title_activity_int_storage" >
+        </activity>
+
+        <provider
+            android:name=".data.ContentProviderDemo"
+            android:authorities="com.mt.androidtest.cpdemo"
+            android:exported="true" >
+        </provider>
+
+        <activity
+            android:name="com.mt.androidtest.data.ContentResolverDemoActivity"
+            android:label="@string/title_activity_content_resolver_demo" >
         </activity>
     </application>
 

@@ -59,5 +59,6 @@
     <string name="title_activity_storage">StorageActivity</string>
     <string name="title_activity_sdcard">ExtStorageActivity</string>
     <string name="title_activity_int_storage">IntStorageActivity</string>
+    <string name="title_activity_content_resolver_demo">ContentResolverDemoActivity</string>
 
 </resources>
