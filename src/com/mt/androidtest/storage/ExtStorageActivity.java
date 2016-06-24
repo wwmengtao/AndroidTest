@@ -20,8 +20,7 @@ public class ExtStorageActivity extends BaseActivity {
 	private File mFile=null;
 	private String [] mMethodNameFT={
 			"isExternalStorageWritable","isExternalStorageReadable",
-			"getExtStorageSize",
-			"getExternalStorageDirectory","getExternalStoragePublicDirectory","getExternalCacheDir","getExternalFilesDir",
+			"getExtStorageSize","listDirs",
 			"saveFileToExtStoragePublicDir","saveFileToExtStorageCustomDir","saveFileToExtStoragePrivateFilesDir","saveFileToExtStoragePrivateCacheDir",
 			"loadFileFromExtStorage"
 	};
@@ -58,17 +57,11 @@ public class ExtStorageActivity extends BaseActivity {
 				ALog.Log("getExtStorageFreeSize:"+mExtStorageHelper.getExtStorageFreeSize());
 				ALog.Log("getExtStorageAvailableSize:"+mExtStorageHelper.getExtStorageAvailableSize());
 				break;
-			case "getExternalStorageDirectory":
+			case "listDirs":
 				ALog.Log("getExternalStorageDirectory:"+mExtStorageHelper.getExternalStorageDirectory());
-				break;			
-			case "getExternalStoragePublicDirectory":
 				type=Environment.DIRECTORY_PICTURES;
 				ALog.Log("getExternalStoragePublicDirectory:"+mExtStorageHelper.getExternalStoragePublicDirectory(type));
-				break;		
-			case "getExternalCacheDir":
 				ALog.Log("getExternalCacheDir:"+mExtStorageHelper.getExternalCacheDir());
-				break;		
-			case "getExternalFilesDir":
 				type="M_T";
 				ALog.Log("getExternalFilesDir:"+mExtStorageHelper.getExternalFilesDir(type));
 				break;						

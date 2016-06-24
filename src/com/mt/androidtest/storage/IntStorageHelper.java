@@ -18,25 +18,27 @@ public class IntStorageHelper {
 	}	
 	
 	public void listDirs(){
-		File mDataDirectory = Environment.getDataDirectory();// /data
-		File mDownloadCacheDirectory = Environment.getDownloadCacheDirectory();// /cache
-		File mRootDirectory = Environment.getRootDirectory();// /system
+		File mDataDir = Environment.getDataDirectory();// /data
+		File mCacheDir1 = Environment.getDownloadCacheDirectory();// /cache
+		File mRootDir = Environment.getRootDirectory();// /system
 		//下列/data/user/0是链接，指向/data/data
-		String mPackageCodePath = mContext.getPackageCodePath();// /data/app/com.mt.androidtest-1/base.apk
-		String mPackageResourcePath = mContext.getPackageResourcePath();// /data/app/com.mt.androidtest-1/base.apk
-		File mCacheDir = mContext.getCacheDir();// /data/user/0/com.mt.androidtest/cache
-		File mDatabasePath = mContext.getDatabasePath("test");// /data/user/0/com.mt.androidtest/databases/test
-		File mDir = mContext.getDir("", Context.MODE_PRIVATE);// /data/user/0/com.mt.androidtest/app_
+		String mPkgCodePath = mContext.getPackageCodePath();// /data/app/com.mt.androidtest-1/base.apk
+		String mPkgResPath = mContext.getPackageResourcePath();// /data/app/com.mt.androidtest-1/base.apk
+		File mCacheDir2 = mContext.getCacheDir();// /data/user/0/com.mt.androidtest/cache
+		File mDBPath = mContext.getDatabasePath("test");// /data/user/0/com.mt.androidtest/databases/test
+		File mDir = mContext.getDir("M_T", Context.MODE_PRIVATE);// /data/user/0/com.mt.androidtest/app_
 		File mFilesDir = mContext.getFilesDir();// /data/user/0/com.mt.androidtest/files
 		//
-		ALog.Log("mDataDirectory:"+mDataDirectory);
-		ALog.Log("mDownloadCacheDirectory:"+mDownloadCacheDirectory);
-		ALog.Log("mRootDirectory:"+mRootDirectory);
-		ALog.Log("mPackageCodePath:"+mPackageCodePath);			
-		ALog.Log("mPackageResourcePath:"+mPackageResourcePath);		
-		ALog.Log("mCacheDir:"+mCacheDir);
-		ALog.Log("mDatabasePath:"+mDatabasePath);
-		ALog.Log("mDir:"+mDir);				
+		ALog.Log("mRootDir:"+mRootDir);
+		ALog.Log("mDataDir:"+mDataDir);
+		ALog.Log("mCacheDir1:"+mCacheDir1);
+		//
+		ALog.Log("mPkgCodePath:"+mPkgCodePath);			
+		ALog.Log("mPkgResPath:"+mPkgResPath);		
+
+		ALog.Log("mDBPath:"+mDBPath);
+		ALog.Log("mDir:"+mDir);			
+		ALog.Log("mCacheDir2:"+mCacheDir2);		
 		ALog.Log("mFilesDir:"+mFilesDir);	
 	}
 	
@@ -46,16 +48,16 @@ public class IntStorageHelper {
 	    FileOutputStream osw = null;
     	switch(type){
     	case 0:
-    		mDir = mContext.getFilesDir();//存储路径为： /data/data/[package.name]/files/
+    		mDir = mContext.getFilesDir();//存储路径为： /data/data/[PackageName]/files/
     		outFile = new File(mDir, fileName);
     		ALog.Log("File written:"+outFile.getAbsolutePath());
     		osw = new FileOutputStream(outFile);
     		break;
-    	case 1://openFileOutput：在 /data/data/[package.name]/files/目录下操作
+    	case 1://openFileOutput：在 /data/data/[PackageName]/files/目录下操作
 	        osw = mContext.openFileOutput(fileName, Context.MODE_PRIVATE);//openFileOutput效果和case 0等价
 	        break;
     	case 10:
-    		mDir = mContext.getCacheDir();//存储路径为： /data/data/[package.name]/cache/
+    		mDir = mContext.getCacheDir();//存储路径为： /data/data/[PackageName]/cache/
     		outFile = new File(mDir, fileName);
     		ALog.Log("File written:"+outFile.getAbsolutePath());
     		osw = new FileOutputStream(outFile);	    
@@ -89,10 +91,10 @@ public class IntStorageHelper {
     	switch(type){
     	case 0:
     	case 1:
-    		mDir = mContext.getFilesDir();//存储路径为： /data/data/[package.name]/files/
+    		mDir = mContext.getFilesDir();//存储路径为： /data/data/[PackageName]/files/
 	        break;
     	case 10:
-    		mDir = mContext.getCacheDir();//存储路径为： /data/data/[package.name]/cache/
+    		mDir = mContext.getCacheDir();//存储路径为： /data/data/[PackageName]/cache/
     		break;
     	}
     	fin = new File(mDir, fileName);

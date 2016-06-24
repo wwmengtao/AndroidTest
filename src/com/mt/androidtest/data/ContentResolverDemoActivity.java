@@ -4,23 +4,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
+import java.util.ArrayList;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 public class ContentResolverDemoActivity extends BaseActivity {
 	private String CONTENT_URI = "content://";
 	private String cpAuthorities="com.mt.androidtest.cpdemo";
-	private Uri mUri=null;
 	private String [] mMethodNameFT={
 			"readContentProviderFile"};
-	ContentResolver mContentResolver=null;
+	private ContentResolver mContentResolver=null;
+	private ArrayList<Uri>uriCPFile=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,6 +28,19 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		initListActivityData(null);
 		mContentResolver = getContentResolver();
 		CONTENT_URI+=cpAuthorities;
+		initUriCPFile();
+	}
+	
+	/**
+	 * 以下将内部/外部存储中的共享文件对应的Uri加入uriCPFile中
+	 */
+	public void initUriCPFile(){
+		uriCPFile=new ArrayList<Uri>();
+		uriCPFile.add(Uri.parse(CONTENT_URI+"/myAssets_FilesDir/test/test.txt"));
+		uriCPFile.add(Uri.parse(CONTENT_URI+"/test.txt"));
+		uriCPFile.add(Uri.parse(CONTENT_URI+"/Documents/mt.txt"));
+		uriCPFile.add(Uri.parse(CONTENT_URI+"/Download/mt.txt"));
+		uriCPFile.add(Uri.parse(CONTENT_URI+"/mt.txt"));
 	}
 	
 	@Override
@@ -37,7 +49,9 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		String methodName = (String)getListViewAdapterFT().mList.get(position).get("itemText"); 
 		switch(methodName){
 			case "readContentProviderFile":
-				readContentProviderFile();
+				for(Uri mUri : uriCPFile){
+					readContentProviderFile(mUri);
+				}
 				break;
 		}
 	}
@@ -46,16 +60,11 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	 * readContentProviderFile：从ContentProvider标识的文件中读取内容
 	 * @return
 	 */
-	private boolean readContentProviderFile() {
+	private boolean readContentProviderFile(Uri mUri) {
 		InputStream inputStream = null;
 		BufferedReader reader = null;
 		StringBuffer builder = null;
 		String line = null;
-		/**
-		 * "content://com.mt.androidtest.cpdemo/myAssets_FilesDir/test/test.txt"说明文件存储路径为：
-		 /data/data/包名/files/myAssets_FilesDir/test/test.txt
-		 */
-		mUri = Uri.parse(CONTENT_URI+"/myAssets_FilesDir/test/test.txt");
 		try {
 			inputStream = mContentResolver.openInputStream(mUri);
 			if (inputStream != null) {
@@ -65,8 +74,10 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	                builder.append(line);
 	                builder.append("\n");
 	            }
+				ALog.Log("/---File content---/");
+				ALog.Log(builder.toString());
+				ALog.Log("/---File content---/");
 			}
-			ALog.Log("/---File read---/\n"+builder.toString());
 			return true;			
 		} catch (IOException e) {
 			e.printStackTrace();
