@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import com.mt.androidtest.ALog;
+import com.mt.androidtest.storage.StorageHelper;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -12,10 +13,12 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
 public class ContentProviderDemo extends ContentProvider {
-
+    private static StorageHelper mStorageHelper=null;
 	@Override
 	public boolean onCreate() {
 		ALog.Log("ContentProviderDemo_onCreate");
+		mStorageHelper=new StorageHelper(getContext());
+		createSharedData();
 		return true;
 	}
 
@@ -59,5 +62,11 @@ public class ContentProviderDemo extends ContentProvider {
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
 		return 0;
+	}
+	
+	public void createSharedData(){
+		File mFile= new File(getContext().getFilesDir(),"myAssets_FilesDir");
+		mStorageHelper.copyFilesInAssets("",mFile.getAbsolutePath());
+		ALog.Log("copyFilesInAssets to new location:"+mFile.getAbsolutePath());
 	}
 }
