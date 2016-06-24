@@ -161,6 +161,7 @@ public class ExtStorageHelper {
 	                if (bos != null) {
 	                    try {
 	                         bos.close();
+	                         bos=null;
 	                    } catch (IOException e) {
 	                         e.printStackTrace();
 	                    }//catch
