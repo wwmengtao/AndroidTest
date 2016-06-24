@@ -67,6 +67,6 @@ public class ContentProviderDemo extends ContentProvider {
 	public void createSharedData(){
 		File mFile= new File(getContext().getFilesDir(),"myAssets_FilesDir");
 		mStorageHelper.copyFilesInAssets("",mFile.getAbsolutePath());
-		ALog.Log("copyFilesInAssets to new location:"+mFile.getAbsolutePath());
+		ALog.Log("ContentProvider create files::"+mFile.getAbsolutePath());
 	}
 }

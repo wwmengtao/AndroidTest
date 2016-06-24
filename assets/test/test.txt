@@ -1,1 +1,2 @@
-assets/test/test.txt
+file path in project:assets/test/test.txt
+file contents:Congratulations!

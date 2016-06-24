@@ -28,9 +28,8 @@ public class IntStorageActivity extends BaseActivity {
 				mIntStorageHelper.listDirs();
 				break;		
 			case "writeToFile":
-				//writeToFile("test.txt","hello\nxixi\nhaha",0);
 				mIntStorageHelper.writeToFile("test.txt","hello\nxixi\nhaha",10);
-				break;		
+				break;
 			case "readFromFile":
 				mIntStorageHelper.readFromFile("test.txt",10);
 				break;	
