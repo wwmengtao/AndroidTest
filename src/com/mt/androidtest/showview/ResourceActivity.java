@@ -41,6 +41,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     private int mDensityDpi = 0;
     private DisplayMetrics metric=null;
     private Resources mResource=null;
+    private AssetManager mAssetManager=null;
 	int [] buttonID = {R.id.btn_showresource};    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +49,12 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		setContentView(R.layout.activity_resource);
 		mContext=this.getApplicationContext();
 		mResource=mContext.getResources();
+		mAssetManager=mResource.getAssets();
 		mTextView_Switchbar=(TextView) findViewById(R.id.txStatus);
 		mLayout_linear_switchbar=(LinearLayout) findViewById(R.id.switch_bar);	
 		mLayout_linear_switchbar.setOnClickListener(this);
 		mRelativeLayout=(RelativeLayout) findViewById(R.id.relativelayout_resource); 
-        metric = getResources().getDisplayMetrics();
+        metric = mResource.getDisplayMetrics();
         mDensityDpi = metric.densityDpi;
 		for(int i=0;i<buttonID.length;i++){
 			((Button)findViewById(buttonID[i])).setOnClickListener(this);
@@ -232,9 +234,9 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     public void getSystemResource(){
     	//无需任何权限可以直接获取
         boolean isCellBroadcastAppLinkEnabled = false;
-        int resId = getResources().getIdentifier("config_cellBroadcastAppLinks", "bool", "android");
+        int resId = mResource.getIdentifier("config_cellBroadcastAppLinks", "bool", "android");
         if (resId > 0) {
-            isCellBroadcastAppLinkEnabled = mContext.getResources().getBoolean(resId);
+            isCellBroadcastAppLinkEnabled = mResource.getBoolean(resId);
         }
         ALog.Log("android_isCellBroadcastAppLinkEnabled:"+isCellBroadcastAppLinkEnabled);
     }	
@@ -263,7 +265,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		String packageName=null;
 		packageName=mContext.getPackageName();
 		int textViewId =0;
-		textViewId=mContext.getResources().getIdentifier("tv_relative", "id", packageName);
+		textViewId=mResource.getIdentifier("tv_relative", "id", packageName);
 		ALog.Log("textViewId:"+ALog.toHexString(textViewId));		
 		mTextView= (TextView)findViewById(textViewId);
 		mTvTemp.setTextColor(mTextView.getCurrentTextColor());
@@ -313,7 +315,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 		//mDrawable = getDrawbleFromAsset();//从assets中获取图片资源
 		//mDrawable = getDrawableFromResourcesXml();//从系统xml资源获取图片
     	//mDrawable = getDrawbleFromAssetXml();//方法不可行：无法在运行时加载纯的xml文件
-    	//mDrawable = getDrawbleFromAssetAaptXml();//此方法仍然不成功，提示java.io.FileNotFoundException: pic_switcher/ic_qs_flashlight_on.xml
+    	mDrawable = getDrawbleFromAssetAaptXml();//此方法仍然不成功，提示java.io.FileNotFoundException
 		mImageView.setBackground(mDrawable);
 	}    
     
@@ -332,10 +334,9 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
      */
     public Drawable getDrawbleFromAsset(){
     	InputStream is=null;
-    	AssetManager asm=mContext.getAssets();
     	Drawable mDrawable=null;
     	try {
-			is=asm.open("pic_switcher/ic_notfound.png");
+			is=mAssetManager.open("pic_switcher/ic_notfound.png");
 			mDrawable=Drawable.createFromStream(is, null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -353,24 +354,23 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     	Drawable mDrawable = null;
     	XmlPullParser mXmlPullParser = null;
         InputStream mInputStream = null;
-        Resources mResources = getResources();
-        AssetManager mAM=null;
         try {
-        	mAM = mResources.getAssets();
-        	mInputStream = mAM.open("pic_switcher/vpn.xml"); 
+        	mInputStream = mAssetManager.open("pic_switcher/vpn.xml"); 
         	mXmlPullParser = Xml.newPullParser();
         	mXmlPullParser.setInput(mInputStream, StandardCharsets.UTF_8.name());
-            mDrawable = Drawable.createFromXml(mResources,  mXmlPullParser);
-        } catch (XmlPullParserException e) {
-        	ALog.fillInStackTrace("getDrawbleFromAssetXml.XmlPullParserException");
-        } catch (IOException e) {
-        	ALog.fillInStackTrace("getDrawbleFromAssetXml.Exception");
+            mDrawable = Drawable.createFromXml(mResource,  mXmlPullParser);
+        	//mDrawable = Drawable.createFromXmlInner(mResource, mXmlPullParser, null);
+        }catch (Exception e) {
+        	e.printStackTrace();
         }finally {
-            try {
-            	if(null!=mInputStream)mInputStream.close();
-            } catch (IOException e) {
-            	ALog.fillInStackTrace("getDrawbleFromAssetXml.IOException");
-            }
+        	if(null!=mInputStream){
+	            try {
+	            	mInputStream.close();
+	            	mInputStream=null;
+	            } catch (Exception e) {
+	            	e.printStackTrace();
+	            }
+        	}
         }
         return mDrawable;
     }
@@ -384,19 +384,19 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     	Drawable mDrawable = null;
     	try {
     	    String filename = "pic_switcher/ic_qs_flashlight_on.xml";
-    	    mDrawable = Drawable.createFromXml(getResources(), getAssets().openXmlResourceParser(filename));
+    	    mDrawable = Drawable.createFromXml(mResource, mAssetManager.openXmlResourceParser(filename));
     	} catch (Exception e) {
     	    e.printStackTrace();
+    	    return null;
     	}
     	return mDrawable;
     }
     
     public Drawable getDrawableFromResourcesXml(){
-    	Resources mResources = mContext.getResources();
-    	XmlPullParser parser = mResources.getXml(R.drawable.ic_qs_bluetooth_on);
+    	XmlPullParser parser = mResource.getXml(R.drawable.ic_qs_bluetooth_on);
         Drawable mDrawable = null;
 		try {
-			mDrawable = Drawable.createFromXml(mResources, parser);
+			mDrawable = Drawable.createFromXml(mResource, parser);
 		} catch (XmlPullParserException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
