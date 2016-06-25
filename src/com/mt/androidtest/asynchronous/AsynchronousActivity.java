@@ -3,34 +3,38 @@ package com.mt.androidtest.asynchronous;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
-import com.mt.androidtest.R.id;
-import com.mt.androidtest.R.layout;
 
 public class AsynchronousActivity extends BaseActivity{
     private String [] mMethodNameFT={"startAsyncTaskDemo","cancelAsyncTaskDemo","startAsyncTaskProgressBar","cancelAsyncTaskProgressBar"};
     public ProgressBar mProgressBar=null;    
     public TextView mProgressTV=null;    
+    private Handler mHander=null;
     private static AsyncTaskProgressBar mAsyncTaskProgressBar=null;
     private static AsyncTaskDemo mAsyncTaskDemo=null;
 	private static ExecutorService mExecutorService =null;
 	private static ArrayList<AsyncTaskProgressBar> mAsyncTaskProgressBarList=null;
+	private static final int MSG_CANCEL_ASYNC_1 = 0x001;
+	private static final int MSG_CANCEL_ASYNC_2 = 0x002;	
+	private int delayMillis = 100;
+	private Message mMessage=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_asynchronous);
 		super.initListFTData(mMethodNameFT);
 		super.initListActivityData(null);
+		mHander=getHandler();
 		ALog.Log("AsynchronousActivity_ThreadId:"+Thread.currentThread().getId());
 	}
 	
@@ -42,7 +46,12 @@ public class AsynchronousActivity extends BaseActivity{
 	@Override
 	public void onPause(){	
 		super.onPause();
-		cancelAsyncTaskProgressBar();
+	}
+	
+	@Override
+	public void onDestroy(){
+		cancelAsyncTaskProgressBarInThread();
+		super.onDestroy();
 	}
 	
 	@Override
@@ -52,15 +61,39 @@ public class AsynchronousActivity extends BaseActivity{
 				startAsyncTaskDemo();
 				break;		
 			case "cancelAsyncTaskDemo":
-				cancelAsyncTaskDemo();
+				mMessage = mHander.obtainMessage(MSG_CANCEL_ASYNC_1);
+				mHander.sendMessageDelayed(mMessage, delayMillis);
 		        break;			
 			case "startAsyncTaskProgressBar":
 	        	startAsyncTaskProgressBar();//开启进度条的更新
 				break;
 			case "cancelAsyncTaskProgressBar":
-				cancelAsyncTaskProgressBar();//取消进度条的更新
+				mMessage = mHander.obtainMessage(MSG_CANCEL_ASYNC_2);
+				mHander.sendMessageDelayed(mMessage, delayMillis);
 		        break;	
 		}
+	}
+	
+	@Override
+	public boolean handleMessage(Message msg) {
+		mHander.removeMessages(msg.what);
+		switch(msg.what){
+		case MSG_CANCEL_ASYNC_1:
+			cancelAsyncTaskDemo();
+			break;
+		case MSG_CANCEL_ASYNC_2:
+
+			break;			
+		}
+		return true;
+	}
+	
+	public void cancelAsyncTaskProgressBarInThread(){
+		new Thread() {
+			public void run() {
+				cancelAsyncTaskProgressBar();//取消进度条的更新
+			}
+		}.start();
 	}
 	
 	public void initProgressView(){
@@ -91,28 +124,20 @@ public class AsynchronousActivity extends BaseActivity{
 		mAsyncTaskProgressBar=new AsyncTaskProgressBar(this);  
 		//多次点击"AsyncDownload"查看下列几种线程池实现的区别
 		//mAsyncTaskProgressBar.execute();//方式1：按照队列模式更新
-		mAsyncTaskProgressBar.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);//方式2：按照并发方式更新
-		//mAsyncTaskProgressBar.executeOnExecutor(mExecutorService);//方式3：自选线程池
+		//mAsyncTaskProgressBar.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);//方式2：按照并发方式更新
+		mAsyncTaskProgressBar.executeOnExecutor(mExecutorService);//方式3：自选线程池
 		mAsyncTaskProgressBarList.add(mAsyncTaskProgressBar);
 	}
 	
-	boolean isCancelAsyncTaskProgressBarEnd=true;
 	public void cancelAsyncTaskProgressBar(){
-		if(isCancelAsyncTaskProgressBarEnd){
-			if(null!=mAsyncTaskProgressBarList && mAsyncTaskProgressBarList.size()>0){
-				isCancelAsyncTaskProgressBarEnd=false;
-				for(AsyncTaskProgressBar mAsyncTask:mAsyncTaskProgressBarList){
-					if (mAsyncTask != null && mAsyncTask.getStatus()==AsyncTask.Status.RUNNING) {  
-						mAsyncTask.cancel(true);  
-					}
+		if(null!=mAsyncTaskProgressBarList && mAsyncTaskProgressBarList.size()>0){
+			for(AsyncTaskProgressBar mAsyncTask:mAsyncTaskProgressBarList){
+				if (mAsyncTask != null && mAsyncTask.getStatus()==AsyncTask.Status.RUNNING) {  
+					ALog.Log("cancelAsyncTaskProgressBar");
+					mAsyncTask.cancel(true);  
 				}
-				isCancelAsyncTaskProgressBarEnd=true;
 			}
 		}
-		/*
-		if (mAsyncTaskProgressBar != null && mAsyncTaskProgressBar.getStatus()==AsyncTask.Status.RUNNING) {  
-			mAsyncTaskProgressBar.cancel(true);  
-		}*/
 	}
 
 	/**getExecutorService：获取不同类型的线程池
@@ -134,7 +159,7 @@ public class AsynchronousActivity extends BaseActivity{
 	 * @param type
 	 * @return
 	 */
-	public static void setExecutorService(int type){
+	public void setExecutorService(int type){
 		switch(type){
 			case 1:
 				mExecutorService = Executors.newSingleThreadExecutor();
