@@ -21,12 +21,6 @@ public class SwitcherDemoActivity extends Activity implements Handler.Callback{
 	private ArrayList<HashMap<String, Object>> mSwitchersList = new ArrayList<HashMap<String, Object>>();
 	private ArrayList<HashMap<String, Object>> mLVPSwitchersList = new ArrayList<HashMap<String, Object>>();
 
-	private static int[] switchIMAGE = { R.drawable.switch_brightness,
-			R.drawable.switch_wifi, R.drawable.switch_rotation,
-			R.drawable.switch_bluetooth, R.drawable.back,
-			R.drawable.switch_profile, R.drawable.switch_torchlight,
-			R.drawable.switch_mobile, R.drawable.switch_gps };
-
 	private static int[] switchTXT = { R.string.switch_brightness,
 			R.string.switch_wifi, R.string.switch_rotation,
 			R.string.switch_bluetooth, R.string.switch_empty,
@@ -134,41 +128,41 @@ public class SwitcherDemoActivity extends Activity implements Handler.Callback{
  	
 	public void loadSwitchersResource(){
 		mSwitchersList.clear();
-		for (int i = 0; i < switchIMAGE.length; i++) {
+		for (int i = 0; i < switchTXT.length; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			switch (switchIMAGE[i]) {
-			case R.drawable.switch_bluetooth:
+			switch (switchTXT[i]) {
+			case R.string.switch_bluetooth:
 				map = mSwitchersInfo.getBluetoothSwitch();
 				map.put("itemText", getString(switchTXT[i]));
 				break;
-			case R.drawable.switch_torchlight:
+			case R.string.widetouch_torchlight:
 				map = mSwitchersInfo.getTorchLightSwitch();
 				map.put("itemText", getString(switchTXT[i]));
 				break;
-			case R.drawable.switch_gps:
+			case R.string.switch_gps:
 				map = mSwitchersInfo.getGpsSwitcher();
 				map.put("itemText", getString(switchTXT[i]));
 				break;
-			case R.drawable.switch_mobile:
+			case R.string.switch_mobile:
 				map = mSwitchersInfo.getMobileSwitcher();
 				map.put("itemText", getString(switchTXT[i]));
 				break;
-			case R.drawable.switch_profile:
+			case R.string.switch_profile:
 				map = mSwitchersInfo.getProfileSwitch();
 				map.put("itemText", getString(switchTXT[i]));
 				break;
-			case R.drawable.switch_rotation:
+			case R.string.switch_rotation:
 				map = mSwitchersInfo.getRotationSwitch();
 				break;
-			case R.drawable.switch_wifi:
+			case R.string.switch_wifi:
 				map = mSwitchersInfo.getWifiSwitch();
 				map.put("itemText", getString(switchTXT[i]));
 				break;
-			case R.drawable.switch_brightness:
+			case R.string.switch_brightness:
 				map = mSwitchersInfo.getBrightnessSwitch();
 				map.put("itemText", getString(switchTXT[i]));
 				break;
-			case R.drawable.back:
+			case R.string.switch_empty:
 				map.put("itemImage", R.drawable.back);
 				break;
 			default:

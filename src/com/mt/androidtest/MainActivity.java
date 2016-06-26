@@ -348,7 +348,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
         // TODO: DialogFragment?
     	mShowDialog = new AlertDialog.Builder(this).setTitle(
                 getResources().getString(R.string.app_name))
-                .setIcon(R.drawable.ic_notfound)
+                .setIcon(R.drawable.not_found)
                 .setMessage(getResources().getString(R.string.title_activity_switcher_demo))
                 .setPositiveButton(android.R.string.yes, this)
                 .setNegativeButton(android.R.string.no, this)
