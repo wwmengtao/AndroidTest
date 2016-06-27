@@ -43,7 +43,7 @@ public class XmlOperator {
 		XmlOperator mXmlOperator=new XmlOperator(context);
 		mXmlOperator.setInfomation(fileName, tagOfDoc, eleName, attr);
 		mXmlOperator.writeToXml();
-		mXmlOperator.parseXml();
+		mXmlOperator.readFromXml();
 	}
 	
 	public void setInfomation(String fileName,String tagOfDoc,String eleName,String attrName){
@@ -83,7 +83,7 @@ public class XmlOperator {
 	public void writeContents(){
 		for(int i=0;i<5;i++){
 			stag(eleName);
-			attr(attrName, "123");
+			attr(attrName, Integer.toString(i));
 			etag(eleName);
 		}
 	}
@@ -138,7 +138,7 @@ public class XmlOperator {
 	
 	
 	
-	public void parseXml(){
+	public void readFromXml(){
 		checkInfomation();
 		try {
 			mInputStream=mContext.openFileInput(fileName);
@@ -146,27 +146,23 @@ public class XmlOperator {
 			//String tagOfDoc ="Languages";
 			//String eleName="language";
 			filterBeforeFirstElement(mXmlPullParser, tagOfDoc);
-			loadElementsFromXml(mXmlPullParser,eleName,attrName);
+			readContents(mXmlPullParser,eleName,attrName);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally{
-			closeQuietly(mInputStream);
+	    	if(null!=mInputStream){
+	            try {
+	            	mInputStream.close();
+	            	mInputStream=null;
+	            } catch (Exception e) {
+	            	e.printStackTrace();
+	            }
+	    	}
 		}
 	}
 	
-	public void closeQuietly(Closeable mCloseable){
-    	if(null!=mCloseable){
-            try {
-            	mCloseable.close();
-            	mCloseable=null;
-            } catch (Exception e) {
-            	e.printStackTrace();
-            }
-    	}
-	}
-	
-    private void loadElementsFromXml(XmlPullParser parser,String tag_name,String attr) throws IOException, XmlPullParserException {
+    private void readContents(XmlPullParser parser,String tag_name,String attr) throws IOException, XmlPullParserException {
         final int outerDepth = parser.getDepth();
         String attrValue=null;
         /*--------------------------读xml的时候顺便写入特定内容------------------------*/
