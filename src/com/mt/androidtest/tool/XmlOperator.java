@@ -20,6 +20,7 @@ public class XmlOperator {
 	private String ioEncoding=null;
 	private String namespace = null;
 	private InputStream mInputStream=null;
+	private FileOutputStream mFileOutputStream = null;
 	private Context mContext=null;
 	//
 	private String fileName=null;
@@ -61,29 +62,14 @@ public class XmlOperator {
 	
 	public void writeToXml(){
 		checkInfomation();
-		FileOutputStream mFileOutputStream = null;
-		try {
-			mFileOutputStream=mContext.openFileOutput(fileName, Context.MODE_PRIVATE);
-			startWrite(mFileOutputStream,fileName,tagOfDoc);
-			writeContents();
-			endWrite(tagOfDoc);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally{
-	    	if(null!=mFileOutputStream){
-	            try {
-	            	mFileOutputStream.close();
-	            	mFileOutputStream=null;
-	            } catch (Exception e) {
-	            	e.printStackTrace();
-	            }
-	    	}
-		}
+		startWrite(mFileOutputStream,fileName,tagOfDoc);
+		writeContents();
+		endWrite(tagOfDoc);
 	}
 	
 	public void startWrite(FileOutputStream mFileOutputStream,String fileName,String tag_Doc){
 		try {
+			mFileOutputStream=mContext.openFileOutput(fileName, Context.MODE_PRIVATE);
 			mXmlSerializer.setOutput(new BufferedOutputStream(mFileOutputStream), ioEncoding);
 			mXmlSerializer.startDocument(ioEncoding, true);
 			mXmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
@@ -110,6 +96,15 @@ public class XmlOperator {
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally{
+	    	if(null!=mFileOutputStream){
+	            try {
+	            	mFileOutputStream.close();
+	            	mFileOutputStream=null;
+	            } catch (Exception e) {
+	            	e.printStackTrace();
+	            }
+	    	}
 		}
 	}
 	
