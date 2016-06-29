@@ -22,8 +22,6 @@ import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 import com.mt.androidtest.tool.XmlOperator;
 
-import static com.mt.androidtest.data.DataBaseHelper.tableName;
-
 public class ContentResolverDemoActivity extends BaseActivity {
 	private String CONTENT_URI = "content://";
 	private String cpAuthorities="com.mt.androidtest.cpdemo";
@@ -32,12 +30,13 @@ public class ContentResolverDemoActivity extends BaseActivity {
 			"insert","update","query","delete"};
 	private ContentResolver mContentResolver=null;
 	private ArrayList<Uri>uriCPFile=null;
-	private SQLiteOpenHelper mSqlOpenHelper;
 	//
 	private ArrayList<String>mAttrAL=null;
 	private ArrayList<String>mTextAL=null;
 	//
 	private Uri mUri=null;
+	private String sqlitekey=null;
+	private String sqliteValue=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,8 +47,9 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		CONTENT_URI+=cpAuthorities;
 		mUri=Uri.parse(CONTENT_URI);
 		initUriCPFile();
-		mSqlOpenHelper = DataBaseHelper.getInstance(getApplicationContext());
 		toReadXml(getApplicationContext());
+		sqlitekey=DataBaseHelper.getKeyName();
+		sqliteValue=DataBaseHelper.getValueName();
 	}
 	
 	public void toReadXml(Context context){
@@ -151,8 +151,8 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		ContentValues values = null;
 		for(int i=0;i<mAttrAL.size();i++){
 			values = new ContentValues();
-			values.put("id",mAttrAL.get(i));
-			values.put("name", mTextAL.get(i));
+			values.put(sqlitekey,mAttrAL.get(i));
+			values.put(sqliteValue, mTextAL.get(i));
 			mContentResolver.insert(mUri, values);
 		}
 	}
@@ -160,8 +160,8 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	public void update() {
 		// 创建一个ContentValues对象
 		ContentValues values = new ContentValues();
-		values.put("name", "mt");
-		mContentResolver.update(mUri, values, "id = ?", new String[]{"string_name5"});
+		values.put(sqliteValue, "mt");
+		mContentResolver.update(mUri, values, sqlitekey+" = ?", new String[]{"string_name5"});
 	}
 
 	public void query() {
@@ -169,9 +169,9 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		Cursor cursor = mContentResolver.query(mUri, null, null, null, null);
 		// 将光标移动到下一行，从而判断该结果集是否还有下一条数据，如果有则返回true，没有则返回false
 		while (cursor.moveToNext()) {
-			id = cursor.getString(cursor.getColumnIndex("id"));
-			name = cursor.getString(cursor.getColumnIndex("name"));
-			ALog.Log("id: "+id+" name: "+name);
+			id = cursor.getString(cursor.getColumnIndex(sqlitekey));
+			name = cursor.getString(cursor.getColumnIndex(sqliteValue));
+			ALog.Log("sqlitekey: "+id+" sqliteValue: "+name);
 		}
 		cursor.close();
 	}
@@ -181,6 +181,6 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		//第一个参数String：表名
 		//第二个参数String：条件语句
 		//第三个参数String[]：条件值
-		mContentResolver.delete(mUri	, "id = ?", new String[]{"string_name4"});
+		mContentResolver.delete(mUri	, sqlitekey+" = ?", new String[]{"string_name4"});
 	}
 }

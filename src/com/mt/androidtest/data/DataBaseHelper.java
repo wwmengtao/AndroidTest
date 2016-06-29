@@ -13,10 +13,11 @@ import com.mt.androidtest.ALog;
  */
 public class DataBaseHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
-	static final String DATABASE_NAME = "dbHelper.db";	
-	public static final String tableName="M_T";
+	private static final String DATABASE_NAME = "dbHelper.db";	
 	private static DataBaseHelper sInstance = null;
-
+	private static final String tableName="M_T";
+	private static final String keyName="Id";
+	private static final String valueName="Value";
     private DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -28,13 +29,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sInstance;
     }
 	
+	public static String getTableName(){
+		return tableName;
+	}
+	
+	public static String getKeyName(){
+		return keyName;
+	}
+	
+	public static String getValueName(){
+		return valueName;
+	}
+	
 	//该函数是在第一次创建的时候执行，实际上是第一次得到SQLiteDatabase对象的时候才会调用这个方法
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		ALog.Log("create a database");
 		//execSQL用于执行SQL语句
-		db.execSQL("create table "+tableName+"(id TEXT PRIMARY KEY,name TEXT)");
+		db.execSQL("create table "+tableName+"("+keyName+" TEXT PRIMARY KEY,"+valueName+" TEXT)");
 	}
 
 	@Override

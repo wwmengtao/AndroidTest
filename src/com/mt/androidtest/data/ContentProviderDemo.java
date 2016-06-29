@@ -1,11 +1,8 @@
 package com.mt.androidtest.data;
 
-import static com.mt.androidtest.data.DataBaseHelper.tableName;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,34 +12,27 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.storage.StorageHelper;
 
 public class ContentProviderDemo extends ContentProvider {
-    private static final String NO_DELETES_INSERTS_OR_UPDATES = "ContentProviderDemo does not support deletes, inserts, or updates for this URI.";
 	private boolean isLogRun = true; 
     private static StorageHelper mStorageHelper=null;
 	private ArrayList<File>mBaseDir=null;
 	private Context mContext=null;
+	//
 	private SQLiteOpenHelper mSqlOpenHelper;
+	private String tableName=null;
 	@Override
 	public boolean onCreate() {
 		if(isLogRun)ALog.Log("CPDemo_onCreate");
 		mContext=getContext();
 		initBaseDir();
-		mStorageHelper=new StorageHelper(mContext);
-		mSqlOpenHelper=DataBaseHelper.getInstance(mContext);
-		createSharedData();
+		initFiles();
+		initSqlite();
 		return true;
 	}
 
-	public void createSharedData(){
-		File mFile= new File(mContext.getFilesDir(),"myAssets_FilesDir");
-		mStorageHelper.copyFilesInAssets("",mFile.getAbsolutePath());
-		if(isLogRun)ALog.Log("CPDemo create:"+mFile.getAbsolutePath());
-	}
-	
 	//将内部、外部存储的路径全部保存起来以方便查找文件
 	private void initBaseDir(){
 		mBaseDir = new ArrayList<File>();
@@ -51,6 +41,18 @@ public class ContentProviderDemo extends ContentProvider {
 		mBaseDir.add(Environment.getExternalStorageDirectory());//storage/emulated/0
 		mBaseDir.add(mContext.getExternalCacheDir());///storage/emulated/0/Android/data/[PackageName]/cache
 		mBaseDir.add(mContext.getExternalFilesDir(""));///storage/emulated/0/Android/data/[PackageName]/files
+	}	
+	
+	public void initFiles(){
+		File mFile= new File(mContext.getFilesDir(),"myAssets_FilesDir");
+		mStorageHelper=new StorageHelper(mContext);
+		mStorageHelper.copyFilesInAssets("",mFile.getAbsolutePath());
+		if(isLogRun)ALog.Log("CPDemo create:"+mFile.getAbsolutePath());
+	}
+	
+	public void initSqlite(){
+		mSqlOpenHelper=DataBaseHelper.getInstance(mContext);
+		tableName=DataBaseHelper.getTableName();
 	}
 	
 	private File getExistedFile(String fileName){
@@ -76,7 +78,7 @@ public class ContentProviderDemo extends ContentProvider {
 		}
 		throw new FileNotFoundException(uri.getPath());
 	}
-
+	//以下进行数据库的CRUD操作
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		if(isLogRun)ALog.Log("CPDemo_insert");
