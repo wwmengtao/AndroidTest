@@ -8,6 +8,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
@@ -20,30 +21,24 @@ public class ContentProviderDemo extends ContentProvider {
     private static StorageHelper mStorageHelper=null;
 	private ArrayList<File>mBaseDir=null;
 	private Context mContext=null;
+	private SQLiteOpenHelper mOpenHelper;
 	@Override
 	public boolean onCreate() {
 		if(isLogRun)ALog.Log("CPDemo_onCreate");
 		mContext=getContext();
 		initBaseDir();
 		mStorageHelper=new StorageHelper(mContext);
+		mOpenHelper=DataBaseHelper.getInstance(mContext);
 		createSharedData();
 		return true;
 	}
 
-	@Override
-	public Cursor query(Uri uri, String[] projection, String selection,
-			String[] selectionArgs, String sortOrder) {
-		return null;
+	public void createSharedData(){
+		File mFile= new File(mContext.getFilesDir(),"myAssets_FilesDir");
+		mStorageHelper.copyFilesInAssets("",mFile.getAbsolutePath());
+		if(isLogRun)ALog.Log("CPDemo create:"+mFile.getAbsolutePath());
 	}
-
-	@Override
-	public String getType(Uri uri) {
-		if (uri.toString().endsWith(".png")) {
-			return "image/png";
-		}
-		return null;
-	}
-
+	
 	private void initBaseDir(){
 		mBaseDir = new ArrayList<File>();
 		mBaseDir.add(mContext.getFilesDir());///data/data/[PackageName]/files
@@ -90,9 +85,18 @@ public class ContentProviderDemo extends ContentProvider {
 		return 0;
 	}
 	
-	public void createSharedData(){
-		File mFile= new File(mContext.getFilesDir(),"myAssets_FilesDir");
-		mStorageHelper.copyFilesInAssets("",mFile.getAbsolutePath());
-		if(isLogRun)ALog.Log("CPDemo create:"+mFile.getAbsolutePath());
+	@Override
+	public Cursor query(Uri uri, String[] projection, String selection,
+			String[] selectionArgs, String sortOrder) {
+		return null;
 	}
+
+	@Override
+	public String getType(Uri uri) {
+		if (uri.toString().endsWith(".png")) {
+			return "image/png";
+		}
+		return null;
+	}
+
 }

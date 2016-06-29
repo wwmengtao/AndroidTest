@@ -2,21 +2,23 @@ package com.mt.androidtest.tool;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.Closeable;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.Xml;
 import com.mt.androidtest.ALog;
 
 public class XmlOperator {
-	private XmlPullParser mXmlPullParser = null;
-	private XmlSerializer mXmlSerializer = null;
+	private XmlPullParser mXmlPullParser = null;//读取xml文件
+	private XmlSerializer mXmlSerializer = null;//生成xml文件
 	private String ioEncoding=null;
 	private String namespace = null;
 	private InputStream mInputStream=null;
@@ -27,6 +29,9 @@ public class XmlOperator {
 	private String tagOfDoc=null;
 	private String eleName=null;
 	private String attrName=null;
+	//
+	private ArrayList<String>mAttrAL=null;
+	private ArrayList<String>mTextAL=null;
 	//
 	public XmlOperator(Context context){
 		mContext=context.getApplicationContext();
@@ -42,8 +47,8 @@ public class XmlOperator {
 		String attr="attr";
 		XmlOperator mXmlOperator=new XmlOperator(context);
 		mXmlOperator.setInfomation(fileName, tagOfDoc, eleName, attr);
-		mXmlOperator.writeToXml();
-		mXmlOperator.readFromXml();
+		mXmlOperator.writeToXml(0);
+		mXmlOperator.readFromXml(0);
 	}
 	
 	public void setInfomation(String fileName,String tagOfDoc,String eleName,String attrName){
@@ -55,21 +60,21 @@ public class XmlOperator {
 	
 	//检查文件读写所需信息是否完整
 	public void checkInfomation(){
-		if(null==tagOfDoc||null==eleName||null==attrName){
+		if(null==fileName||null==tagOfDoc||null==eleName||null==attrName){
 			throw new IllegalArgumentException("File info incomplete!");
 		}
 	}
 	
-	public void writeToXml(){
+	public void writeToXml(int type){
 		checkInfomation();
-		startWrite(mFileOutputStream,fileName,tagOfDoc);
+		startWrite(fileName,tagOfDoc,type);
 		writeContents();
 		endWrite(tagOfDoc);
 	}
 	
-	public void startWrite(FileOutputStream mFileOutputStream,String fileName,String tag_Doc){
+	public void startWrite(String fileName,String tag_Doc,int type){
 		try {
-			mFileOutputStream=mContext.openFileOutput(fileName, Context.MODE_PRIVATE);
+			setOutputStream(type);
 			mXmlSerializer.setOutput(new BufferedOutputStream(mFileOutputStream), ioEncoding);
 			mXmlSerializer.startDocument(ioEncoding, true);
 			mXmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
@@ -78,6 +83,14 @@ public class XmlOperator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+	}
+	
+	public void setOutputStream(int type) throws FileNotFoundException{
+		switch(type){
+		case 0:
+			mFileOutputStream=mContext.openFileOutput(fileName, Context.MODE_PRIVATE);
+			break;
+		}
 	}
 	
 	public void writeContents(){
@@ -138,13 +151,11 @@ public class XmlOperator {
 	
 	
 	
-	public void readFromXml(){
+	public void readFromXml(int type){
 		checkInfomation();
 		try {
-			mInputStream=mContext.openFileInput(fileName);
+			setInputStream(type);
 			mXmlPullParser.setInput(new BufferedInputStream(mInputStream), ioEncoding);
-			//String tagOfDoc ="Languages";
-			//String eleName="language";
 			filterBeforeFirstElement(mXmlPullParser, tagOfDoc);
 			readContents(mXmlPullParser,eleName,attrName);
 		} catch (Exception e) {
@@ -162,18 +173,61 @@ public class XmlOperator {
 		}
 	}
 	
+	public void setInputStream(int type) throws Exception{
+		switch(type){
+		case 0:
+			mInputStream=mContext.openFileInput(fileName);
+			break;
+		case 1:
+			AssetManager mAssetManager = mContext.getAssets();
+			mInputStream = mAssetManager.open(fileName); 
+			break;			
+		}
+	}
+	
     private void readContents(XmlPullParser parser,String tag_name,String attr) throws IOException, XmlPullParserException {
-        final int outerDepth = parser.getDepth();
+        int outerDepth = parser.getDepth();
+        int type=0;
         String attrValue=null;
-        /*--------------------------读xml的时候顺便写入特定内容------------------------*/
-        while (expectedElement(parser, outerDepth)) {
-        	if (parser.getName().equals(tag_name)) {
-        		attrValue = parser.getAttributeValue(namespace, attr);
-        		ALog.Log("Value of "+attr+":"+attrValue);
-        	}
-        }
+        mAttrAL=new ArrayList<String>();
+        mTextAL=new ArrayList<String>();
+        String str_Text=null;
+        /**
+         * int START_DOCUMENT = 0;
+         * int END_DOCUMENT = 1;
+         * int START_TAG = 2;
+         * int END_TAG = 3;
+         * int TEXT = 4;
+         */
+        while ((type= parser.next())!=XmlPullParser.END_DOCUMENT) {
+        	if(XmlPullParser.START_TAG==type&&parser.getName().equals(tag_name)&&(parser.getDepth() == outerDepth+1)){
+	 			attrValue = parser.getAttributeValue(namespace, attr);
+	 			mAttrAL.add(attrValue);
+	    		//ALog.Log("attr:"+attrValue);
+	    		while ((type= parser.next())==XmlPullParser.TEXT){
+	    			str_Text=parser.getText();
+	    			mTextAL.add(str_Text);
+	    			//ALog.Log("text:"+str_Text);
+	    			break;
+	    		}//while
+        	}//if
+        }//while
     }
 	
+    public ArrayList<String> getAttrArrayList(){
+    	if(null!=mAttrAL&&mAttrAL.size()>0){
+    		return mAttrAL;
+    	}
+    	return null;
+    }
+    
+    public ArrayList<String> getTextArrayList(){
+    	if(null!=mTextAL&&mTextAL.size()>0){
+    		return mTextAL;
+    	}
+    	return null;
+    }
+    
     //filterBeforefirstElement：过滤掉达到指定标签之前的所有内容
     public void filterBeforeFirstElement(XmlPullParser parser, String firstElementName) throws XmlPullParserException, IOException
     {
@@ -191,31 +245,4 @@ public class XmlOperator {
             throw new XmlPullParserException("Unexpected start tag: "+parser.getName()+", expected: " + firstElementName);
         }
     }
-	
-
-    //expectedElement：获取特定深度的element内容
-    public boolean expectedElement(XmlPullParser parser, int outerDepth) throws IOException, XmlPullParserException {
-    	/**
-    	 * int END_DOCUMENT = 1;
-    	 * int START_TAG = 2;
-    	 * int END_TAG = 3;
-    	 * int TEXT = 4;
-    	 */
-        for (;;) {
-            int type = parser.next();
-            //下列条件表明已经到文件末尾或者到达深度outerDepth标签结尾
-            if (type == XmlPullParser.END_DOCUMENT || (type == XmlPullParser.END_TAG && parser.getDepth() == outerDepth)) {
-                return false;
-            }
-            //下列条件表明已经到文件特定标签的开始位置
-            if (type == XmlPullParser.START_TAG) {
-            	if(parser.getDepth() == outerDepth+1){//+1表示仅仅解析深度outerDepth+1的标签内容
-            		return true;
-            	}else{//不解析深度大于outerDepth+1的标签，比如嵌套标签
-            		return false;
-            	}
-            }
-        }
-    }
-
 }
