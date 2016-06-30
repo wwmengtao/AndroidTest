@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -17,13 +18,22 @@ import com.mt.androidtest.storage.StorageHelper;
 
 public class ContentProviderDemo extends ContentProvider {
 	private boolean isLogRun = true; 
-    private static StorageHelper mStorageHelper=null;
 	private ArrayList<File>mBaseDir=null;
 	private Context mContext=null;
 	//
+    private static StorageHelper mStorageHelper=null;
 	private SQLiteOpenHelper mSqlOpenHelper;
 	private String tableName=null;
+	private static String authority="com.mt.androidtest.cpdemo";
+	private static UriMatcher mUriMatcher  = new UriMatcher(UriMatcher.NO_MATCH);
+	private static final int SqliteURI_code=0x01;
+	static
+	{
+		// 为UriMatcher注册数据库解析Uri
+		mUriMatcher.addURI(authority, "sqlite", SqliteURI_code);
+	}
 	@Override
+	//ContentProvider只有一个生命周期onCreate。当其他应用通过contentResolver第一次访问该ContentProvider时候会触发onCreate方法的调用
 	public boolean onCreate() {
 		if(isLogRun)ALog.Log("CPDemo_onCreate");
 		mContext=getContext();
@@ -81,51 +91,58 @@ public class ContentProviderDemo extends ContentProvider {
 	//以下进行数据库的CRUD操作
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		if(isLogRun)ALog.Log("CPDemo_insert");
-		SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
-		// 调用insert方法，就可以将数据插入到数据库当中
-		// 第一个参数:表名称
-		// 第二个参数：为了强行插入空行
-		// 第三个参数：ContentValues对象
-		db.insert(tableName, null, values);
+		switch (mUriMatcher.match(uri)){
+	        case SqliteURI_code :
+	    		if(isLogRun)ALog.Log("CPDemo_insert");
+	    		SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
+				db.insert(tableName, null, values);
+				break;
+	        default:
+	            throw new IllegalArgumentException("unknownUri:" + uri);
+	}
 		return uri;
 	}
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		if(isLogRun)ALog.Log("CPDemo_delete");
-		SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
-		 db.delete(tableName, selection, selectionArgs);
+		switch (mUriMatcher.match(uri)){
+	        case SqliteURI_code :
+				if(isLogRun)ALog.Log("CPDemo_delete");
+				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
+				db.delete(tableName, selection, selectionArgs);
+				break;
+	        default:
+	            throw new IllegalArgumentException("unknownUri:" + uri);
+		}
 		return 0;
 	}
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,	String[] selectionArgs) {
-		if(isLogRun)ALog.Log("CPDemo_update");
-		SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
-		// 调用update方法
-		// 第一个参数String：表名
-		// 第二个参数ContentValues：ContentValues对象
-		// 第三个参数String：where字句，相当于sql语句where后面的语句，？号是占位符
-		// 第四个参数String[]：占位符的值
-		 db.update(tableName, values, selection, selectionArgs);
+		switch (mUriMatcher.match(uri)){
+	        case SqliteURI_code :
+				if(isLogRun)ALog.Log("CPDemo_update");
+				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
+				db.update(tableName, values, selection, selectionArgs);
+				break;
+	        default:
+	            throw new IllegalArgumentException("unknownUri:" + uri);
+		}
 		return 0;
 	}
 	
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-		if(isLogRun)ALog.Log("CPDemo_query");
 		Cursor cursor = null;
-		SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
-		// 调用SQLiteDatabase对象的query方法进行查询，返回一个Cursor对象：由数据库查询返回的结果集对象
-		// 第一个参数String：表名
-		// 第二个参数String[]:要查询的列名
-		// 第三个参数String：查询条件
-		// 第四个参数String[]：查询条件的参数
-		// 第五个参数String:对查询的结果进行分组
-		// 第六个参数String：对分组的结果进行限制
-		// 第七个参数String：对查询的结果进行排序
-		cursor = db.query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
+		switch (mUriMatcher.match(uri)){
+	        case SqliteURI_code :		
+				if(isLogRun)ALog.Log("CPDemo_query");
+				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
+				cursor = db.query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
+				break;
+	        default:
+	            throw new IllegalArgumentException("unknownUri:" + uri);
+		}
 		return cursor;
 	}
 
