@@ -3,9 +3,11 @@ package com.mt.androidtest.data;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.storage.StorageHelper;
 
@@ -24,14 +27,15 @@ public class ContentProviderDemo extends ContentProvider {
     private static StorageHelper mStorageHelper=null;
 	private SQLiteOpenHelper mSqlOpenHelper;
 	private String tableName=null;
-	private static String authority="com.mt.androidtest.cpdemo";
+	public static final String authority="com.mt.androidtest.cpdemo";
 	private static UriMatcher mUriMatcher  = new UriMatcher(UriMatcher.NO_MATCH);
+	public static final String SqliteURI_sqlite="/sqlite";
 	private static final int SqliteURI_code=0x01;
+	private static final String intent_authority="com.mt.androidtest.cpdemo/intent_test";
 	static
 	{
 		// 为UriMatcher注册数据库解析Uri
-		mUriMatcher.addURI(authority, "sqlite", SqliteURI_code);
-	}
+		mUriMatcher.addURI(authority, SqliteURI_sqlite, SqliteURI_code);	}
 	@Override
 	//ContentProvider只有一个生命周期onCreate。当其他应用通过contentResolver第一次访问该ContentProvider时候会触发onCreate方法的调用
 	public boolean onCreate() {
@@ -81,12 +85,16 @@ public class ContentProviderDemo extends ContentProvider {
 	 * 当调用ContentResolver.openInputStream(Uri)命令时，此命令会被调用，从而向调用者提供Uri对应的本地文件名称
 	 */
 	public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-		File mFile = getExistedFile(uri.getPath());
+		ParcelFileDescriptor mParcelFileDescriptor=null;
+		String fileName=uri.getPath();
+		File mFile = getExistedFile(fileName);
 		if(null!=mFile){
 			if(isLogRun)ALog.Log("CPDemo_openFile:"+mFile.getPath());
-			return ParcelFileDescriptor.open(mFile, ParcelFileDescriptor.MODE_READ_ONLY);
+			mParcelFileDescriptor = ParcelFileDescriptor.open(mFile, ParcelFileDescriptor.MODE_READ_ONLY);
+		}else{
+			throw new FileNotFoundException(uri.getPath());
 		}
-		throw new FileNotFoundException(uri.getPath());
+		return mParcelFileDescriptor;
 	}
 	//以下进行数据库的CRUD操作
 	@Override
@@ -147,11 +155,22 @@ public class ContentProviderDemo extends ContentProvider {
 	}
 
 	@Override
+	/**实例如下：
+		Uri mUri=Uri.parse("content://com.mt.androidtest.cpdemo/sqlite");
+		mIntent=new Intent("com.mt.androidtest.ContentResolver",mUri);
+		mIntent.addCategory(Intent.CATEGORY_DEFAULT);
+		startActivity(mIntent);
+		上述实例中，系统解析mIntent时取出mUri值，解析出mUri的authority为"com.mt.androidtest.cpdemo"，path为"sqlite"，从而
+		找到ContentProviderDemo并调用getType得到intent_authority。然后查找activity中<intent-filter>下的<data android:mimeType="xxx"/>。
+		如果发现此时的xxx内容和intent_authority内容相同，就开启activity(前提是action和category已经满足条件)。
+	 */
 	public String getType(Uri uri) {
-		if (uri.toString().endsWith(".png")) {
-			return "image/png";
+		switch (mUriMatcher.match(uri)){
+	        case SqliteURI_code :
+	        	return intent_authority;
+	        default:
+	            throw new IllegalArgumentException("unknownUri:" + uri);
 		}
-		return null;
 	}
 
 }

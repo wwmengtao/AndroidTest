@@ -2,6 +2,7 @@ package com.mt.androidtest;
 
 import java.lang.reflect.Method;
 import java.util.List;
+
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -19,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
@@ -38,7 +40,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
     private NotificationManager mNotificationManager = null;
 	private String [] mMethodNameFT={
 			"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll",
-			"StartActivity","DocumentsActivity","DownloadProviderUI"};
+			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI"};
 	private String [] mActivitiesName={
 			"AsynchronousActivity","ContentResolverDemoActivity",
 			"ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","PermissionActivity",
@@ -117,7 +119,13 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 				mIntent=mPackageManager.getLaunchIntentForPackage(packname);
 				mIntent = getIntentSetFlags(mIntent);
 				startActivity();
-				break;			
+				break;		
+			case "StartActivity_Uri":
+				Uri mUri=Uri.parse("content://com.mt.androidtest.cpdemo/sqlite");
+				mIntent=new Intent("com.mt.androidtest.ContentResolver",mUri);
+				mIntent.addCategory(Intent.CATEGORY_DEFAULT);
+				startActivity(mIntent);
+				break;
 		}
 
 	}

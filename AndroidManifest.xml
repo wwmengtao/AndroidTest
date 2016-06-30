@@ -98,8 +98,13 @@
         </provider>
 
         <activity
-            android:name="com.mt.androidtest.data.ContentResolverDemoActivity"
+			android:name="com.mt.androidtest.data.ContentResolverDemoActivity"
             android:label="@string/title_activity_content_resolver_demo" >
+			<intent-filter>
+				<action android:name="com.mt.androidtest.ContentResolver"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<data android:mimeType="com.mt.androidtest.cpdemo/intent_test"/>
+			</intent-filter>
         </activity>
     </application>
 

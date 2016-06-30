@@ -19,7 +19,7 @@ import com.mt.androidtest.R;
 import com.mt.androidtest.tool.XmlOperator;
 
 public class ContentResolverDemoActivity extends BaseActivity {
-	private String ContProvider_URI = "content://com.mt.androidtest.cpdemo";
+	private String ContProvider_URI = "content://";
 	private String [] mMethodNameFT={
 			"readContentProviderFile",
 			"insert","update","query","delete"};
@@ -39,6 +39,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		initListFTData(mMethodNameFT);
 		initListActivityData(null);
 		//
+		ContProvider_URI += ContentProviderDemo.authority;
 		mContentResolver = getContentResolver();
 		initUriCPFile();
 		//
@@ -62,7 +63,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	 */
 	public void initSqliteOperator(){
 		readXmlForSqlite(getApplicationContext());
-		sqliteUri=Uri.parse(ContProvider_URI+"/sqlite");
+		sqliteUri=Uri.parse(ContProvider_URI+ContentProviderDemo.SqliteURI_sqlite);
 		sqlitekey=DataBaseHelper.getKeyName();
 		sqliteValue=DataBaseHelper.getValueName();
 	}
