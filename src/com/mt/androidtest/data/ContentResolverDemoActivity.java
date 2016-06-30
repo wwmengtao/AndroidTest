@@ -36,7 +36,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_resolver);
+		setContentView(R.layout.activity_base);
 		initListFTData(mMethodNameFT);
 		initListActivityData(null);
 		//
