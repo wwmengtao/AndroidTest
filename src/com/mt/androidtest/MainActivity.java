@@ -108,17 +108,17 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 				break;		
 			case "DocumentsActivity":
 				mIntent = getIntentSetFlags(new Intent(Intent.ACTION_OPEN_DOCUMENT)).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
-				startActivity();
+				tryTostartActivity();
 				break;
 			case "DownloadProviderUI":
 				mIntent = getIntentSetFlags(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
-				startActivity();
+				tryTostartActivity();
 				break;
 			case "StartActivity"://打开其他应用的activity
 				packname = "com.mt.androidtest2";				
 				mIntent=mPackageManager.getLaunchIntentForPackage(packname);
 				mIntent = getIntentSetFlags(mIntent);
-				startActivity();
+				tryTostartActivity();
 				break;		
 			case "StartActivity_Uri":
 				Uri mUri=Uri.parse("content://com.mt.androidtest.cpdemo/sqlite");
@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 
 	}
 	
-	public void startActivity(){
+	public void tryTostartActivity(){
 		if(null==mIntent)return;
 		componentName = mIntent.resolveActivity(mPackageManager);
 		if(componentName != null) {//必须判断和mIntent对应的Activity组件是否存在，然后再startActivity

@@ -120,6 +120,21 @@ public class PermissionActivity extends BaseActivity{
 		if(AndroidVersion <= 22)return;
 		if (!Settings.canDrawOverlays(this)) {
 	        Toast.makeText(this, "Can not DrawOverlays", Toast.LENGTH_SHORT).show();
+	        //Android6.0中packages/apps/Settings/AndroidManifest.xml内有如下
+	        /*
+			<activity android:name="Settings$AppDrawOverlaySettingsActivity"
+	                android:label="@string/draw_overlay_title"
+	                android:taskAffinity="">
+	            <intent-filter android:priority="1">
+	                <action android:name="android.settings.action.MANAGE_OVERLAY_PERMISSION" />
+	                <category android:name="android.intent.category.DEFAULT" />
+	                <data android:scheme="package" />
+	            </intent-filter>
+	            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+	                android:value="com.android.settings.applications.DrawOverlayDetails" />
+	        </activity>
+	        由于<data android:scheme="package" />，因此下面构造intent时候，参数Uri可以指定具体应用
+	        */
 	        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
 	        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
 	    }else{
