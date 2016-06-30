@@ -19,6 +19,7 @@ import com.mt.androidtest.R;
 import com.mt.androidtest.tool.XmlOperator;
 
 public class ContentResolverDemoActivity extends BaseActivity {
+	private boolean isLogRun = true;
 	private String ContProvider_URI = "content://";
 	private String [] mMethodNameFT={
 			"readContentProviderFile",
@@ -152,6 +153,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	 * 避免在主线程中执行getWritableDatabase()或者getWritableDatabase()这两个耗时操作，可以在ContentProvider.onCreate()中开启。
     */
 	public void insert() {
+		if(isLogRun)ALog.Log2("CRDemoActivity_insert");
 		ContentValues values = null;
 		for(int i=0;i<mAttrAL.size();i++){
 			values = new ContentValues();
@@ -162,6 +164,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	}
 
 	public void update() {
+		if(isLogRun)ALog.Log2("CRDemoActivity_update");
 		// 创建一个ContentValues对象
 		ContentValues values = new ContentValues();
 		values.put(sqliteValue, "mt");
@@ -169,6 +172,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	}
 
 	public void query() {
+		if(isLogRun)ALog.Log2("CRDemoActivity_query");
 		String id,name=null;
 		Cursor cursor = mContentResolver.query(sqliteUri, null, null, null, null);
 		// 将光标移动到下一行，从而判断该结果集是否还有下一条数据，如果有则返回true，没有则返回false
@@ -181,6 +185,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	}
 
 	public void delete() {
+		if(isLogRun)ALog.Log2("CRDemoActivity_delete");
 		//调用SQLiteDatabase对象的delete方法进行删除操作
 		//第一个参数String：表名
 		//第二个参数String：条件语句

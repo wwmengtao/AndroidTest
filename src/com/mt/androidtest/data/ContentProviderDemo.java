@@ -96,12 +96,12 @@ public class ContentProviderDemo extends ContentProvider {
 		}
 		return mParcelFileDescriptor;
 	}
-	//以下进行数据库的CRUD操作
+
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		switch (mUriMatcher.match(uri)){
 	        case SqliteURI_code :
-	    		if(isLogRun)ALog.Log("CPDemo_insert");
+	    		if(isLogRun)ALog.Log2("CPDemo_insert");
 	    		SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
 				db.insert(tableName, null, values);
 				break;
@@ -115,7 +115,7 @@ public class ContentProviderDemo extends ContentProvider {
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		switch (mUriMatcher.match(uri)){
 	        case SqliteURI_code :
-				if(isLogRun)ALog.Log("CPDemo_delete");
+				if(isLogRun)ALog.Log2("CPDemo_delete");
 				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
 				db.delete(tableName, selection, selectionArgs);
 				break;
@@ -129,7 +129,7 @@ public class ContentProviderDemo extends ContentProvider {
 	public int update(Uri uri, ContentValues values, String selection,	String[] selectionArgs) {
 		switch (mUriMatcher.match(uri)){
 	        case SqliteURI_code :
-				if(isLogRun)ALog.Log("CPDemo_update");
+				if(isLogRun)ALog.Log2("CPDemo_update");
 				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
 				db.update(tableName, values, selection, selectionArgs);
 				break;
@@ -144,7 +144,7 @@ public class ContentProviderDemo extends ContentProvider {
 		Cursor cursor = null;
 		switch (mUriMatcher.match(uri)){
 	        case SqliteURI_code :		
-				if(isLogRun)ALog.Log("CPDemo_query");
+				if(isLogRun)ALog.Log2("CPDemo_query");
 				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
 				cursor = db.query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
 				break;

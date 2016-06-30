@@ -14,6 +14,11 @@ public class ALog {
 		Log.e(TAG_M,info);
 	}
 
+	public static void Log2(String info){
+		Log.e(TAG_M,info+" ThreadID:"+Thread.currentThread().getId());
+	}
+
+	
 	public static void fillInStackTrace(String info){
 		RuntimeException RTE = new RuntimeException(info);
 		RTE.fillInStackTrace();
