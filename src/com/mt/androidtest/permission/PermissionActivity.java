@@ -30,9 +30,11 @@ public class PermissionActivity extends BaseActivity{
 	private IntentFilter mUrgentFilter=null;
 	boolean isPermissionGranted = false;
 	private String [] mMethodNameFT={"setListenCall","unSetListenCall","setListenCallAnother","unSetListenCallAnother"
-			,"shutdown","gotosleep","requestPermissions","requestPermissionSAW"};
+			,"shutdown","gotosleep","requestPermissions","requestPermissionsAno","requestPermissionSAW"};
 	private Context mContext = null; 
     private int AndroidVersion=-1;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -96,13 +98,36 @@ public class PermissionActivity extends BaseActivity{
 			break;		
 		case "requestPermissions":
 			requestPermissions();
-			break;		
+			break;
+		case "requestPermissionsAno":
+			requestPermissionsAno();
+			break;			
 		case "requestPermissionSAW":
 			requestPermissionSAW();
 			break;					
 		}
 	}
     
+	public void requestPermissionsAno(){
+		this.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_EXTERNAL_STORAGE);
+	}
+	
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+		switch (requestCode){
+			case REQUEST_EXTERNAL_STORAGE:
+				if (permissions.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+					Toast.makeText(this, "Permission already got!", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(this, "Permission denied!", Toast.LENGTH_SHORT).show();
+				}
+				break;
+			default:
+	            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	            break;
+			}
+	  }
+	
 	public void requestPermissions(){
         if (RequestPermissionsActivity.startPermissionActivity(this)) {
         	return;
