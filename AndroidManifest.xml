@@ -94,7 +94,14 @@
         <provider
             android:name=".data.ContentProviderDemo"
             android:authorities="com.mt.androidtest.cpdemo"
+            android:multiprocess="false"
+            android:grantUriPermissions="false"
             android:exported="true" >
+            <grant-uri-permission android:pathPrefix="/sqlite" />
+            <path-permission
+                    android:pathPrefix="/sqlite"
+                    android:readPermission="android.permission.READ_EXTERNAL_STORAGE"
+                    android:writePermission="android.permission.WRITE_EXTERNAL_STORAGE" />   
         </provider>
 
         <activity

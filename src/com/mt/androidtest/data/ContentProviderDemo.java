@@ -35,7 +35,8 @@ public class ContentProviderDemo extends ContentProvider {
 	static
 	{
 		// 为UriMatcher注册数据库解析Uri
-		mUriMatcher.addURI(authority, SqliteURI_sqlite, SqliteURI_code);	}
+		mUriMatcher.addURI(authority, SqliteURI_sqlite, SqliteURI_code);	
+	}
 	@Override
 	//ContentProvider只有一个生命周期onCreate。当其他应用通过contentResolver第一次访问该ContentProvider时候会触发onCreate方法的调用
 	public boolean onCreate() {
