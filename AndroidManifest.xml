@@ -95,9 +95,8 @@
             android:name=".data.ContentProviderDemo"
             android:authorities="com.mt.androidtest.cpdemo"
             android:multiprocess="false"
-            android:grantUriPermissions="false"
             android:exported="true" >
-            <grant-uri-permission android:pathPrefix="/sqlite" />
+            <!-- Uri的path部分如果以/sqlite开头，那么相依的调用者需具备规定的读写权限 -->
             <path-permission
                     android:pathPrefix="/sqlite"
                     android:readPermission="android.permission.READ_EXTERNAL_STORAGE"
