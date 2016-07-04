@@ -29,12 +29,15 @@ public class ContentProviderDemo extends ContentProvider {
 	private String tableName=null;
 	public static final String authority="com.mt.androidtest.cpdemo";
 	private static UriMatcher mUriMatcher  = new UriMatcher(UriMatcher.NO_MATCH);
+	public static final String GrantURI_grant="/grant";
+	private static final int GrantURI_code=0x00;	
 	public static final String SqliteURI_sqlite="/sqlite";
 	private static final int SqliteURI_code=0x01;
 	private static final String intent_authority="com.mt.androidtest.cpdemo/intent_test";
 	static
 	{
 		// 为UriMatcher注册数据库解析Uri
+		mUriMatcher.addURI(authority, GrantURI_grant, GrantURI_code);
 		mUriMatcher.addURI(authority, SqliteURI_sqlite, SqliteURI_code);	
 	}
 	@Override
@@ -106,6 +109,9 @@ public class ContentProviderDemo extends ContentProvider {
 	    		SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
 				db.insert(tableName, null, values);
 				break;
+	        case GrantURI_code:
+	        	if(isLogRun)ALog.Log2("CPDemo_insert_GrantURI_code");
+	        	break;
 	        default:
 	            throw new IllegalArgumentException("unknownUri:" + uri);
 	}
@@ -120,6 +126,9 @@ public class ContentProviderDemo extends ContentProvider {
 				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
 				db.delete(tableName, selection, selectionArgs);
 				break;
+	        case GrantURI_code:
+	        	if(isLogRun)ALog.Log2("CPDemo_delete_GrantURI_code");
+	        	break;				
 	        default:
 	            throw new IllegalArgumentException("unknownUri:" + uri);
 		}
@@ -134,6 +143,9 @@ public class ContentProviderDemo extends ContentProvider {
 				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
 				db.update(tableName, values, selection, selectionArgs);
 				break;
+	        case GrantURI_code:
+	        	if(isLogRun)ALog.Log2("CPDemo_update_GrantURI_code");
+	        	break;				
 	        default:
 	            throw new IllegalArgumentException("unknownUri:" + uri);
 		}
@@ -149,6 +161,9 @@ public class ContentProviderDemo extends ContentProvider {
 				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
 				cursor = db.query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
 				break;
+	        case GrantURI_code:
+	        	if(isLogRun)ALog.Log2("CPDemo_query_GrantURI_code");
+	        	break;				
 	        default:
 	            throw new IllegalArgumentException("unknownUri:" + uri);
 		}
