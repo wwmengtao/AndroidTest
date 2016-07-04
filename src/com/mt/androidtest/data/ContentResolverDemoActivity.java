@@ -262,7 +262,11 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		mContentResolver.delete(grantUri, null, null);
 	}
 	
-	//以下为某Uri开启临时权限
+	/**
+	以下为某Uri开启临时权限，前提是AndroidManifest.xml中有<grant-uri-permission android:pathPrefix="/grant" />
+	如果想开启其他Uri的临时权限，比如/sqlite，那么需在AndroidManifest.xml中加上grant-uri-permission或者删除所有
+	grant-uri-permission，将android:grantUriPermissions设置为"true"。
+	*/
 	public void globalUriGrant(){
 		Intent intent = new Intent("com.mt.androidtest2.data.ContentResolverDemoActivity"); 
 		intent.setClassName("com.mt.androidtest2", "com.mt.androidtest2.data.ContentResolverDemoActivity");
