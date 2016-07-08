@@ -248,7 +248,6 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 					Toast.makeText(this, "Get all Permissions!", Toast.LENGTH_SHORT).show();
 				}else{
 					Toast.makeText(this, "Not get all Permissions!", Toast.LENGTH_SHORT).show();
-					finish();
 				}
 				break;
 			default:
