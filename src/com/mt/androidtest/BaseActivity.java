@@ -2,9 +2,7 @@ package com.mt.androidtest;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-
 import com.mt.androidtest.listview.ListViewAdapter;
-
 import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -26,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class BaseActivity extends ListActivity implements AdapterView.OnItemClickListener, Handler.Callback, View.OnClickListener{
 	private boolean isLogRun=false;
@@ -44,8 +43,13 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
     private static WeakReference<BaseActivity>mBaseActivityWR=null;
     private ArrayList<String>mActivitiesName=null;
     private int AndroidVersion=-1;
+    //
+	private static final int REQUEST_PERMISSION_CODE = 0x001;
+    protected String []permissionsRequiredBase = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		AndroidVersion =Build.VERSION.SDK_INT;
+		requestPermissions(permissionsRequiredBase);
 		super.onCreate(savedInstanceState);
 		if(isLogRun)ALog.Log("BaseActivity_onCreate");
 		packageName = this.getPackageName();
@@ -54,7 +58,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		mDensityDpi = metric.densityDpi;
 		mBaseActivityWR=new WeakReference<BaseActivity>(this);
 		getActivities(this);
-		AndroidVersion =Build.VERSION.SDK_INT;
+		
 	}
 	
 	@Override
@@ -226,5 +230,40 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
 		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
+	}
+	
+	//以下申请权限
+	public void requestPermissions(String [] permissionsRequired){
+		if(AndroidVersion<=22)return;
+		if(null!=permissionsRequired && permissionsRequired.length>0){
+			this.requestPermissions(permissionsRequired,REQUEST_PERMISSION_CODE);
+		}
+	}
+	
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+		switch (requestCode){
+			case REQUEST_PERMISSION_CODE:
+				if (permissions.length != 0 && isAllGranted(grantResults)){
+					Toast.makeText(this, "Get all Permissions!", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(this, "Not get all Permissions!", Toast.LENGTH_SHORT).show();
+					finish();
+				}
+				break;
+			default:
+	            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	            break;
+			}
+	  }
+	
+	public boolean isAllGranted(int[] grantResults){
+		if(null==grantResults)return false;
+		for(int i=0;i<grantResults.length;i++){
+			if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
+				return false;
+			}
+		}
+		return true;
 	}
 }
