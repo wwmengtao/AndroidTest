@@ -114,7 +114,7 @@
                     android:pathPrefix="/sqlite"
                     android:readPermission="android.permission.READ_EXTERNAL_STORAGE"
                     android:writePermission="android.permission.WRITE_EXTERNAL_STORAGE" />   
-            <!-- 4、其他应用有CALENDAR读写权限是可以读写/grant开头的Uri的，但是临时读写需要CONTACTS读写权限 -->
+            <!-- 4、其他应用没有CALENDAR以及CONTACTS读写权限可以通过临时权限方式读写/grant开头的Uri的 -->
 			<grant-uri-permission android:pathPrefix="/grant" /><!-- 设置了grant-uri-permission将使得android:grantUriPermissions失效-->
 			<path-permission
 			    android:pathPrefix="/grant" 
