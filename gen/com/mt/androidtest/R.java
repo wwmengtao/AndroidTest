@@ -782,6 +782,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_int_storage=0x7f0a0039;
         public static final int title_activity_list_view=0x7f0a002a;
         public static final int title_activity_my_preference=0x7f0a0029;
+        public static final int title_activity_package_manager=0x7f0a003b;
         public static final int title_activity_permission=0x7f0a0027;
         public static final int title_activity_request_permissions=0x7f0a0035;
         public static final int title_activity_resource=0x7f0a0025;
