@@ -90,9 +90,11 @@ public class ListViewTestActivity extends Activity implements RecyclerListener, 
 	{
 		switch (mi.getItemId()){
 		case Menu_Single:
+			if(null!=viewAddMoreData)mListView.removeFooterView(viewAddMoreData);
 			mListView.setAdapter(listAdapter_S);
 			break;
 		case Menu_Multi:
+			if(null!=viewAddMoreData)mListView.removeFooterView(viewAddMoreData);
 			mListView.setAdapter(listAdapter_M);
 			break;		
 		case Menu_Load:
@@ -129,6 +131,9 @@ public class ListViewTestActivity extends Activity implements RecyclerListener, 
 		mListView.setAdapter(listAdapter_LM);
 	}
 	
+	/**
+	 * onScroll：ListView滑动的时候调用
+	 */
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
     	if(mListView.getAdapter() instanceof WrapperListAdapter){//由于mListView.addFooterView，因此此时的ListView的Adapter变成WrapperListAdapter类型的
@@ -137,6 +142,13 @@ public class ListViewTestActivity extends Activity implements RecyclerListener, 
     	}
     }
     
+    /**
+     * onScrollStateChanged：ListView状态改变时调用，比如快速滑动，停止等，看标记位scrollState
+     * AbsListView.OnScrollListener中对于用户的滑动状态有如下定义：
+     * public static int SCROLL_STATE_IDLE = 0;//表示ListView已经停止滚动
+     * public static int SCROLL_STATE_TOUCH_SCROLL = 1;// 手指接触滑动状态
+     * public static int SCROLL_STATE_FLING = 2;//表示手指做了抛的动作（手指离开屏幕前，用力滑了一下，屏幕产生惯性滑动）
+     */
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
     	if(mListView.getAdapter() instanceof WrapperListAdapter){
