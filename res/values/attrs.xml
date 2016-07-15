@@ -2,4 +2,5 @@
 <resources>
 	<item type="id" name="holder0"></item>
 	<item type="id" name="holder1"></item>
+	<item type="id" name="holder2"></item>
 </resources>

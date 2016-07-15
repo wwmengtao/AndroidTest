@@ -3,6 +3,7 @@ package com.mt.androidtest.listview;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.mt.androidtest.R;
 
 public class ListViewAdapter extends BaseAdapter {
@@ -86,36 +88,54 @@ public class ListViewAdapter extends BaseAdapter {
 	}
 	
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = null;
+        ViewHolder.viewHolder2 holder2 = null;
+		ViewHolder.viewHolder3 holder3 = null;
         if (convertView == null) {
             switch(mMode){
-        	case 1:
-        		view = mLayoutInflater.inflate(R.layout.item_getview, parent,false);
-           	break;
-        	case 2:
-        		view = mLayoutInflater.inflate(R.layout.item_getview_function, parent,false);
-           	break;           	
+	        	case 1:
+	        		convertView = mLayoutInflater.inflate(R.layout.item_getview, parent,false);
+	        		holder3 = new ViewHolder.viewHolder3();
+	        		holder3.imageView = (ImageView)convertView.findViewById(R.id.menu_img);
+	        		holder3.textView = (TextView)convertView.findViewById(R.id.menu_label);
+	        		convertView.setTag(R.id.holder1, holder3);
+	           	break;
+	        	case 2:
+	        		convertView = mLayoutInflater.inflate(R.layout.item_getview_function, parent,false);
+	        		holder2 = new ViewHolder.viewHolder2();
+	        		holder2.textView = (TextView)convertView.findViewById(R.id.text_ft);
+	        		convertView.setTag(R.id.holder2, holder2);
+	           	break;           	
             }
         }else {
-        	view = convertView;
+            switch(mMode){
+	        	case 1:
+	        		holder3 = (ViewHolder.viewHolder3)convertView.getTag(R.id.holder1);
+	               	break;
+	        	case 2:
+	        		holder2 = (ViewHolder.viewHolder2)convertView.getTag(R.id.holder2);
+	        		break;
+            }
         }
-        if(1==mMode){
-			ImageView image = (ImageView)view.findViewById(R.id.menu_img);
-	        TextView title = (TextView)view.findViewById(R.id.menu_label);
-	        Object obj = mList.get(position).get("itemImage");
-	        if(obj instanceof Drawable){
-	        	image.setImageDrawable((Drawable)obj);
-	        }else if(obj instanceof Integer){
-	        	image.setImageResource((Integer)obj);
-	        }
-			view.setBackgroundColor(mContext.getResources().getColor(R.color.wheat));
-	        title.setText((String) mList.get(position).get("itemText"));
-	        setLayoutParams(image);
-        }else if(2==mMode){
-        	TextView mTvFT = (TextView)view.findViewById(R.id.text_ft);
-        	mTvFT.setText((String) mList.get(position).get("itemText"));
+        switch(mMode){
+	    	case 1:
+				ImageView image = holder3.imageView;
+		        TextView title = holder3.textView;
+		        Object obj = mList.get(position).get("itemImage");
+		        if(obj instanceof Drawable){
+		        	image.setImageDrawable((Drawable)obj);
+		        }else if(obj instanceof Integer){
+		        	image.setImageResource((Integer)obj);
+		        }
+		        convertView.setBackgroundColor(mContext.getResources().getColor(R.color.wheat));
+		        title.setText((String) mList.get(position).get("itemText"));
+		        setLayoutParams(image);
+		        break;
+	    	case 2:
+	        	TextView mTvFT = holder2.textView;
+	        	mTvFT.setText((String) mList.get(position).get("itemText"));
+	        	break;
         }
-        return view;
+        return convertView;
     }
     /**
      * setLayoutParams: Define the LayoutParams of mView to avoid being too big to display
