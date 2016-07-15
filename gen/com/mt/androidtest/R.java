@@ -597,16 +597,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_qs_wifi_no_network=0x7f020044;
         public static final int ic_sunny=0x7f020045;
         public static final int icon=0x7f020046;
-        public static final int lwt_back_activated=0x7f020047;
-        public static final int lwt_back_normal=0x7f020048;
-        public static final int not_found=0x7f020049;
-        public static final int number1_b=0x7f02004a;
-        public static final int number1_g=0x7f02004b;
-        public static final int number1_r=0x7f02004c;
-        public static final int number1_y=0x7f02004d;
-        public static final int number2_b=0x7f02004e;
-        public static final int right_arrow_select=0x7f02004f;
-        public static final int toolbar_brightness_off=0x7f020050;
+        public static final int loading=0x7f020047;
+        public static final int lwt_back_activated=0x7f020048;
+        public static final int lwt_back_normal=0x7f020049;
+        public static final int not_found=0x7f02004a;
+        public static final int number1_b=0x7f02004b;
+        public static final int number1_g=0x7f02004c;
+        public static final int number1_r=0x7f02004d;
+        public static final int number1_y=0x7f02004e;
+        public static final int number2_b=0x7f02004f;
+        public static final int right_arrow_select=0x7f020050;
+        public static final int toolbar_brightness_off=0x7f020051;
     }
     public static final class id {
         public static final int AsyncTaskProgressBar=0x7f070003;

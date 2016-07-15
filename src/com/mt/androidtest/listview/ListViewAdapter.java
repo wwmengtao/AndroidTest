@@ -3,19 +3,15 @@ package com.mt.androidtest.listview;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
 public class ListViewAdapter extends BaseAdapter {
@@ -88,8 +84,8 @@ public class ListViewAdapter extends BaseAdapter {
 		}
 	}
 	
-	public void setScrollState(int scrollState){
-		isListViewRolling = (OnScrollListener.SCROLL_STATE_FLING==scrollState);//SCROLL_STATE_FLING表示手指做了抛的动作（手指离开屏幕前，用力滑了一下，屏幕产生惯性滑动）
+	public void setScrollState(boolean isListViewRolling){
+		this.isListViewRolling = isListViewRolling;
 	}
 	
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -121,30 +117,46 @@ public class ListViewAdapter extends BaseAdapter {
 	        		break;
             }
         }
-        ALog.Log("here1");
-        if(isListViewRolling){
-        	return convertView;//如果当前ListView处于滑动状态，那么停止加载图片、文字等内容
-        }
+        String mText = null;
+        TextView mTextView = null;
         switch(mMode){
 	    	case 1:
 				ImageView image = holder3.imageView;
-		        TextView title = holder3.textView;
+				mTextView = holder3.textView;
+				mText = (String) mList.get(position).get("itemText");
 		        Object obj = mList.get(position).get("itemImage");
-		        if(obj instanceof Drawable){
-		        	image.setImageDrawable((Drawable)obj);
-		        }else if(obj instanceof Integer){
-		        	image.setImageResource((Integer)obj);
+		        if(isListViewRolling){
+		        	image.setImageResource(R.drawable.loading);
+		        	image.setTag(obj);
+		        	//
+		        	mTextView.setText("Loading...");
+	        		mTextView.setTag(mText);
+		        }else{
+			        if(obj instanceof Drawable){
+			        	image.setImageDrawable((Drawable)obj);
+			        }else if(obj instanceof Integer){
+			        	image.setImageResource((Integer)obj);
+			        }
+			        image.setTag(null);
+			        //
+			        mTextView.setText(mText);
+			        mTextView.setTag(null);
 		        }
 		        convertView.setBackgroundColor(mContext.getResources().getColor(R.color.wheat));
-		        title.setText((String) mList.get(position).get("itemText"));
 		        setLayoutParams(image);
 		        break;
 	    	case 2:
-	        	TextView mTvFT = holder2.textView;
-	        	mTvFT.setText((String) mList.get(position).get("itemText"));
+	    		mTextView = holder2.textView;
+	        	mText = (String) mList.get(position).get("itemText");
+	        	if(isListViewRolling){
+	        		mTextView.setText("Loading...");
+	        		mTextView.setTag(mText);
+	        	}else{
+	        		mTextView.setText(mText);
+	        		mTextView.setTag(null);
+	        	}
 	        	break;
         }
-        ALog.fillInStackTrace("here2");
         return convertView;
     }
     /**

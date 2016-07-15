@@ -2,17 +2,24 @@ package com.mt.androidtest.showview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.mt.androidtest.R;
 import com.mt.androidtest.listview.ListViewAdapter;
 
-public class SwitcherDemoActivity extends Activity implements Handler.Callback{
+public class SwitcherDemoActivity extends Activity implements Handler.Callback,OnScrollListener{
 	GridView mGridView = null;
 	ListView mListView = null;
 	ListViewAdapter mListViewAdapter = null;
@@ -113,6 +120,7 @@ public class SwitcherDemoActivity extends Activity implements Handler.Callback{
 			mListViewAdapterLVP.setMode(1);
 			mListViewAdapterLVP.setupList(mLVPSwitchersList);
 			mListView.setAdapter(mListViewAdapterLVP);
+			mListView.setOnScrollListener(this);
 			//
 			mUpdater.sendEmptyMessage(UPDATE_MESSAGE);
 			break;		
@@ -179,6 +187,42 @@ public class SwitcherDemoActivity extends Activity implements Handler.Callback{
 			map.put("itemText", mSwitchersInfo.lvpDrawablesdes[i]);
 			map.put("itemImage", mSwitchersInfo.lvpDrawablesID[i]);
 			mLVPSwitchersList.add(map);
+		}
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		if(mListViewAdapterLVP!=null){
+			switch (scrollState){
+	            case OnScrollListener.SCROLL_STATE_IDLE://停止滚动
+	            	mListViewAdapterLVP.setScrollState(false);
+	            	int count = view.getChildCount();
+	            	for (int i = 0; i < count; i++) {
+	            		TextView mTextView = (TextView) view.getChildAt(i).findViewById(R.id.menu_label);
+	            		ImageView mImageView= (ImageView) view.getChildAt(i).findViewById(R.id.menu_img);
+	                    if (mTextView.getTag() != null) { //非null说明需要加载数据
+	                    	mTextView.setText(mTextView.getTag().toString());//直接从Tag中取出我们存储的数据name并且赋值
+	                    	mTextView.setTag(null);//设置为已加载过数据
+	                    }
+	                    //
+	                    Object obj = mImageView.getTag();
+	                    if (null!=obj){//!=null说明需要加载数据
+	    			        mImageView.setImageResource((Integer)obj);
+	    			        mImageView.setTag(null);
+	                    }
+	                }
+	                break;
+	            default:
+	            	mListViewAdapterLVP.setScrollState(true);
+			}
 		}
 	}
 	

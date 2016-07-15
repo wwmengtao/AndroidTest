@@ -198,11 +198,15 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
 					mProgressDialogH.dismiss();
 					mListViewAdapterH.setMode(1);
 					mListViewAdapterH.setupList(mSysAppListH);
+					//
 					mGridViewH.setNumColumns(4);
 					mGridViewH.setAdapter(mListViewAdapterH);
 					mGridViewH.setOnItemClickListener(AnimationHandler.this);
+					mGridViewH.setOnScrollListener(mActivity);
+					//
 					mListViewH.setAdapter(mListViewAdapterH);
 					mListViewH.setOnItemClickListener(AnimationHandler.this);
+					mListViewH.setOnScrollListener(mActivity);
 					break;
 			}
 		}
@@ -230,7 +234,28 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
 		if(mListViewAdapter!=null){
-			mListViewAdapter.setScrollState(scrollState);
+			switch (scrollState){
+	            case OnScrollListener.SCROLL_STATE_IDLE://停止滚动
+	            	mListViewAdapter.setScrollState(false);
+	            	int count = view.getChildCount();
+	            	for (int i = 0; i < count; i++) {
+	            		TextView mTextView = (TextView) view.getChildAt(i).findViewById(R.id.menu_label);
+	            		ImageView mImageView= (ImageView) view.getChildAt(i).findViewById(R.id.menu_img);
+	                    if (mTextView.getTag() != null) { //非null说明需要加载数据
+	                    	mTextView.setText(mTextView.getTag().toString());//直接从Tag中取出我们存储的数据name并且赋值
+	                    	mTextView.setTag(null);//设置为已加载过数据
+	                    }
+	                    //
+	                    Object obj = mImageView.getTag();
+	                    if (null!=obj){//!=null说明需要加载数据
+	    			        mImageView.setImageDrawable((Drawable)obj);
+	    			        mImageView.setTag(null);
+	                    }
+	                }
+	                break;
+	            default:
+	            	mListViewAdapter.setScrollState(true);
+			}
 		}
 	}
  	
