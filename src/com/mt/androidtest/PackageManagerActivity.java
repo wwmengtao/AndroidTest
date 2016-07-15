@@ -1,12 +1,14 @@
 package com.mt.androidtest;
 
 import java.util.ArrayList;
+
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -17,7 +19,8 @@ public class PackageManagerActivity extends BaseActivity{
 	private String [] mMethodNameFT={
 			"showRunningServices",
 			"showCertainService",
-			"startCertainService"
+			"startCertainService",
+			"stopCertainService"
 	};
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,13 @@ public class PackageManagerActivity extends BaseActivity{
 		startService(mIntent);
 	}
 	
+	public void stopCertainService(){
+		Intent mIntent = new Intent();
+		ComponentName mCn = new ComponentName("com.lenovo.widetouch","com.lenovo.widetouch.TouchService");
+		mIntent.setComponent(mCn);
+		stopService(mIntent);
+	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
 		// TODO Auto-generated method stub
@@ -77,6 +87,9 @@ public class PackageManagerActivity extends BaseActivity{
 				break;
 			case "startCertainService":
 				startCertainService();
+				break;
+			case "stopCertainService":
+				stopCertainService();
 				break;
 		}
 	}

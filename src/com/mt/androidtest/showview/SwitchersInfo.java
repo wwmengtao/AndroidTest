@@ -106,7 +106,10 @@ public class SwitchersInfo {
 			R.drawable.ic_qs_wifi_full_2,
 			R.drawable.ic_qs_wifi_full_3,
 			R.drawable.ic_qs_wifi_full_4,
-			R.drawable.ic_qs_wifi_no_network};
+			R.drawable.ic_qs_wifi_no_network,
+			R.drawable.ic_qs_shutdown,
+			R.drawable.ic_qs_lockscreen,
+			R.drawable.ic_sunny};
 	public String [] lvpDrawablesdes = {
 			"ic_qs_airplane_off",
 			"ic_qs_airplane_on",
@@ -162,7 +165,10 @@ public class SwitchersInfo {
 			"ic_qs_wifi_full_2",
 			"ic_qs_wifi_full_3",
 			"ic_qs_wifi_full_4",
-			"ic_qs_wifi_no_network"};
+			"ic_qs_wifi_no_network",
+			"ic_qs_shutdown",
+			"ic_qs_lockscreen",
+			"ic_sunny"};
 	
 	public HashMap<String, Object> getBluetoothSwitch() {
 		final BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
