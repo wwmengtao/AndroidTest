@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,18 +20,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 import com.mt.androidtest.listview.ListViewAdapter;
 
-public class SysAppsActivity extends Activity implements DialogInterface.OnClickListener{
+public class SysAppsActivity extends Activity implements DialogInterface.OnClickListener,OnScrollListener{
 	GridView mGridView = null;
+	ListView mListView = null;
 	ListViewAdapter mListViewAdapter = null;
 	private ArrayList<HashMap<String, Object>> mSysAppList = new ArrayList<HashMap<String, Object>>();
 	ProgressDialog mProgressDialog = null;
@@ -45,11 +53,14 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
 	static final int MSG_SHOW_SYS_APPS = 2;
 	static int mPosition=0;
 	static SysAppsActivity mSysAppsActivity=null;
+	static final int Menu_GridView = 0;
+	static final int Menu_ListView = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sys_apps);
 		mGridView=(GridView)findViewById(R.id.gridview_sysapp);
+		mListView=(ListView)findViewById(R.id.listview_sysapp);
 		mListViewAdapter = new ListViewAdapter(this);
 		mProgressDialog = new ProgressDialog(this);
 		mImageView = (ImageView)findViewById(R.id.icon);
@@ -72,7 +83,36 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
 	protected void onPause(){
 		super.onPause();
 	}
-
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// -------------向menu中添加字体大小的子菜单-------------
+		super.onCreateOptionsMenu(menu);
+		addMenu(menu);
+		return true;
+	}
+	
+	public void addMenu(Menu menu){
+		menu.add(0, Menu_GridView, 0, "GridView");
+		menu.add(0, Menu_ListView, 0, "ListView");
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem mi)
+	{
+		switch (mi.getItemId()){
+		case Menu_GridView:
+			mListView.setVisibility(View.GONE);
+			mGridView.setVisibility(View.VISIBLE);
+			break;
+		case Menu_ListView:
+			mGridView.setVisibility(View.GONE);
+			mListView.setVisibility(View.VISIBLE);
+			break;					
+		}
+		return true;
+	}
+	
 	private void initData(){
 		loadDeviceApp();
 	}
@@ -128,13 +168,14 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
          }.start();
          
     }
- 	static class AnimationHandler extends Handler{
+ 	static class AnimationHandler extends Handler implements OnItemClickListener{
  		WeakReference<SysAppsActivity>mActivityWR=null;
  		SysAppsActivity mActivity=null;
  		ProgressDialog mProgressDialogH=null;
  		ListViewAdapter mListViewAdapterH=null;
  		ArrayList<HashMap<String, Object>> mSysAppListH=null;
  		GridView mGridViewH=null;
+ 		ListView mListViewH=null;
  		AnimationHandler(SysAppsActivity activity){
  			mActivityWR = new WeakReference<SysAppsActivity>(activity);
  		}
@@ -145,6 +186,7 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
 			mListViewAdapterH=mActivity.mListViewAdapter;
 			mSysAppListH=mActivity.mSysAppList;
 			mGridViewH=mActivity.mGridView;
+			mListViewH=mActivity.mListView;
 			switch (msg.what) {
 				case MSG_SHOW_INIT_ANIMATION:
 					mProgressDialogH.setMessage(mActivity.getApplicationContext().getString(R.string.msg_loading));
@@ -158,23 +200,39 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
 					mListViewAdapterH.setupList(mSysAppListH);
 					mGridViewH.setNumColumns(4);
 					mGridViewH.setAdapter(mListViewAdapterH);
-					mGridViewH.setOnItemClickListener(new OnItemClickListener() {
-						@Override
-						public void onItemClick(AdapterView<?> arg0, View view,
-								int position, long id) {
-							mActivity.mImageView.setImageDrawable((Drawable)mSysAppListH.get(position).get("itemImage"));
-							mActivity.mtvName.setText((String) mSysAppListH.get(position).get("itemText"));
-							mActivity.mtvPackage.setText((String) mSysAppListH.get(position).get("packname"));
-							mActivity.mtvClass.setText((String) mSysAppListH.get(position).get("classname"));
-							mActivity.mtvSourceDir.setText((String) mSysAppListH.get(position).get("sourceDir"));
-							mPosition=position;
-							showDialog();
-						}
-					});
+					mGridViewH.setOnItemClickListener(AnimationHandler.this);
+					mListViewH.setAdapter(mListViewAdapterH);
+					mListViewH.setOnItemClickListener(AnimationHandler.this);
 					break;
 			}
 		}
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
+			// TODO Auto-generated method stub
+			mActivity.mImageView.setImageDrawable((Drawable)mSysAppListH.get(position).get("itemImage"));
+			mActivity.mtvName.setText((String) mSysAppListH.get(position).get("itemText"));
+			mActivity.mtvPackage.setText((String) mSysAppListH.get(position).get("packname"));
+			mActivity.mtvClass.setText((String) mSysAppListH.get(position).get("classname"));
+			mActivity.mtvSourceDir.setText((String) mSysAppListH.get(position).get("sourceDir"));
+			mPosition=position;
+			showDialog();
+		}
  	};
+ 	
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		if(mListViewAdapter!=null){
+			mListViewAdapter.setScrollState(scrollState);
+		}
+	}
  	
     private static DialogInterface mShowDialog;
     private static void showDialog() {

@@ -10,12 +10,12 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
 public class ListViewAdapter extends BaseAdapter {
@@ -26,6 +26,7 @@ public class ListViewAdapter extends BaseAdapter {
     private DisplayMetrics metric=null;
     private int mMode=0;
     private Context mContext=null;
+    private boolean isListViewRolling = false;
     public ListViewAdapter(Context context) {
     	mContext=context.getApplicationContext();
     	mLayoutInflater = LayoutInflater.from(mContext);
@@ -87,6 +88,10 @@ public class ListViewAdapter extends BaseAdapter {
 		}
 	}
 	
+	public void setScrollState(int scrollState){
+		isListViewRolling = (OnScrollListener.SCROLL_STATE_FLING==scrollState);//SCROLL_STATE_FLING表示手指做了抛的动作（手指离开屏幕前，用力滑了一下，屏幕产生惯性滑动）
+	}
+	
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder.viewHolder2 holder2 = null;
 		ViewHolder.viewHolder3 holder3 = null;
@@ -116,6 +121,10 @@ public class ListViewAdapter extends BaseAdapter {
 	        		break;
             }
         }
+        ALog.Log("here1");
+        if(isListViewRolling){
+        	return convertView;//如果当前ListView处于滑动状态，那么停止加载图片、文字等内容
+        }
         switch(mMode){
 	    	case 1:
 				ImageView image = holder3.imageView;
@@ -135,6 +144,7 @@ public class ListViewAdapter extends BaseAdapter {
 	        	mTvFT.setText((String) mList.get(position).get("itemText"));
 	        	break;
         }
+        ALog.fillInStackTrace("here2");
         return convertView;
     }
     /**

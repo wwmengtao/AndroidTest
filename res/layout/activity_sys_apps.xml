@@ -10,5 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/title_activity_sys_apps" />
-
+    <ListView
+        android:id="@+id/listview_sysapp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/title_activity_sys_apps" 
+        android:visibility="gone"/>
 </LinearLayout>
