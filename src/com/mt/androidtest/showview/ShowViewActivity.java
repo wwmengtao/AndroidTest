@@ -72,7 +72,6 @@ public class ShowViewActivity extends BaseActivity{
 	public void onPause(){
 		super.onPause();
 		if(isLogRunAll)ALog.Log("onPause",this);
-		super.onPause();
 	}
 	
 	@Override

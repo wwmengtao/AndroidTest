@@ -12,7 +12,12 @@ import android.widget.AdapterView;
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
-
+/**
+ * mHandlerThread：处理非耗时操作
+ * mHandlerCostTime：处理耗时操作，结合mHandlerThread使用
+ * @author Mengtao1
+ *
+ */
 public class StorageActivity extends BaseActivity {
 	private boolean isLogRun=false;
 	private Handler mHandler=null;

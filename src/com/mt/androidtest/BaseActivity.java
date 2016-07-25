@@ -2,7 +2,9 @@ package com.mt.androidtest;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+
 import com.mt.androidtest.listview.ListViewAdapter;
+
 import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -58,7 +60,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		mDensityDpi = metric.densityDpi;
 		mBaseActivityWR=new WeakReference<BaseActivity>(this);
 		getActivities(this);
-		
+		ALog.Log("BaseActivity_onCreate");
 	}
 	
 	@Override
@@ -208,25 +210,46 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	}
 	
 	/**
-	 * 在有ScrollView存在的时候，ListView显示全部内容而不是收缩。
+	 * setListViewHeightBasedOnChildren函数功能：在有ScrollView存在的时候，ListView显示全部内容而不是收缩。
 	 * 说明：默认情况下Android是禁止在ScrollView中放入另外的ScrollView的，它的高度是无法计算的。
 	 * 解决思路：在设置完ListView的Adapter后，根据ListView的子项目重新计算ListView的高度，然后把高度再作为LayoutParams设置给ListView，这样它的高度就正确了
-	 * 注意事项：
-	 * 1)子ListView的每个Item必须是LinearLayout，不能是其他的，因为其他的Layout(如RelativeLayout)没有重写onMeasure()，所以会在onMeasure()时抛出异常。
-	 * 2)在ScrollView中嵌套ListView(或者ScrollView)的另外一个问题就是，子ScrollView中无法滑动的(如果它没有显示完全的话)，因为滑动事件会被父ScrollView吃掉，如果想要让子ScrollView也可以滑动，只能强行截取滑动事件
-	 * @param listView
-	 */
+	 * 实验信息：通过往frameworks的View.java中加log可知：
+	 * 1)measure函数调用之后(layout未执行)，View.java中的mLeft、mRight、mTop以及mBottom均为0，即getHeight和getWidth均为0。
+	 * getMeasuredHeight以及getMeasuredWidth非零(其他场景未必，仅仅针对这个场景)
+	 * 调用步骤：measure->onMeasure->setMeasuredDimension->setMeasuredDimensionRaw，而setMeasuredDimensionRaw内容如下：
+	 * mMeasuredWidth = measuredWidth;mMeasuredHeight = measuredHeight;
+	 * 函数getMeasuredHeight以及getMeasuredHeight返回的内容是mMeasuredxxx & MEASURED_SIZE_MASK;
+	 * 2)measure函数调用之后(layout执行)，此时mRight和mBottom不为0。
+	*/
 	public void setListViewHeightBasedOnChildren(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null) {
 			return;
 		}
 		int totalHeight = 0;
+		//ALog.Log("setListViewHeightBasedOnChildren1");
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
+			/**
+			 * measure执行完毕后，frameworks中View.java中各变量如下：
+			 * mLeft:0 mRight:0 mTop:0 mBottom:0
+			 * getHeight:0 getMeasuredHeight:133
+			 */
 			listItem.measure(0, 0);
+//			ALog.Log("measure_getHeight:"+listItem.getHeight());
+//			ALog.Log("measure_getMeasuredHeight:"+listItem.getMeasuredHeight());
+			/**
+			 * layout执行完毕后，frameworks中View.java中各变量如下：
+			 * mLeft:0 mRight:343 mTop:0 mBottom:133
+			 * getHeight:133 getMeasuredHeight:133
+			 */
+			listItem.layout(0, 0, listItem.getMeasuredWidth(), listItem.getMeasuredHeight());
+//			ALog.Log("layout_getHeight:"+listItem.getHeight());
+//			ALog.Log("layout_getMeasuredHeight:"+listItem.getMeasuredHeight());
+			//以下将所有ListView中每个item view高度累加起来
 			totalHeight += listItem.getMeasuredHeight();
 		}
+//		ALog.Log("setListViewHeightBasedOnChildren2");
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
 		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
