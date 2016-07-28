@@ -1,7 +1,12 @@
-package com.mt.androidtest;
+package com.mt.androidtest.system;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.R;
+import com.mt.androidtest.R.layout;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;

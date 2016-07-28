@@ -139,7 +139,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PackageManagerActivity"
+            android:name="com.mt.androidtest.system.PackageManagerActivity"
             android:label="@string/title_activity_package_manager" >
         </activity>
     </application>
