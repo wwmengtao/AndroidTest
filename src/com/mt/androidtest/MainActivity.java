@@ -51,7 +51,6 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
-		isLogRun=getLogRun();
 		mContext=this.getApplicationContext();
 		if(isLogRun)ALog.Log("onCreate",this);
 		mPackageManager = getPackageManager();
@@ -61,21 +60,23 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	}
 	
 	@Override
+	public void onRestart(){
+		super.onRestart();
+	}	
+	
+	@Override
 	public void onResume(){	
 		super.onResume();
-		if(isLogRun)ALog.Log("onResume",this);
 	}
 
 	@Override
 	public void onPause(){
 		super.onPause();
-		if(isLogRun)ALog.Log("onPause",this);
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if(isLogRun)ALog.Log("onDestroy",this);
 	}	
 	
 	@Override

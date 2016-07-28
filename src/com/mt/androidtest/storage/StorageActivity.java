@@ -1,7 +1,7 @@
 package com.mt.androidtest.storage;
 
 import java.io.File;
-import android.content.Context;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
+
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
@@ -42,8 +43,6 @@ public class StorageActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
-		isLogRun=getLogRun();
-		if(isLogRun)ALog.Log("StorageActivity_onCreate");
 		initListFTData(mMethodNameFT);
 		initListActivityData(mActivitiesName);
 		initHandlerThread();
@@ -51,9 +50,13 @@ public class StorageActivity extends BaseActivity {
 	}
 	
 	@Override
+	public void onRestart(){
+		super.onRestart();
+	}	
+	
+	@Override
 	public void onResume(){
 		super.onResume();
-		if(isLogRun)ALog.Log("StorageActivity_onResume");
 		mHandler = getHandler();
 	}
 
@@ -63,7 +66,7 @@ public class StorageActivity extends BaseActivity {
 			mHandlerCostTime.removeCallbacksAndMessages(0);
 		}
 		super.onPause();
-		if(isLogRun)ALog.Log("StorageActivity_onPause");
+		if(isLogRun)ALog.Log("onPause",this);
 	}
 	
 	@Override

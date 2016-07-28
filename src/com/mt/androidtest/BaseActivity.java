@@ -29,7 +29,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class BaseActivity extends ListActivity implements AdapterView.OnItemClickListener, Handler.Callback, View.OnClickListener{
-	private boolean isLogRun=false;
+	private boolean isLogRun = true;
 	private LinearLayout mLinearlayout_listview_android=null;
 	private LinearLayout mLinearlayout_listview_functions=null;
 	private ListView mListViewFT=null;
@@ -53,19 +53,25 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		AndroidVersion =Build.VERSION.SDK_INT;
 		requestPermissions(permissionsRequiredBase);
 		super.onCreate(savedInstanceState);
-		if(isLogRun)ALog.Log("BaseActivity_onCreate");
+		if(isLogRun)ALog.Log("onCreate",this);
 		packageName = this.getPackageName();
 		mLayoutInflater=LayoutInflater.from(this);
 		metric  = getResources().getDisplayMetrics();
 		mDensityDpi = metric.densityDpi;
 		mBaseActivityWR=new WeakReference<BaseActivity>(this);
 		getActivities(this);
-		ALog.Log("BaseActivity_onCreate");
 	}
+	
+	@Override
+	public void onRestart(){
+		super.onRestart();
+		if(isLogRun)ALog.Log("onRestart",this);		
+	}	
 	
 	@Override
 	public void onResume(){
 		super.onResume();
+		if(isLogRun)ALog.Log("onResume",this);
 	}	
 	
 	@Override
@@ -74,11 +80,14 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 			mHandler.removeCallbacksAndMessages(null);//避免内存泄露
 		}
 		super.onPause();
+		if(isLogRun)ALog.Log("onPause",this);
 	}
 	
-	public boolean getLogRun(){
-		return isLogRun;
-	}
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if(isLogRun)ALog.Log("onDestroy",this);
+	}	
 	
 	public int getAndroidVersion(){
 		return AndroidVersion;
@@ -232,13 +241,14 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
      * getWidth：返回mRight - mLeft;
      * getHeight：返回mBottom - mTop;
 	*/
+	boolean logTag = false;
 	public void setListViewHeightBasedOnChildren(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null) {
 			return;
 		}
 		int totalHeight = 0;
-		ALog.Log("setListViewHeightBasedOnChildren1");
+		if(logTag)ALog.Log("setListViewHeightBasedOnChildren1");
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
 			/**
@@ -250,20 +260,20 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 			 * getHeight:0 getMeasuredHeight:133
 			 */
 			listItem.measure(0, 0);
-			if(0==i)ALog.Log("measure_getHeight:"+listItem.getHeight());
-			if(0==i)ALog.Log("measure_getMeasuredHeight:"+listItem.getMeasuredHeight());
+			if(0==i && logTag)ALog.Log("measure_getHeight:"+listItem.getHeight());
+			if(0==i && logTag)ALog.Log("measure_getMeasuredHeight:"+listItem.getMeasuredHeight());
 			/**
 			 * 2、layout执行完毕后，frameworks中View.java中各变量如下：
 			 * mLeft:0 mRight:343 mTop:0 mBottom:133
 			 * getHeight:133 getMeasuredHeight:133
 			 */
 			listItem.layout(0, 0, listItem.getMeasuredWidth(), listItem.getMeasuredHeight());
-			if(0==i)ALog.Log("layout_getHeight:"+listItem.getHeight());
-			if(0==i)ALog.Log("layout_getMeasuredHeight:"+listItem.getMeasuredHeight());
+			if(0==i && logTag)ALog.Log("layout_getHeight:"+listItem.getHeight());
+			if(0==i && logTag)ALog.Log("layout_getMeasuredHeight:"+listItem.getMeasuredHeight());
 			//以下将所有ListView中每个item view高度累加起来
 			totalHeight += listItem.getMeasuredHeight();
 		}
-		ALog.Log("setListViewHeightBasedOnChildren2");
+		if(logTag)ALog.Log("setListViewHeightBasedOnChildren2");
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
 		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
