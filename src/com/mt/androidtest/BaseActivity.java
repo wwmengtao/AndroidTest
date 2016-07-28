@@ -68,6 +68,24 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		if(isLogRun)ALog.Log("onRestart",this);		
 	}	
 	
+    @Override
+    protected void onStart() {
+        super.onStart();
+		if(isLogRun)ALog.Log("onStart",this);		
+    }
+	
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	    int IntTest = savedInstanceState.getInt("IntTest");
+	    String StrTest = savedInstanceState.getString("StrTest");
+	    if(isLogRun){
+	    	ALog.Log("onRestoreInstanceState",this);	
+	    	ALog.Log("IntTest:"+IntTest+" StrTest:"+StrTest);
+	    }
+	    
+	}
+    
 	@Override
 	public void onResume(){
 		super.onResume();
@@ -81,6 +99,14 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		}
 		super.onPause();
 		if(isLogRun)ALog.Log("onPause",this);
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		savedInstanceState.putInt("IntTest", 18);
+		savedInstanceState.putString("StrTest", "onSaveInstanceState_StrTest");
+		super.onSaveInstanceState(savedInstanceState);
+		if(isLogRun)ALog.Log("onSaveInstanceState",this);
 	}
 	
 	@Override
