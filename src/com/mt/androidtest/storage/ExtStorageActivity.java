@@ -35,12 +35,6 @@ public class ExtStorageActivity extends BaseActivity {
 		mExtStorageHelper=new ExtStorageHelper(this.getApplicationContext());
 	}
 	
-	public void requestPermissions(){
-        if (RequestPermissionsActivity.startPermissionActivity(this)) {
-        	return;
-        }
-	}
-	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
 		// TODO Auto-generated method stub
@@ -66,12 +60,18 @@ public class ExtStorageActivity extends BaseActivity {
 				ALog.Log("getExternalFilesDir:"+mExtStorageHelper.getExternalFilesDir(type));
 				break;						
 			case "saveFileToExtStoragePublicDir":
-	    		if(AndroidVersion>22)requestPermissions();
+	    		if(AndroidVersion>22){
+	    			RequestPermissionsActivity.startPermissionActivity(this);
+	    			return;
+	    		}
 				type=Environment.DIRECTORY_DOWNLOADS;
 				mFile = mExtStorageHelper.saveFileToExtStoragePublicDir(bytesToSave,type,fileName);
 				break;
 			case "saveFileToExtStorageCustomDir":
-	    		if(AndroidVersion>22)requestPermissions();
+	    		if(AndroidVersion>22){
+	    			RequestPermissionsActivity.startPermissionActivity(this);
+	    			return;
+	    		}
 				type="M_T";
 				mFile = mExtStorageHelper.saveFileToExtStorageCustomDir(bytesToSave,type,fileName);
 				break;

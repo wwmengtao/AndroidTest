@@ -82,7 +82,7 @@ public class AsynchronousActivity extends BaseActivity{
 			cancelAsyncTaskDemo();
 			break;
 		case MSG_CANCEL_ASYNC_2:
-
+			cancelAsyncTaskProgressBar();//取消进度条的更新
 			break;			
 		}
 		return true;
