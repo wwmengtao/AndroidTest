@@ -6,12 +6,16 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnCreateContextMenuListener;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AbsListView.RecyclerListener;
 import android.widget.AbsListView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -22,7 +26,8 @@ import android.widget.WrapperListAdapter;
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
-public class ListViewTestActivity extends Activity implements RecyclerListener, OnScrollListener, View.OnClickListener{
+public class ListViewTestActivity extends Activity implements RecyclerListener, OnScrollListener, View.OnClickListener,
+OnCreateContextMenuListener{
 	ListView mListView;
 	ListViewTestAdapter_SingleLayout listAdapter_S;//表明ListView显示的item只有一种layout
 	ListViewTestAdapter_MultiLayout listAdapter_M;//表明ListView显示的item有多种不同的layout
@@ -45,12 +50,18 @@ public class ListViewTestActivity extends Activity implements RecyclerListener, 
 	final int Menu_Single=0x00;
 	final int Menu_Multi=0x01;
 	final int Menu_Load=0x02;	
+	//
+	String ActivityTitle = null;
+	final int ContextMenu_delete=0x10;
+	final int ContextMenu_cancel=0x11;
+	//
     private Handler mHandler=null;
     private int delayTime=200;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listview_test);
+		ActivityTitle = getTitle().toString();
 		mHandler=new Handler();
 		mListView = (ListView)this.findViewById(R.id.listview);
 		mListView.setRecyclerListener(this);
@@ -129,6 +140,31 @@ public class ListViewTestActivity extends Activity implements RecyclerListener, 
 		listAdapter_LM.setMode(2);
 		listAdapter_LM.setupList(mArrayListLM);
 		mListView.setAdapter(listAdapter_LM);
+		mListView.setOnCreateContextMenuListener(this);
+	}
+	
+	int selectedPosition = 0;
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo){
+		menu.setHeaderTitle("Delete ContextMenu?");   
+		menu.add(1, ContextMenu_delete, 0, "Yes");
+		menu.add(1, ContextMenu_cancel, 0, "No");   
+		selectedPosition = ((AdapterContextMenuInfo)menuInfo).position;//菜单对应的ListView行数
+		setTitle("Item "+selectedPosition+" selected.");
+	}
+	
+	@Override
+
+	public boolean onContextItemSelected(MenuItem item){
+		
+		switch (item.getItemId()){
+			case ContextMenu_delete:
+				listAdapter_LM.mList.remove(selectedPosition);
+				listAdapter_LM.notifyDataSetChanged();
+				break;
+		}
+		setTitle(ActivityTitle);
+		return super.onContextItemSelected(item);
 	}
 	
 	/**
