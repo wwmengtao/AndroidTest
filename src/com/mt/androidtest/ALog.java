@@ -34,22 +34,34 @@ public class ALog {
 		return Integer.parseInt(mData,16);
 	}	
 	
+    static String formatStr="%-10s";
+	static String regPrefix = "([a-zA-Z0-9]+\\.)+";//匹配开头：小括号在正则表达式的作用是标记一个子表达式的开始和结束位置
+    static String regSuffix = "@[a-zA-Z0-9]+";//匹配结尾
+    /**
+     * Activity的toString内容可能类似于"com.mt.androidtest.showview.1s.sdf2.s4rt.ShowViewActivity@7d129f7"，
+     * 下列函数仅仅提取ShowViewActivity之类的内容
+     * @param info
+     * @param activity
+     */
 	public static void Log(String info, Activity activity){
 		mActivityReference=new WeakReference<Activity >(activity);
 		mActivity=mActivityReference.get();
 		if(null!=mActivity){
 			String str = mActivity.toString();
-			String packageName = mActivity.getPackageName();
-			if(null==str||null==packageName)return;
-			String str_return=null;
-			String regShowWidthAndHeight = "@[a-zA-Z0-9]+";//仅仅获取控件id，其他内容不要
-		    Pattern mPatternShowWidthAndHeight = Pattern.compile(regShowWidthAndHeight);
+			if(null==str)return;
+		    Pattern mPattern = null;
 		    Matcher mMatcher = null;
-	        mMatcher = mPatternShowWidthAndHeight.matcher(str);
+		    mPattern = Pattern.compile(regPrefix);
+	        mMatcher = mPattern.matcher(str);
 	        if(mMatcher.find()){
-	        	str_return = str.replace(mMatcher.group(),"").replace(packageName+".", "");
+	        	str=str.replace(mMatcher.group(), "");
 	        }
-			Log(info+"===="+str_return);
+	        mPattern = Pattern.compile(regSuffix);
+	        mMatcher = mPattern.matcher(str);
+	        if(mMatcher.find()){
+	        	str=str.replace(mMatcher.group(),"");
+	        }
+			Log(String.format(formatStr,info)+": "+str);
 		}
 	}
 }
