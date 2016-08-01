@@ -48,7 +48,6 @@ public class ShowViewActivity extends BaseActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(isLogRunAll)ALog.Log("onCreate",this);
 		setContentView(R.layout.activity_show_view);
 		mLayoutInflater=getLayoutInflater();
 		super.initListFTData(mMethodNameFT);
@@ -64,20 +63,7 @@ public class ShowViewActivity extends BaseActivity{
 	@Override
 	public void onResume(){	
 		super.onResume();
-		if(isLogRunAll)ALog.Log("onResume",this);
 		mHandler=getHandler();
-	}
-	
-	@Override
-	public void onPause(){
-		super.onPause();
-		if(isLogRunAll)ALog.Log("onPause",this);
-	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		if(isLogRunAll)ALog.Log("onDestroy",this);
 	}
 	
 	@Override
