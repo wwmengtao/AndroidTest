@@ -2,6 +2,7 @@ package com.mt.androidtest.showview;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
@@ -21,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
@@ -45,9 +48,11 @@ public class ShowViewActivity extends BaseActivity{
 	private String [] mMethodNameFT={"showViewAdded","showViewFixedLength","showViewFixedSize",
 			"showChildView"};
 	private String [] mActivitiesName={"InflateActivity"};			
+	private PhoneViewInfo mPhoneViewInfo=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);//1、去除ActionBar
 		setContentView(R.layout.activity_show_view);
 		mLayoutInflater=getLayoutInflater();
 		super.initListFTData(mMethodNameFT);
@@ -58,6 +63,7 @@ public class ShowViewActivity extends BaseActivity{
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
 	    mLinearLayout_Parent= (LinearLayout) findViewById(R.id.parentView);
 	    initParentView();
+	    mPhoneViewInfo = new PhoneViewInfo(this);
 	}
 
 	@Override
@@ -185,6 +191,7 @@ public class ShowViewActivity extends BaseActivity{
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
+		//1、获取控件实际宽度
 		String time_now_str = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ987654321";
 		showTextSizeView(mTV1_TextSize,time_now_str);
 		time_now_str = "123456789123456789123456789";
@@ -192,7 +199,14 @@ public class ShowViewActivity extends BaseActivity{
 		//if(isLogRunAll)ALog.Log("/------------------------onWindowFocusChanged------------------------/");
 		showWidthAndHeightLog();
 		//if(isLogRunAll)ALog.Log("/************************onWindowFocusChanged************************/");
-	}	
+		//2、以下获取手机显示信息
+		mPhoneViewInfo.showPhoneViewInfo();
+	    View v = getWindow().findViewById(Window.ID_ANDROID_CONTENT);  
+	    int contentTop = v.getTop();
+	    //3、获取标题栏高度
+	    int titleBarHeight = contentTop - mPhoneViewInfo.StatusBarHeight;
+	    ALog.Log("titleBarHeight:"+titleBarHeight);
+	}
 	
 	/**
 	 * 根据固定控件的大小调整所能显示的最大字体

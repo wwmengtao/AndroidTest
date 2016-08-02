@@ -61,7 +61,7 @@ public class ALog {
 	        if(mMatcher.find()){
 	        	str=str.replace(mMatcher.group(),"");
 	        }
-			Log(String.format(formatStr,info)+": "+str);
+			Log(String.format(formatStr,info)+":"+str);
 		}
 	}
 }

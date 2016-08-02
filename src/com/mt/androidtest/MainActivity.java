@@ -60,24 +60,9 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	}
 	
 	@Override
-	public void onRestart(){
-		super.onRestart();
-	}	
-	
-	@Override
 	public void onResume(){	
 		super.onResume();
 	}
-
-	@Override
-	public void onPause(){
-		super.onPause();
-	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-	}	
 	
 	@Override
 	public void initListFTData(String [] mMethodNameFT){
