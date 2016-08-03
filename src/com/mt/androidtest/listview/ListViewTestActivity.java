@@ -2,7 +2,7 @@ package com.mt.androidtest.listview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,17 +19,14 @@ import android.widget.AbsListView.RecyclerListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.WrapperListAdapter;
-
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
@@ -109,6 +106,13 @@ OnCreateContextMenuListener,OnItemClickListener{
 		menu.add(0, Menu_Load, 0, "LoadMore");
 	}
 	
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        scheduleRemoveDelCopyView();
+        return true;
+    }
+	
 	public boolean onOptionsItemSelected(MenuItem mi)
 	{
 		switch (mi.getItemId()){
@@ -132,7 +136,6 @@ OnCreateContextMenuListener,OnItemClickListener{
 	public void reset(){
 		mListView.setOnCreateContextMenuListener(null);
 		mListView.setOnItemClickListener(null);
-		scheduleRemoveDelCopyView();
 	}
 	
     @Override
@@ -211,8 +214,12 @@ OnCreateContextMenuListener,OnItemClickListener{
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
     	//1、删除自定义删除、添加View
-    	if(!firstItemNotShowComplete && !lastItemNotShowComplete){
-    		scheduleRemoveDelCopyView();
+    	scheduleRemoveDelCopyView();
+    	if(0==scrollState && (firstItemNotShowComplete || lastItemNotShowComplete)){
+    		scheduleShowDelCopyView();
+    		firstItemNotShowComplete = false;
+    		lastItemNotShowComplete = false;
+    		ALog.fillInStackTrace("###onScrollStateChanged");
     	}
 		//2、ListView滚动净值之后适当时间加载数据
     	if(mListView.getAdapter() instanceof WrapperListAdapter){
@@ -297,6 +304,7 @@ OnCreateContextMenuListener,OnItemClickListener{
 	int horizontal_margin =0, vertical_margin =0;
 	boolean firstItemNotShowComplete = false;
 	boolean lastItemNotShowComplete = false;
+	@SuppressLint("InflateParams")
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
 		// TODO Auto-generated method stub
@@ -327,12 +335,12 @@ OnCreateContextMenuListener,OnItemClickListener{
 		if(firstItemNotShowComplete || lastItemNotShowComplete){//如果第一项或者最后一项显示不全那么调用smoothScrollToPosition
 //			ALog.Log("====smoothScrollToPosition");
 			mListView.smoothScrollToPosition(position);//会触发onScrollStateChanged的回调
-			mParams.topMargin = (firstItemNotShowComplete) ? vertical_margin : (listViewBottom-vertical_margin-mParams.height);
+			mParams.topMargin = (firstItemNotShowComplete) ? vertical_margin : (listViewBottom-mParams.height);
 		}else{
 			mParams.topMargin = view.getTop()+vertical_margin;
+			scheduleRemoveDelCopyView();
+			scheduleShowDelCopyView();
 		}
-		scheduleRemoveDelCopyView();
-		scheduleShowDelCopyView();
 	}
 	
     Runnable mRunnableRemoveView = new Runnable() {
