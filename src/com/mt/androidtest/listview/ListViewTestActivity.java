@@ -8,15 +8,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnCreateContextMenuListener;
+import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AbsListView.RecyclerListener;
-import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,7 +34,7 @@ import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
 public class ListViewTestActivity extends Activity implements RecyclerListener, OnScrollListener, View.OnClickListener,
-OnCreateContextMenuListener{
+OnCreateContextMenuListener,OnItemClickListener{
 	ListView mListView;
 	ListViewTestAdapter_SingleLayout listAdapter_S;//表明ListView显示的item只有一种layout
 	ListViewTestAdapter_MultiLayout listAdapter_M;//表明ListView显示的item有多种不同的layout
@@ -57,10 +64,15 @@ OnCreateContextMenuListener{
 	//
     private Handler mHandler=null;
     private int delayTime=200;
+    //
+    private LayoutInflater mLayoutInflater = null;
+    private FrameLayout contentView = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listview_test);
+		contentView = (FrameLayout)findViewById(android.R.id.content);
+		mLayoutInflater = LayoutInflater.from(this);
 		ActivityTitle = getTitle().toString();
 		mHandler=new Handler();
 		mListView = (ListView)this.findViewById(R.id.listview);
@@ -103,16 +115,24 @@ OnCreateContextMenuListener{
 		case Menu_Single:
 			if(null!=viewAddMoreData)mListView.removeFooterView(viewAddMoreData);
 			mListView.setAdapter(listAdapter_S);
+			reset();
 			break;
 		case Menu_Multi:
 			if(null!=viewAddMoreData)mListView.removeFooterView(viewAddMoreData);
 			mListView.setAdapter(listAdapter_M);
+			reset();
 			break;		
 		case Menu_Load:
 			initListViewLM();
 			break;					
 		}
 		return true;
+	}
+	
+	public void reset(){
+		mListView.setOnCreateContextMenuListener(null);
+		mListView.setOnItemClickListener(null);
+		scheduleRemoveDelCopyView();
 	}
 	
     @Override
@@ -141,11 +161,14 @@ OnCreateContextMenuListener{
 		listAdapter_LM.setupList(mArrayListLM);
 		mListView.setAdapter(listAdapter_LM);
 		mListView.setOnCreateContextMenuListener(this);
+		mListView.setOnItemClickListener(this);
 	}
 	
 	int selectedPosition = 0;
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo){
+		scheduleRemoveDelCopyView();
+		//
 		menu.setHeaderTitle("Delete ContextMenu?");   
 		menu.add(1, ContextMenu_delete, 0, "Yes");
 		menu.add(1, ContextMenu_cancel, 0, "No");   
@@ -187,33 +210,39 @@ OnCreateContextMenuListener{
      */
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
+    	//1、删除自定义删除、添加View
+    	if(!firstItemNotShowComplete && !lastItemNotShowComplete){
+    		scheduleRemoveDelCopyView();
+    	}
+		//2、ListView滚动净值之后适当时间加载数据
     	if(mListView.getAdapter() instanceof WrapperListAdapter){
     		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE && lastVisibleIndex == listAdapter_LM.getCount()+1) {
     			ALog.Log("onScrollStateChanged_lastVisibleIndex:"+lastVisibleIndex+" count:"+listAdapter_LM.getCount());
     			updateListViewLM();
     		}
     	}
+
     }
     
 	public void updateListViewLM(){
 		btn_addMoreData.setVisibility(View.GONE);
 		pg_addMoreData.setVisibility(View.VISIBLE);
-		mHandler.removeCallbacks(mRunnable);
-		mHandler.postDelayed(mRunnable, delayTime);
+		mHandler.removeCallbacks(mRunnableLoadMoreData);
+		mHandler.postDelayed(mRunnableLoadMoreData, delayTime);
 	}
     
-    Runnable mRunnable = new Runnable() {
+    Runnable mRunnableLoadMoreData = new Runnable() {
         @Override
         public void run() {
-        	loadMoreDate();
+        	loadMoreData();
         }
     };
     
-    private void loadMoreDate() {
+    private void loadMoreData() {
     	int count = listAdapter_LM.getCount();
     	if(count==maxNum_listAdapter_LM){
     		mListView.removeFooterView(viewAddMoreData);
-    		Toast.makeText(this, "数据全部加载完成，没有更多数据！", Toast.LENGTH_LONG).show();
+    		Toast.makeText(this, "All data loaded！", Toast.LENGTH_LONG).show();
     		return;
     	}
 		for(int i=0;i<addedNum_listAdapter_LM;i++){
@@ -231,9 +260,108 @@ OnCreateContextMenuListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		if(R.id.bt_load==v.getId()){
+		switch(v.getId()){
+		case R.id.bt_load:
 			updateListViewLM();
+			break;
 		}
 	}
+	
+	int listItemPosition = 0;
+	View.OnClickListener mDelAddOnClickListener = new View.OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			switch(v.getId()){
+			case R.id.item_del:
+				//ALog.Log("item_del");
+				listAdapter_LM.mList.remove(listItemPosition);
+				break;
+			case R.id.item_add:
+				//ALog.Log("item_add");
+				listAdapter_LM.mList.add(listItemPosition, listAdapter_LM.mList.get(listItemPosition));
+				break;
+			case R.id.item_cancel:
+				//ALog.Log("item_cancel");
+				break;
+			}
+			scheduleRemoveDelCopyView();
+			listAdapter_LM.notifyDataSetChanged();
+		}
+	};
+	
+	boolean isDelCopyViewShown = false;
+	View delCopyView = null;
+	FrameLayout.LayoutParams mParams = null;
+	int listViewTop = 0, listViewBottom = 0;
+	int horizontal_margin =0, vertical_margin =0;
+	boolean firstItemNotShowComplete = false;
+	boolean lastItemNotShowComplete = false;
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+		// TODO Auto-generated method stub
+		listItemPosition = position;
+		if(null==delCopyView){
+			listViewTop = mListView.getTop();
+			listViewBottom = mListView.getBottom();
+			horizontal_margin = getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+			vertical_margin = getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
+			mParams = new FrameLayout.LayoutParams(
+					LinearLayout.LayoutParams.WRAP_CONTENT,      
+					LinearLayout.LayoutParams.WRAP_CONTENT);  		
+			mParams.height = view.getHeight();
+			mParams.width = view.getWidth();
+			mParams.leftMargin = view.getLeft()+horizontal_margin;
+			//
+			delCopyView = mLayoutInflater.inflate(R.layout.item_del_add, null);
+			TextView mTextView = (TextView)delCopyView.findViewById(R.id.item_del);
+			mTextView.setOnClickListener(mDelAddOnClickListener);
+			mTextView = (TextView)delCopyView.findViewById(R.id.item_add);
+			mTextView.setOnClickListener(mDelAddOnClickListener);
+			mTextView = (TextView)delCopyView.findViewById(R.id.item_cancel);
+			mTextView.setOnClickListener(mDelAddOnClickListener);
+		}
+		firstItemNotShowComplete = (view.getTop()<listViewTop-vertical_margin);
+		lastItemNotShowComplete = (view.getBottom()>listViewBottom-vertical_margin);
+		ALog.Log("====firstItemNotShowComplete: "+firstItemNotShowComplete+" lastItemNotShowComplete: "+lastItemNotShowComplete);
+		if(firstItemNotShowComplete || lastItemNotShowComplete){//如果第一项或者最后一项显示不全那么调用smoothScrollToPosition
+//			ALog.Log("====smoothScrollToPosition");
+			mListView.smoothScrollToPosition(position);//会触发onScrollStateChanged的回调
+			mParams.topMargin = (firstItemNotShowComplete) ? vertical_margin : (listViewBottom-vertical_margin-mParams.height);
+		}else{
+			mParams.topMargin = view.getTop()+vertical_margin;
+		}
+		scheduleRemoveDelCopyView();
+		scheduleShowDelCopyView();
+	}
+	
+    Runnable mRunnableRemoveView = new Runnable() {
+        @Override
+        public void run() {
+        	contentView.removeView(delCopyView);
+        	isDelCopyViewShown = false;
+        }
+    };
+    
+    Runnable mRunnableAddView = new Runnable() {
+        @Override
+        public void run() {
+        	contentView.addView(delCopyView,mParams);
+        	isDelCopyViewShown = true;
+        }
+    };    
+    
+    public void scheduleShowDelCopyView(){
+    	if(!isDelCopyViewShown){
+    		mHandler.removeCallbacks(mRunnableAddView);
+    		mHandler.post(mRunnableAddView);
+    	}
+    }
 
+    public void scheduleRemoveDelCopyView(){
+    	if(isDelCopyViewShown){
+    		mHandler.removeCallbacks(mRunnableRemoveView);
+    		mHandler.post(mRunnableRemoveView);
+    	}
+    }
 }
