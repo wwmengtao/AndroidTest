@@ -103,7 +103,7 @@ OnCreateContextMenuListener,OnItemClickListener{
 	public void addMenu(Menu menu){
 		menu.add(0, Menu_Single, 0, "SingleLayout");
 		menu.add(0, Menu_Multi, 0, "MultiLayout");
-		menu.add(0, Menu_Load, 0, "LoadMore");
+		menu.add(0, Menu_Load, 0, "LoadMore_Del_Add");
 	}
 	
     @Override
@@ -372,4 +372,14 @@ OnCreateContextMenuListener,OnItemClickListener{
     		mHandler.post(mRunnableRemoveView);
     	}
     }
+    
+    @Override 
+    public void onBackPressed() {  
+        // do something what you want  
+    	if(isDelCopyViewShown){
+    		scheduleRemoveDelCopyView();
+    		return;
+    	}
+        super.onBackPressed();  
+    }  
 }
