@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	private String [] mActivitiesName={
 			"AsynchronousActivity","ContentResolverDemoActivity",
 			"ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","PermissionActivity",
-			"PackageManagerActivity",
+			"OnClickActivity","PackageManagerActivity",
 			"ResourceActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
 			"StorageActivity"};		
 	@Override

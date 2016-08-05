@@ -61,5 +61,6 @@
     <string name="title_activity_int_storage">IntStorageActivity</string>
     <string name="title_activity_content_resolver_demo">ContentResolverDemoActivity</string>
     <string name="title_activity_package_manager">PackageManagerActivity</string>
+    <string name="title_activity_on_click">OnClickActivity</string>
 
 </resources>

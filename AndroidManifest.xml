@@ -29,10 +29,9 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name" 
             android:clearTaskOnLaunch="true"
-            >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -61,7 +60,7 @@
             android:label="@string/title_activity_permission" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.myselfview.MyPreferenceActivity"
+            android:name=".myselfview.MyPreferenceActivity"
             android:label="@string/title_activity_my_preference" >
         </activity>
         <activity
@@ -73,7 +72,7 @@
             android:label="@string/title_activity_inflate" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.myselfview.MySelfViewActivity"
+            android:name=".myselfview.MySelfViewActivity"
             android:label="@string/title_activity_myselfview" >
         </activity>
         <activity
@@ -99,12 +98,12 @@
         <!--
         2、下列CALENDAR读写权限影响内部所有Uri的读写操作，说明如下：
 		1)path-permission中的读写权限可以用provider中的读写权限替代，但是path-level权限优先级高于 provider-level权限。
-		2)拥有path-permission中的读写权限，而没有provider中的读写权限是可以对Uri(例如android:pathPrefix="/sqlite")进行读写操作的；
+		2)拥有path-permission中的读写权限，而没有provider中的读写权限是可以对Uri(例如android:pathPrefix="/sqlite")进行读写操作的；
         -->
         <!--
         3、android:grantUriPermissions和grant-uri-permission是针对含有ContentProvider的应用而言的。
 		1、下列provider中android:grantUriPermissions="true"是指开启该provider中所有Uri的临时权限；为"false"是指不允许开启provider中所有Uri的临时权限。
-		2、在1中所示前提下，如果设置了grant-uri-permission，则全局的android:grantUriPermissions属性将无效，此时只允许grant-uri-permission声明的uri可以开启临时权限访问。
+		2、在1中所示前提下，如果设置了grant-uri-permission，则全局的android:grantUriPermissions属性将无效，此时只允许grant-uri-permission声明的uri可以开启临时权限访问。
         -->
         <provider
             android:name=".data.ContentProviderDemo"
@@ -122,7 +121,7 @@
                 android:writePermission="android.permission.WRITE_EXTERNAL_STORAGE" />
             <!-- 4、其他应用没有CALENDAR以及CONTACTS读写权限可以通过临时权限方式读写/grant开头的Uri的 -->
             <grant-uri-permission android:pathPrefix="/grant" />
- <!-- 设置了grant-uri-permission将使得android:grantUriPermissions失效 -->
+            <!-- 设置了grant-uri-permission将使得android:grantUriPermissions失效 -->
             <path-permission
                 android:pathPrefix="/grant"
                 android:readPermission="android.permission.READ_CONTACTS"
@@ -141,8 +140,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mt.androidtest.system.PackageManagerActivity"
+            android:name=".system.PackageManagerActivity"
             android:label="@string/title_activity_package_manager" >
+        </activity>
+        <activity
+            android:name="com.mt.androidtest.event.OnClickActivity"
+            android:label="@string/title_activity_on_click" >
         </activity>
     </application>
 
