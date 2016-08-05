@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 public class BaseActivity extends ListActivity implements AdapterView.OnItemClickListener, Handler.Callback, View.OnClickListener{
@@ -48,6 +49,8 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
     //
 	private static final int REQUEST_PERMISSION_CODE = 0x001;
     protected String []permissionsRequiredBase = null;
+    //
+    ScrollView mRootScrollView = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		AndroidVersion =Build.VERSION.SDK_INT;
@@ -90,6 +93,8 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	public void onResume(){
 		super.onResume();
 		if(isLogRun)ALog.Log("onResume",this);
+		if(null==mRootScrollView)mRootScrollView = (ScrollView)findViewById(R.id.rootScrollView);
+		if(null!=mRootScrollView)mRootScrollView.smoothScrollTo(0, 0);
 	}	
 	
 	@Override
