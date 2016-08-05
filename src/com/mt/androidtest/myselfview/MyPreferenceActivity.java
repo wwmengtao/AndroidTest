@@ -1,4 +1,4 @@
-package com.mt.androidtest.customedcontroller;
+package com.mt.androidtest.myselfview;
 import java.util.Iterator;
 import java.util.Set;
 

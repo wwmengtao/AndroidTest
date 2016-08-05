@@ -643,14 +643,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int iv_media_menu_icon=0x7f07004e;
         public static final int layout_linear_buttons23=0x7f070013;
         public static final int lenovo_switch=0x7f070041;
-        public static final int linearlayout_inflater=0x7f070007;
+        public static final int linearlayout_inflater=0x7f070006;
         public static final int linearlayout_listview_android=0x7f070042;
         public static final int linearlayout_listview_functions=0x7f070043;
         public static final int linearlayout_showview=0x7f07003b;
         public static final int linearlayout_textsize=0x7f07003c;
         public static final int listText=0x7f07002d;
         public static final int list_lvp_switchers=0x7f070010;
-        public static final int listview=0x7f070008;
+        public static final int listview=0x7f070007;
         public static final int listview_functions=0x7f070044;
         public static final int listview_sysapp=0x7f070011;
         public static final int menu_img=0x7f07002b;
@@ -682,7 +682,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int textviewxliff=0x7f07000d;
         public static final int three=0x7f07001a;
         public static final int title_text=0x7f070017;
-        public static final int title_view=0x7f070006;
+        public static final int title_view=0x7f070008;
         public static final int tv_media_menu_text=0x7f07004f;
         public static final int tv_relative=0x7f07004b;
         public static final int tv_relative_color=0x7f07004d;
@@ -695,10 +695,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class layout {
         public static final int activity_asynchronous=0x7f030000;
         public static final int activity_base=0x7f030001;
-        public static final int activity_customed_controller=0x7f030002;
-        public static final int activity_inflate=0x7f030003;
-        public static final int activity_listview_test=0x7f030004;
-        public static final int activity_my_preference=0x7f030005;
+        public static final int activity_inflate=0x7f030002;
+        public static final int activity_listview_test=0x7f030003;
+        public static final int activity_my_preference=0x7f030004;
+        public static final int activity_myselfview=0x7f030005;
         public static final int activity_resource=0x7f030006;
         public static final int activity_show_view=0x7f030007;
         public static final int activity_switcher_demo=0x7f030008;
@@ -788,11 +788,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int text_xliff_other=0x7f0a0033;
         public static final int title_activity_asynchronous=0x7f0a0034;
         public static final int title_activity_content_resolver_demo=0x7f0a003a;
-        public static final int title_activity_customed_controller=0x7f0a002c;
         public static final int title_activity_inflate=0x7f0a002b;
         public static final int title_activity_int_storage=0x7f0a0039;
         public static final int title_activity_list_view=0x7f0a002a;
         public static final int title_activity_my_preference=0x7f0a0029;
+        public static final int title_activity_myselfview=0x7f0a002c;
         public static final int title_activity_package_manager=0x7f0a003b;
         public static final int title_activity_permission=0x7f0a0027;
         public static final int title_activity_request_permissions=0x7f0a0035;

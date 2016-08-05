@@ -1,4 +1,4 @@
-package com.mt.androidtest.customedcontroller;
+package com.mt.androidtest.myselfview;
 import android.content.Context;
 import android.preference.Preference;
 import android.util.AttributeSet;

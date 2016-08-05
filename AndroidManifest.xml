@@ -61,7 +61,7 @@
             android:label="@string/title_activity_permission" >
         </activity>
         <activity
-            android:name=".customedcontroller.MyPreferenceActivity"
+            android:name="com.mt.androidtest.myselfview.MyPreferenceActivity"
             android:label="@string/title_activity_my_preference" >
         </activity>
         <activity
@@ -73,8 +73,8 @@
             android:label="@string/title_activity_inflate" >
         </activity>
         <activity
-            android:name=".customedcontroller.MySelfViewActivity"
-            android:label="@string/title_activity_customed_controller" >
+            android:name="com.mt.androidtest.myselfview.MySelfViewActivity"
+            android:label="@string/title_activity_myselfview" >
         </activity>
         <activity
             android:name=".asynchronous.AsynchronousActivity"

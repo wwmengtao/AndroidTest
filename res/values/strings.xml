@@ -45,7 +45,7 @@
     <string name="title_activity_my_preference">MyPreferenceActivity</string>
     <string name="title_activity_list_view">ListViewActivity</string>
     <string name="title_activity_inflate">InflateActivity</string>
-    <string name="title_activity_customed_controller">CustomedControllerActivity</string>
+    <string name="title_activity_myselfview">MySelfViewActivity</string>
     <string name="preference_on">On</string>
     <string name="preference_title">Title</string>
     <string name="preference_summary">Summary</string>
