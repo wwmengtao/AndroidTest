@@ -122,7 +122,7 @@ public class ScrollerLayout extends ViewGroup {
                     //ALog.Log("#-#-#-#-2getScrollX():"+getScrollX()+" scrolledXMove:"+scrolledXMove+" getWidth():"+getWidth());
                     return true;
                 }
-                scrollBy(scrolledXMove, 0);
+                scrollBy(scrolledXMove, 0);//scrollBy或者scrollTo会导致invalidate的调用
                 mXLastMove = mXMove;
                 break;
             case MotionEvent.ACTION_UP:
@@ -132,17 +132,25 @@ public class ScrollerLayout extends ViewGroup {
                 // 第二步，调用startScroll()方法来初始化滚动数据并刷新界面
                 //ALog.Log("dx:"+dx+" getScrollX:"+getScrollX());
                 mScroller.startScroll(getScrollX(), 0, dx, 0, Math.abs(dx) * 2);
-                postInvalidate();
+                postInvalidate();//会调用draw方法
                 break;
         }
         return super.onTouchEvent(event);
     }
-
+    /**invalidate会调用draw方法
+     * View.draw函数有如下片段：
+     * if (!drawingWithRenderNode) {
+            computeScroll();
+            sx = mScrollX;
+            sy = mScrollY;
+        }
+     */
     @Override
     public void computeScroll() {
         // 第三步，重写computeScroll()方法，并在其内部完成平滑滚动的逻辑
-        if (mScroller.computeScrollOffset()) {
+        if (mScroller.computeScrollOffset()) {//computeScrollOffset：计算Scroller中的数据变化
         	scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+        	ALog.fillInStackTrace("====mScroller.getCurrX():"+mScroller.getCurrX()+" mScroller.getCurrY():"+mScroller.getCurrY());
         	postInvalidate();
         }
     }

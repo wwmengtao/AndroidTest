@@ -50,7 +50,9 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	private static final int REQUEST_PERMISSION_CODE = 0x001;
     protected String []permissionsRequiredBase = null;
     //
-    ScrollView mRootScrollView = null;
+    private ScrollView mRootScrollView = null;
+    private int xScrollView = 0;
+    private int yScrollView = 0;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		AndroidVersion =Build.VERSION.SDK_INT;
@@ -93,8 +95,14 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	public void onResume(){
 		super.onResume();
 		if(isLogRun)ALog.Log("onResume",this);
-		if(null==mRootScrollView)mRootScrollView = (ScrollView)findViewById(R.id.rootScrollView);
-		if(null!=mRootScrollView)mRootScrollView.smoothScrollTo(0, 0);
+		//以下获取RootScrollView的当前滚动位置
+		if(null==mRootScrollView){
+			mRootScrollView = (ScrollView)findViewById(R.id.rootScrollView);
+		}
+		if(null!=mRootScrollView){
+			mRootScrollView.smoothScrollTo(xScrollView, yScrollView);
+		}
+		//
 	}	
 	
 	@Override
@@ -104,6 +112,10 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		}
 		super.onPause();
 		if(isLogRun)ALog.Log("onPause",this);
+		if(null!=mRootScrollView){
+			xScrollView = mRootScrollView.getScrollX();
+			yScrollView = mRootScrollView.getScrollY();
+		}
 	}
 	
 	@Override

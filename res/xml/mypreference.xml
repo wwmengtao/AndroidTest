@@ -21,7 +21,7 @@
 		</CheckBoxPreference>		
 	</PreferenceCategory> 	
 	<PreferenceCategory android:title="StatusPreference" >		
-		<com.mt.androidtest.customedcontroller.StatusPreference
+		<com.mt.androidtest.myselfview.StatusPreference
 		    android:key="status_preference"
             android:title="@string/preference_title"
             android:summary="@string/preference_status_summary"
@@ -29,7 +29,7 @@
             android:widgetLayout="@layout/preference_status_widget"/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="MySwitchPreference" >		
-		<com.mt.androidtest.customedcontroller.MySwitchPreference
+		<com.mt.androidtest.myselfview.MySwitchPreference
 		    android:key="myswitchpreference"/>
 	</PreferenceCategory>	
    	</PreferenceScreen>

@@ -1,7 +1,8 @@
 <com.mt.androidtest.event.MyLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"  
-    android:layout_width="fill_parent"  
-    android:layout_height="fill_parent" 
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent" 
+    android:background="@color/wheat"
     android:gravity="center">  
     
     <TextView  
@@ -10,7 +11,7 @@
        android:layout_height="100dip"  
        android:layout_centerHorizontal="true"  
        android:layout_centerVertical="true"  
-       android:background="@color/wheat"
+       android:background="@color/royalblue"
        android:gravity="center"
        android:text="ChildView\n\nClickhere" />  
   

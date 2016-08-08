@@ -26,21 +26,33 @@
 	
 	<com.mt.androidtest.myselfview.ScrollerLayout 
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent">
+	    android:layout_height="50dp">
 	    <Button
 	        android:layout_width="match_parent"
-	        android:layout_height="50dp"
-	        android:text="This is first child view"/>
+	        android:layout_height="match_parent"
+	        android:text="First child view: Slide left!"/>
 	
 	    <Button
 	        android:layout_width="match_parent"
-	        android:layout_height="50dp"
-	        android:text="This is second child view"/>
+	        android:layout_height="match_parent"
+	        android:text="Second child view: Slide left or right!"/>
 	
 	    <Button
 	        android:layout_width="match_parent"
-	        android:layout_height="50dp"
-	        android:text="This is third child view"/>
+	        android:layout_height="match_parent"
+	        android:text="Third child view: Slide right!"/>
 
-</com.mt.androidtest.myselfview.ScrollerLayout>
+	</com.mt.androidtest.myselfview.ScrollerLayout>
+	
+	<com.mt.androidtest.myselfview.ScrollerText
+	    android:background="@color/wheat"
+		android:layout_width="match_parent"
+		android:layout_height="50dp">
+	    <TextView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="start|center_vertical"
+			android:text="ScrollerText"
+			/>
+	</com.mt.androidtest.myselfview.ScrollerText>		
 </LinearLayout> 
