@@ -1,18 +1,21 @@
-<com.mt.androidtest.event.MyLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"  
+<com.mt.androidtest.touchevent.MyLinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"  
     android:layout_width="match_parent"  
     android:layout_height="match_parent" 
-    android:background="@color/wheat"
+    android:background="@color/white"
     android:gravity="center">  
-    
-    <TextView  
-       android:id="@+id/text"  
-       android:layout_width="100dip"  
-       android:layout_height="100dip"  
-       android:layout_centerHorizontal="true"  
-       android:layout_centerVertical="true"  
-       android:background="@color/royalblue"
-       android:gravity="center"
-       android:text="ChildView\n\nClickhere" />  
-  
-</com.mt.androidtest.event.MyLayout>  
+	<com.mt.androidtest.touchevent.MyFrameLayout
+		android:layout_width="200dip"  
+	    android:layout_height="200dip" 
+	    android:background="@color/wheat">          
+		<com.mt.androidtest.touchevent.MyTextView
+			android:layout_width="100dip"  
+			android:layout_height="100dip"  
+			android:layout_centerHorizontal="true"  
+			android:layout_centerVertical="true"  
+			android:background="@color/royalblue"
+			android:layout_gravity="center"   
+			android:gravity="center"
+			android:text="ChildView\n\nClickhere" />
+	</com.mt.androidtest.touchevent.MyFrameLayout>
+</com.mt.androidtest.touchevent.MyLinearLayout>  

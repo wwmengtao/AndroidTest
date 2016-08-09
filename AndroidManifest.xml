@@ -144,7 +144,7 @@
             android:label="@string/title_activity_package_manager" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.event.OnClickActivity"
+            android:name="com.mt.androidtest.touchevent.TouchEventActivity"
             android:label="@string/title_activity_on_click" >
         </activity>
     </application>

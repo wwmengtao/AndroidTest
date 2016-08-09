@@ -89,6 +89,7 @@ public class ScrollerLayout extends ViewGroup {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
+            	//ALog.Log("onInterceptTouchEvent.ACTION_DOWN");
                 mXDown = ev.getRawX();
                 mXLastMove = mXDown;
                 break;
@@ -150,7 +151,7 @@ public class ScrollerLayout extends ViewGroup {
         // 第三步，重写computeScroll()方法，并在其内部完成平滑滚动的逻辑
         if (mScroller.computeScrollOffset()) {//computeScrollOffset：计算Scroller中的数据变化
         	scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
-        	ALog.fillInStackTrace("====mScroller.getCurrX():"+mScroller.getCurrX()+" mScroller.getCurrY():"+mScroller.getCurrY());
+        	//ALog.fillInStackTrace("====mScroller.getCurrX():"+mScroller.getCurrX()+" mScroller.getCurrY():"+mScroller.getCurrY());
         	postInvalidate();
         }
     }
