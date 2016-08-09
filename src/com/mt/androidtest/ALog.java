@@ -46,9 +46,15 @@ public class ALog {
 	public static void Log(String info, Activity activity){
 		mActivityReference=new WeakReference<Activity >(activity);
 		mActivity=mActivityReference.get();
+		String str = getActivityName(mActivity);
+			if(null != str)Log(String.format(formatStr,info)+":"+str);
+	}
+
+	public static String getActivityName(Activity mActivity){
+		String str = null;
 		if(null!=mActivity){
-			String str = mActivity.toString();
-			if(null==str)return;
+			str = mActivity.toString();
+			if(null==str)return null;
 		    Pattern mPattern = null;
 		    Matcher mMatcher = null;
 		    mPattern = Pattern.compile(regPrefix);
@@ -61,7 +67,7 @@ public class ALog {
 	        if(mMatcher.find()){
 	        	str=str.replace(mMatcher.group(),"");
 	        }
-			Log(String.format(formatStr,info)+":"+str);
 		}
+		return str;
 	}
 }

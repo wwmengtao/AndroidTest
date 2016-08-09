@@ -10,6 +10,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -51,6 +52,11 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
     protected String []permissionsRequiredBase = null;
     //
     private ScrollView mRootScrollView = null;
+    private SharedPreferences mSharedPreferences = null;
+    private SharedPreferences.Editor editor = null;
+    private String preferenceFileName = "androidtest_";
+    private String preferenceXScrollView="scrollviewposition_XScrollView";
+    private String preferenceYScrollView="scrollviewposition_YScrollView";
     private int xScrollView = 0;
     private int yScrollView = 0;
 	@Override
@@ -58,6 +64,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		AndroidVersion =Build.VERSION.SDK_INT;
 		requestPermissions(permissionsRequiredBase);
 		super.onCreate(savedInstanceState);
+		preferenceFileName += ALog.getActivityName(this);
 		if(isLogRun)ALog.Log("onCreate",this);
 		packageName = this.getPackageName();
 		mLayoutInflater=LayoutInflater.from(this);
@@ -65,6 +72,10 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		mDensityDpi = metric.densityDpi;
 		mBaseActivityWR=new WeakReference<BaseActivity>(this);
 		getActivities(this);
+		mSharedPreferences	= this.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
+		xScrollView = mSharedPreferences.getInt(preferenceXScrollView, 0);
+		yScrollView = mSharedPreferences.getInt(preferenceYScrollView, 0);
+    	editor = mSharedPreferences.edit();
 	}
 	
 	@Override
@@ -100,10 +111,16 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 			mRootScrollView = (ScrollView)findViewById(R.id.rootScrollView);
 		}
 		if(null!=mRootScrollView){
-			mRootScrollView.smoothScrollTo(xScrollView, yScrollView);
+			ALog.Log("onResume_xScrollView:"+xScrollView+" yScrollView:"+yScrollView);
+			mRootScrollView.post(runnableScrollView);
 		}
-		//
 	}	
+	
+	private Runnable runnableScrollView = new Runnable(){
+		public void run() {
+			mRootScrollView.smoothScrollTo(xScrollView, yScrollView);//直接在onResume中执行会不成功
+		}
+	};
 	
 	@Override
 	public void onPause(){
@@ -115,6 +132,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		if(null!=mRootScrollView){
 			xScrollView = mRootScrollView.getScrollX();
 			yScrollView = mRootScrollView.getScrollY();
+			ALog.Log("onPause_xScrollView:"+xScrollView+" yScrollView:"+yScrollView);
 		}
 	}
 	
@@ -128,6 +146,9 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	
 	@Override
 	public void onDestroy() {
+    	editor.putInt(preferenceXScrollView, xScrollView);
+    	editor.putInt(preferenceYScrollView, yScrollView);
+    	editor.commit();
 		super.onDestroy();
 		if(isLogRun)ALog.Log("onDestroy",this);
 	}	
