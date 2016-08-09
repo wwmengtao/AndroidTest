@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 public class MyFrameLayout extends FrameLayout{
-	private String strLayout = "MyFrameLayout";
+	private String strLayout = "2.MyFrameLayout";
     public MyFrameLayout(Context context, AttributeSet attrs) {  
         super(context, attrs);  
     }  

@@ -12,7 +12,7 @@ import static com.mt.androidtest.touchevent.TouchEventActivity.strLogIntercept;
 import static com.mt.androidtest.touchevent.TouchEventActivity.strLogTouchEvent;
 
 public class MyLinearLayout extends LinearLayout {  
-	private String strLayout = "MyLinearLayout";
+	private String strLayout = "1.MyLinearLayout";
     public MyLinearLayout(Context context, AttributeSet attrs) {  
         super(context, attrs);  
     }  

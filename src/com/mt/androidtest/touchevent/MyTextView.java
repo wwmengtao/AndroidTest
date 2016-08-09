@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.mt.androidtest.ALog;
 
 public class MyTextView extends TextView{
-	private String strLayout = "MyTextView";
+	private String strLayout = "3.MyTextView";
 	public MyTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
