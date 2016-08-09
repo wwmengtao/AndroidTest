@@ -1,10 +1,10 @@
 package com.mt.androidtest.touchevent;
 
 import com.mt.androidtest.ALog;
-import static com.mt.androidtest.touchevent.TouchLogInfo.formatStr;
-import static com.mt.androidtest.touchevent.TouchLogInfo.formatStr2;
-import static com.mt.androidtest.touchevent.TouchLogInfo.strLogIntercept;
-import static com.mt.androidtest.touchevent.TouchLogInfo.strLogTouchEvent;
+import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr;
+import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr2;
+import static com.mt.androidtest.touchevent.TouchEventActivity.strLogIntercept;
+import static com.mt.androidtest.touchevent.TouchEventActivity.strLogTouchEvent;
 
 import android.content.Context;
 import android.util.AttributeSet;

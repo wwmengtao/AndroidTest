@@ -6,10 +6,10 @@ import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
 import com.mt.androidtest.ALog;
-import static com.mt.androidtest.touchevent.TouchLogInfo.formatStr;
-import static com.mt.androidtest.touchevent.TouchLogInfo.formatStr2;
-import static com.mt.androidtest.touchevent.TouchLogInfo.strLogIntercept;
-import static com.mt.androidtest.touchevent.TouchLogInfo.strLogTouchEvent;
+import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr;
+import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr2;
+import static com.mt.androidtest.touchevent.TouchEventActivity.strLogIntercept;
+import static com.mt.androidtest.touchevent.TouchEventActivity.strLogTouchEvent;
 
 public class MyLinearLayout extends LinearLayout {  
 	private String strLayout = "MyLinearLayout";
