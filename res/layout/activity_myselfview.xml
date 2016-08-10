@@ -24,7 +24,7 @@
 		app:custom_color1="#ff000000"
 		style="@style/myStyle"/>
 	
-	<com.mt.androidtest.myselfview.ScrollerLayout 
+	<com.mt.androidtest.myselfview.ScrollViewGroup 
 	    android:layout_width="match_parent"
 	    android:layout_height="50dp">
 	    <Button
@@ -42,17 +42,17 @@
 	        android:layout_height="match_parent"
 	        android:text="Third child view: Slide right!"/>
 
-	</com.mt.androidtest.myselfview.ScrollerLayout>
+	</com.mt.androidtest.myselfview.ScrollViewGroup>
 	
-	<com.mt.androidtest.myselfview.ScrollerText
+	<com.mt.androidtest.myselfview.ScrollFrameLayout
 	    android:background="@color/wheat"
 		android:layout_width="match_parent"
 		android:layout_height="50dp">
-	    <TextView
+	    <Button
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:gravity="start|center_vertical"
 			android:text="ScrollerText"
 			/>
-	</com.mt.androidtest.myselfview.ScrollerText>		
+	</com.mt.androidtest.myselfview.ScrollFrameLayout>		
 </LinearLayout> 

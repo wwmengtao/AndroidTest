@@ -9,24 +9,38 @@
         android:layout_height="100dip"
         android:layout_gravity="center_horizontal"
         android:text="MyLinearLayout" />  
-	<com.mt.androidtest.touchevent.MyFrameLayout
+	<com.mt.androidtest.touchevent.MyRelativeLayout
 		android:layout_width="200dip"  
-	    android:layout_height="200dip" 
+	    android:layout_height="300dip" 
 	    android:layout_gravity="center_horizontal"
 	    android:background="@color/wheat">   
 		<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:text="MyFrameLayout" />        
+		    android:id="@+id/textview"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:gravity="center"
+	        android:text="MyRelativeLayout" />
 		<com.mt.androidtest.touchevent.MyTextView
+		    android:id="@+id/mytextview"
 			android:layout_width="100dip"  
 			android:layout_height="100dip"  
-			android:layout_centerHorizontal="true"  
-			android:layout_centerVertical="true"  
-			android:background="@color/royalblue"
-			android:layout_gravity="center"   
+			android:background="@color/green"
+			android:layout_centerHorizontal="true"
 			android:gravity="center"
+			android:layout_below="@+id/textview"
+			android:layout_marginTop="10px"
 			android:text="MyTextView" />
-	</com.mt.androidtest.touchevent.MyFrameLayout>
+		
+		<com.mt.androidtest.touchevent.MyButton
+		    android:id="@+id/mybutton"
+			android:layout_width="100dip"  
+			android:layout_height="100dip"  
+			android:background="@color/royalblue"
+			android:layout_centerHorizontal="true"
+			android:gravity="center"
+			android:layout_below="@+id/mytextview"
+			android:layout_marginTop="130px"
+			android:text="MyButton" />
+	</com.mt.androidtest.touchevent.MyRelativeLayout>
 </com.mt.androidtest.touchevent.MyLinearLayout>  

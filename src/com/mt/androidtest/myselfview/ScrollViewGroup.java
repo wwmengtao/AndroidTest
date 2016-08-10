@@ -11,7 +11,7 @@ import android.widget.Scroller;
 
 import com.mt.androidtest.ALog;
 
-public class ScrollerLayout extends ViewGroup {
+public class ScrollViewGroup extends ViewGroup {
 
     /**
      * 用于完成滚动操作的实例
@@ -48,7 +48,7 @@ public class ScrollerLayout extends ViewGroup {
      */
     private int rightBorder;
 
-    public ScrollerLayout(Context context, AttributeSet attrs) {
+    public ScrollViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
         // 第一步，创建Scroller的实例
         mScroller = new Scroller(context);

@@ -1,6 +1,9 @@
 package com.mt.androidtest;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActivityManager;
@@ -40,7 +43,8 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
     private NotificationManager mNotificationManager = null;
 	private String [] mMethodNameFT={
 			"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll",
-			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI"};
+			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI",
+			"getPSList"};
 	private String [] mActivitiesName={
 			"AsynchronousActivity","ContentResolverDemoActivity",
 			"ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","PermissionActivity",
@@ -113,9 +117,43 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 				mIntent.addCategory(Intent.CATEGORY_DEFAULT);
 				startActivity(mIntent);
 				break;
+			case "getPSList":
+				getPSList();
+				break;
 		}
 
 	}
+	
+    public String[] getPSList() {
+        BufferedReader reader = null;
+        String line;
+        ArrayList<String> procs = new ArrayList<String>();
+
+        try {
+            java.lang.Process p = Runtime.getRuntime().exec("ps");
+            p.waitFor();
+            reader = new BufferedReader(new InputStreamReader(
+                    p.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                procs.add(line);
+                ALog.Log("line:"+line);
+            }
+        } catch (Exception e) {
+            ALog.Log("getPSList() Exception: " + e);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+        // remove "USER     PID   PPID  VSIZE  RSS     WCHAN    PC         NAME"
+        if (procs.size() >= 1) {
+            procs.remove(0);
+        }
+        return procs.toArray(new String[procs.size()]);
+    }
 	
 	public void tryTostartActivity(){
 		if(null==mIntent)return;

@@ -111,7 +111,6 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 			mRootScrollView = (ScrollView)findViewById(R.id.rootScrollView);
 		}
 		if(null!=mRootScrollView){
-			ALog.Log("onResume_xScrollView:"+xScrollView+" yScrollView:"+yScrollView);
 			mRootScrollView.post(runnableScrollView);
 		}
 	}	
@@ -132,7 +131,6 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		if(null!=mRootScrollView){
 			xScrollView = mRootScrollView.getScrollX();
 			yScrollView = mRootScrollView.getScrollY();
-			ALog.Log("onPause_xScrollView:"+xScrollView+" yScrollView:"+yScrollView);
 		}
 	}
 	

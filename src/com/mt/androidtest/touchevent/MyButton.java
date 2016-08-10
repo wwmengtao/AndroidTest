@@ -1,26 +1,29 @@
 package com.mt.androidtest.touchevent;
 
+import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr;
+import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr2;
+import static com.mt.androidtest.touchevent.TouchEventActivity.strDispatch;
+import static com.mt.androidtest.touchevent.TouchEventActivity.strLogTouch;
+import static com.mt.androidtest.touchevent.TouchEventActivity.strLogTouchEvent;
+import com.mt.androidtest.ALog;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.Button;
 
-import com.mt.androidtest.ALog;
+public class MyButton extends Button implements View.OnClickListener, View.OnTouchListener{
+	private String strLayout = "3.MyButton";
+	public MyButton(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		// TODO Auto-generated constructor stub
+		ALog.Log("1_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
+		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数
+		//setOnTouchListener(this);//注册OnTouchListener可以响应onTouch函数
+		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
+	}
 
-import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr;
-import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr2;
-import static com.mt.androidtest.touchevent.TouchEventActivity.strDispatch;
-import static com.mt.androidtest.touchevent.TouchEventActivity.strLogIntercept;
-import static com.mt.androidtest.touchevent.TouchEventActivity.strLogTouch;
-import static com.mt.androidtest.touchevent.TouchEventActivity.strLogTouchEvent;
-
-public class MyLinearLayout extends LinearLayout  implements View.OnClickListener, View.OnTouchListener{  
-	private String strLayout = "1.MyLinearLayout";
-    public MyLinearLayout(Context context, AttributeSet attrs) {  
-        super(context, attrs);  
-    }  
-    
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         switch (event.getAction()) {  
@@ -35,31 +38,10 @@ public class MyLinearLayout extends LinearLayout  implements View.OnClickListene
         	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strDispatch)+"ACTION_UP"); 
             break;  
         }
-        return super.dispatchTouchEvent(event);
-        //return true;
+        super.dispatchTouchEvent(event);
+        return false;
     }
-        
-    
-    /**
-     * onInterceptTouchEvent：如果返回true，相应的事件就不会往子View传递了，当然ViewGroup的默认处理是返回false，即交给子View处理。
-     */
-    @Override  
-    public boolean onInterceptTouchEvent(MotionEvent event) {  
-        switch (event.getAction()) {  
-        case MotionEvent.ACTION_DOWN:  
-            ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogIntercept)+"ACTION_DOWN");  
-            //return true;
-            break;  
-        case MotionEvent.ACTION_MOVE:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogIntercept)+"ACTION_MOVE");  
-            break;              
-        case MotionEvent.ACTION_UP:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogIntercept)+"ACTION_UP");  
-            break;  
-        }          
-        return super.onInterceptTouchEvent(event);  
-    }  
-
+	
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
@@ -77,10 +59,7 @@ public class MyLinearLayout extends LinearLayout  implements View.OnClickListene
         }
 		return false;
 	}
-    
-   /**
-    * onTouchEvent：代表执行/消费事件，返回true则事件被消费、处理了，从而不再往下传了。
-    */
+	
     @Override  
     public boolean onTouchEvent(MotionEvent event) {  
         switch (event.getAction()) {  
@@ -95,12 +74,13 @@ public class MyLinearLayout extends LinearLayout  implements View.OnClickListene
         	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogTouchEvent)+"ACTION_UP"); 
             break;  
         }  
-        return super.onTouchEvent(event);
-    }  
-    
+        //return super.onTouchEvent(event);
+        return true;
+    }
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		ALog.Log(String.format(formatStr, strLayout)+String.format(formatStr2,"onClick")); 
-	}      
-}  
+    	ALog.Log(String.format(formatStr, strLayout)+String.format(formatStr2,"onClick")); 
+	}  
+}

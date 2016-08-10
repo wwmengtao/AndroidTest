@@ -1,19 +1,18 @@
 package com.mt.androidtest.myselfview;
 
-import com.mt.androidtest.ALog;
-
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.view.MotionEvent;
+import android.widget.FrameLayout;
 
-public class ScrollerText extends FrameLayout{
+import com.mt.androidtest.ALog;
+
+public class ScrollFrameLayout extends FrameLayout{
     private int xEventPre = 0;
     private int xEventAfter = 0;
     private int dxEvent = 0;
     
-    public ScrollerText(Context context, AttributeSet attrs) {  
+    public ScrollFrameLayout(Context context, AttributeSet attrs) {  
         super(context, attrs);  
     }  
 
@@ -24,7 +23,8 @@ public class ScrollerText extends FrameLayout{
     	case MotionEvent.ACTION_DOWN:
     		ALog.Log("MotionEvent.ACTION_DOWN");
     		xEventPre = (int)event.getRawX();
-            return true;
+            //return true;
+    		break;
     	case MotionEvent.ACTION_MOVE:
     		ALog.Log("MotionEvent.ACTION_MOVE");
     		xEventAfter = (int)event.getRawX();
@@ -39,20 +39,19 @@ public class ScrollerText extends FrameLayout{
     
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-    	ALog.Log("onTouchEvent");
     	switch(event.getAction()){
         case MotionEvent.ACTION_DOWN:
         	ALog.Log("onTouchEvent.ACTION_DOWN");
-            break;
+            return true;
     	case MotionEvent.ACTION_MOVE:
     		ALog.Log("onTouchEvent.ACTION_MOVE");
     		xEventAfter = (int)event.getRawX();
     		dxEvent = xEventAfter-xEventPre;
-    		ALog.Log("dxEvent:"+dxEvent);
     		scrollBy(-dxEvent, 0);
     		xEventPre = xEventAfter;
     		break;
     	case MotionEvent.ACTION_UP:
+    		ALog.Log("onTouchEvent.ACTION_UP");
     		break;
     	}
     	return super.onTouchEvent(event);
