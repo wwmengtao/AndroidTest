@@ -1,6 +1,8 @@
 package com.mt.androidtest.touchevent;
 
+import android.util.SparseArray;
 import android.view.MotionEvent;
+
 import com.mt.androidtest.ALog;
 
 public class EventInfo {
@@ -76,7 +78,7 @@ public class EventInfo {
      * @param handleEvents
      * @return
      */
-    public static boolean setReturnResult(MotionEvent event, String strLayout, String strHandleEvent, int [][] handleEvents){
+    public static boolean setReturnResult(MotionEvent event, String strLayout, String strHandleEvent, SparseArray<Integer> handleEvents){
     	String currentView = strLayout;
     	String currentHandleMehod = strHandleEvent;
     	curEventType = event.getAction();
@@ -97,7 +99,7 @@ public class EventInfo {
 	        default:
 	        	;
         }
-    	curEventTypeReturnResult = handleEvents[curEventType][1];
+    	curEventTypeReturnResult = handleEvents.get(curEventType);
     	noNeedToSetDefaultReturnResult = (0==curEventTypeReturnResult || 1==curEventTypeReturnResult);
     	return noNeedToSetDefaultReturnResult;
     }
@@ -144,4 +146,116 @@ public class EventInfo {
         return returnResult;
     }
    
+    /**
+     * 所有继承EventReturnArrays的类，在其setData函数中可以设置触摸事件处理函数的返回值。
+     * 下列SparseArray中数值标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
+     * @author Mengtao1
+     *
+     */
+    public static class EventReturnArrays{
+    	private      SparseArray<Integer>TouchEventArrays = null;
+    	protected SparseArray<Integer>dispatchTouchEventArrays      = null;
+    	protected SparseArray<Integer>onInterceptTouchEventArrays = null;
+    	protected SparseArray<Integer>onTouchArrays                         = null;
+    	protected SparseArray<Integer>onTouchEventArrays                = null;    	
+    	protected EventReturnArrays(){
+    		//给TouchEventArrays赋初值
+    		TouchEventArrays = new SparseArray<Integer>();
+    		TouchEventArrays.put(MotionEvent.ACTION_DOWN,    -9);
+    		TouchEventArrays.put(MotionEvent.ACTION_UP,           -9);
+    		TouchEventArrays.put(MotionEvent.ACTION_MOVE,     -9);
+    		TouchEventArrays.put(MotionEvent.ACTION_CANCEL,  -9);
+    		//
+        	dispatchTouchEventArrays      = TouchEventArrays.clone();
+        	onInterceptTouchEventArrays = TouchEventArrays.clone();
+        	onTouchArrays                         = TouchEventArrays.clone();
+        	onTouchEventArrays                = TouchEventArrays.clone();
+    	}
+
+    	public SparseArray<Integer> getDispatchTouchEventArrays(){
+    		return dispatchTouchEventArrays;
+    	}
+    	public SparseArray<Integer> getOnInterceptTouchEventArrays(){
+    		return onInterceptTouchEventArrays;
+    	}
+    	public SparseArray<Integer> getOnTouchArrays(){
+    		return onTouchArrays;
+    	}
+    	public SparseArray<Integer> getOnTouchEventArrays(){
+    		return onTouchEventArrays;
+    	}    	
+    }
+
+    public static class TouchEventActivityERA extends EventReturnArrays{
+    	
+    	public TouchEventActivityERA(){
+    		super();
+    		setData();
+    	}
+        //以下setData()中修改各处理事件的返回值
+    	public void setData(){
+        	//数值标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
+    		//dispatchTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    	}
+    }
+    
+    public static class MyLinearLayoutERA extends EventReturnArrays{
+    	public MyLinearLayoutERA(){
+    		super();
+    		setData();
+    	}
+        //以下setData()中修改各处理事件的返回值
+    	public void setData(){
+        	//数值标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。    		
+    		//dispatchTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onInterceptTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    	}
+    }
+    
+    public static class MyRelativeLayoutERA extends EventReturnArrays{
+    	public MyRelativeLayoutERA(){
+    		super();
+    		setData();
+    	}    	
+        //以下setData()中修改各处理事件的返回值
+    	public void setData(){
+        	//数值标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。    		
+    		//dispatchTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onInterceptTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    	}
+    }
+    
+    public static class MyTextViewERA extends EventReturnArrays{
+    	public MyTextViewERA(){
+    		super();
+    		setData();
+    	}    	    	
+        //以下setData()中修改各处理事件的返回值
+    	public void setData(){
+        	//数值标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
+    		//dispatchTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    	}
+    }        
+
+    public static class MyButtonERA extends EventReturnArrays{
+    	public MyButtonERA(){
+    		super();
+    		setData();
+    	}    	    	
+        //以下setData()中修改各处理事件的返回值
+    	public void setData(){
+        	//数值标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。    		
+       		//dispatchTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchArrays.put(MotionEvent.ACTION_DOWN, -9);
+    		//onTouchEventArrays.put(MotionEvent.ACTION_DOWN, -9);
+    	}
+    }     
 }

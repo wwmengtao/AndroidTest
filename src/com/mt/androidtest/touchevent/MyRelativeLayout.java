@@ -1,9 +1,9 @@
 package com.mt.androidtest.touchevent;
 
 import static com.mt.androidtest.touchevent.EventInfo.*;
-import static com.mt.androidtest.touchevent.EventHandleInfo.*;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -13,11 +13,12 @@ import com.mt.androidtest.ALog;
 public class MyRelativeLayout extends RelativeLayout implements View.OnClickListener, View.OnTouchListener{
 
 	private String strLayout = "2.MyRelativeLayout";
-    private int [][]dispatchTouchEventArrays = null;
-    private int [][]onInterceptTouchEventArrays = null;
-    private int [][]onTouchEventArrays = null;
-    private int [][]onTouchArrays = null;
-    
+    private SparseArray<Integer>dispatchTouchEventArrays = null;
+    private SparseArray<Integer>onInterceptTouchEventArrays = null;
+    private SparseArray<Integer>onTouchEventArrays = null;
+    private SparseArray<Integer>onTouchArrays = null;
+    private MyRelativeLayoutERA mEM = null;
+
     public MyRelativeLayout(Context context, AttributeSet attrs) {  
         super(context, attrs);  
 		ALog.Log("1_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
@@ -25,10 +26,11 @@ public class MyRelativeLayout extends RelativeLayout implements View.OnClickList
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数	
 		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
 		//
-        dispatchTouchEventArrays      = EventHandleInfoArrays_MyRelativeLayout.dispatchTouchEventArrays;
-        onInterceptTouchEventArrays = EventHandleInfoArrays_MyRelativeLayout.onInterceptTouchEventArrays;
-        onTouchArrays                         = EventHandleInfoArrays_MyRelativeLayout.onTouchArrays;
-        onTouchEventArrays                = EventHandleInfoArrays_MyRelativeLayout.onTouchEventArrays;
+		mEM = new MyRelativeLayoutERA();
+        dispatchTouchEventArrays      = mEM.getDispatchTouchEventArrays();
+        onInterceptTouchEventArrays = mEM.getOnInterceptTouchEventArrays();
+        onTouchArrays                         = mEM.getOnTouchArrays();
+        onTouchEventArrays                = mEM.getOnTouchEventArrays();	
     }  
     
     @Override

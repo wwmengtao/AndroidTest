@@ -1,9 +1,9 @@
 package com.mt.androidtest.touchevent;
 
 import static com.mt.androidtest.touchevent.EventInfo.*;
-import static com.mt.androidtest.touchevent.EventHandleInfo.*;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -18,9 +18,10 @@ import com.mt.androidtest.ALog;
 public class MyTextView extends TextView implements View.OnClickListener, View.OnTouchListener{
 
 	private String strLayout = "3.MyTextView";
-    private int [][]dispatchTouchEventArrays = null;
-    private int [][]onTouchEventArrays = null;
-    private int [][]onTouchArrays = null;
+    private SparseArray<Integer>dispatchTouchEventArrays = null;
+    private SparseArray<Integer>onTouchEventArrays = null;
+    private SparseArray<Integer>onTouchArrays = null;
+    private MyTextViewERA mEM = null;
     
 	public MyTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -30,9 +31,10 @@ public class MyTextView extends TextView implements View.OnClickListener, View.O
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数	
 		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
 		//
-        dispatchTouchEventArrays = EventHandleInfoArrays_MyTextView.dispatchTouchEventArrays;
-        onTouchArrays                    = EventHandleInfoArrays_MyTextView.onTouchArrays;
-        onTouchEventArrays           = EventHandleInfoArrays_MyTextView.onTouchEventArrays;		
+		mEM = new MyTextViewERA();
+        dispatchTouchEventArrays = mEM.getDispatchTouchEventArrays();
+        onTouchArrays                    = mEM.getOnTouchArrays();
+        onTouchEventArrays           = mEM.getOnTouchEventArrays();	
 	}
 
     @Override

@@ -1,9 +1,9 @@
 package com.mt.androidtest.touchevent;
 
 import static com.mt.androidtest.touchevent.EventInfo.*;
-import static com.mt.androidtest.touchevent.EventHandleInfo.*;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +13,10 @@ import com.mt.androidtest.ALog;
 public class MyButton extends Button implements View.OnClickListener, View.OnTouchListener{
 
 	private String strLayout = "3.MyButton";
-    private int [][]dispatchTouchEventArrays = null;
-    private int [][]onTouchEventArrays = null;
-    private int [][]onTouchArrays = null;
+    private SparseArray<Integer>dispatchTouchEventArrays = null;
+    private SparseArray<Integer>onTouchEventArrays = null;
+    private SparseArray<Integer>onTouchArrays = null;
+    private MyButtonERA mEM = null;
     
 	public MyButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -25,9 +26,10 @@ public class MyButton extends Button implements View.OnClickListener, View.OnTou
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数		
 		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
 		//
-        dispatchTouchEventArrays = EventHandleInfoArrays_MyButton.dispatchTouchEventArrays;
-        onTouchArrays                    = EventHandleInfoArrays_MyButton.onTouchArrays;
-        onTouchEventArrays           = EventHandleInfoArrays_MyButton.onTouchEventArrays;		
+		mEM = new MyButtonERA();
+        dispatchTouchEventArrays = mEM.getDispatchTouchEventArrays();
+        onTouchArrays                    = mEM.getOnTouchArrays();
+        onTouchEventArrays           = mEM.getOnTouchEventArrays();	
 	}
 
     @Override

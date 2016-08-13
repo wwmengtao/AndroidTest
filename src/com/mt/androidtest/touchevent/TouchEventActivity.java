@@ -1,13 +1,14 @@
 package com.mt.androidtest.touchevent;
 
 import static com.mt.androidtest.touchevent.EventInfo.*;
-import static com.mt.androidtest.touchevent.EventHandleInfo.*;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.mt.androidtest.R;
+
 
 /**
  * 触摸事件的分发会经过这么几个顺序，dispatchTouchEvent --> onInterceptTouchEvent --> onTouchEvent，
@@ -19,10 +20,10 @@ import com.mt.androidtest.R;
 public class TouchEventActivity extends Activity implements View.OnClickListener, View.OnTouchListener{  
 
     private static final String strLayout = "0.TouchEventActivity";
-    private int [][]dispatchTouchEventArrays = null;
-    private int [][]onTouchEventArrays = null;
-    private int [][]onTouchArrays = null;
-
+    private SparseArray<Integer> dispatchTouchEventArrays = null;
+    private SparseArray<Integer> onTouchEventArrays = null;
+    private SparseArray<Integer> onTouchArrays = null;
+    private TouchEventActivityERA mET = null;
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
@@ -30,12 +31,13 @@ public class TouchEventActivity extends Activity implements View.OnClickListener
         //
         getWindow().getDecorView().setOnTouchListener(this);
         //getWindow().getDecorView().setOnClickListener(this);
-        //
-        dispatchTouchEventArrays = EventHandleInfoArrays_TouchEventActivity.dispatchTouchEventArrays;
-        onTouchArrays                    = EventHandleInfoArrays_TouchEventActivity.onTouchArrays;
-        onTouchEventArrays           = EventHandleInfoArrays_TouchEventActivity.onTouchEventArrays;
-    }  
-
+        //为各个View的事件处理结果赋新值
+        mET =  new TouchEventActivityERA();
+        //为TouchEventActivity的各个数组赋值
+        dispatchTouchEventArrays = mET.getDispatchTouchEventArrays();
+        onTouchArrays                    = mET.getOnTouchArrays();
+        onTouchEventArrays           = mET.getOnTouchEventArrays();
+    }
     
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
