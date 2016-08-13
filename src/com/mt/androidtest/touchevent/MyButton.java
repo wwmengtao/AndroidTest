@@ -25,9 +25,9 @@ public class MyButton extends Button implements View.OnClickListener, View.OnTou
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数		
 		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
 		//
-        dispatchTouchEventArrays =      EventHandleInfoArrays_MyButton.dispatchTouchEventArrays;
-        onTouchArrays =                         EventHandleInfoArrays_MyButton.onTouchArrays;
-        onTouchEventArrays =                EventHandleInfoArrays_MyButton.onTouchEventArrays;		
+        dispatchTouchEventArrays = EventHandleInfoArrays_MyButton.dispatchTouchEventArrays;
+        onTouchArrays                    = EventHandleInfoArrays_MyButton.onTouchArrays;
+        onTouchEventArrays           = EventHandleInfoArrays_MyButton.onTouchEventArrays;		
 	}
 
     @Override
