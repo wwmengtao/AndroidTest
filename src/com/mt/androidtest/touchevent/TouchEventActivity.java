@@ -1,6 +1,7 @@
 package com.mt.androidtest.touchevent;
 
 import static com.mt.androidtest.touchevent.EventInfo.*;
+import static com.mt.androidtest.touchevent.EventHandleInfo.*;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -24,8 +25,8 @@ public class TouchEventActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
         setContentView(R.layout.activity_on_click);  
-        dispatchTouchEventArrays = TouchEventActivity_handleTouchEventArrays.dispatchTouchEventArrays;
-        onTouchEventArrays = TouchEventActivity_handleTouchEventArrays.onTouchEventArrays;
+        dispatchTouchEventArrays = EventHandleInfoArrays_TouchEventActivity.dispatchTouchEventArrays;
+        onTouchEventArrays =           EventHandleInfoArrays_TouchEventActivity.onTouchEventArrays;
     }  
 
     

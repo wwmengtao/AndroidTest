@@ -1,6 +1,7 @@
 package com.mt.androidtest.touchevent;
 
 import static com.mt.androidtest.touchevent.EventInfo.*;
+import static com.mt.androidtest.touchevent.EventHandleInfo.*;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -23,10 +24,10 @@ public class MyLinearLayout extends LinearLayout  implements View.OnClickListene
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数	
 		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
 		//
-        dispatchTouchEventArrays =      MyLinearLayout_handleTouchEventArrays.dispatchTouchEventArrays;
-        onInterceptTouchEventArrays = MyLinearLayout_handleTouchEventArrays.onInterceptTouchEventArrays;
-        onTouchArrays =                         MyLinearLayout_handleTouchEventArrays.onTouchArrays;
-        onTouchEventArrays =                MyLinearLayout_handleTouchEventArrays.onTouchEventArrays;
+        dispatchTouchEventArrays =      EventHandleInfoArrays_MyLinearLayout.dispatchTouchEventArrays;
+        onInterceptTouchEventArrays = EventHandleInfoArrays_MyLinearLayout.onInterceptTouchEventArrays;
+        onTouchArrays =                         EventHandleInfoArrays_MyLinearLayout.onTouchArrays;
+        onTouchEventArrays =                EventHandleInfoArrays_MyLinearLayout.onTouchEventArrays;
     }  
     
     @Override

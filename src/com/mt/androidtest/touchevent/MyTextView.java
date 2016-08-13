@@ -1,6 +1,7 @@
 package com.mt.androidtest.touchevent;
 
 import static com.mt.androidtest.touchevent.EventInfo.*;
+import static com.mt.androidtest.touchevent.EventHandleInfo.*;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -29,9 +30,9 @@ public class MyTextView extends TextView implements View.OnClickListener, View.O
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数	
 		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
 		//
-        dispatchTouchEventArrays =      MyTextView_handleTouchEventArrays.dispatchTouchEventArrays;
-        onTouchArrays =                         MyTextView_handleTouchEventArrays.onTouchArrays;
-        onTouchEventArrays =                MyTextView_handleTouchEventArrays.onTouchEventArrays;		
+        dispatchTouchEventArrays =      EventHandleInfoArrays_MyTextView.dispatchTouchEventArrays;
+        onTouchArrays =                         EventHandleInfoArrays_MyTextView.onTouchArrays;
+        onTouchEventArrays =                EventHandleInfoArrays_MyTextView.onTouchEventArrays;		
 	}
 
     @Override

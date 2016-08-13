@@ -1,6 +1,7 @@
 package com.mt.androidtest.touchevent;
 
 import static com.mt.androidtest.touchevent.EventInfo.*;
+import static com.mt.androidtest.touchevent.EventHandleInfo.*;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -24,10 +25,10 @@ public class MyRelativeLayout extends RelativeLayout implements View.OnClickList
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数	
 		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
 		//
-        dispatchTouchEventArrays =      MyRelativeLayout_handleTouchEventArrays.dispatchTouchEventArrays;
-        onInterceptTouchEventArrays = MyRelativeLayout_handleTouchEventArrays.onInterceptTouchEventArrays;
-        onTouchArrays =                         MyRelativeLayout_handleTouchEventArrays.onTouchArrays;
-        onTouchEventArrays =                MyRelativeLayout_handleTouchEventArrays.onTouchEventArrays;
+        dispatchTouchEventArrays =      EventHandleInfoArrays_MyRelativeLayout.dispatchTouchEventArrays;
+        onInterceptTouchEventArrays = EventHandleInfoArrays_MyRelativeLayout.onInterceptTouchEventArrays;
+        onTouchArrays =                         EventHandleInfoArrays_MyRelativeLayout.onTouchArrays;
+        onTouchEventArrays =                EventHandleInfoArrays_MyRelativeLayout.onTouchEventArrays;
     }  
     
     @Override
