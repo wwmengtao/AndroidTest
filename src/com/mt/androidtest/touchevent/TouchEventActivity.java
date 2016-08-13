@@ -17,25 +17,17 @@ import com.mt.androidtest.R;
 public class TouchEventActivity extends Activity{  
 
     private static final String strLayout = "0.TouchEventActivity";
+    private int [][]dispatchTouchEventArrays = null;
+    private int [][]onTouchEventArrays = null;
     
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
         setContentView(R.layout.activity_on_click);  
+        dispatchTouchEventArrays = TouchEventActivity_handleTouchEventArrays.dispatchTouchEventArrays;
+        onTouchEventArrays = TouchEventActivity_handleTouchEventArrays.onTouchEventArrays;
     }  
-    //下列二维数组标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
-	int [][] dispatchTouchEventArrays = {
-			{MotionEvent.ACTION_DOWN,   -1},
-			{MotionEvent.ACTION_MOVE,    -1},
-			{MotionEvent.ACTION_UP,          -1},
-			{MotionEvent.ACTION_CANCEL, -1},
-	};
-	int [][] onTouchEventArrays = {
-			{MotionEvent.ACTION_DOWN,   -1},
-			{MotionEvent.ACTION_MOVE,    -1},
-			{MotionEvent.ACTION_UP,          -1},
-			{MotionEvent.ACTION_CANCEL, -1},
-	};	
+
     
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {

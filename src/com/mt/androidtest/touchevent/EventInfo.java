@@ -68,7 +68,14 @@ public class EventInfo {
     }
     /*------------------------------------------------Log info---------------------------------------------------*/
     
-    //返回事件处理结果
+    /**
+     * 标识是否需要设置默认返回值(super.xxx)
+     * @param event
+     * @param strLayout
+     * @param strHandleEvent
+     * @param handleEvents
+     * @return
+     */
     public static boolean setReturnResult(MotionEvent event, String strLayout, String strHandleEvent, int [][] handleEvents){
     	String currentView = strLayout;
     	String currentHandleMehod = strHandleEvent;
@@ -137,4 +144,120 @@ public class EventInfo {
         return returnResult;
     }
 
+    //下列二维数组标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
+    public static class TouchEventActivity_handleTouchEventArrays{
+       
+    	public static int [][] dispatchTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};
+    	public static int [][] onTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};	
+    }
+    
+    public static class MyLinearLayout_handleTouchEventArrays{
+
+    	public static int [][] dispatchTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};
+    	public static int [][] onInterceptTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};	
+    	public static int [][] onTouchArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};		
+    	public static int [][] onTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};	
+    }
+    
+    public static class MyRelativeLayout_handleTouchEventArrays{
+
+    	public static int [][] dispatchTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};
+    	public static int [][] onInterceptTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};	
+    	public static int [][] onTouchArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};		
+    	public static int [][] onTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};	
+    }    
+    
+    public static class MyTextView_handleTouchEventArrays{
+
+    	public static int [][] dispatchTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};
+    	public static int [][] onTouchArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};		
+    	public static int [][] onTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};	
+    }        
+
+    public static class MyButton_handleTouchEventArrays{
+
+    	public static int [][] dispatchTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};
+    	public static int [][] onTouchArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};		
+    	public static int [][] onTouchEventArrays = {
+    			{MotionEvent.ACTION_DOWN,   -1},
+    			{MotionEvent.ACTION_MOVE,    -1},
+    			{MotionEvent.ACTION_UP,          -1},
+    			{MotionEvent.ACTION_CANCEL, -1},
+    	};	
+    }        
 }

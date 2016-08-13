@@ -12,39 +12,22 @@ import com.mt.androidtest.ALog;
 public class MyLinearLayout extends LinearLayout  implements View.OnClickListener, View.OnTouchListener{  
 
 	private String strLayout = "1.MyLinearLayout";
-	
+    private int [][]dispatchTouchEventArrays = null;
+    private int [][]onInterceptTouchEventArrays = null;
+    private int [][]onTouchEventArrays = null;
+    private int [][]onTouchArrays = null;
     public MyLinearLayout(Context context, AttributeSet attrs) {  
         super(context, attrs);  
 		ALog.Log("1_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
 		//setOnTouchListener(this);//注册OnTouchListener可以响应onTouch函数
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数	
-		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());        
+		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
+		//
+        dispatchTouchEventArrays =      MyLinearLayout_handleTouchEventArrays.dispatchTouchEventArrays;
+        onInterceptTouchEventArrays = MyLinearLayout_handleTouchEventArrays.onInterceptTouchEventArrays;
+        onTouchArrays =                         MyLinearLayout_handleTouchEventArrays.onTouchArrays;
+        onTouchEventArrays =                MyLinearLayout_handleTouchEventArrays.onTouchEventArrays;
     }  
-    //下列二维数组标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
-	int [][] dispatchTouchEventArrays = {
-			{MotionEvent.ACTION_DOWN,   -1},
-			{MotionEvent.ACTION_MOVE,    -1},
-			{MotionEvent.ACTION_UP,          -1},
-			{MotionEvent.ACTION_CANCEL, -1},
-	};
-	int [][] onInterceptTouchEventArrays = {
-			{MotionEvent.ACTION_DOWN,   -1},
-			{MotionEvent.ACTION_MOVE,    -1},
-			{MotionEvent.ACTION_UP,          -1},
-			{MotionEvent.ACTION_CANCEL, -1},
-	};	
-	int [][] onTouchArrays = {
-			{MotionEvent.ACTION_DOWN,   -1},
-			{MotionEvent.ACTION_MOVE,    -1},
-			{MotionEvent.ACTION_UP,          -1},
-			{MotionEvent.ACTION_CANCEL, -1},
-	};		
-	int [][] onTouchEventArrays = {
-			{MotionEvent.ACTION_DOWN,   -1},
-			{MotionEvent.ACTION_MOVE,    -1},
-			{MotionEvent.ACTION_UP,          -1},
-			{MotionEvent.ACTION_CANCEL, -1},
-	};	
     
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {

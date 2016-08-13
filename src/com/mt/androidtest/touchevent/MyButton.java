@@ -12,7 +12,10 @@ import com.mt.androidtest.ALog;
 public class MyButton extends Button implements View.OnClickListener, View.OnTouchListener{
 
 	private String strLayout = "3.MyButton";
-	
+    private int [][]dispatchTouchEventArrays = null;
+    private int [][]onTouchEventArrays = null;
+    private int [][]onTouchArrays = null;
+    
 	public MyButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
@@ -20,29 +23,12 @@ public class MyButton extends Button implements View.OnClickListener, View.OnTou
 		//setOnTouchListener(this);//注册OnTouchListener可以响应onTouch函数
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数		
 		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
+		//
+        dispatchTouchEventArrays =      MyButton_handleTouchEventArrays.dispatchTouchEventArrays;
+        onTouchArrays =                         MyButton_handleTouchEventArrays.onTouchArrays;
+        onTouchEventArrays =                MyButton_handleTouchEventArrays.onTouchEventArrays;		
 	}
 
-	int [][] dispatchTouchEventArrays = {
-			{MotionEvent.ACTION_DOWN,   -1},
-			{MotionEvent.ACTION_MOVE,    -1},
-			{MotionEvent.ACTION_UP,          -1},
-			{MotionEvent.ACTION_CANCEL, -1},
-	};
-
-	int [][] onTouchArrays = {
-			{MotionEvent.ACTION_DOWN,   -1},
-			{MotionEvent.ACTION_MOVE,    -1},
-			{MotionEvent.ACTION_UP,          -1},
-			{MotionEvent.ACTION_CANCEL, -1},
-	};		
-	
-	int [][] onTouchEventArrays = {
-			{MotionEvent.ACTION_DOWN,   -1},
-			{MotionEvent.ACTION_MOVE,    -1},
-			{MotionEvent.ACTION_UP,          -1},
-			{MotionEvent.ACTION_CANCEL, -1},
-	};	
-    
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
     	if(!setReturnResult(event, strLayout, dispatchTouchEvent, dispatchTouchEventArrays)){
