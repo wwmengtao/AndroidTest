@@ -21,7 +21,7 @@ public class MyButton extends Button implements View.OnClickListener, View.OnTou
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		ALog.Log("1_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
-		//setOnTouchListener(this);//注册OnTouchListener可以响应onTouch函数
+		setOnTouchListener(this);//注册OnTouchListener可以响应onTouch函数
 		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数		
 		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
 		//
