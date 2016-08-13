@@ -1,5 +1,6 @@
 package com.mt.androidtest.touchevent;
 
+import static com.mt.androidtest.touchevent.EventInfo.*;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -8,99 +9,78 @@ import android.widget.LinearLayout;
 
 import com.mt.androidtest.ALog;
 
-import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr;
-import static com.mt.androidtest.touchevent.TouchEventActivity.formatStr2;
-import static com.mt.androidtest.touchevent.TouchEventActivity.strDispatch;
-import static com.mt.androidtest.touchevent.TouchEventActivity.strLogIntercept;
-import static com.mt.androidtest.touchevent.TouchEventActivity.strLogTouch;
-import static com.mt.androidtest.touchevent.TouchEventActivity.strLogTouchEvent;
-
 public class MyLinearLayout extends LinearLayout  implements View.OnClickListener, View.OnTouchListener{  
+
 	private String strLayout = "1.MyLinearLayout";
+	
     public MyLinearLayout(Context context, AttributeSet attrs) {  
         super(context, attrs);  
+		ALog.Log("1_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());
+		//setOnTouchListener(this);//注册OnTouchListener可以响应onTouch函数
+		//setOnClickListener(this);//注册OnClickListener可以响应onClick函数	
+		ALog.Log("2_"+String.format(formatStr,strLayout)+" isEnabled:"+isEnabled()+" isClickable:"+isClickable()+" isLongClickable:"+isLongClickable()+" isContextClickable:"+isContextClickable());        
     }  
+    //下列二维数组标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
+	int [][] dispatchTouchEventArrays = {
+			{MotionEvent.ACTION_DOWN,   -1},
+			{MotionEvent.ACTION_MOVE,    -1},
+			{MotionEvent.ACTION_UP,          -1},
+			{MotionEvent.ACTION_CANCEL, -1},
+	};
+	int [][] onInterceptTouchEventArrays = {
+			{MotionEvent.ACTION_DOWN,   -1},
+			{MotionEvent.ACTION_MOVE,    -1},
+			{MotionEvent.ACTION_UP,          -1},
+			{MotionEvent.ACTION_CANCEL, -1},
+	};	
+	int [][] onTouchArrays = {
+			{MotionEvent.ACTION_DOWN,   -1},
+			{MotionEvent.ACTION_MOVE,    -1},
+			{MotionEvent.ACTION_UP,          -1},
+			{MotionEvent.ACTION_CANCEL, -1},
+	};		
+	int [][] onTouchEventArrays = {
+			{MotionEvent.ACTION_DOWN,   -1},
+			{MotionEvent.ACTION_MOVE,    -1},
+			{MotionEvent.ACTION_UP,          -1},
+			{MotionEvent.ACTION_CANCEL, -1},
+	};	
     
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {  
-        case MotionEvent.ACTION_DOWN:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strDispatch)+"ACTION_DOWN"); 
-        	//return true;
-            break;  
-        case MotionEvent.ACTION_MOVE:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strDispatch)+"ACTION_MOVE"); 
-            break;              
-        case MotionEvent.ACTION_UP:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strDispatch)+"ACTION_UP"); 
-            break;  
-        }
-        return super.dispatchTouchEvent(event);
-        //return true;
+    	if(!setReturnResult(event, strLayout, dispatchTouchEvent, dispatchTouchEventArrays)){
+    		setDefaultReturnResult(super.dispatchTouchEvent(event));
+    	}
+        return getReturnResult(strLayout, dispatchTouchEvent);
     }
-        
-    
-    /**
-     * onInterceptTouchEvent：如果返回true，相应的事件就不会往子View传递了，当然ViewGroup的默认处理是返回false，即交给子View处理。
-     */
+
     @Override  
     public boolean onInterceptTouchEvent(MotionEvent event) {  
-        switch (event.getAction()) {  
-        case MotionEvent.ACTION_DOWN:  
-            ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogIntercept)+"ACTION_DOWN");  
-            //return true;
-            break;  
-        case MotionEvent.ACTION_MOVE:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogIntercept)+"ACTION_MOVE");  
-            break;              
-        case MotionEvent.ACTION_UP:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogIntercept)+"ACTION_UP");  
-            break;  
-        }          
-        return super.onInterceptTouchEvent(event);  
+    	if(!setReturnResult(event, strLayout, onInterceptTouchEvent, onInterceptTouchEventArrays)){
+    		setDefaultReturnResult(super.onInterceptTouchEvent(event));
+    	}
+        return getReturnResult(strLayout, onInterceptTouchEvent);
     }  
 
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		// TODO Auto-generated method stub
-        switch (event.getAction()) {  
-        case MotionEvent.ACTION_DOWN:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogTouch)+"ACTION_DOWN"); 
-        	//return true;
-            break;  
-        case MotionEvent.ACTION_MOVE:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogTouch)+"ACTION_MOVE"); 
-            break;              
-        case MotionEvent.ACTION_UP:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogTouch)+"ACTION_UP"); 
-            break;  
-        }
-		return false;
-	}
-    
-   /**
-    * onTouchEvent：代表执行/消费事件，返回true则事件被消费、处理了，从而不再往下传了。
-    */
+    @Override  
+    public boolean onTouch(View v, MotionEvent event) {
+    	if(!setReturnResult(event, strLayout, onTouch, onTouchArrays)){
+    		setDefaultReturnResult(false);
+    	}
+        return getReturnResult(strLayout, onTouch);
+    }
+
     @Override  
     public boolean onTouchEvent(MotionEvent event) {  
-        switch (event.getAction()) {  
-        case MotionEvent.ACTION_DOWN:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogTouchEvent)+"ACTION_DOWN"); 
-        	//return true;
-            break;  
-        case MotionEvent.ACTION_MOVE:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogTouchEvent)+"ACTION_MOVE"); 
-            break;              
-        case MotionEvent.ACTION_UP:  
-        	ALog.Log(String.format(formatStr,strLayout)+String.format(formatStr2,strLogTouchEvent)+"ACTION_UP"); 
-            break;  
-        }  
-        return super.onTouchEvent(event);
-    }  
+    	if(!setReturnResult(event, strLayout, onTouchEvent, onTouchEventArrays)){
+    		setDefaultReturnResult(super.onTouchEvent(event));
+    	}
+        return getReturnResult(strLayout, onTouchEvent);
+    }
     
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		ALog.Log(String.format(formatStr, strLayout)+String.format(formatStr2,"onClick")); 
-	}      
+		ACTION_LOG(strLayout, onClick, DES_ACTION_ONCLICK);
+	}
 }  

@@ -1,7 +1,9 @@
 package com.mt.androidtest.touchevent;
 
+import static com.mt.androidtest.touchevent.EventInfo.*;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 
 import com.mt.androidtest.R;
 
@@ -13,16 +15,41 @@ import com.mt.androidtest.R;
  *
  */
 public class TouchEventActivity extends Activity{  
-    public static final String formatStr="%-19s";
-    public static final String formatStr2="%-23s";
-    public static final String strLogIntercept = "onInterceptTouchEvent: ";
-    public static final String strLogTouchEvent = "onTouchEvent: ";
-    public static final String strLogTouch = "onTouch: ";
-    public static final String strDispatch = "dispatchTouchEvent";
 
+    private static final String strLayout = "0.TouchEventActivity";
+    
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
         setContentView(R.layout.activity_on_click);  
     }  
+    //下列二维数组标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
+	int [][] dispatchTouchEventArrays = {
+			{MotionEvent.ACTION_DOWN,   -1},
+			{MotionEvent.ACTION_MOVE,    -1},
+			{MotionEvent.ACTION_UP,          -1},
+			{MotionEvent.ACTION_CANCEL, -1},
+	};
+	int [][] onTouchEventArrays = {
+			{MotionEvent.ACTION_DOWN,   -1},
+			{MotionEvent.ACTION_MOVE,    -1},
+			{MotionEvent.ACTION_UP,          -1},
+			{MotionEvent.ACTION_CANCEL, -1},
+	};	
+    
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+    	if(!setReturnResult(event, strLayout, dispatchTouchEvent, dispatchTouchEventArrays)){
+    		setDefaultReturnResult(super.dispatchTouchEvent(event));
+    	}
+        return getReturnResult(strLayout, dispatchTouchEvent);
+    }
+    
+    @Override  
+    public boolean onTouchEvent(MotionEvent event) {  
+    	if(!setReturnResult(event, strLayout, onTouchEvent, onTouchEventArrays)){
+    		setDefaultReturnResult(super.onTouchEvent(event));
+    	}
+        return getReturnResult(strLayout, onTouchEvent);
+    }
 }  
