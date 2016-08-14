@@ -11,7 +11,7 @@
         android:text="MyLinearLayout" />  
 	<com.mt.androidtest.touchevent.MyRelativeLayout
 		android:layout_width="200dip"  
-	    android:layout_height="300dip" 
+	    android:layout_height="350dip" 
 	    android:layout_gravity="center_horizontal"
 	    android:background="@color/wheat">   
 		<TextView
@@ -29,7 +29,7 @@
 			android:layout_centerHorizontal="true"
 			android:gravity="center"
 			android:layout_below="@+id/textview"
-			android:layout_marginTop="10px"
+			android:layout_marginTop="120px"
 			android:text="MyTextView" />
 		
 		<com.mt.androidtest.touchevent.MyButton

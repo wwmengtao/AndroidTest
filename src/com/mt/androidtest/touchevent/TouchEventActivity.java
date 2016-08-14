@@ -27,7 +27,7 @@ public class TouchEventActivity extends Activity implements View.OnClickListener
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
-        setContentView(R.layout.activity_on_click);
+        setContentView(R.layout.activity_touch_event);
         //
         getWindow().getDecorView().setOnTouchListener(this);
         //getWindow().getDecorView().setOnClickListener(this);

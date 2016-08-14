@@ -145,7 +145,8 @@
         </activity>
         <activity
             android:name="com.mt.androidtest.touchevent.TouchEventActivity"
-            android:label="@string/title_activity_on_click" >
+            android:label="@string/title_activity_on_click" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
