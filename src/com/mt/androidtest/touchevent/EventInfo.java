@@ -121,8 +121,10 @@ public class EventInfo {
     	switch(curEventTypeReturnResult){
 	    	case 0:
 	    		returnResult = false;
+	    		break;
 	    	case 1:
 	    		returnResult = true;
+	    		break;
 			default:
 				;
     	}
