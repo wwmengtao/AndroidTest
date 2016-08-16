@@ -1,6 +1,7 @@
 package com.mt.androidtest.touchevent;
 
 import static com.mt.androidtest.touchevent.EventInfo.*;
+import static com.mt.androidtest.touchevent.EventReturn.*;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.SparseArray;
