@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="100dip"
         android:layout_gravity="center_horizontal"
-        android:text="MyLinearLayout" />  
+        android:text="1.MyLinearLayout" />  
 	<com.mt.androidtest.touchevent.MyRelativeLayout
 		android:layout_width="200dip"  
 	    android:layout_height="350dip" 
@@ -20,7 +20,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_centerHorizontal="true"
 	        android:gravity="center"
-	        android:text="MyRelativeLayout" />
+	        android:text="2.MyRelativeLayout" />
 		<com.mt.androidtest.touchevent.MyTextView
 		    android:id="@+id/mytextview"
 			android:layout_width="100dip"  
@@ -30,7 +30,7 @@
 			android:gravity="center"
 			android:layout_below="@+id/textview"
 			android:layout_marginTop="120px"
-			android:text="MyTextView" />
+			android:text="3.MyTextView" />
 		
 		<com.mt.androidtest.touchevent.MyButton
 		    android:id="@+id/mybutton"
@@ -41,6 +41,6 @@
 			android:gravity="center"
 			android:layout_below="@+id/mytextview"
 			android:layout_marginTop="130px"
-			android:text="MyButton" />
+			android:text="3.MyButton" />
 	</com.mt.androidtest.touchevent.MyRelativeLayout>
 </com.mt.androidtest.touchevent.MyLinearLayout>  
