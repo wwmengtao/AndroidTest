@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
 
@@ -50,14 +51,17 @@ public class TouchEventActivity extends Activity implements View.OnClickListener
     
     @Override  
     public boolean onTouch(View v, MotionEvent event) {
-    	if(!setReturnResult(event, strLayout, onTouch, onTouchArrays)){
+    	//ALog.fillInStackTrace("DecorView_onTouch");
+    	String mStrLayout = "0.DecorView";
+    	if(!setReturnResult(event, mStrLayout, onTouch, onTouchArrays)){
     		setDefaultReturnResult(false);
     	}
-        return getReturnResult(strLayout, onTouch);
+        return getReturnResult(mStrLayout, onTouch);
     }    
     
     @Override  
     public boolean onTouchEvent(MotionEvent event) {  
+    	//ALog.fillInStackTrace("TouchEventActivity_onTouchEvent");
     	if(!setReturnResult(event, strLayout, onTouchEvent, onTouchEventArrays)){
     		setDefaultReturnResult(super.onTouchEvent(event));
     	}
