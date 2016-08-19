@@ -41,6 +41,9 @@ public class TouchEventActivity extends Activity implements View.OnClickListener
         onTouchEventArrays           = mET.getOnTouchEventArrays();
     }
     
+    /**
+     * dispatchTouchEvent：此函数为TouchEventActivity的对应处理函数
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
     	if(!setReturnResult(event, strLayout, dispatchTouchEvent, dispatchTouchEventArrays)){
@@ -49,6 +52,9 @@ public class TouchEventActivity extends Activity implements View.OnClickListener
         return getReturnResult(strLayout, dispatchTouchEvent);
     }
     
+    /**
+     * onTouch：此函数为DecorView的对应处理函数
+     */
     @Override  
     public boolean onTouch(View v, MotionEvent event) {
     	//ALog.fillInStackTrace("DecorView_onTouch");
@@ -59,6 +65,9 @@ public class TouchEventActivity extends Activity implements View.OnClickListener
         return getReturnResult(mStrLayout, onTouch);
     }    
     
+    /**
+     * onTouchEvent：此函数为TouchEventActivity的对应处理函数
+     */
     @Override  
     public boolean onTouchEvent(MotionEvent event) {  
     	//ALog.fillInStackTrace("TouchEventActivity_onTouchEvent");
