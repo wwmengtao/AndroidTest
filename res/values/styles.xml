@@ -13,7 +13,7 @@
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme" parent="@android:style/Theme.Material.Settings">
         <item name="custom_style">@style/custom_theme</item>
         <item name="custom_color1">#ff444444</item>
         <item name="custom_color2">#ff444444</item>
