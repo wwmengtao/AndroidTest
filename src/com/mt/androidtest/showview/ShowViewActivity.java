@@ -25,10 +25,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.BaseListActivity;
 import com.mt.androidtest.R;
 
-public class ShowViewActivity extends BaseActivity{
+public class ShowViewActivity extends BaseListActivity{
 	boolean isLogRunAll=false;
 	private LinearLayout mLayout=null;
 	private TextView mTextViewAdded=null;

@@ -7,11 +7,11 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.BaseListActivity;
 import com.mt.androidtest.R;
 import com.mt.androidtest.permission.RequestPermissionsActivity;
 
-public class ExtStorageActivity extends BaseActivity {
+public class ExtStorageActivity extends BaseListActivity {
     private int AndroidVersion=-1;
 	private byte[] bytesToSave=new byte[]{'m','t'};
 	private byte[] bytesLoaded=null;

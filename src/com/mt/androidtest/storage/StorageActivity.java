@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.BaseListActivity;
 import com.mt.androidtest.R;
 /**
  * mHandlerThread：处理非耗时操作
@@ -19,7 +19,7 @@ import com.mt.androidtest.R;
  * @author Mengtao1
  *
  */
-public class StorageActivity extends BaseActivity {
+public class StorageActivity extends BaseListActivity {
 	private boolean isLogRun=false;
 	private Handler mHandler=null;
 	private HandlerThread mHandlerThread=null;

@@ -31,7 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends BaseActivity implements DialogInterface.OnClickListener{
+public class MainActivity extends BaseListActivity implements DialogInterface.OnClickListener{
 	boolean isLogRun=false;
 	boolean isNotificationShown=false;
 	private Context mContext=null;

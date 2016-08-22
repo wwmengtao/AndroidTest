@@ -16,11 +16,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.BaseListActivity;
 import com.mt.androidtest.R;
 import com.mt.androidtest.tool.XmlOperator;
 
-public class ContentResolverDemoActivity extends BaseActivity {
+public class ContentResolverDemoActivity extends BaseListActivity {
 	private boolean isLogRun = true;
 	private String ContProvider_URI = "content://";
 	private String [] mMethodNameFT={

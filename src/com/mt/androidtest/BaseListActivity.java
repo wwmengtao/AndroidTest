@@ -33,7 +33,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-public class BaseActivity extends ListActivity implements AdapterView.OnItemClickListener, Handler.Callback, View.OnClickListener{
+public class BaseListActivity extends ListActivity implements AdapterView.OnItemClickListener, Handler.Callback, View.OnClickListener{
 	private boolean isLogRun = true;
 	private LinearLayout mLinearlayout_listview_android=null;
 	private LinearLayout mLinearlayout_listview_functions=null;
@@ -47,7 +47,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	private LayoutInflater mLayoutInflater = null;
     private DisplayMetrics metric=null;
     private int mDensityDpi = 0;
-    private static WeakReference<BaseActivity>mBaseActivityWR=null;
+    private static WeakReference<BaseListActivity>mBaseListActivityWR=null;
     private ArrayList<String>mActivitiesName=null;
     private int AndroidVersion=-1;
     //
@@ -75,7 +75,7 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		mLayoutInflater=LayoutInflater.from(this);
 		metric  = getResources().getDisplayMetrics();
 		mDensityDpi = metric.densityDpi;
-		mBaseActivityWR=new WeakReference<BaseActivity>(this);
+		mBaseListActivityWR=new WeakReference<BaseListActivity>(this);
 		getActivities(this);
 		mSharedPreferences	= this.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
 		xScrollView = mSharedPreferences.getInt(preferenceXScrollView, 0);
@@ -236,9 +236,9 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 	
 	public static Handler getHandler(){
         if (mHandler == null) {
-        	BaseActivity mBaseActivity=mBaseActivityWR.get();
-        	if(null!=mBaseActivity){
-        		mHandler = new Handler(mBaseActivity);
+        	BaseListActivity mBaseListActivity=mBaseListActivityWR.get();
+        	if(null!=mBaseListActivity){
+        		mHandler = new Handler(mBaseListActivity);
         	}
         }
 		return mHandler;

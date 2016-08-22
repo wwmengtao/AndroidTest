@@ -12,10 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseActivity;
+import com.mt.androidtest.BaseListActivity;
 import com.mt.androidtest.R;
 
-public class AsynchronousActivity extends BaseActivity{
+public class AsynchronousActivity extends BaseListActivity{
     private String [] mMethodNameFT={"startAsyncTaskDemo","cancelAsyncTaskDemo","startAsyncTaskProgressBar","cancelAsyncTaskProgressBar"};
     public ProgressBar mProgressBar=null;    
     public TextView mProgressTV=null;    
