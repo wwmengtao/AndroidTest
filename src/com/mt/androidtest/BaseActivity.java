@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.mt.androidtest.listview.ListViewAdapter;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -19,7 +20,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -59,6 +62,8 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
     private String preferenceYScrollView="scrollviewposition_YScrollView";
     private int xScrollView = 0;
     private int yScrollView = 0;
+    //
+    private static final int SWITCH_MARGIN_RIGHT =26;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		AndroidVersion =Build.VERSION.SDK_INT;
@@ -76,7 +81,34 @@ public class BaseActivity extends ListActivity implements AdapterView.OnItemClic
 		xScrollView = mSharedPreferences.getInt(preferenceXScrollView, 0);
 		yScrollView = mSharedPreferences.getInt(preferenceYScrollView, 0);
     	editor = mSharedPreferences.edit();
+    	//Ôö¼ÓActionBar
+    	initActionBar();
 	}
+	
+	public void initActionBar(){
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+                    ActionBar.DISPLAY_SHOW_CUSTOM);
+            ActionBar.LayoutParams layout = new ActionBar.LayoutParams(
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    Gravity.CENTER_VERTICAL | Gravity.END);
+            layout.setMarginEnd(SWITCH_MARGIN_RIGHT);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }	
+	}
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+        case android.R.id.home:
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 	
 	@Override
 	public void onRestart(){

@@ -513,6 +513,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int yellow=0x7f080003;
     }
     public static final class dimen {
+        public static final int actionbar_contentInsetStart=0x7f090005;
+        public static final int actionbar_size=0x7f090004;
         /**  Default screen margins, per the Android Design guidelines. 
 
          Example customization of dimensions originally defined in res/values/dimens.xml
@@ -834,12 +836,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         /**  Application theme. 
          */
         public static final int AppTheme=0x7f0b0001;
-        public static final int custom_theme=0x7f0b0002;
-        public static final int default_style=0x7f0b0004;
+        public static final int MyActionBar=0x7f0b0002;
+        public static final int SettingsActionBarTitleText=0x7f0b0003;
+        public static final int custom_theme=0x7f0b0004;
+        public static final int default_style=0x7f0b0006;
         /**  layout中指定布局 
          */
-        public static final int myStyle=0x7f0b0003;
-        public static final int textview_1=0x7f0b0005;
+        public static final int myStyle=0x7f0b0005;
+        public static final int textview_1=0x7f0b0007;
     }
     public static final class xml {
         public static final int mypreference=0x7f040000;

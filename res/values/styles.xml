@@ -15,12 +15,23 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="@android:style/Theme.Material.Settings">
         <item name="custom_style">@style/custom_theme</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:actionBarSize">@dimen/actionbar_size</item>        
         <item name="custom_color1">#ff444444</item>
         <item name="custom_color2">#ff444444</item>
         <item name="custom_color3">#ff444444</item>
         <item name="custom_color4">#ff444444</item>
         <item name="custom_color5">#ff444444</item>
     </style>
+    
+    <style name="MyActionBar" parent="@android:style/Widget.Material.ActionBar.Solid">
+        <item name="android:contentInsetStart">@dimen/actionbar_contentInsetStart</item>
+        <item name="android:titleTextStyle">@style/SettingsActionBarTitleText</item>
+    </style>    
+    
+    <style name="SettingsActionBarTitleText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+        <item name="android:textSize">20sp</item>
+    </style>    
     
     <attr name="custom_style" format="reference"></attr>
     
