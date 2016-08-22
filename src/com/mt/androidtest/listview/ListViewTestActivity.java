@@ -2,6 +2,7 @@ package com.mt.androidtest.listview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
@@ -27,10 +28,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.WrapperListAdapter;
+
 import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
-public class ListViewTestActivity extends Activity implements RecyclerListener, OnScrollListener, View.OnClickListener,
+public class ListViewTestActivity extends BaseActivity implements RecyclerListener, OnScrollListener, View.OnClickListener,
 OnCreateContextMenuListener,OnItemClickListener{
 	ListView mListView;
 	ListViewTestAdapter_SingleLayout listAdapter_S;//表明ListView显示的item只有一种layout
@@ -130,7 +133,7 @@ OnCreateContextMenuListener,OnItemClickListener{
 			initListViewLM();
 			break;					
 		}
-		return true;
+		return super.onOptionsItemSelected(mi);
 	}
 	
 	public void reset(){

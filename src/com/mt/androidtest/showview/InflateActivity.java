@@ -9,9 +9,11 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
-public class InflateActivity extends Activity {
+public class InflateActivity extends BaseActivity{
 	View rootView=null;
 	View mView=null;
 	LinearLayout mLinearLayout=null;
@@ -24,7 +26,7 @@ public class InflateActivity extends Activity {
 	final int SetContentView_2=0x22;	
 	MenuItem mMenuItem=null;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    mLayoutInflater=getLayoutInflater();
 	}
@@ -89,6 +91,6 @@ public class InflateActivity extends Activity {
 			break;			
 		}
 		
-		return true;
+		return super.onOptionsItemSelected(mi);
 	}	
 }

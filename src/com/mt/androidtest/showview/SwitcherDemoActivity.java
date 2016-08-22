@@ -16,10 +16,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 import com.mt.androidtest.listview.ListViewAdapter;
 
-public class SwitcherDemoActivity extends Activity implements Handler.Callback,OnScrollListener{
+public class SwitcherDemoActivity extends BaseActivity implements Handler.Callback,OnScrollListener{
 	GridView mGridView = null;
 	ListView mListView = null;
 	ListViewAdapter mListViewAdapter = null;
@@ -42,7 +43,7 @@ public class SwitcherDemoActivity extends Activity implements Handler.Callback,O
     private Handler mUpdater=null;
     private Handler mAnimationHandler=null;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_switcher_demo);
 		mProgressDialog = new ProgressDialog(this);
@@ -54,7 +55,7 @@ public class SwitcherDemoActivity extends Activity implements Handler.Callback,O
 	}
 	
 	@Override
-	protected void onResume(){	
+	public void onResume(){	
 		super.onResume();
         if (mUpdater == null) {
             mUpdater = new Handler(this);
@@ -66,7 +67,7 @@ public class SwitcherDemoActivity extends Activity implements Handler.Callback,O
 	}
 	
 	@Override
-	protected void onPause(){
+	public void onPause(){
 		super.onPause();
         if (mUpdater != null) {
             mUpdater.removeCallbacksAndMessages(null);

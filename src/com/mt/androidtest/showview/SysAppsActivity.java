@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -33,10 +32,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 import com.mt.androidtest.listview.ListViewAdapter;
 
-public class SysAppsActivity extends Activity implements DialogInterface.OnClickListener,OnScrollListener{
+public class SysAppsActivity extends BaseActivity implements DialogInterface.OnClickListener,OnScrollListener{
 	GridView mGridView = null;
 	ListView mListView = null;
 	ListViewAdapter mListViewAdapter = null;
@@ -56,7 +56,7 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
 	static final int Menu_GridView = 0;
 	static final int Menu_ListView = 1;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sys_apps);
 		mGridView=(GridView)findViewById(R.id.gridview_sysapp);
@@ -74,13 +74,13 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
 	}
 
 	@Override
-	protected void onResume(){	
+	public void onResume(){	
 		super.onResume();
 		initData();
 	}
 	
 	@Override
-	protected void onPause(){
+	public void onPause(){
 		super.onPause();
 	}
 	
@@ -110,7 +110,7 @@ public class SysAppsActivity extends Activity implements DialogInterface.OnClick
 			mListView.setVisibility(View.VISIBLE);
 			break;					
 		}
-		return true;
+		return super.onOptionsItemSelected(mi);
 	}
 	
 	private void initData(){

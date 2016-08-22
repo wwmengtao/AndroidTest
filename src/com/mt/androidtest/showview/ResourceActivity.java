@@ -3,8 +3,10 @@ package com.mt.androidtest.showview;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -24,10 +26,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
-public class ResourceActivity extends Activity  implements View.OnClickListener{
+public class ResourceActivity extends BaseActivity  implements View.OnClickListener{
 	private LinearLayout mLayout_linear_switchbar=null;
     private RelativeLayout mRelativeLayout=null;
 	String mText=null;
@@ -44,7 +48,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
     private AssetManager mAssetManager=null;
 	int [] buttonID = {R.id.btn_showresource};    
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_resource);
 		mContext=this.getApplicationContext();
@@ -62,7 +66,7 @@ public class ResourceActivity extends Activity  implements View.OnClickListener{
 	}
 
 	@Override
-	protected void onResume(){	
+	public void onResume(){	
 		super.onResume();
 		ALog.Log("====onResume");
 		testFunctions();

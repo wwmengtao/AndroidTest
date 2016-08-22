@@ -2,9 +2,6 @@ package com.mt.androidtest.myselfview;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.mt.androidtest.R;
-import com.mt.androidtest.R.xml;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -15,6 +12,8 @@ import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
+
+import com.mt.androidtest.R;
 
 public class MyPreferenceActivity extends PreferenceActivity {
 	 

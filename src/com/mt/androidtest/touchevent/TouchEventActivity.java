@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
 
@@ -19,7 +20,7 @@ import com.mt.androidtest.R;
  * @author Mengtao1
  *
  */
-public class TouchEventActivity extends Activity implements View.OnClickListener, View.OnTouchListener{  
+public class TouchEventActivity extends BaseActivity implements View.OnClickListener, View.OnTouchListener{  
 
     private static final String strLayout = "0.TouchEventActivity";
     private SparseArray<Integer> dispatchTouchEventArrays = null;
@@ -27,7 +28,7 @@ public class TouchEventActivity extends Activity implements View.OnClickListener
     private SparseArray<Integer> onTouchArrays = null;
     private TouchEventActivityERA mET = null;
     @Override  
-    protected void onCreate(Bundle savedInstanceState) {  
+    public void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
         setContentView(R.layout.activity_touch_event);
         //

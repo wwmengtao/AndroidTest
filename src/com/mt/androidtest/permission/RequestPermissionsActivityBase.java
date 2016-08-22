@@ -2,6 +2,7 @@ package com.mt.androidtest.permission;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +12,10 @@ import android.os.Trace;
 import android.widget.Toast;
 
 import com.mt.androidtest.ALog;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
-public abstract class RequestPermissionsActivityBase extends Activity {
+public abstract class RequestPermissionsActivityBase extends BaseActivity {
     public static final String PREVIOUS_ACTIVITY_INTENT = "previous_intent";
     private static final int PERMISSIONS_REQUEST_ALL_PERMISSIONS = 1;
     protected abstract String[] getRequiredPermissions();
@@ -21,7 +23,7 @@ public abstract class RequestPermissionsActivityBase extends Activity {
     private Intent mPreviousActivityIntent=null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPreviousActivityIntent = (Intent) getIntent().getExtras().get(PREVIOUS_ACTIVITY_INTENT);
         if (savedInstanceState == null) {
