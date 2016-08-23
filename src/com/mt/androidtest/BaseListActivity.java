@@ -68,8 +68,8 @@ public class BaseListActivity extends ListActivity implements AdapterView.OnItem
      * 有关生命周期：
      * 如果执行adb shell am start -a "com.android.phone.EmergencyDialer.DIAL"调出拨号盘界面挡住当前Activity
      * 情况一、不拨打电话，仅仅让拨号盘界面盖住当前Activity
-     * 那么Activity执行onPause->onSaveInstanceState
-     * 此时按下电源键关闭屏幕，Activity经历onRestart->onStart->onResume->onPause->onSaveInstanceState
+     * 那么Activity执行onPause->onSaveInstanceState->onStop
+     * 此时按下电源键关闭屏幕，Activity经历onRestart->onStart->onResume->onPause->onSaveInstanceState->onStop
      * 再次按下电源键开启屏幕，Activity经历onRestart->onStart->onResume
      * 情况二、通过拨号盘拨打紧急号码(比如：112)进入通话界面，在通话界面执行下列操作
      * 按下电源键关闭屏幕，Activity不经历任何生命周期
@@ -185,6 +185,12 @@ public class BaseListActivity extends ListActivity implements AdapterView.OnItem
 		super.onSaveInstanceState(savedInstanceState);
 		if(isLogRun)ALog.Log("onSaveInstanceState",this);
 	}
+	
+    @Override
+    protected void onStop() {
+        super.onStop();
+		if(isLogRun)ALog.Log("onStop",this);		
+    }
 	
 	@Override
 	public void onDestroy() {

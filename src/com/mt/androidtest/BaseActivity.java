@@ -85,6 +85,12 @@ public class BaseActivity extends Activity {
 		if(isLogRun)ALog.Log("onSaveInstanceState",this);
 	}
 	
+    @Override
+    protected void onStop() {
+        super.onStop();
+		if(isLogRun)ALog.Log("onStop",this);		
+    }
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
