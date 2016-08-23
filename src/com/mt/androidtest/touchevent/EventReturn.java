@@ -8,12 +8,18 @@ import com.mt.androidtest.ALog;
 public class EventReturn {
 	   
     /**
-     * 所有继承EventReturnArrays的类，在其setData函数中可以设置触摸事件处理函数的返回值。
-     * 下列SparseArray中数值标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
+     * 所有继承EventReturnArrays的类，在其setData函数中可以设置触摸事件处理函数的返回值，例如：
+     * dispatchTouchEventArrays.put(MotionEvent.ACTION_DOWN, 1);//代表对应的View的dispatchTouchEvent返回值为true
+     * onInterceptTouchEventArrays.put(MotionEvent.ACTION_DOWN, 0);//代表对应的View的onInterceptTouchEvent返回值为false
+     * onTouchArrays.put(MotionEvent.ACTION_DOWN, -1);//代表对应的View的onTouch返回值为默认值，比如super.xxx
+     * onTouchEventArrays.put(MotionEvent.ACTION_DOWN, -2);//代表对应的View的onTouchEvent返回值为默认值，比如super.xxx
      * @author Mengtao1
      *
      */
     public static class EventReturnArrays{
+    	/**
+    	 * 下列SparseArray中数值标识了相应方法中事件的处理结果，0代表返回false，1代表返回true，其他数值采用默认值。
+    	 */
     	protected SparseArray<Integer>dispatchTouchEventArrays      = null;
     	protected SparseArray<Integer>onInterceptTouchEventArrays = null;
     	protected SparseArray<Integer>onTouchArrays                         = null;
