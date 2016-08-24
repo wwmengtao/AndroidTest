@@ -114,7 +114,7 @@ public class EventInfo {
      * 事件处理结果的默认返回值
      * @return
      */
-    public static boolean getReturnResult(String strLayout, String strHandleEvent){
+    public static boolean getReturnResult(MotionEvent event, String strLayout, String strHandleEvent){
     	String currentView = strLayout;
     	String currentHandleMehod = strHandleEvent;
     	//确认事件处理的返回值类型
@@ -129,6 +129,7 @@ public class EventInfo {
 				;
     	}
     	//输出事件处理结果的详细信息
+    	curEventType = event.getAction();
         switch (curEventType) {
 	        case MotionEvent.ACTION_DOWN:  
 	        	ACTION_DOWN_LOG(currentView, currentHandleMehod, returnResult);

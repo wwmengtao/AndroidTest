@@ -50,7 +50,7 @@ public class TouchEventActivity extends BaseActivity implements View.OnClickList
     	if(!setReturnResult(event, strLayout, dispatchTouchEvent, dispatchTouchEventArrays)){
     		setDefaultReturnResult(super.dispatchTouchEvent(event));
     	}
-        return getReturnResult(strLayout, dispatchTouchEvent);
+        return getReturnResult(event,strLayout, dispatchTouchEvent);
     }
     
     /**
@@ -63,7 +63,7 @@ public class TouchEventActivity extends BaseActivity implements View.OnClickList
     	if(!setReturnResult(event, mStrLayout, onTouch, onTouchArrays)){
     		setDefaultReturnResult(false);
     	}
-        return getReturnResult(mStrLayout, onTouch);
+        return getReturnResult(event, mStrLayout, onTouch);
     }    
     
     /**
@@ -75,7 +75,7 @@ public class TouchEventActivity extends BaseActivity implements View.OnClickList
     	if(!setReturnResult(event, strLayout, onTouchEvent, onTouchEventArrays)){
     		setDefaultReturnResult(super.onTouchEvent(event));
     	}
-        return getReturnResult(strLayout, onTouchEvent);
+        return getReturnResult(event, strLayout, onTouchEvent);
     }
 
 	@Override

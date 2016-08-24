@@ -39,7 +39,7 @@ public class MyRelativeLayout extends RelativeLayout implements View.OnClickList
     	if(!setReturnResult(event, strLayout, dispatchTouchEvent, dispatchTouchEventArrays)){
     		setDefaultReturnResult(super.dispatchTouchEvent(event));
     	}
-        return getReturnResult(strLayout, dispatchTouchEvent);
+        return getReturnResult(event, strLayout, dispatchTouchEvent);
     }
 
     @Override  
@@ -47,7 +47,7 @@ public class MyRelativeLayout extends RelativeLayout implements View.OnClickList
     	if(!setReturnResult(event, strLayout, onInterceptTouchEvent, onInterceptTouchEventArrays)){
     		setDefaultReturnResult(super.onInterceptTouchEvent(event));
     	}
-        return getReturnResult(strLayout, onInterceptTouchEvent);
+        return getReturnResult(event, strLayout, onInterceptTouchEvent);
     }  
 
     @Override  
@@ -55,7 +55,7 @@ public class MyRelativeLayout extends RelativeLayout implements View.OnClickList
     	if(!setReturnResult(event, strLayout, onTouch, onTouchArrays)){
     		setDefaultReturnResult(false);
     	}
-        return getReturnResult(strLayout, onTouch);
+        return getReturnResult(event, strLayout, onTouch);
     }
 
     @Override  
@@ -63,7 +63,7 @@ public class MyRelativeLayout extends RelativeLayout implements View.OnClickList
     	if(!setReturnResult(event, strLayout, onTouchEvent, onTouchEventArrays)){
     		setDefaultReturnResult(super.onTouchEvent(event));
     	}
-        return getReturnResult(strLayout, onTouchEvent);
+        return getReturnResult(event, strLayout, onTouchEvent);
     }
     
 	@Override

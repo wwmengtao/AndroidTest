@@ -43,7 +43,7 @@ public class MyTextView extends TextView implements View.OnClickListener, View.O
     	if(!setReturnResult(event, strLayout, dispatchTouchEvent, dispatchTouchEventArrays)){
     		setDefaultReturnResult(super.dispatchTouchEvent(event));
     	}
-        return getReturnResult(strLayout, dispatchTouchEvent);
+        return getReturnResult(event, strLayout, dispatchTouchEvent);
     }
 
     @Override  
@@ -51,7 +51,7 @@ public class MyTextView extends TextView implements View.OnClickListener, View.O
     	if(!setReturnResult(event, strLayout, onTouch, onTouchArrays)){
     		setDefaultReturnResult(false);
     	}
-        return getReturnResult(strLayout, onTouch);
+        return getReturnResult(event, strLayout, onTouch);
     }
 
     @Override  
@@ -59,7 +59,7 @@ public class MyTextView extends TextView implements View.OnClickListener, View.O
     	if(!setReturnResult(event, strLayout, onTouchEvent, onTouchEventArrays)){
     		setDefaultReturnResult(super.onTouchEvent(event));
     	}
-        return getReturnResult(strLayout, onTouchEvent);
+        return getReturnResult(event, strLayout, onTouchEvent);
     }
     
 	@Override
