@@ -97,7 +97,7 @@ public class EventInfo {
 	        	ACTION_CANCEL_LOG(currentView, currentHandleMehod); 
 	            break;
 	        default:
-	        	;
+	        	return false;
         }
     	curEventTypeReturnResult = handleEvents.get(curEventType);
     	noNeedToSetDefaultReturnResult = (0==curEventTypeReturnResult || 1==curEventTypeReturnResult);
