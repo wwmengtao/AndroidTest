@@ -11,6 +11,11 @@ import android.widget.Scroller;
 
 import com.mt.androidtest.ALog;
 
+/**
+ * 继承了ViewGroup的控件必须重写onMeasure和onLayout函数，这不同于继承了FrameLayout、LinearLayout等控件。
+ * @author Mengtao1
+ *
+ */
 public class ScrollViewGroup extends ViewGroup {
 
     /**
@@ -85,6 +90,10 @@ public class ScrollViewGroup extends ViewGroup {
         }
     }
 
+    /**
+     * onInterceptTouchEvent：由于Button是Clickable的控件，其onTouchEvent里面对所有触摸事件均返回true，因此上层
+     * 控件ScrollViewGroup需要对某些事件进行拦截
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
@@ -138,14 +147,15 @@ public class ScrollViewGroup extends ViewGroup {
         }
         return super.onTouchEvent(event);
     }
+    
     /**invalidate会调用draw方法
      * View.draw函数有如下片段：
      * if (!drawingWithRenderNode) {
             computeScroll();
-            sx = mScrollX;
-            sy = mScrollY;
+            ...
         }
      */
+    
     @Override
     public void computeScroll() {
         // 第三步，重写computeScroll()方法，并在其内部完成平滑滚动的逻辑

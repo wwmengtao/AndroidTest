@@ -45,14 +45,14 @@
 	</com.mt.androidtest.myselfview.ScrollViewGroup>
 	
 	<com.mt.androidtest.myselfview.ScrollFrameLayout
-	    android:background="@color/wheat"
 		android:layout_width="match_parent"
 		android:layout_height="50dp">
-	    <Button
-			android:layout_width="match_parent"
+	    <TextView
+	        android:id="@+id/scrolltv"
+			android:layout_width="60dp"
 			android:layout_height="match_parent"
-			android:gravity="start|center_vertical"
-			android:text="ScrollerText"
-			/>
+			android:gravity="center"
+			android:text="TextView"
+			android:background="@color/wheat"/>
 	</com.mt.androidtest.myselfview.ScrollFrameLayout>		
 </LinearLayout> 
