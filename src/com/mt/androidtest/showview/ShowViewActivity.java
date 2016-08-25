@@ -1,183 +1,54 @@
 package com.mt.androidtest.showview;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextPaint;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseListActivity;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
-public class ShowViewActivity extends BaseListActivity{
+public class ShowViewActivity extends BaseActivity{
 	boolean isLogRunAll=false;
-	private LinearLayout mLayout=null;
+	//1、addView添加View
+	private LinearLayout mLayoutAddView=null;
 	private TextView mTextViewAdded=null;
-	private View mLinearLayout_TextSize=null;
+	//2、将不同长度的字串字体大小调整到适应控件宽度
+	private View mLinearLayout_AdjustTextSize=null;
     private TextView mTV1_TextSize=null;
-    private TextView mTV2_TextSize=null;    
-    private LinearLayout mLinearLayout_Parent=null;    
-    private GridLayout mGridLayout_Calculator=null;    
-    private LinearLayout mLinearLayout_Child=null;
-    private static Handler mHandler=null;
-    private LayoutInflater mLayoutInflater=null;
-	private final int MSG_INIT_TEXT_VIEW_ADDED=0x000;
-	private final int MSG_INIT_TEXT_VIEW_ADDED_WIDTH=0x001;
-	private final int MSG_SHOW_VIEW_ADD_VIEW=0x002;
-	private final int MSG_SHOW_VIEW_FIXED_LENGTH=0x003;
-	private final int MSG_SHOW_VIEW_FINALLY=0x004;	
-	private String [] mMethodNameFT={"showViewAdded","showViewFixedLength","showViewFixedSize",
-			"showChildView"};
-	private String [] mActivitiesName={"InflateActivity"};			
-	private PhoneViewInfo mPhoneViewInfo=null;
+    private TextView mTV2_TextSize=null;
+    //3、根据控件内容确定控件宽度
+	private LinearLayout mLinearLayout_AdjustViewWidth=null;
+	private TextView mTV_AdjustViewWidth=null;
+    //4、获取手机显示信息
+    private PhoneViewInfo mPhoneViewInfo=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);//1、去除ActionBar
 		setContentView(R.layout.activity_show_view);
-		mLayoutInflater=getLayoutInflater();
-		super.initListFTData(mMethodNameFT);
-		super.initListActivityData(mActivitiesName);
-		mLayout=(LinearLayout) findViewById(R.id.linearlayout_showview);
-		mLinearLayout_TextSize = findViewById(R.id.linearlayout_textsize);
+		//1、addView添加View
+		mLayoutAddView=(LinearLayout) findViewById(R.id.linearlayout_addview);
+		initTextViewAdded();
+		//2、调整内容字体大小以适应控件宽度
+		mLinearLayout_AdjustTextSize = findViewById(R.id.linearlayout_adjusttextsize);
 	    mTV1_TextSize = (TextView) findViewById(R.id.textview_textsize1);
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
-	    mLinearLayout_Parent= (LinearLayout) findViewById(R.id.parentView);
-	    initParentView();
+	    //3、调整控件宽度以全部显示内容
+	    mLinearLayout_AdjustViewWidth = (LinearLayout) findViewById(R.id.linearlayout_adjustviewwidth);
+		//4、以下获取手机显示信息
 	    mPhoneViewInfo = new PhoneViewInfo(this);
-	}
-
-	@Override
-	public void onResume(){	
-		super.onResume();
-		mHandler=getHandler();
+		mPhoneViewInfo.showPhoneViewInfo();
 	}
 	
-	@Override
-	protected void onListItemClick(ListView list, View view, int position, long id) {
-		super.onListItemClick(list, view, position, id);
-	}
-	
-	public void initParentView(){
-		//1、添加计算器GridLayout布局，直接
-	    mGridLayout_Calculator=(GridLayout) mLayoutInflater.inflate(R.layout.gridlayout_calculator,mLinearLayout_Parent,false);
-	    mLinearLayout_Parent.addView(mGridLayout_Calculator);
-	    //2、添加preference线性布局
-	    mLinearLayout_Child=(LinearLayout) mLayoutInflater.inflate(R.layout.linearlayout_preference,mLinearLayout_Parent);
-	    //2.1、设置开头的图标。注释掉下列代码，会发现文字靠左显示；反之，图片靠左显示
-	    View imageFrame = mLinearLayout_Child.findViewById(R.id.icon_frame);
-	    ViewGroup.LayoutParams lp=null;
-	    if(!imageFrame.isShown()){
-	    	imageFrame.setVisibility(View.VISIBLE);
-	    	ImageView mIMG = (ImageView)imageFrame.findViewById(R.id.icon_img);
-		    mIMG.setBackgroundResource(R.drawable.number1_g);
-		    setLayoutParams(mIMG,0.3,0.3);
-	    }
-	    //2.2、设置结尾的布局内容
-	    LinearLayout widget_frame=(LinearLayout)mLinearLayout_Child.findViewById(R.id.widget_frame);
-	    setLayoutParams(widget_frame,0.3,0.3);
-	    widget_frame.setBackgroundResource(R.drawable.number1_r);
-	    //3、添加FrameLayout
-	    FrameLayout mFrameLayout = (FrameLayout) mLayoutInflater.inflate(R.layout.framelayout_lmr,mLinearLayout_Parent,false);
-	    mLinearLayout_Parent.addView(mFrameLayout);
-	}
-	
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
-		// TODO Auto-generated method stub
-		switch(mMethodNameFT[position]){
-		case "showViewAdded":
-			mHandler.sendEmptyMessage(MSG_SHOW_VIEW_ADD_VIEW);
-			break;	
-		case "showViewFixedLength":
-			mHandler.sendEmptyMessage(MSG_SHOW_VIEW_FIXED_LENGTH);
-			break;		
-		case "showViewFixedSize":
-			if(!mLinearLayout_TextSize.isShown()){
-				mLinearLayout_TextSize.setVisibility(View.VISIBLE);
-			}else{
-				mLinearLayout_TextSize.setVisibility(View.GONE);
-			}
-			break;
-		case "showChildView":
-			if(mLinearLayout_Parent.isShown()){
-				mLinearLayout_Parent.setVisibility(View.GONE);
-			}else{
-				mLinearLayout_Parent.setVisibility(View.VISIBLE);
-			}
-			break;
-		}
-	}
-	
-	@Override
-	public boolean handleMessage(Message msg) {
-		// TODO Auto-generated method stub
-		switch(msg.what){
-		case MSG_INIT_TEXT_VIEW_ADDED:
-			initTextViewAdded();
-			if(!mLayout.isShown()){
-				mLayout.setVisibility(View.VISIBLE);
-			}
-			break;
-		case MSG_INIT_TEXT_VIEW_ADDED_WIDTH:
-			showView();
-			break;
-		case MSG_SHOW_VIEW_ADD_VIEW:
-			mTVAddedParams.isShowAddView=true;
-			if(null==mTextViewAdded){
-				mHandler.sendEmptyMessage(MSG_INIT_TEXT_VIEW_ADDED);
-			}else{
-				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_FINALLY);
-			}
-			break;
-		case MSG_SHOW_VIEW_FIXED_LENGTH:
-			if(isLogRunAll)ALog.Log("MSG_SHOW_VIEW_FIXED_LENGTH");
-			mTVAddedParams.isShowAddView=false;
-			if(null==mTextViewAdded){
-				mHandler.sendEmptyMessage(MSG_INIT_TEXT_VIEW_ADDED);
-			}else{
-				mHandler.sendEmptyMessage(MSG_SHOW_VIEW_FINALLY);
-			}
-			break;			
-		case MSG_SHOW_VIEW_FINALLY:
-			if(!mLayout.isShown()){
-				mLayout.setVisibility(View.VISIBLE);
-				showView();
-			}else{
-				mLayout.setVisibility(View.GONE);
-			}
-			break;
-		}		
-		return false;
-	}
-	
-	public class textViewAddedParams{
-		int widthOfTextViewAdded=0;
-		boolean isShowAddView=false;
-		boolean isAddViewInit=false;
-		boolean isFixedLengthViewInit=false;
-	}
-	textViewAddedParams mTVAddedParams = new textViewAddedParams();
-
 	/**
 	 * onWindowFocusChanged：
 		1、进入组件时执行顺序如下：
@@ -191,75 +62,105 @@ public class ShowViewActivity extends BaseListActivity{
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		//1、获取控件实际宽度
+		//1、固定控件宽度下，调整字体大小以适应控件
 		String time_now_str = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ987654321";
-		showTextSizeView(mTV1_TextSize,time_now_str);
+		showViewAdjustTextSize(mTV1_TextSize,time_now_str);
 		time_now_str = "123456789123456789123456789";
-		showTextSizeView(mTV2_TextSize,time_now_str);
-		//if(isLogRunAll)ALog.Log("/------------------------onWindowFocusChanged------------------------/");
+		showViewAdjustTextSize(mTV2_TextSize,time_now_str);
+		//2、根据要显示的内容控制控件宽度
+		showViewAdjustViewWidth();
+		//3、显示控件的宽高信息
+		if(isLogRunAll)ALog.Log("/------------------------onWindowFocusChanged------------------------/");
 		showWidthAndHeightLog();
-		//if(isLogRunAll)ALog.Log("/************************onWindowFocusChanged************************/");
-		//2、以下获取手机显示信息
+		if(isLogRunAll)ALog.Log("/************************onWindowFocusChanged************************/");
+		//4、以下获取手机显示信息
 		mPhoneViewInfo.showPhoneViewInfo();
+		ALog.Log("statusBarHeight:"+mPhoneViewInfo.StatusBarHeight);
 	    View v = getWindow().findViewById(Window.ID_ANDROID_CONTENT);  
-	    int contentTop = v.getTop();
-	    //3、获取标题栏高度
-	    int titleBarHeight = contentTop - mPhoneViewInfo.StatusBarHeight;
+	    ALog.Log("contentTop:"+v.getTop());
+	    //获取标题栏高度
+	    int titleBarHeight = v.getTop() - mPhoneViewInfo.StatusBarHeight;
 	    ALog.Log("titleBarHeight:"+titleBarHeight);
 	}
 	
+    public void showWidthAndHeightLog(){
+    	showWidthAndHeight(mTextViewAdded, "mTextViewAdded");	
+    	showWidthAndHeight(mLinearLayout_AdjustTextSize, "mLinearLayout_AdjustTextSize");	
+    	showWidthAndHeight(mLayoutAddView, "mLayoutAddView");
+    	showWidthAndHeight(mTV1_TextSize, "mTV1_TextSize");
+    }
+    
+    /**
+     * initTextViewAdded：在onCreate中被调用，控件无法准确获取宽度高度，可以注册OnGlobalLayoutListener正确获取
+     */
+	public void initTextViewAdded(){
+		//第一个参数为宽的设置，第二个参数为高的设置。   
+		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(      
+				LinearLayout.LayoutParams.WRAP_CONTENT,      
+				LinearLayout.LayoutParams.WRAP_CONTENT );      
+		//调用addView()方法增加一个TextView到线性布局中   
+		//往mLayout里边添加一个TextView
+		mTextViewAdded = new TextView(this);  
+		mTextViewAdded.setBackgroundColor(getResources().getColor(R.color.greenyellow));				
+		mLayoutAddView.addView(mTextViewAdded, p); //引起onGlobalLayout函数的调用
+		mTextViewAdded.setSingleLine(true);
+		mTextViewAdded.setText("View to be added!");
+		//mTextViewAdded设置监听器OnGlobalLayoutListener以成功获取控件宽高
+		setOnGlobalLayoutListener();
+	}
+	
+	public void setOnGlobalLayoutListener(){
+		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override 
+			public void onGlobalLayout() { 
+				int widthOfView=0;			
+				if(null!=mTextViewAdded){
+					widthOfView = mTextViewAdded.getWidth();//mTextViewAdded的宽度可以由此处获取
+					if(0!=widthOfView){
+						mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(this);//获取非0宽度之后取消监听
+					}
+				}
+			} 
+		}); 
+	}
+	
 	/**
-	 * 根据固定控件的大小调整所能显示的最大字体
+	 * showViewAdjustTextSize:根据固定控件的大小调整所能显示的最大字体
 	 * @param mView
 	 * @param str
 	 */
-	public void showTextSizeView(TextView mView,String str){
+	public void showViewAdjustTextSize(TextView mView,String str){
 		if(null==mView||null==str)return;
 		mView.setSingleLine(true);
         int widthofView = mView.getWidth();
         int textSize = (int)mView.getTextSize();
         while((int)mView.getPaint().measureText(str) > widthofView){
         	mView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize--);
-            if(1==textSize)break;
+            if(1==textSize)break;//字体大小最小为1
         }
         mView.setText(str);
 	}
 	
-	public void showView(){
-		if(mTVAddedParams.isShowAddView){
-			if(!mTVAddedParams.isAddViewInit){
-				showViewAddView();
-				mTVAddedParams.isAddViewInit=true;
-				mTVAddedParams.isFixedLengthViewInit=false;
-			}
-		}else{
-			if(!mTVAddedParams.isFixedLengthViewInit){
-				showViewFixedLength();
-				mTVAddedParams.isFixedLengthViewInit=true;
-				mTVAddedParams.isAddViewInit=false;
-			}
-		}
-	}
-	
 	/**
-	 * showViewAddView：控件宽度设置为初始宽度
-	 */
-	public void showViewAddView(){
-		mTextViewAdded.setWidth(mTVAddedParams.widthOfTextViewAdded);
-		mTextViewAdded.setGravity(Gravity.CENTER_HORIZONTAL);
-		mTextViewAdded.setText("showViewByAddView");
-	}
-	
-	/**
-	 * showViewFixedLength：根据要显示的内容以及间距精确控制控件的宽度
-	 */
-	public void showViewFixedLength(){
+	 * showViewAdjustViewWidth：根据要显示的内容以及间距精确控制控件的宽度
+	 */	
+	public void showViewAdjustViewWidth(){
+		//第一个参数为宽的设置，第二个参数为高的设置。   
+		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(      
+				LinearLayout.LayoutParams.WRAP_CONTENT,      
+				LinearLayout.LayoutParams.WRAP_CONTENT );      
+		//
 		String str = "123456789123456789123456789123456789";
 		//控件宽度由字符串test_str和dimen值联合确定
         int widthOfView = getWidthByString(str)+2*getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
-		mTextViewAdded.setWidth(widthOfView);
-		mTextViewAdded.setGravity(Gravity.CENTER_HORIZONTAL);
-		mTextViewAdded.setText(str);
+		mTV_AdjustViewWidth = new TextView(this);  
+		mTV_AdjustViewWidth.setWidth(widthOfView);
+		mTV_AdjustViewWidth.setBackgroundColor(getResources().getColor(R.color.wheat));		
+		mTV_AdjustViewWidth.setGravity(Gravity.CENTER_HORIZONTAL);
+		mTV_AdjustViewWidth.setSingleLine(true);
+		mTV_AdjustViewWidth.setText(str);
+		mLinearLayout_AdjustViewWidth.addView(mTV_AdjustViewWidth, p); //引起onGlobalLayout函数的调用
+		mLinearLayout_AdjustViewWidth.setGravity(Gravity.CENTER_HORIZONTAL);
 	}
 
 	public int getWidthByString(String str){
@@ -279,104 +180,5 @@ public class ShowViewActivity extends BaseListActivity{
 	        widthOfView = (int)mTextPaint.measureText(str);
 		}
         return widthOfView;
-	}
-
-	public void initTextViewAdded(){
-		//第一个参数为宽的设置，第二个参数为高的设置。   
-		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(      
-				LinearLayout.LayoutParams.WRAP_CONTENT,      
-				LinearLayout.LayoutParams.WRAP_CONTENT );      
-		//调用addView()方法增加一个TextView到线性布局中   
-		//往mLayout里边添加一个TextView
-		mTextViewAdded = new TextView(this);  
-		mTextViewAdded.setBackgroundColor(getResources().getColor(R.color.wheat));				
-		mLayout.addView(mTextViewAdded, p); //引起onGlobalLayout函数的调用
-		mTextViewAdded.setSingleLine(true);
-		mTextViewAdded.setText("View added");
-		//下列直接获取控件宽度为0，必须使用ViewTreeObserver.OnGlobalLayoutListener监听器
-		/*
-		textViewAddedParams.widthOfTextViewAdded = mTextViewAdded.getMeasuredWidth();
-		if(isLogRunAll)ALog.Log("mTextViewAdded_getWidth:"+textViewAddedParams.widthOfTextViewAdded);
-		*/
-		//方法1.1、mTextViewAdded直接设置监听器
-		setOnGlobalLayoutListener();
-		//方法1.2、mTextViewAdded设置mOnGlobalLayoutListener监听器
-		//setOnGlobalLayoutListener2();
-		//方法2、将一个runnable添加到Layout队列中：View.post()。runnable对象中的方法会在View的measure、layout等事件后触发
-		/*
-		mTextViewAdded.post(new Runnable() {
-			 public void run() {
-				 int widthOfView = mTextViewAdded.getWidth();
-				 if(isLogRunAll)ALog.Log("post_widthOfView:"+widthOfView);	
-			 }
-		});
-		*/
-		if(isLogRunAll)ALog.Log("initTextViewAdded_end");
-	}
-
-	public void setOnGlobalLayoutListener(){
-		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-			@Override 
-			public void onGlobalLayout() { 
-				int widthOfView=0;			
-				if(null!=mTextViewAdded){
-					widthOfView = mTextViewAdded.getWidth();
-					if(isLogRunAll)ALog.Log("onGlobalLayout_widthOfView:"+widthOfView);	
-					if(0!=widthOfView){
-						mTVAddedParams.widthOfTextViewAdded = widthOfView; 
-						mTextViewAdded.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-						mHandler.sendEmptyMessage(MSG_INIT_TEXT_VIEW_ADDED_WIDTH);
-					}
-				}
-			} 
-		}); 
-	}
-	
-	public void setOnGlobalLayoutListener2(){
-		mTextViewAdded.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
-	}
-	
-	ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener =new ViewTreeObserver.OnGlobalLayoutListener(){
-		@Override
-		public void onGlobalLayout() {
-
-		}
-	};
-    
-    public void showWidthAndHeightLog(){
-    	showWidthAndHeight(mTextViewAdded, "mTextViewAdded");	
-    	showWidthAndHeight(mLinearLayout_TextSize, "mLinearLayout_TextSize");	
-    	showWidthAndHeight(mLayout, "mLayout");
-    	showWidthAndHeight(mTV1_TextSize, "mTV1_TextSize");
-    }
-    
-	String regShowWidthAndHeight = "id\\/[a-zA-Z]+.+\\}";//仅仅获取控件id，其他内容不要
-    Pattern mPatternShowWidthAndHeight = Pattern.compile(regShowWidthAndHeight);
-    Matcher mMatcher = null;
-	boolean is_onWindowFocusChanged = false;
-    public void showWidthAndHeight(View mView, String objName){
-    	if(null==mView)return;
-    	if(!is_onWindowFocusChanged){
-    		String betweenTitle=" ";
-    		if(isLogRunAll)ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle+"getMeasuredHeight");
-    		is_onWindowFocusChanged = true;
-    	}
-    	String str_ALog=null;
-        String str = mView.toString();
-        mMatcher = mPatternShowWidthAndHeight.matcher(str);
-        while(mMatcher.find()){
-        	str_ALog = mMatcher.group().replace("}", "");
-            break;
-        }
-        String format="%-14d";
-        String strgetWidth = String.format(format,mView.getWidth());
-        String strgetMeasuredWidth = String.format(format,mView.getMeasuredWidth());
-        String strgetHeight = String.format(format,mView.getHeight());
-        String strgetMeasuredHeight = String.format(format,mView.getMeasuredHeight());
-        if(isLogRunAll)ALog.Log(strgetWidth+
-        				 strgetMeasuredWidth+
-        				 strgetHeight+
-        				 strgetMeasuredHeight+
-        				 str_ALog+":"+objName);
-    }	
+	}	
 }

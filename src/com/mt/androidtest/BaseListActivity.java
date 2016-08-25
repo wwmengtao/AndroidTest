@@ -32,7 +32,12 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
-
+/**
+ * BaseListActivity：包含两个ListView，ListView的Adapter中数据须由子类调用super.initListFTData以及super.initListActivityData赋予
+ * 其中initListFTData对应的是函数名称，initListActivityData对应的是Activity名称
+ * @author Mengtao1
+ *
+ */
 public class BaseListActivity extends ListActivity implements AdapterView.OnItemClickListener, Handler.Callback, View.OnClickListener{
 	private boolean isLogRun = true;
 	private LinearLayout mLinearlayout_listview_android=null;

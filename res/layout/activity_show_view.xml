@@ -5,15 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <include layout="@layout/linearlayout_showview" /> 
-	<include layout="@layout/listview_functions"/>    
 	<LinearLayout
-		android:id="@+id/parentView"
+		    android:id="@+id/linearlayout_addview"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal" />	
+	<LinearLayout
+		    android:id="@+id/linearlayout_adjustviewwidth"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal" />				
+	<!-- linearlayout_textsize展示的是控件宽度固定，自动调整内容字体大小以适应该控件 -->
+	<LinearLayout
+		android:id="@+id/linearlayout_adjusttextsize"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:visibility="gone"
-		android:orientation="vertical"
-	/>
-	<include layout="@layout/listview_android"/>  	
+		android:layout_height="50dp"
+		android:background="@color/royalblue" 
+		android:gravity="center"
+		android:orientation="vertical">
+		<TextView
+			android:layout_width="200dp"
+			android:layout_height="5dp"
+			android:background="@color/pink" />		
+		<TextView
+			android:id="@+id/textview_textsize1"
+			android:layout_width="200dp"
+			android:layout_height="wrap_content"
+			android:textColor="@color/black"
+			android:gravity="center"
+			android:background="@color/greenyellow" />
+		<TextView
+			android:layout_width="200dp"
+			android:layout_height="5dp"
+			android:background="@color/pink" />	
+		<TextView
+			android:id="@+id/textview_textsize2"
+			android:layout_width="200dp"
+			android:layout_height="wrap_content"
+			android:textColor="@color/black"
+			android:gravity="center"
+			android:background="@color/mistyrose" />	
+	</LinearLayout>		
 </LinearLayout>
 </ScrollView>

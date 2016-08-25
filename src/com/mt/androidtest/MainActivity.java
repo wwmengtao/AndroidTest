@@ -49,7 +49,7 @@ public class MainActivity extends BaseListActivity implements DialogInterface.On
 			"AsynchronousActivity","ContentResolverDemoActivity",
 			"ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","PermissionActivity",
 			"TouchEventActivity","PackageManagerActivity",
-			"ResourceActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
+			"ResourceActivity","InflateActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
 			"StorageActivity"};		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

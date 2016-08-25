@@ -2,6 +2,7 @@ package com.mt.androidtest.showview;
 
 import java.lang.reflect.Field;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
@@ -11,22 +12,21 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseListActivity;
 
 public class PhoneViewInfo {
-	private BaseListActivity mBaseListActivity=null;
-	public PhoneViewInfo(BaseListActivity mBaseListActivity){
-		this.mBaseListActivity = mBaseListActivity;
+	private Activity mActivity=null;
+	public PhoneViewInfo(Activity mActivity){
+		this.mActivity = mActivity;
 	}
 	public void showPhoneViewInfo(){
-		//2、去除状态栏/通知栏
-		mBaseListActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		//3、获取导航栏高度
-		getNavigationBarHeight(mBaseListActivity);
-		//4、获取状态栏/通知栏高度
-		getStatusBarHeight(mBaseListActivity);
-		//5、获取标题栏高度，见onWindowFocusChanged函数
-		//6、获取手机屏幕的宽度、高度
+		//1、去除状态栏/通知栏
+		mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		//2、获取导航栏高度
+		getNavigationBarHeight(mActivity);
+		//3、获取状态栏/通知栏高度
+		getStatusBarHeight(mActivity);
+		//4、获取标题栏高度，见onWindowFocusChanged函数
+		//5、获取手机屏幕的宽度、高度
 		getPhoneWidthHeight();
 	}
 	
@@ -34,7 +34,7 @@ public class PhoneViewInfo {
 	 * getPhoneWidthHeight:获取手机屏幕的宽度、高度
 	 */
 	public void getPhoneWidthHeight(){
-		DisplayMetrics dm =mBaseListActivity.getResources().getDisplayMetrics();  
+		DisplayMetrics dm =mActivity.getResources().getDisplayMetrics();  
         int width = dm.widthPixels;  
         int height = dm.heightPixels; 
         //对于含有导航栏的手机来说，height是扣除导航栏高度后的屏幕剩余高度
@@ -68,10 +68,10 @@ public class PhoneViewInfo {
 	public int StatusBarHeight = 0;
 	public void getStatusBarHeight(Context context){
 		//1、直接调用
-		int resourceId = mBaseListActivity.getResources().getIdentifier("status_bar_height", "dimen", "android"); 
+		int resourceId = mActivity.getResources().getIdentifier("status_bar_height", "dimen", "android"); 
 		if (resourceId > 0) {  
 		    //根据资源ID获取响应的尺寸值  
-			StatusBarHeight = mBaseListActivity.getResources().getDimensionPixelSize(resourceId);  
+			StatusBarHeight = mActivity.getResources().getDimensionPixelSize(resourceId);  
 			ALog.Log("StatusBarHeight1:"+StatusBarHeight);
 		}  
 		//2、反射调用
