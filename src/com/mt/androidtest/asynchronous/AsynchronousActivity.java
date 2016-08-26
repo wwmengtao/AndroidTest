@@ -50,6 +50,7 @@ public class AsynchronousActivity extends BaseListActivity{
 	
 	@Override
 	public void onDestroy(){
+		cancelAsyncTaskProgressBar();//取消进度条的更新
 		if(null!=mExecutorService){
 			mExecutorService.shutdownNow();//关闭线程池
 			mExecutorService = null;
@@ -89,14 +90,6 @@ public class AsynchronousActivity extends BaseListActivity{
 			break;			
 		}
 		return true;
-	}
-	
-	public void cancelAsyncTaskProgressBarInThread(){
-		new Thread() {
-			public void run() {
-				cancelAsyncTaskProgressBar();//取消进度条的更新
-			}
-		}.start();
 	}
 	
 	public void startAsyncTaskDemo(){
