@@ -335,6 +335,7 @@ public class BaseListActivity extends ListActivity implements AdapterView.OnItem
     	mView.setLayoutParams(lp);
 	}
 	
+	boolean logListViewHeight = false;
 	/**
 	 * setListViewHeightBasedOnChildren函数功能：在有ScrollView存在的时候，ListView显示全部内容而不是收缩。
 	 * 说明：默认情况下Android是禁止在ScrollView中放入另外的ScrollView的，它的高度是无法计算的。
@@ -358,16 +359,18 @@ public class BaseListActivity extends ListActivity implements AdapterView.OnItem
      * getWidth：返回mRight - mLeft;
      * getHeight：返回mBottom - mTop;
 	*/
-	boolean logTag = false;
+
 	public void setListViewHeightBasedOnChildren(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null) {
 			return;
 		}
 		int totalHeight = 0;
-		if(logTag)ALog.Log("setListViewHeightBasedOnChildren1");
+		if(logListViewHeight)ALog.Log("@@@@setListViewHeightBasedOnChildren1");
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
+			if(0==i && logListViewHeight)ALog.Log("@@@@measure_getHeight:"+listItem.getHeight());
+			if(0==i && logListViewHeight)ALog.Log("@@@@measure_getMeasuredHeight:"+listItem.getMeasuredHeight());
 			/**
 			 * 仅适用于本场景：getMeasuredxx要在measure后才有值，getxx要在layout后才有值。
 			 */
@@ -377,20 +380,21 @@ public class BaseListActivity extends ListActivity implements AdapterView.OnItem
 			 * getHeight:0 getMeasuredHeight:133
 			 */
 			listItem.measure(0, 0);
-			if(0==i && logTag)ALog.Log("measure_getHeight:"+listItem.getHeight());
-			if(0==i && logTag)ALog.Log("measure_getMeasuredHeight:"+listItem.getMeasuredHeight());
+			if(0==i && logListViewHeight)ALog.Log("@@@@measure_getHeight:"+listItem.getHeight());
+			if(0==i && logListViewHeight)ALog.Log("@@@@measure_getMeasuredHeight:"+listItem.getMeasuredHeight());
 			/**
 			 * 2、layout执行完毕后，frameworks中View.java中各变量如下：
 			 * mLeft:0 mRight:343 mTop:0 mBottom:133
 			 * getHeight:133 getMeasuredHeight:133
 			 */
 			listItem.layout(0, 0, listItem.getMeasuredWidth(), listItem.getMeasuredHeight());
-			if(0==i && logTag)ALog.Log("layout_getHeight:"+listItem.getHeight());
-			if(0==i && logTag)ALog.Log("layout_getMeasuredHeight:"+listItem.getMeasuredHeight());
+			if(0==i && logListViewHeight)ALog.Log("@@@@layout_getHeight:"+listItem.getHeight());
+			if(0==i && logListViewHeight)ALog.Log("@@@@layout_getMeasuredHeight:"+listItem.getMeasuredHeight());
 			//以下将所有ListView中每个item view高度累加起来
 			totalHeight += listItem.getMeasuredHeight();
 		}
-		if(logTag)ALog.Log("setListViewHeightBasedOnChildren2");
+		if(logListViewHeight)ALog.Log("@@@@setListViewHeightBasedOnChildren2");
+		logListViewHeight = false;
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
 		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
