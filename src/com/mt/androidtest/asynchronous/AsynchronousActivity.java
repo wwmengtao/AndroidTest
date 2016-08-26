@@ -50,7 +50,10 @@ public class AsynchronousActivity extends BaseListActivity{
 	
 	@Override
 	public void onDestroy(){
-		cancelAsyncTaskProgressBarInThread();
+		if(null!=mExecutorService){
+			mExecutorService.shutdownNow();//关闭线程池
+			mExecutorService = null;
+		}
 		super.onDestroy();
 	}
 	
@@ -96,11 +99,6 @@ public class AsynchronousActivity extends BaseListActivity{
 		}.start();
 	}
 	
-	public void initProgressView(){
-		mProgressBar=(ProgressBar) findViewById(R.id.AsyncTaskProgressBar);
-		mProgressTV=(TextView) findViewById(R.id.AsyncTaskTextView); 
-	}
-	
 	public void startAsyncTaskDemo(){
     	mAsyncTaskDemo = new AsyncTaskDemo();
     	//mAsyncTaskDemo.execute();//队列方式
@@ -117,7 +115,8 @@ public class AsynchronousActivity extends BaseListActivity{
 
 	public void startAsyncTaskProgressBar(){
 		if(null==mProgressBar){
-			initProgressView();
+			mProgressBar=(ProgressBar) findViewById(R.id.AsyncTaskProgressBar);
+			mProgressTV=(TextView) findViewById(R.id.AsyncTaskTextView); 
 			setExecutorService(2);//设置线程池种类
 			mAsyncTaskProgressBarList=new ArrayList<AsyncTaskProgressBar>();
 		}
