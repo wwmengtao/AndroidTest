@@ -1,6 +1,5 @@
 package com.mt.androidtest.showview;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,38 +7,37 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
 public class InflateActivity extends BaseActivity{
-	View rootView=null;
-	View mView=null;
-	LinearLayout mLinearLayout=null;
+	View viewActivityInflate=null;
+	View viewViewInflate=null;
+	LinearLayout mLinearLayoutInflate=null;
 	LayoutInflater mLayoutInflater=null;
 	boolean isInflated = true;
 	int int_groupId_Submenu=0x00;
-	final int Inflate_method1=0x11;
-	final int Inflate_method2=0x12;
-	final int SetContentView_1=0x21;
-	final int SetContentView_2=0x22;	
+	final int ROOT_NULL=0x11;
+	final int ROOT_NOT_NULL=0x12;
+	final int ROOT_ONLY=0x21;
+	final int ROOT_ADDVIEW=0x22;	
 	MenuItem mMenuItem=null;
+	/**
+	 * 任何一个Activity中显示的界面其实主要都由两部分组成，标题栏和内容布局。标题栏就是在很多界面顶部显示的那部分内容，
+	 * 可以在代码中控制让它是否显示。而内容布局就是一个FrameLayout，这个布局的id叫作content，我们调用setContentView()
+	 * 方法时所传入的布局其实就是放到这个FrameLayout中的，这也是为什么这个方法名叫作setContentView()，而不是叫setView()。
+	 */
+	private FrameLayout mContentView = null;//内容布局就是一个FrameLayout
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    mLayoutInflater=getLayoutInflater();
-	}
-	
-	/**
-	 * setInflateView：为activity_inflate填充后的试图添加其他试图
-	 */
-	public void setInflateView(){
-		rootView=mLayoutInflater.inflate(R.layout.activity_inflate, null);;
-	    mView = mLayoutInflater.inflate(R.layout.view_inflate, (ViewGroup)rootView,false);
-	    ((ViewGroup)rootView).addView(mView);
-	    setContentView(rootView);
-		mLinearLayout = (LinearLayout)findViewById(R.id.linearlayout_inflater);
+	    mContentView = (FrameLayout)findViewById(android.R.id.content);//
+	    ALog.Log("mContentView:"+(mContentView!=null));
 	}
 	
 	@Override
@@ -48,13 +46,13 @@ public class InflateActivity extends BaseActivity{
 		super.onCreateOptionsMenu(menu);
 		SubMenu setContentViewMenu = menu.addSubMenu(int_groupId_Submenu,1,0,"setContentView");
 		setContentViewMenu.setHeaderTitle("setContentView的方式");
-		setContentViewMenu.add(0, SetContentView_1, 0, "root only");
-		setContentViewMenu.add(0, SetContentView_2, 0, "root.addView");
+		setContentViewMenu.add(0, ROOT_ONLY, 0, "root only");
+		setContentViewMenu.add(0, ROOT_ADDVIEW, 0, "root.addView");
 		SubMenu inflateMethodMenu = menu.addSubMenu(int_groupId_Submenu,2,0,"inflate");
 		mMenuItem=menu.findItem(2);
 		setContentViewMenu.setHeaderTitle("inflate的方式");
-		inflateMethodMenu.add(1, Inflate_method1, 0, "root=null");
-		inflateMethodMenu.add(1, Inflate_method2, 0, "root!=null");
+		inflateMethodMenu.add(1, ROOT_NULL, 0, "root=null");
+		inflateMethodMenu.add(1, ROOT_NOT_NULL, 0, "root!=null");
 		mMenuItem.setEnabled(false);
 		return true;
 	}
@@ -62,35 +60,39 @@ public class InflateActivity extends BaseActivity{
 	public boolean onOptionsItemSelected(MenuItem mi)
 	{
 		switch (mi.getItemId()){
-		case SetContentView_1:
+		case ROOT_ONLY:
+			mContentView.removeAllViews();
 			//仅仅将activity_inflate填充后的试图作为activity的试图，可以发现，xml中的layout_height和layout_width属性失效了
 			mMenuItem.setEnabled(false);
-			rootView = mLayoutInflater.inflate(R.layout.activity_inflate, null);
-			setContentView(rootView);
+			viewActivityInflate = mLayoutInflater.inflate(R.layout.activity_inflate, null);
+			setContentView(viewActivityInflate);
 			break;
-		case SetContentView_2:
+		case ROOT_ADDVIEW:
+			mContentView.removeAllViews();
 			mMenuItem.setEnabled(true);
 			setInflateView();
 			break;
-		case Inflate_method1:
+		case ROOT_NULL:
 			//方法1：此时view_inflate_relativelayout中定义的属性将不起作用
-			mView = mLayoutInflater.inflate(R.layout.view_inflate_relativelayout, null);
-			mLinearLayout.addView(mView);
+			viewViewInflate = mLayoutInflater.inflate(R.layout.view_inflate_linearlayout, null);
+			mLinearLayoutInflate.addView(viewViewInflate);
 			break;
-		case Inflate_method2:
-			boolean method21=true;
-			//下面两种方法传入mLinearLayout的目的是为了view_inflate_relativelayout中layout_属性能生效
-			if(method21){
-				//方法2.1：此方法等价于mView = mLayoutInflater.inflate(R.layout.view_inflate_relativelayout, mLinearLayout,true);
-				mView = mLayoutInflater.inflate(R.layout.view_inflate_relativelayout, mLinearLayout);
-			}else{
-				//方法2.2：效果和方法2.1相同。
-				mView = mLayoutInflater.inflate(R.layout.view_inflate_relativelayout, mLinearLayout,false);
-				mLinearLayout.addView(mView);
-			}
-			break;			
+		case ROOT_NOT_NULL:
+			viewViewInflate = mLayoutInflater.inflate(R.layout.view_inflate_linearlayout, mLinearLayoutInflate);
+			break;
 		}
 		
 		return super.onOptionsItemSelected(mi);
 	}	
+
+	/**
+	 * setInflateView：为activity_inflate填充后的试图添加其他试图
+	 */
+	public void setInflateView(){
+		viewActivityInflate=mLayoutInflater.inflate(R.layout.activity_inflate, null);
+	    viewViewInflate = mLayoutInflater.inflate(R.layout.view_inflate,null);
+	    ((ViewGroup)viewActivityInflate).addView(viewViewInflate);
+	    setContentView(viewActivityInflate);
+		mLinearLayoutInflate = (LinearLayout)findViewById(R.id.linearlayout_inflater);
+	}
 }

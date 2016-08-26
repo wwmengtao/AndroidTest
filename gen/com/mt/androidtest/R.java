@@ -614,7 +614,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class id {
         public static final int AsyncTaskProgressBar=0x7f070003;
         public static final int AsyncTaskTextView=0x7f070004;
-        public static final int action_settings=0x7f070053;
+        public static final int action_settings=0x7f070052;
         public static final int bt_load=0x7f07003d;
         public static final int btn_gotosleep=0x7f07001c;
         public static final int btn_showresource=0x7f07000c;
@@ -642,7 +642,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int item_add=0x7f070030;
         public static final int item_cancel=0x7f070031;
         public static final int item_del=0x7f07002f;
-        public static final int iv_media_menu_icon=0x7f070051;
         public static final int layout_linear_buttons23=0x7f07001a;
         public static final int lenovo_switch=0x7f070044;
         public static final int linearlayout_addview=0x7f07000f;
@@ -688,7 +687,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int three=0x7f070021;
         public static final int title_text=0x7f07001e;
         public static final int title_view=0x7f070008;
-        public static final int tv_media_menu_text=0x7f070052;
+        public static final int tv_media_menu_text=0x7f070051;
         public static final int tv_relative=0x7f07004e;
         public static final int tv_relative_color=0x7f070050;
         public static final int tv_status_summary=0x7f07004a;
@@ -734,7 +733,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int preference_switchview=0x7f030021;
         public static final int relativelayout_resource=0x7f030022;
         public static final int view_inflate=0x7f030023;
-        public static final int view_inflate_relativelayout=0x7f030024;
+        public static final int view_inflate_linearlayout=0x7f030024;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
