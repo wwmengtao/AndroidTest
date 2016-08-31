@@ -113,34 +113,65 @@ public class BaseActivity extends Activity {
     	lp.height = (int)(mDensityDpi*paraHeight);
     	mView.setLayoutParams(lp);
 	}
-	
-	private String regShowWidthAndHeight = "id\\/[a-zA-Z]+.+\\}";//仅仅获取控件id，其他内容不要
-	private Pattern mPatternShowWidthAndHeight = Pattern.compile(regShowWidthAndHeight);
-	private Matcher mMatcher = null;
-	private boolean is_onWindowFocusChanged = false;
+	/**
+	 * 有关View.toString()结果分类：
+	 * 1)contentParent：android.widget.FrameLayout{31be20d V.E...... ......ID 0,240-1080,1776 #1020002 android:id/content}
+	 * 2)inflate出来的View：android.widget.LinearLayout{31be20d V.E...... ......ID 0,0-0,0}
+	 * 3)采用@+id方式自定义的View：android.widget.LinearLayout{a08e3cd V.E...C.. ......ID 0,0-0,0 #7f070042 app:id/switch_bar}
+	 */
+	private static String mReg = "[a-zA-Z]+[:]id\\/[a-zA-Z]+.+\\}";//仅仅获取控件id，其他内容不要
+	private static Pattern mPattern = Pattern.compile(mReg);
+	private static Matcher mMatcher = null;
+	//
+	private static String mReg2 = "([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+";
+	private static Pattern mPattern2 = Pattern.compile(mReg2);
+	private static Matcher mMatcher2 = null;
+	//
+	private boolean showWidthAndHeightShown = false;
     protected void showWidthAndHeight(View mView, String objName){
     	if(null==mView)return;
-    	if(!is_onWindowFocusChanged){
+    	if(!showWidthAndHeightShown){
     		String betweenTitle=" ";
-    		if(isLogRun)ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle+"getMeasuredHeight");
-    		is_onWindowFocusChanged = true;
+    		if(isLogRun)ALog.Log("getWidth"+betweenTitle+"getMeasuredWidth"+betweenTitle+"getHeight"+betweenTitle
+    				+"getMeasuredHeight"+betweenTitle+"ViewDescription");
+    		showWidthAndHeightShown = true;
     	}
-    	String str_ALog=null;
-        String str = mView.toString();
-        mMatcher = mPatternShowWidthAndHeight.matcher(str);
+        String str = mView.toString();    	
+    	//
+    	String strViewDes1=null;
+        mMatcher = mPattern.matcher(str);
         while(mMatcher.find()){
-        	str_ALog = mMatcher.group().replace("}", "");
+        	strViewDes1 = mMatcher.group().replace("}", "");
             break;
         }
+    	String strViewDes2=null;
+        mMatcher2 = mPattern2.matcher(str);    	
+        while(mMatcher2.find()){
+        	strViewDes2 = mMatcher2.group();
+            break;
+        }
+    	String strViewDesTotal=null;
+    	if(null==strViewDes1&&null==strViewDes2){
+    		strViewDesTotal=objName;
+    	}else if(null==strViewDes1){
+    		strViewDesTotal = objName+"{"+strViewDes2+"}";
+    	}else if(null==strViewDes2){
+    		strViewDesTotal = objName+"{"+strViewDes1+"}";
+    	}else{
+    		strViewDesTotal = objName+"{"+strViewDes1+"$"+strViewDes2+"}";
+    	}
+        //
         String format="%-14d";
+        String format2="%-12d";
         String strgetWidth = String.format(format,mView.getWidth());
         String strgetMeasuredWidth = String.format(format,mView.getMeasuredWidth());
         String strgetHeight = String.format(format,mView.getHeight());
-        String strgetMeasuredHeight = String.format(format,mView.getMeasuredHeight());
-        if(isLogRun)ALog.Log(strgetWidth+
-        				 strgetMeasuredWidth+
-        				 strgetHeight+
-        				 strgetMeasuredHeight+
-        				 str_ALog+":"+objName);
+        String strgetMeasuredHeight = String.format(format2,mView.getMeasuredHeight());
+        if(isLogRun)ALog.Log(
+        		strgetWidth+
+        		strgetMeasuredWidth+
+        		strgetHeight+
+        		strgetMeasuredHeight+
+        		strViewDesTotal);
     }		
 }
