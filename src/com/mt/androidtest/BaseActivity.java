@@ -119,13 +119,12 @@ public class BaseActivity extends Activity {
 	 * 2)inflate出来的View：android.widget.LinearLayout{31be20d V.E...... ......ID 0,0-0,0}
 	 * 3)采用@+id方式自定义的View：android.widget.LinearLayout{a08e3cd V.E...C.. ......ID 0,0-0,0 #7f070042 app:id/switch_bar}
 	 */
-	private static String mReg = "[a-zA-Z]+[:]id\\/[a-zA-Z]+.+\\}";//仅仅获取控件id，其他内容不要
-	private static Pattern mPattern = Pattern.compile(mReg);
+	private static String mReg = "[a-zA-Z]+[:]id\\/[a-zA-Z]+.+\\}";//匹配类似于android:id/content}的内容
+	private static String mReg2 = "([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+";//匹配类似于android.widget.LinearLayout的内容
+	private static String mReg3="[{].+[}]";//匹配类似于{31be20d V.E...... ......ID 0,0-0,0}的内容
+	private static Pattern mPattern = null;
 	private static Matcher mMatcher = null;
 	//
-	private static String mReg2 = "([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+";
-	private static Pattern mPattern2 = Pattern.compile(mReg2);
-	private static Matcher mMatcher2 = null;
 	//
 	private boolean showWidthAndHeightShown = false;
     protected void showWidthAndHeight(View mView, String objName){
@@ -139,15 +138,17 @@ public class BaseActivity extends Activity {
         String str = mView.toString();    	
     	//
     	String strViewDes1=null;
+    	mPattern = Pattern.compile(mReg);
         mMatcher = mPattern.matcher(str);
         while(mMatcher.find()){
         	strViewDes1 = mMatcher.group().replace("}", "");
             break;
         }
     	String strViewDes2=null;
-        mMatcher2 = mPattern2.matcher(str);    	
-        while(mMatcher2.find()){
-        	strViewDes2 = mMatcher2.group();
+    	mPattern = Pattern.compile(mReg2);
+    	mMatcher = mPattern.matcher(str);    	
+        while(mMatcher.find()){
+        	strViewDes2 = mMatcher.group();
             break;
         }
     	String strViewDesTotal=null;
