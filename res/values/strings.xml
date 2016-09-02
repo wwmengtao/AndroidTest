@@ -62,5 +62,6 @@
     <string name="title_activity_content_resolver_demo">ContentResolverDemoActivity</string>
     <string name="title_activity_package_manager">PackageManagerActivity</string>
     <string name="title_activity_on_click">TouchEventActivity</string>
+    <string name="title_activity_measure_layout_draw">MeasureLayoutDrawActivity</string>
 
 </resources>

@@ -47,8 +47,8 @@ public class MainActivity extends BaseListActivity implements DialogInterface.On
 			"getPSList"};
 	private String [] mActivitiesName={
 			"AsynchronousActivity","ContentResolverDemoActivity",
-			"ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","PermissionActivity",
-			"TouchEventActivity","PackageManagerActivity",
+			"ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","MeasureLayoutDrawActivity",
+			"PermissionActivity","TouchEventActivity","PackageManagerActivity",
 			"ResourceActivity","InflateActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
 			"StorageActivity"};		
 	@Override

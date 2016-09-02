@@ -1,0 +1,35 @@
+<!-- 线性布局(以垂直布局为例)执行一次onMeasure，如果子View(ViewGroup)layout_weight、layout_height
+都不为零，那么此子View(ViewGroup)将调用两次onMeasure；如果layout_weight不为零，layout_height为零，
+那么此子View(ViewGroup)将调用一次onMeasure。 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:orientation="vertical"
+    tools:context="com.mt.androidtest.showview.MeasureLayoutDrawActivity" >
+
+    <com.mt.androidtest.myselfview.MLDTextView
+        android:id="@+id/mldtv"  
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content" />
+    <!-- MLDTextView2的onMeasure调用次数：
+     1.layout_weight不为零，layout_height为零(0dp)：和MLDTextViewonMeasure调用次数相同
+     2.layout_weight不为零，layout_height不为零(具体数值或者match_parent或者wrap_content)：是MLDTextViewonMeasure调用次数2倍
+     因此，使用1可有效提升性能-->
+    <com.mt.androidtest.myselfview.MLDTextView2
+        android:id="@+id/mldtv2"
+        android:layout_weight="1"
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_weight="2"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:gravity="center"
+		android:background="@android:color/holo_orange_light">
+    	<com.mt.androidtest.myselfview.MLDTextView3
+	        android:id="@+id/mldtv3"  
+	        android:layout_width="match_parent"  
+	        android:layout_height="wrap_content" />		
+    </LinearLayout>
+</LinearLayout>
