@@ -4,25 +4,18 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.TextView;
+import android.view.*;
 
 import com.mt.androidtest.ALog;
-/**
- * 一、根布局为LineaLayout时
- * 1)onMeasure执行了两次，原因是ViewRootImpl.performTraversals内部两次measureHierarchy都被调用了
- * 2)onLayout和onDraw各执行了一次
- * 二、根布局为RelativeLayout时
- * 1)onMeasure执行了四次，原因是ViewRootImpl.performTraversals内部measureHierarchy两次调用，并且每次
- * 执行measureHierarchy时，onMeasure都执行两次
- * 2)onLayout和onDraw各执行了一次
- * @author Mengtao1
- *
- */
-public class MLDTextView  extends TextView{
 
+public class MLDTextView  extends TextView implements View.OnClickListener{
+	private boolean isClickChanged = true;
+	private String desStr = "MLDTextView";
 	public MLDTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setText("MLDTextView");
+		setText(desStr);
 		setBackgroundColor(context.getResources().getColor(android.R.color.holo_green_dark));
+		setOnClickListener(this);
 	}
 	
     @Override
@@ -42,4 +35,16 @@ public class MLDTextView  extends TextView{
         super.onDraw(canvas);  
         ALog.Log("MLDTextView_onDraw");
     }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		if(isClickChanged){
+			setText(desStr+"\nchangeHeight");
+			isClickChanged=false;
+		}else{
+			setText(desStr);
+			isClickChanged=true;
+		}
+	}      
 }

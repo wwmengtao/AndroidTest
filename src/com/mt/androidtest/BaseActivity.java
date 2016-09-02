@@ -23,6 +23,7 @@ public class BaseActivity extends Activity {
 		initActionBar();
 		metric  = getResources().getDisplayMetrics();
 		mDensityDpi = metric.densityDpi;
+		ALog.Log("mDensityDpi:"+mDensityDpi);
 	}
 	
 	public void initActionBar(){

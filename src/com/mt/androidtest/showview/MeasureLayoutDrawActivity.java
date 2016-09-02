@@ -6,7 +6,29 @@ import android.view.MenuItem;
 
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
-
+/**
+ * 一、根布局为LineaLayout时
+ * 1)onMeasure执行了两次，原因是ViewRootImpl.performTraversals内部两次measureHierarchy都被调用了
+ * 2)onLayout和onDraw各执行了一次
+ * 二、根布局为RelativeLayout时
+ * 1)onMeasure执行了四次，原因是ViewRootImpl.performTraversals内部measureHierarchy两次调用，并且每次
+ * 执行measureHierarchy时，onMeasure都执行两次
+ * 2)onLayout和onDraw各执行了一次
+ * @author Mengtao1
+ *
+ */
+/**
+ * 一、根布局为LineaLayout时
+ * 1)onMeasure执行了两次，原因是ViewRootImpl.performTraversals内部两次measureHierarchy都被调用了
+ * 2)onLayout和onDraw各执行了一次
+ * 3)点击自定义TextView导致其Text内容发生变化，可能会导致其他TextView调用测量、布局、绘制流程。
+ * 二、根布局为RelativeLayout时
+ * 1)onMeasure执行了四次，原因是ViewRootImpl.performTraversals内部measureHierarchy两次调用，并且每次
+ * 执行measureHierarchy时，onMeasure都执行两次
+ * 2)onLayout和onDraw各执行了一次
+ * @author Mengtao1
+ *
+ */
 public class MeasureLayoutDrawActivity extends BaseActivity {
 	
 	private static final int Menu_Linear = 0;
