@@ -1,4 +1,4 @@
-package com.mt.androidtest.myselfview;
+package com.mt.androidtest.measurelayoutdraw;
 
 import android.content.Context;
 import android.graphics.Canvas;

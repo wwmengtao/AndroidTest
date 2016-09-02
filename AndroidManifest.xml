@@ -149,7 +149,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mt.androidtest.showview.MeasureLayoutDrawActivity"
+            android:name="com.mt.androidtest.measurelayoutdraw.MeasureLayoutDrawActivity"
             android:label="@string/title_activity_measure_layout_draw" >
         </activity>
     </application>

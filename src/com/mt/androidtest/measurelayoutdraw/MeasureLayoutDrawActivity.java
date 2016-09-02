@@ -1,4 +1,4 @@
-package com.mt.androidtest.showview;
+package com.mt.androidtest.measurelayoutdraw;
 
 import android.os.Bundle;
 import android.view.Menu;

@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:orientation="vertical"
-    tools:context="com.mt.androidtest.showview.MeasureLayoutDrawActivity" >
+    tools:context="com.mt.androidtest.measurelayoutdraw.MeasureLayoutDrawActivity" >
 
-    <com.mt.androidtest.myselfview.MLDTextView
+    <com.mt.androidtest.measurelayoutdraw.MLDTextView
         android:id="@+id/mldtv"  
         android:layout_width="match_parent"  
         android:layout_height="wrap_content" />
@@ -16,7 +16,7 @@
      1.layout_weight不为零，layout_height为零(0dp)：和MLDTextViewonMeasure调用次数相同
      2.layout_weight不为零，layout_height不为零(具体数值或者match_parent或者wrap_content)：是MLDTextViewonMeasure调用次数2倍
      因此，使用1可有效提升性能-->
-    <com.mt.androidtest.myselfview.MLDTextView2
+    <com.mt.androidtest.measurelayoutdraw.MLDTextView2
         android:id="@+id/mldtv2"
         android:layout_weight="1"
         android:layout_width="match_parent"  
@@ -27,7 +27,7 @@
 		android:layout_height="0dp"
 		android:gravity="center"
 		android:background="@android:color/holo_orange_light">
-    	<com.mt.androidtest.myselfview.MLDTextView3
+    	<com.mt.androidtest.measurelayoutdraw.MLDTextView3
 	        android:id="@+id/mldtv3"  
 	        android:layout_width="match_parent"  
 	        android:layout_height="wrap_content" />		
