@@ -1,0 +1,16 @@
+<com.mt.androidtest.measurelayoutdraw.MLDSelfRootViewGroup
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:id="@+id/mldselfviewgroup"
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"
+    android:background="@color/wheat"
+    >
+    <com.mt.androidtest.measurelayoutdraw.MLDTextView1
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content" 
+        android:gravity="center"/>    
+    <com.mt.androidtest.measurelayoutdraw.MLDTextView2
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content" 
+        android:gravity="center"/>        
+</com.mt.androidtest.measurelayoutdraw.MLDSelfRootViewGroup>  

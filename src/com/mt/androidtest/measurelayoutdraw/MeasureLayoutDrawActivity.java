@@ -24,6 +24,7 @@ public class MeasureLayoutDrawActivity extends BaseActivity {
 	private static final int Menu_Linear = 0;
 	private static final int Menu_Relative = 1;
 	private static final int Menu_Frame = 2;	
+	private static final int Menu_SelfVG = 3;		
 	public static String layoutDes = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class MeasureLayoutDrawActivity extends BaseActivity {
 		menu.add(0, Menu_Linear, 0, "LinearLayout");
 		menu.add(0, Menu_Relative, 0, "RelativeLayout");
 		menu.add(0, Menu_Frame, 0, "FrameLayout");
+		menu.add(0, Menu_SelfVG, 0, "SelfViewGroup");
 		return true;
 	}
 	
@@ -53,7 +55,11 @@ public class MeasureLayoutDrawActivity extends BaseActivity {
 		case Menu_Frame:
 			layoutDes="FrameLayout";			
 			setContentView(R.layout.activity_measure_layout_draw_frame);//根布局为FrameLayout
-			break;					
+			break;	
+		case Menu_SelfVG:
+			layoutDes="SelfViewGroup";			
+			setContentView(R.layout.activity_measure_layout_draw_selfviewgroup);//根布局为SelfViewGroup
+			break;				
 		}
 		return super.onOptionsItemSelected(mi);
 	}	

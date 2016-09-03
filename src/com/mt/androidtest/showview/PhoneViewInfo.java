@@ -27,19 +27,28 @@ public class PhoneViewInfo {
 		getStatusBarHeight(mActivity);
 		//4、获取标题栏高度，见onWindowFocusChanged函数
 		//5、获取手机屏幕的宽度、高度
-		getPhoneWidthHeight();
+		getPhoneWidth(mActivity);
+		getPhoneHeight(mActivity);
 	}
 	
 	/**
 	 * getPhoneWidthHeight:获取手机屏幕的宽度、高度
 	 */
-	public void getPhoneWidthHeight(){
-		DisplayMetrics dm =mActivity.getResources().getDisplayMetrics();  
+	public static int getPhoneWidth(Context mContext){
+		DisplayMetrics dm =mContext.getResources().getDisplayMetrics();  
         int width = dm.widthPixels;  
+        ALog.Log("getPhoneWidth_width:"+width);
+        return width;
+	}
+	
+	public static int getPhoneHeight(Context mContext){
+		DisplayMetrics dm =mContext.getResources().getDisplayMetrics();  
         int height = dm.heightPixels; 
         //对于含有导航栏的手机来说，height是扣除导航栏高度后的屏幕剩余高度
-        ALog.Log("getPhoneWidthHeight width:"+width+" height:"+height);
+        ALog.Log("getPhoneWidth_height:"+height);
+        return height;
 	}
+
 	
 	/**
 	 * getNavigationBarHeight:对于没有物理按键的手机来说，此函数可以获取导航栏的高度
