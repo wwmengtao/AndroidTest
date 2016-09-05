@@ -1,17 +1,20 @@
 package com.mt.androidtest.myselfview;
 
-import com.mt.androidtest.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class InheritedView extends LinearLayout implements View.OnClickListener{
+import com.mt.androidtest.ALog;
+import com.mt.androidtest.R;
+
+public class InheritedView extends LinearLayout implements View.OnTouchListener{
 	String TAG_M = "M_T";
 	private View deleteButton=null;
 	private Context mContext=null;
@@ -50,25 +53,55 @@ public class InheritedView extends LinearLayout implements View.OnClickListener{
         	addView(textView);
         }
         a.recycle();
+        setOnTouchListener(this);
         initDeleteButton();
     }
     
     public void initDeleteButton(){
-    	setOnClickListener(this);
         deleteButton = LayoutInflater.from(mContext).inflate(R.layout.button_delete, null);  
-        deleteButton.setOnClickListener(this);  
         params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);  
         params.gravity = Gravity.CENTER_HORIZONTAL;
         addView(deleteButton, params);
     }
-    @Override  
-    public void onClick(View v) {  
-    	if(isButtonDel && v instanceof InheritedView){//如果点击的是CustomView
-            addView(deleteButton, params);
-    		isButtonDel=false;
-    	}else if(!(v instanceof InheritedView)){//如果点击的是deleteButton
-    		removeView(deleteButton);  
-    		isButtonDel=true;
-    	}
-    }  
+    
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        boolean gestureHandled = gestureDetector.onTouchEvent(event);
+        if(event.getAction() == MotionEvent.ACTION_DOWN){//保证后续touch事件继续到来
+        	return true;
+        }
+        return gestureHandled;
+    }
+    
+    private GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {//单击事件
+        	ALog.Log("这是单击事件");
+        	if(isButtonDel){
+	        	addView(deleteButton, params);
+	    		isButtonDel=false;
+        	}
+            return super.onSingleTapConfirmed(e);
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {//双击事件
+        	ALog.Log("双击事件");
+        	if(!isButtonDel){
+        		removeView(deleteButton);  
+        		isButtonDel=true;
+        	}
+        	return super.onDoubleTap(e);
+        }
+
+        /**
+         * 双击手势过程中发生的事件，包括按下、移动和抬起事件
+         * @param e
+         * @return
+         */
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent e) {
+            return super.onDoubleTapEvent(e);
+        }
+    });
 }

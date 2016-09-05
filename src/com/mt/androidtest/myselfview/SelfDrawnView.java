@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,11 +16,9 @@ import android.view.View.OnClickListener;
 public class SelfDrawnView extends View implements OnClickListener {  
 	  
     private Paint mPaint;  
-      
     private Rect mBounds;  
-  
     private int mCount;  
-      
+    private String text = "S/D click!";
     public SelfDrawnView(Context context, AttributeSet attrs) {  
         super(context, attrs);  
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);  
@@ -32,8 +32,7 @@ public class SelfDrawnView extends View implements OnClickListener {
         mPaint.setColor(Color.BLUE);  
         canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);  
         mPaint.setColor(Color.YELLOW);  
-        mPaint.setTextSize(60);  
-        String text = String.valueOf(mCount);  
+        mPaint.setTextSize(50);
         mPaint.getTextBounds(text, 0, text.length(), mBounds);  
         float textWidth = mBounds.width();  
         float textHeight = mBounds.height();  
@@ -43,13 +42,37 @@ public class SelfDrawnView extends View implements OnClickListener {
   
     @Override  
     public void onClick(View v) {  
-        mCount++;  
-        invalidate();  
+    	mLastTime=mCurTime;
+        mCurTime= System.currentTimeMillis();
+        if(mCurTime-mLastTime<300){//双击事件
+        	mCurTime =0;
+            mLastTime = 0;
+            handler.removeMessages(1);
+            handler.sendEmptyMessage(2);
+        }else{//单击事件
+        	handler.sendEmptyMessageDelayed(1, 310);
+        }
     }  
   
-	@Override
-	protected void onFinishInflate() {
-		super.onFinishInflate();
-		ALog.Log("onFinishInflate_CounterView");
-	}
+    long mLastTime=0;
+    long mCurTime=0;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                	ALog.Log("这是单击事件");
+                    mCount++;  
+                    text = String.valueOf(mCount);
+                    break;
+                case 2:
+                	ALog.Log("这是双击事件");
+                	text = "doubleClick";
+                    break;
+            }
+            invalidate();
+        }
+    };
 }  
