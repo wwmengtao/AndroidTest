@@ -45,15 +45,15 @@ public class MeasureLayoutDrawActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem mi)	{
 		switch (mi.getItemId()){
 		case Menu_Linear:
-			layoutDes="LinearLayout";
+			layoutDes="LL";
 			setContentView(R.layout.activity_measure_layout_draw_linear);//根布局为LinearLayout
 			break;
 		case Menu_Relative:
-			layoutDes="RelativeLayout";
+			layoutDes="RL";
 			setContentView(R.layout.activity_measure_layout_draw_relat);//根布局为RelativeLayout
 			break;		
 		case Menu_Frame:
-			layoutDes="FrameLayout";			
+			layoutDes="FL";			
 			setContentView(R.layout.activity_measure_layout_draw_frame);//根布局为FrameLayout
 			break;	
 		case Menu_SelfVG:

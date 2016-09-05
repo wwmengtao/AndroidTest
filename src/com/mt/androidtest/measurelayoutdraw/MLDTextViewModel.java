@@ -18,9 +18,12 @@ public class MLDTextViewModel  extends TextView implements View.OnClickListener{
 	private String strSpecMode = null;
 	private String strLayoutPara = null;
 	//
-	boolean useDefaultWidthAndHeight = false;
+	private boolean useDefaultWidthAndHeight = false;
 	private int defaultWidth = 0;
 	private int defaultHeight = 0;
+	//
+	private static String formatStr="%-25s";
+	
 	public MLDTextViewModel(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setOnClickListener(this);
@@ -39,7 +42,7 @@ public class MLDTextViewModel  extends TextView implements View.OnClickListener{
 	
     @Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    	boolean shouldReturn = false;
+    	boolean callSuper = true;
     	int heightSpecMode=MeasureSpec.getMode(heightMeasureSpec);  
 		switch(heightSpecMode){
 		    	case MeasureSpec.UNSPECIFIED:
@@ -63,14 +66,19 @@ public class MLDTextViewModel  extends TextView implements View.OnClickListener{
 	    		strLayoutPara = "LayoutParams.WRAP_CONTENT";
 	    		if(strSpecMode.equals("AT_MOST") && useDefaultWidthAndHeight){//为特殊情况设置默认尺寸
 	    			setMeasuredDimension(defaultWidth,defaultHeight);
-	    			shouldReturn = true;
+	    			callSuper = false;
 	    		}
 	    		break;
     		default:
     			strLayoutPara = ""+lp.height;
 		}
+    	if(callSuper)super.onMeasure(widthMeasureSpec, heightMeasureSpec); 
+		/**
+		 * 由下列log信息可知，控件宽高不是一次测量就能完全确定的，可能要经历多次测量
+		 */
+		ALog.Log("/**********/");
 		ALog.Log(desStr+"onMeasure"+" lp.height:"+strLayoutPara+" heightSpecMode:"+strSpecMode);
-    	if(!shouldReturn)super.onMeasure(widthMeasureSpec, heightMeasureSpec); 
+		ALog.Log(String.format(formatStr,"getMeasuredHeight:"+getMeasuredHeight())+String.format(formatStr," getMeasuredWidth:"+getMeasuredWidth()));
     }
 
     @Override
@@ -82,7 +90,7 @@ public class MLDTextViewModel  extends TextView implements View.OnClickListener{
     @Override  
     protected void onDraw(Canvas canvas) {  
         super.onDraw(canvas);  
-        ALog.Log(desStr+"onDraw");
+        ALog.Log(desStr+"onDraw");  
     }
 
 	@Override
