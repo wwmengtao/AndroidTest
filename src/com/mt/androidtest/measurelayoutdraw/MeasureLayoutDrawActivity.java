@@ -3,6 +3,7 @@ package com.mt.androidtest.measurelayoutdraw;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
@@ -29,6 +30,7 @@ public class MeasureLayoutDrawActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	}
 
 	@Override

@@ -3,6 +3,7 @@
 那么此子View(ViewGroup)将调用一次onMeasure。 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mldlinearrootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:orientation="vertical"

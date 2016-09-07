@@ -4,6 +4,8 @@ import static com.mt.androidtest.measurelayoutdraw.MeasureLayoutDrawActivity.lay
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -12,7 +14,9 @@ import android.widget.TextView;
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.showview.PhoneViewInfo;
 
-public class MLDTextViewModel  extends TextView implements View.OnClickListener{
+public class MLDTextViewModel  extends TextView implements View.OnTouchListener{
+	Context mContext = null;
+	//
 	private boolean isClickChanged = true;
 	private String desStr = null;
 	private String strSpecMode = null;
@@ -26,7 +30,8 @@ public class MLDTextViewModel  extends TextView implements View.OnClickListener{
 	
 	public MLDTextViewModel(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setOnClickListener(this);
+		mContext = context;
+		setOnTouchListener(this);
 		defaultWidth = (int)(PhoneViewInfo.getPhoneWidth(context)*0.7);
 		defaultHeight = (int)(PhoneViewInfo.getPhoneHeight(context)*0.05);
 	}
@@ -93,15 +98,41 @@ public class MLDTextViewModel  extends TextView implements View.OnClickListener{
         ALog.Log(desStr+"onDraw");  
     }
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		if(isClickChanged){
-			setText(desStr+layoutDes+"\nchangeHeight");
-			isClickChanged=false;
-		}else{
-			setText(desStr+layoutDes);
-			isClickChanged=true;
-		}
-	}      
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        boolean gestureHandled = gestureDetector.onTouchEvent(event);
+        if(event.getAction() == MotionEvent.ACTION_DOWN){//保证后续touch事件继续到来
+        	return true;
+        }
+        return gestureHandled;
+    }
+    
+    private GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {//单击事件
+        	ALog.Log("\n"+desStr+"requestLayout");
+        	requestLayout();
+            return super.onSingleTapConfirmed(e);
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {//双击事件
+        	ALog.Log("\n"+desStr+"invalidate");
+        	invalidate();
+            return false;
+        }
+        
+        @Override
+        public void onLongPress(MotionEvent e) {//长按事件
+        	ALog.Log("\n"+desStr+"TextChange");
+    		if(isClickChanged){
+    			setText(desStr+layoutDes+"\nchangeHeight");
+    			isClickChanged=false;
+    		}else{
+    			setText(desStr+layoutDes);
+    			isClickChanged=true;
+    		}
+        }
+    });
+    
 }

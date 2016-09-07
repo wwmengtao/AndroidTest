@@ -1,6 +1,7 @@
 package com.mt.androidtest.measurelayoutdraw;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +21,14 @@ public class MLDSelfRootViewGroup extends ViewGroup{
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
         	MLDTextViewModel childView = (MLDTextViewModel)getChildAt(i);
-            childView.setDefaultWidthAndHeight(true);
-            // 为ScrollerLayout中的每一个子控件测量大小
+            childView.setDefaultWidthAndHeight(true);//针对“Android View绘制流程说明”中图4最后一行的问题给每个子视图设置自定义宽高
             measureChild(childView, widthMeasureSpec, heightMeasureSpec);
         }    	
     }
     
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		// TODO Auto-generated method stub
+		ALog.Log("MLDSelfRootViewGroup_onLayout");
         if (changed) {
             int childCount = getChildCount();
             for (int i = 0; i < childCount; i++) {
@@ -38,4 +38,10 @@ public class MLDSelfRootViewGroup extends ViewGroup{
             }
         }
 	}
+	
+    @Override  
+    protected void onDraw(Canvas canvas) {  
+        super.onDraw(canvas);  
+		ALog.Log("MLDSelfRootViewGroup_onDraw");
+    }
 }
