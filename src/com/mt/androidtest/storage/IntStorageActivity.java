@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.mt.androidtest.BaseListActivity;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
-public class IntStorageActivity extends BaseListActivity {
+public class IntStorageActivity extends BaseActivity {
 	private String [] mMethodNameFT={"listDirs","writeToFile","readFromFile"};
 	private IntStorageHelper mIntStorageHelper=null;
 	@Override

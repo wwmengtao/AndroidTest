@@ -34,7 +34,7 @@ public class ALog {
 		return Integer.parseInt(mData,16);
 	}	
 	
-    static String formatStr="%-10s";
+    static String formatStr="%-24s";
 	static String regPrefix = "([a-zA-Z0-9]+\\.)+";//匹配开头：小括号在正则表达式的作用是标记一个子表达式的开始和结束位置
     static String regSuffix = "@[a-zA-Z0-9]+";//匹配结尾
     /**

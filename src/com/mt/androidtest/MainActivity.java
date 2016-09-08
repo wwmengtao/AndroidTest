@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mt.androidtest.listview.ListViewAdapter;
+
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -28,10 +30,9 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends BaseListActivity implements DialogInterface.OnClickListener{
+public class MainActivity extends BaseActivity implements DialogInterface.OnClickListener{
 	boolean isLogRun=false;
 	boolean isNotificationShown=false;
 	private Context mContext=null;
@@ -59,8 +60,8 @@ public class MainActivity extends BaseListActivity implements DialogInterface.On
 		if(isLogRun)ALog.Log("onCreate",this);
 		mPackageManager = getPackageManager();
 		mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-		initListFTData(mMethodNameFT);
-		initListActivityData(mActivitiesName);
+		super.initListFTData(mMethodNameFT);
+		super.initListActivityData(mActivitiesName);
 	}
 	
 	@Override
@@ -69,14 +70,9 @@ public class MainActivity extends BaseListActivity implements DialogInterface.On
 	}
 	
 	@Override
-	public void initListFTData(String [] mMethodNameFT){
-		super.initListFTData(mMethodNameFT);
-	}
-	
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
+	public void onItemClick(AdapterView<?> parent, View view,	int position, long id) {
 		// TODO Auto-generated method stub
-		String methodName = (String)getListViewAdapterFT().mList.get(position).get("itemText"); 
+		String methodName = (String)getListViewAdapterFT().mList.get(position).get(ListViewAdapter.TAG_ITEM_TEXT); 
 		switch(methodName){
 			case "showDialog":
 				showDialog();
@@ -168,15 +164,6 @@ public class MainActivity extends BaseListActivity implements DialogInterface.On
 		}catch(ActivityNotFoundException e){
 			e.printStackTrace();
 		}
-	}
-	
-	public void initListActivityData(String [] mActivitiesName){
-		super.initListActivityData(mActivitiesName);
-	}
-	
-	@Override
-	protected void onListItemClick(ListView list, View view, int position, long id) {
-		super.onListItemClick(list, view, position, id);
 	}
 	
 	public Intent getIntentSetFlags(Intent mIntent){

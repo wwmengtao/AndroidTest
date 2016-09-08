@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:id="@+id/linearlayout_listview_android"
+    android:id="@+id/linearlayout_listview_activity"
     tools:context="com.mt.androidtest.MainActivity" >
     <TextView
         android:layout_width="match_parent"
@@ -14,6 +14,6 @@
      <ListView 
 	     android:layout_width="match_parent"
 	     android:layout_height="wrap_content"
-	     android:id="@android:id/list"
+	     android:id="@+id/listview_activity"
 	     android:background="@color/wheat" />   
 </LinearLayout>

@@ -20,10 +20,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseListActivity;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
-public class PermissionActivity extends BaseListActivity{
+public class PermissionActivity extends BaseActivity{
     private PowerManager mPowerManager =null;
 	private TelephonyManager telephonyManager=null;
 	private PackageManager mPackageManager=null;

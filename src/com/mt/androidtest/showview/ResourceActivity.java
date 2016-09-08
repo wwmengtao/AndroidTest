@@ -68,7 +68,6 @@ public class ResourceActivity extends BaseActivity  implements View.OnClickListe
 	@Override
 	public void onResume(){	
 		super.onResume();
-		ALog.Log("====onResume");
 		testFunctions();
 	}
 	

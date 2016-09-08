@@ -5,7 +5,7 @@
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 	<include layout="@layout/listview_functions"/>    
-	<include layout="@layout/listview_android"/>  	
+	<include layout="@layout/listview_activity"/>  	
 	<ProgressBar
 	    android:id="@+id/AsyncTaskProgressBar"
 	    android:layout_width="match_parent"

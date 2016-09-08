@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseListActivity;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 import com.mt.androidtest.R.layout;
 
@@ -23,7 +23,7 @@ import android.service.dreams.DreamService;
 import android.view.View;
 import android.widget.AdapterView;
 
-public class PackageManagerActivity extends BaseListActivity{
+public class PackageManagerActivity extends BaseActivity{
 	private ActivityManager mActivityManager=null;
 	private ArrayList<RunningServiceInfo> runningServices = null;
 	private String runningServiceName = null;

@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.BaseListActivity;
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 /**
  * mHandlerThread：处理非耗时操作
@@ -19,7 +19,7 @@ import com.mt.androidtest.R;
  * @author Mengtao1
  *
  */
-public class StorageActivity extends BaseListActivity {
+public class StorageActivity extends BaseActivity {
 	private boolean isLogRun=false;
 	private Handler mHandler=null;
 	private HandlerThread mHandlerThread=null;
@@ -43,8 +43,8 @@ public class StorageActivity extends BaseListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
-		initListFTData(mMethodNameFT);
-		initListActivityData(mActivitiesName);
+		super.initListFTData(mMethodNameFT);
+		super.initListActivityData(mActivitiesName);
 		initHandlerThread();
 		mStorageHelper=new StorageHelper(this);
 	}
@@ -66,7 +66,6 @@ public class StorageActivity extends BaseListActivity {
 			mHandlerCostTime.removeCallbacksAndMessages(0);
 		}
 		super.onPause();
-		if(isLogRun)ALog.Log("onPause",this);
 	}
 	
 	@Override
@@ -147,18 +146,8 @@ public class StorageActivity extends BaseListActivity {
 	}
 	
 	@Override
-	public void initListFTData(String [] mMethodNameFT){
-		super.initListFTData(mMethodNameFT);
-	}
-	
-	public void initListActivityData(String [] mActivitiesName){
-		super.initListActivityData(mActivitiesName);
-	}
-	
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View view,	int position, long id) {
+	public void onItemClick(AdapterView<?> parent, View view,	int position, long id) {
 		// TODO Auto-generated method stub
-		//ALog.Log("position:"+position);
 		mMessage=Message.obtain(mHandler, position);
 		if(position<=1){//执行的是非耗时操作
 			mHandler.sendMessageDelayed(mMessage, TIME_INTERVAL_MS);

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.mt.androidtest.R;
 
 public class ListViewAdapter extends BaseAdapter {
+	public static final String TAG_ITEM_TEXT = "itemText";
     public ArrayList <HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
     ArrayList <Method> mMethodList = new ArrayList<Method>();
     private LayoutInflater mLayoutInflater;
@@ -59,7 +60,7 @@ public class ListViewAdapter extends BaseAdapter {
 		HashMap<String, Object> map = null;
 		for(int i=0;i<mArrayFT.length;i++){
 			map = new HashMap<String, Object>();
-			map.put("itemText", mArrayFT[i]);
+			map.put(TAG_ITEM_TEXT, mArrayFT[i]);
 			mList.add(map);
 		}
 	}
@@ -78,7 +79,7 @@ public class ListViewAdapter extends BaseAdapter {
 		for(Method mMethod:mMethods){
 			methodName = mMethod.getName();
 			map = new HashMap<String, Object>();
-			map.put("itemText", methodName);
+			map.put(TAG_ITEM_TEXT, methodName);
 			mList.add(map);
 			mMethodList.add(mMethod);
 		}
@@ -123,7 +124,7 @@ public class ListViewAdapter extends BaseAdapter {
 	    	case 1:
 				ImageView image = holder3.imageView;
 				mTextView = holder3.textView;
-				mText = (String) mList.get(position).get("itemText");
+				mText = (String) mList.get(position).get(TAG_ITEM_TEXT);
 		        Object obj = mList.get(position).get("itemImage");
 		        if(isListViewRolling){
 		        	image.setImageResource(R.drawable.loading);
@@ -147,7 +148,7 @@ public class ListViewAdapter extends BaseAdapter {
 		        break;
 	    	case 2:
 	    		mTextView = holder2.textView;
-	        	mText = (String) mList.get(position).get("itemText");
+	        	mText = (String) mList.get(position).get(TAG_ITEM_TEXT);
 	        	if(isListViewRolling){
 	        		mTextView.setText("Loading...");
 	        		mTextView.setTag(mText);
