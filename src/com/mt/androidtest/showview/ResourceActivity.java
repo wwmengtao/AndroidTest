@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -19,6 +18,7 @@ import android.util.DisplayMetrics;
 import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -46,7 +46,8 @@ public class ResourceActivity extends BaseActivity  implements View.OnClickListe
     private DisplayMetrics metric=null;
     private Resources mResource=null;
     private AssetManager mAssetManager=null;
-	int [] buttonID = {R.id.btn_showresource};    
+	int [] buttonID = {R.id.btn_showresource,
+			                      R.id.btn_more};    
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,10 +78,25 @@ public class ResourceActivity extends BaseActivity  implements View.OnClickListe
 		case	R.id.btn_showresource:
 			showResourceView();
 			break;
+		case	R.id.btn_more:
+			showMoreByViewStub();
+			break;
 		case R.id.switch_bar:
 			updateSwitchBarStatus();
 			break;
 		}
+	}
+	
+	public void showMoreByViewStub(){
+		ViewStub viewStub = (ViewStub) findViewById(R.id.view_stub);  
+	    if (viewStub != null) {  
+	        View inflatedView = viewStub.inflate();  
+	        TextView tv = (TextView) inflatedView.findViewById(R.id.textview);
+	        CheckBox cb  = (CheckBox) inflatedView.findViewById(R.id.checkbox);  
+	        TextView tv2 = (TextView) inflatedView.findViewById(R.id.textview_layout);  
+	        tv.setText("ViewStub_textview");
+	        tv2.setText("ViewStub_textview_layout");
+	    }  		
 	}
 	
 	public void testFunctions(){
