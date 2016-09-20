@@ -37,7 +37,11 @@ public class ShowViewActivity extends BaseActivity{
 		setContentView(R.layout.activity_show_view);
 		//1、addView添加View
 		mLayoutAddView=(LinearLayout) findViewById(R.id.linearlayout_addview);
+		mLayoutAddView.measure(0, 0);//参照“Android View绘制流程说明“中分析，此时getxxxWidth和getxxxHeight都为0
+		showWidthAndHeight(mLayoutAddView, "mLayoutAddView");
 		initTextViewAdded();
+		mLayoutAddView.measure(0, 0);//参照“Android View绘制流程说明“中分析，此时getxxxWidth和getxxxHeight都不为0
+		showWidthAndHeight(mLayoutAddView, "mLayoutAddView");
 		//2、调整内容字体大小以适应控件宽度
 		mLinearLayout_AdjustTextSize = findViewById(R.id.linearlayout_adjusttextsize);
 	    mTV1_TextSize = (TextView) findViewById(R.id.textview_textsize1);

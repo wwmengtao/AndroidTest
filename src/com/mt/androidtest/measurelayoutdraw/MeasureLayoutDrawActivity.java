@@ -9,16 +9,19 @@ import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
 /**
- * 一、根布局为LineaLayout时
+ * 一、执行setContentView的时候：
+ * 1、根布局为LineaLayout时
  * 1)onMeasure执行了两次，原因是ViewRootImpl.performTraversals内部两次measureHierarchy都被调用了
  * 2)onLayout和onDraw各执行了一次
  * 3)点击自定义TextView导致其Text内容发生变化，可能会导致其他TextView调用测量、布局、绘制流程。
- * 二、根布局为RelativeLayout时
+ * 2、根布局为RelativeLayout时
  * 1)onMeasure执行了四次，原因是ViewRootImpl.performTraversals内部measureHierarchy两次调用，并且每次
  * 执行measureHierarchy时，onMeasure都执行两次
  * 2)onLayout和onDraw各执行了一次
+ * 二、执行requestLayout的时候
+ * 1、根布局为LineaLayout时，单击MLDTextView1，此时会引发MLDTextView2的onMeasure调用，原因是View.layout函数中满足条件：if ((mPrivateFlags3 & PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT) != 0)
+ * 2、根布局为MLDSelfRootViewGroup时，单击MLDTextView2，可能会引发其他TextView的onMeasure，原因见MLDSelfRootViewGroup.onLayout中说明
  * @author Mengtao1
- *
  */
 public class MeasureLayoutDrawActivity extends BaseActivity {
 	

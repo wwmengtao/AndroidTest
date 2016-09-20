@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class ALog {
 	public  static String TAG_M = "M_T_AT";
-	static Activity mActivity=null;
+	private static Activity mActivity=null;
 	private static WeakReference<Activity> mActivityReference=null;
 	public static void Log(String info){
 		Log.e(TAG_M,info);
@@ -34,9 +34,9 @@ public class ALog {
 		return Integer.parseInt(mData,16);
 	}	
 	
-    static String formatStr="%-24s";
-	static String regPrefix = "([a-zA-Z0-9]+\\.)+";//匹配开头：小括号在正则表达式的作用是标记一个子表达式的开始和结束位置
-    static String regSuffix = "@[a-zA-Z0-9]+";//匹配结尾
+    private static String formatStr="%-24s";
+    private static String regPrefix = "([a-zA-Z0-9]+\\.)+";//匹配开头：小括号在正则表达式的作用是标记一个子表达式的开始和结束位置
+    private static String regSuffix = "@[a-zA-Z0-9]+";//匹配结尾
     /**
      * Activity的toString内容可能类似于"com.mt.androidtest.showview.1s.sdf2.s4rt.ShowViewActivity@7d129f7"，
      * 下列函数仅仅提取ShowViewActivity之类的内容
@@ -47,9 +47,16 @@ public class ALog {
 		mActivityReference=new WeakReference<Activity >(activity);
 		mActivity=mActivityReference.get();
 		String str = getActivityName(mActivity);
-			if(null != str)Log(String.format(formatStr,info)+":"+str);
+		if(null != str)Log(String.format(formatStr,info)+":"+str);
 	}
 
+	public static void fillInStackTrace(String info, Activity activity){
+		mActivityReference=new WeakReference<Activity >(activity);
+		mActivity=mActivityReference.get();
+		String str = getActivityName(mActivity);
+		if(null != str)fillInStackTrace(info+":"+str);
+	}
+	
 	public static String getActivityName(Activity mActivity){
 		String str = null;
 		if(null!=mActivity){
