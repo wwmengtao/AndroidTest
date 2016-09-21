@@ -143,7 +143,6 @@ public class ListViewAdapter extends BaseAdapter {
 			        mTextView.setText(mText);
 			        mTextView.setTag(null);
 		        }
-		        convertView.setBackgroundColor(mContext.getResources().getColor(R.color.wheat));
 		        setLayoutParams(image);
 		        break;
 	    	case 2:

@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:gravity="start"
         android:text="Start activity"
+        android:textColor="@color/royalblue"   
         style="@style/textview_1"/>
      <ListView 
 	     android:layout_width="match_parent"
 	     android:layout_height="wrap_content"
-	     android:id="@+id/listview_activity"
-	     android:background="@color/wheat" />   
+	     android:id="@+id/listview_activity"/>   
 </LinearLayout>
