@@ -69,8 +69,9 @@ public class MLDTextViewModel  extends TextView implements View.OnTouchListener{
 	    		break;
 	    	case ViewGroup.LayoutParams.WRAP_CONTENT://如果heightSpecMode为MeasureSpec.AT_MOST，说明需自己制定child的宽高
 	    		strLayoutPara = "LayoutParams.WRAP_CONTENT";
-	    		if(strSpecMode.equals("AT_MOST") && useDefaultWidthAndHeight){//为特殊情况设置默认尺寸
-	    			setMeasuredDimension(defaultWidth,defaultHeight);
+	    		if(strSpecMode.equals("AT_MOST") && useDefaultWidthAndHeight){//为特殊情况设置默认尺寸，因为MLDSelfRootViewGroup.onMeasure中使用了measureChild，
+	    																															//从而调用了getChildMeasureSpec函数
+	    			setMeasuredDimension(defaultWidth,defaultHeight);//此时不需要再调用父类的onMeasure函数
 	    			callSuper = false;
 	    		}
 	    		break;

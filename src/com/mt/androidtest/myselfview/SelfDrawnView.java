@@ -13,17 +13,21 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class SelfDrawnView extends View implements OnClickListener {  
+public class SelfDrawnView extends View implements OnClickListener,Handler.Callback {  
 	  
     private Paint mPaint;  
     private Rect mBounds;  
     private int mCount;  
     private String text = "S/D click!";
+    long mLastTime=0;
+    long mCurTime=0;
+    private Handler handler = null;
     public SelfDrawnView(Context context, AttributeSet attrs) {  
         super(context, attrs);  
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);  
         mBounds = new Rect();  
         setOnClickListener(this);  
+        handler = new Handler(this);
     }  
   
     @Override  
@@ -40,6 +44,12 @@ public class SelfDrawnView extends View implements OnClickListener {
                 + textHeight / 2, mPaint);  
     }  
   
+	@Override
+	public void onDetachedFromWindow(){
+		super.onDetachedFromWindow();
+		handler.removeCallbacksAndMessages(null);
+	}
+    
     @Override  
     public void onClick(View v) {  
     	mLastTime=mCurTime;
@@ -54,25 +64,21 @@ public class SelfDrawnView extends View implements OnClickListener {
         }
     }  
   
-    long mLastTime=0;
-    long mCurTime=0;
-
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                	ALog.Log("这是单击事件");
-                    mCount++;  
-                    text = String.valueOf(mCount);
-                    break;
-                case 2:
-                	ALog.Log("这是双击事件");
-                	text = "doubleClick";
-                    break;
-            }
-            invalidate();
+	@Override
+	public boolean handleMessage(Message msg) {
+		// TODO Auto-generated method stub
+        switch (msg.what) {
+            case 1:
+            	ALog.Log("这是单击事件");
+                mCount++;  
+                text = String.valueOf(mCount);
+                break;
+            case 2:
+            	ALog.Log("这是双击事件");
+            	text = "doubleClick";
+                break;
         }
-    };
+        invalidate();		
+		return false;
+	}
 }  
