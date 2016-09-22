@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<com.mt.androidtest.myselfview.MyScrollView  
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="match_parent"   
+    android:layout_height="wrap_content">  
+  <LinearLayout 
+      android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!-- ViewPager如果在Scrollview中使用，并且宽高指定为match_parent或者wrap_content则不会显示内容，需要精确高度 -->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/myviewpager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" 
+        android:background="@color/wheat"/>
+     <ListView
+        android:id="@+id/mylistview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
+        android:fastScrollEnabled="false"
+        android:scrollbarStyle="outsideOverlay" />
+  </LinearLayout>
+</com.mt.androidtest.myselfview.MyScrollView> 
