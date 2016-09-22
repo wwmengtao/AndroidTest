@@ -63,5 +63,6 @@
     <string name="title_activity_package_manager">PackageManagerActivity</string>
     <string name="title_activity_on_click">TouchEventActivity</string>
     <string name="title_activity_measure_layout_draw">MeasureLayoutDrawActivity</string>
+    <string name="title_activity_ui">UIActivity</string>
 
 </resources>

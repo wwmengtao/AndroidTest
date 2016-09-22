@@ -8,21 +8,27 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:gravity="center_horizontal"
-       android:text="@string/switchers_demo" />
+       android:textColor="@color/royalblue"   
+       android:text="@string/switchers_demo" 
+       style="@style/textview_1"/>
     <GridView
         android:id="@+id/gridview_sysapp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_activity_sys_apps" />
+        android:text="@string/title_activity_sys_apps" 
+        android:background="@color/wheat"/>
     <TextView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:gravity="center_horizontal"
-       android:text="@string/lvp_switchers_demo" />    
+       android:text="@string/lvp_switchers_demo" 
+       android:textColor="@color/darkgreen"
+       style="@style/textview_1"/>    
        <ListView
         android:id="@+id/list_lvp_switchers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_activity_sys_apps" />
+        android:text="@string/title_activity_sys_apps"
+        android:background="@color/wheat" />
 </LinearLayout>
 

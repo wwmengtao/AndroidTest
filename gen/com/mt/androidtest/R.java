@@ -724,31 +724,32 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_switcher_demo=0x7f03000c;
         public static final int activity_sys_apps=0x7f03000d;
         public static final int activity_touch_event=0x7f03000e;
-        public static final int button_delete=0x7f03000f;
-        public static final int buttons_power=0x7f030010;
-        public static final int customview_title=0x7f030011;
-        public static final int framelayout_lmr=0x7f030012;
-        public static final int gridlayout_calculator=0x7f030013;
-        public static final int item_del_add=0x7f030014;
-        public static final int item_getview=0x7f030015;
-        public static final int item_getview_function=0x7f030016;
-        public static final int item_getview_test_1=0x7f030017;
-        public static final int item_getview_test_2=0x7f030018;
-        public static final int item_getview_test_3=0x7f030019;
-        public static final int item_sysappdetails=0x7f03001a;
-        public static final int linearlayout_loadmoredata=0x7f03001b;
-        public static final int linearlayout_preference=0x7f03001c;
-        public static final int linearlayout_switchbar=0x7f03001d;
-        public static final int listview_activity=0x7f03001e;
-        public static final int listview_functions=0x7f03001f;
-        public static final int preference_checkbox=0x7f030020;
-        public static final int preference_checkbox_widget=0x7f030021;
-        public static final int preference_status=0x7f030022;
-        public static final int preference_status_widget=0x7f030023;
-        public static final int preference_switchview=0x7f030024;
-        public static final int relativelayout_resource=0x7f030025;
-        public static final int view_inflate=0x7f030026;
-        public static final int view_inflate_linearlayout=0x7f030027;
+        public static final int activity_ui=0x7f03000f;
+        public static final int button_delete=0x7f030010;
+        public static final int buttons_power=0x7f030011;
+        public static final int customview_title=0x7f030012;
+        public static final int framelayout_lmr=0x7f030013;
+        public static final int gridlayout_calculator=0x7f030014;
+        public static final int item_del_add=0x7f030015;
+        public static final int item_getview=0x7f030016;
+        public static final int item_getview_function=0x7f030017;
+        public static final int item_getview_test_1=0x7f030018;
+        public static final int item_getview_test_2=0x7f030019;
+        public static final int item_getview_test_3=0x7f03001a;
+        public static final int item_sysappdetails=0x7f03001b;
+        public static final int linearlayout_loadmoredata=0x7f03001c;
+        public static final int linearlayout_preference=0x7f03001d;
+        public static final int linearlayout_switchbar=0x7f03001e;
+        public static final int listview_activity=0x7f03001f;
+        public static final int listview_functions=0x7f030020;
+        public static final int preference_checkbox=0x7f030021;
+        public static final int preference_checkbox_widget=0x7f030022;
+        public static final int preference_status=0x7f030023;
+        public static final int preference_status_widget=0x7f030024;
+        public static final int preference_switchview=0x7f030025;
+        public static final int relativelayout_resource=0x7f030026;
+        public static final int view_inflate=0x7f030027;
+        public static final int view_inflate_linearlayout=0x7f030028;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
@@ -823,6 +824,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_storage=0x7f0a0037;
         public static final int title_activity_switcher_demo=0x7f0a000c;
         public static final int title_activity_sys_apps=0x7f0a0007;
+        public static final int title_activity_ui=0x7f0a003e;
         public static final int widetouch_torchlight=0x7f0a000f;
     }
     public static final class style {

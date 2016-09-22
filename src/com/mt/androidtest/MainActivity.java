@@ -48,10 +48,8 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 			"getPSList"};
 	private String [] mActivitiesName={
 			"AsynchronousActivity","ContentResolverDemoActivity",
-			"ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","MeasureLayoutDrawActivity",
 			"PermissionActivity","TouchEventActivity","PackageManagerActivity",
-			"ResourceActivity","InflateActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity",
-			"StorageActivity"};		
+			"StorageActivity","UIActivity"};		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
