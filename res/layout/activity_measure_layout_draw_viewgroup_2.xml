@@ -1,0 +1,27 @@
+<com.mt.androidtest.measurelayoutdraw.MLDRootViewGroup2
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent" 
+    android:background="@color/wheat">  
+  
+    <com.mt.androidtest.measurelayoutdraw.MLDView1
+        android:id="@+id/mldview1"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:gravity="center"
+        android:text="一" />  
+  
+    <com.mt.androidtest.measurelayoutdraw.MLDView2  
+        android:id="@+id/mldview2"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:gravity="center"
+        android:text="二" />
+    
+    <com.mt.androidtest.measurelayoutdraw.MLDView3  
+        android:id="@+id/mldview3"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:gravity="center"
+        android:text="三" />    
+</com.mt.androidtest.measurelayoutdraw.MLDRootViewGroup2>  

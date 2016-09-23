@@ -1,4 +1,4 @@
-<com.mt.androidtest.measurelayoutdraw.MLDSelfRootViewGroup
+<com.mt.androidtest.measurelayoutdraw.MLDRootViewGroup
     xmlns:android="http://schemas.android.com/apk/res/android"  
     android:id="@+id/mldselfviewgroup"
     android:layout_width="match_parent"  
@@ -17,4 +17,4 @@
         android:layout_width="match_parent"  
         android:layout_height="wrap_content" 
         android:gravity="center"/>              
-</com.mt.androidtest.measurelayoutdraw.MLDSelfRootViewGroup>  
+</com.mt.androidtest.measurelayoutdraw.MLDRootViewGroup>  

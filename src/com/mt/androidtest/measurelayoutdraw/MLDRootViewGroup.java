@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 
 import com.mt.androidtest.ALog;
 
-public class MLDSelfRootViewGroup extends ViewGroup{
+public class MLDRootViewGroup extends ViewGroup{
 	
-    public MLDSelfRootViewGroup(Context context, AttributeSet attrs) {
+    public MLDRootViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     	super.onMeasure(widthMeasureSpec, heightMeasureSpec); 
-    	ALog.Log("MLDSelfRootViewGroup_onMeasure");
+    	ALog.Log("MLDRootViewGroup_onMeasure");
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
         	MLDTextViewModel childView = (MLDTextViewModel)getChildAt(i);
@@ -28,8 +28,8 @@ public class MLDSelfRootViewGroup extends ViewGroup{
     
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		ALog.Log("MLDSelfRootViewGroup_onLayout");
-		//如果控件MLDSelfRootViewGroup的大小、位置没有发生变化，则不会执行 if (changed)内部代码，从而不会执行子控件的layout函数，
+		ALog.Log("MLDRootViewGroup_onLayout");
+		//如果控件MLDRootViewGroup的大小、位置没有发生变化，则不会执行 if (changed)内部代码，从而不会执行子控件的layout函数，
 		//也就不会执行mPrivateFlags &= ~PFLAG_FORCE_LAYOUT清除PFLAG_FORCE_LAYOUT标记。如果此时某子控件执行了requestLayout，
 		//那么有可能引发其他子控件调用onMeasure函数，因为其他子控件之前有可能因为某种原因调用过requestLayout。
         if (changed) {
@@ -45,6 +45,6 @@ public class MLDSelfRootViewGroup extends ViewGroup{
     @Override  
     protected void onDraw(Canvas canvas) {  
         super.onDraw(canvas);  
-		ALog.Log("MLDSelfRootViewGroup_onDraw");
+		ALog.Log("MLDRootViewGroup_onDraw");
     }
 }

@@ -20,7 +20,7 @@ import com.mt.androidtest.R;
  * 2)onLayout和onDraw各执行了一次
  * 二、执行requestLayout的时候
  * 1、根布局为LineaLayout时，单击MLDTextView1，此时会引发MLDTextView2的onMeasure调用，原因是View.layout函数中满足条件：if ((mPrivateFlags3 & PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT) != 0)
- * 2、根布局为MLDSelfRootViewGroup时，单击MLDTextView2，可能会引发其他TextView的onMeasure，原因见MLDSelfRootViewGroup.onLayout中说明
+ * 2、根布局为MLDRootViewGroup时，单击MLDTextView2，可能会引发其他TextView的onMeasure，原因见MLDRootViewGroup.onLayout中说明
  * @author Mengtao1
  */
 public class MeasureLayoutDrawActivity extends BaseActivity {
@@ -29,6 +29,7 @@ public class MeasureLayoutDrawActivity extends BaseActivity {
 	private static final int Menu_Relative = 1;
 	private static final int Menu_Frame = 2;	
 	private static final int Menu_SelfVG = 3;		
+	private static final int Menu_SelfVG2 = 4;		
 	public static String layoutDes = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class MeasureLayoutDrawActivity extends BaseActivity {
 		menu.add(0, Menu_Relative, 0, "RelativeLayout");
 		menu.add(0, Menu_Frame, 0, "FrameLayout");
 		menu.add(0, Menu_SelfVG, 0, "SelfViewGroup");
+		menu.add(0, Menu_SelfVG2, 0, "SelfViewGroup2");
 		return true;
 	}
 	
@@ -63,8 +65,11 @@ public class MeasureLayoutDrawActivity extends BaseActivity {
 			break;	
 		case Menu_SelfVG:
 			layoutDes="SelfViewGroup";			
-			setContentView(R.layout.activity_measure_layout_draw_selfviewgroup);//根布局为SelfViewGroup
-			break;				
+			setContentView(R.layout.activity_measure_layout_draw_viewgroup);//根布局为MLDRootViewGroup
+			break;			
+		case Menu_SelfVG2:
+			setContentView(R.layout.activity_measure_layout_draw_viewgroup_2);//根布局为MLDRootViewGroup2
+			break;	
 		}
 		return super.onOptionsItemSelected(mi);
 	}	
