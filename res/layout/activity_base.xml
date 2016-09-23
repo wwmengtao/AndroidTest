@@ -8,7 +8,7 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
 	    tools:context="com.mt.androidtest.MainActivity" >
+		<include layout="@layout/listview_activity"/>  	    
 		<include layout="@layout/listview_functions"/>    
-		<include layout="@layout/listview_activity"/>  
 	</LinearLayout>
 </ScrollView>
