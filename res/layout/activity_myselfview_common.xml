@@ -55,4 +55,10 @@
 			android:text="TextView"
 			android:background="@color/wheat"/>
 	</com.mt.androidtest.myselfview.ScrollFrameLayout>		
+
+	<com.mt.androidtest.myselfview.MySelfButton 
+	        android:layout_width="100dp"  
+	        android:layout_height="50dp"  
+	        android:text="MSButton"
+	/>
 </LinearLayout> 
