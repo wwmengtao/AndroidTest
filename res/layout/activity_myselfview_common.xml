@@ -43,7 +43,13 @@
 	        android:text="Third child view: Slide right!"/>
 
 	</com.mt.androidtest.myselfview.ScrollViewGroup>
-	
+
+	<com.mt.androidtest.myselfview.MySelfButton 
+	        android:layout_width="100dp"  
+	        android:layout_height="50dp"  
+	        android:text="MSButton"
+	/>	
+		
 	<com.mt.androidtest.myselfview.ScrollFrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="50dp">
@@ -56,9 +62,4 @@
 			android:background="@color/wheat"/>
 	</com.mt.androidtest.myselfview.ScrollFrameLayout>		
 
-	<com.mt.androidtest.myselfview.MySelfButton 
-	        android:layout_width="100dp"  
-	        android:layout_height="50dp"  
-	        android:text="MSButton"
-	/>
 </LinearLayout> 

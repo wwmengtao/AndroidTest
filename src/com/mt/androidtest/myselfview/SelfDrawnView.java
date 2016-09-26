@@ -6,8 +6,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 
 import com.mt.androidtest.ALog;
 
@@ -40,8 +42,21 @@ public class SelfDrawnView extends View implements OnClickListener {
                 + textHeight / 2, mPaint);  
     }
     
+    @Override 
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        //以下通过TouchDelegate扩大点击区域
+        Rect delegateArea = new Rect();
+        getHitRect(delegateArea);
+        delegateArea.left -= 1000;
+        delegateArea.right += 1000;
+        delegateArea.bottom += 2000;
+        TouchDelegate touchDelegate = new TouchDelegate(delegateArea,this);
+        ((LinearLayout) getParent()).setTouchDelegate(touchDelegate);
+    }    
+    
     @Override  
     public void onClick(View v) {  
+    	ALog.Log("onClick");
     	mLastTime=mCurTime;
         mCurTime= System.currentTimeMillis();
         if(mCurTime-mLastTime<300){//双击事件
