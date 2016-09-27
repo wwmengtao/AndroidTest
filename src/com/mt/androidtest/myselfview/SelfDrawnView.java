@@ -44,7 +44,8 @@ public class SelfDrawnView extends View implements OnClickListener {
     
     @Override 
     public void onWindowFocusChanged(boolean hasWindowFocus) {
-        //以下通过TouchDelegate扩大点击区域
+        //以下通过TouchDelegate扩大点击区域。如果此扩展区域覆盖其他控件的Touch事件消费区域，那么此时点击
+    	//这样的Touch事件消费区域不会响应onClick事件
         Rect delegateArea = new Rect();
         getHitRect(delegateArea);
         delegateArea.left -= 1000;
