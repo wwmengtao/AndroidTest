@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import com.mt.androidtest.ALog;
 
 /**
+ * 一、getMeasuredxxx()和getxxx()不同的情况
  * 两个TextView由于布局的原因，导致有的子视图getMeasuredxxx()和getxxx()不同，有的相同。这说明下列内容：
  * getMeasuredxxx()的结果仅仅是控件期望值，供onLayout时候参考使用，控件实际占屏幕大小要看getxxx()结果。
+ * 二、ViewRootImpl.requestLayoutDuringLayout的调用场景：子视图在MLDRootViewGroup2.onLayout中调用requestLayout()。
  * @author Mengtao1
  *
  */
@@ -21,6 +23,7 @@ public class MLDRootViewGroup2 extends ViewGroup {
 	private int defLayoutWidthSize = 300;
 	private int defLayoutHeightSize = 300;	
 	private int extraSize = 200;
+	private int requestLayoutDuringLayoutCount = 0;
     public MLDRootViewGroup2(Context context, AttributeSet attrs) {  
         super(context, attrs);  
     }  
@@ -44,13 +47,19 @@ public class MLDRootViewGroup2 extends ViewGroup {
         	if(0==i){
         		mViewPre=getChildAt(i);
         		mViewPre.layout(0, 0, defLayoutWidthSize, defLayoutHeightSize); //第一个View采用默认宽高布局，不考虑getMeasuredxxx结果
+        		if(requestLayoutDuringLayoutCount++<6){
+        			mViewPre.requestLayout();//会导致调用ViewRootImpl.requestLayoutDuringLayout
+        			ALog.Log("mViewPre.requestLayout()");
+        		}
         	}else{
         		preViewsHeight += mViewPre.getHeight();
         		mViewNext=getChildAt(i);
-        		if(childCount-1==i)//最后一个子控件布局时候，宽度比getMeasuredWidth大extraSize
+        		if(childCount-1==i){//最后一个子控件布局时候，宽度比getMeasuredWidth大extraSize
         			mViewNext.layout(0, preViewsHeight, mViewNext.getMeasuredWidth()+extraSize, preViewsHeight+mViewNext.getMeasuredHeight());
-        		else
+        			preViewsHeight = 0;
+        		}else{
             		mViewNext.layout(0, preViewsHeight, mViewNext.getMeasuredWidth(), preViewsHeight+mViewNext.getMeasuredHeight());
+        		}
         		mViewPre = mViewNext;
         	}
         }
