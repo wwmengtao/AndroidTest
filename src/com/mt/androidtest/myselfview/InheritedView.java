@@ -59,7 +59,7 @@ public class InheritedView extends LinearLayout implements View.OnTouchListener{
     
     public void initDeleteButton(){
         deleteButton = LayoutInflater.from(mContext).inflate(R.layout.button_delete, null);  
-        params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);  
+        params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 60);  
         params.gravity = Gravity.CENTER_HORIZONTAL;
         addView(deleteButton, params);
     }

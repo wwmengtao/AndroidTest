@@ -24,6 +24,27 @@
 		app:custom_color1="#ff000000"
 		style="@style/myStyle"/>
 	
+    <HorizontalScrollView   
+		android:layout_width="match_parent"   
+		android:layout_height="wrap_content"
+		android:scrollbars = "none"
+		android:background="@android:color/holo_blue_dark">  
+		<LinearLayout   
+			android:layout_width="wrap_content"  
+	        android:layout_height="wrap_content" 
+	        android:gravity="center_vertical" 
+	        android:orientation="horizontal">  
+            <GridView
+				android:id="@+id/mygridview"
+				android:layout_width="wrap_content"  
+                android:layout_height="wrap_content"
+                android:paddingStart="4dip"
+                android:paddingEnd="4dip"
+                android:paddingTop="4dip"
+                android:paddingBottom="4dip"/>  
+		</LinearLayout>  
+	</HorizontalScrollView>
+	
 	<com.mt.androidtest.myselfview.ScrollViewGroup 
 	    android:layout_width="match_parent"
 	    android:layout_height="50dp">
@@ -43,7 +64,7 @@
 	        android:text="Third child view: Slide right!"/>
 
 	</com.mt.androidtest.myselfview.ScrollViewGroup>
-
+	
 	<com.mt.androidtest.myselfview.MySelfButton 
 	        android:layout_width="100dp"  
 	        android:layout_height="50dp"  

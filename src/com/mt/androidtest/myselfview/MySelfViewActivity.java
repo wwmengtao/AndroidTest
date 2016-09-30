@@ -9,6 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -43,6 +46,8 @@ public class MySelfViewActivity extends BaseActivity {
     private TabHost mTabHost;
     private TabWidget mTabWidget;
     private ListView mListViewTabHost;
+    //
+    GridView mGridView=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,6 +69,7 @@ public class MySelfViewActivity extends BaseActivity {
 		switch (mi.getItemId()){
 		case Menu_Common:
 			setContentView(R.layout.activity_myselfview_common);
+			initHorizontalScrollView();
 			break;
 		case Menu_Scroll:
 			setContentView(R.layout.activity_myselfview_scrollview);
@@ -75,13 +81,31 @@ public class MySelfViewActivity extends BaseActivity {
 			break;				
 		}
 		return super.onOptionsItemSelected(mi);
-	}		
-	
+	}	
+	//HorizontalScrollView的使用
+	public void initHorizontalScrollView(){
+		int scale = (int) (0.03125 * getDensityDpi());
+		int columnWidth = scale * 26;
+		int horizontalSpacing = scale;
+		//GridView可以根据mListAdapter_SingleLayout中条目个数以及显示列数NumColumns来自动确定行数
+		int NumColumns = mListAdapter_SingleLayout.getCount()/2;
+		mGridView = (GridView) findViewById(R.id.mygridview);
+		ViewGroup.LayoutParams lp = mGridView.getLayoutParams();
+		lp.width = NumColumns * (columnWidth+horizontalSpacing);
+		mGridView.setLayoutParams(lp);
+		mGridView.setColumnWidth(columnWidth);
+		mGridView.setHorizontalSpacing(horizontalSpacing);
+		mGridView.setVerticalSpacing(horizontalSpacing/2);
+		mGridView.setStretchMode(GridView.NO_STRETCH);
+		mGridView.setNumColumns(NumColumns);
+		mGridView.setAdapter(mListAdapter_SingleLayout);
+	}
+	//
 	public void initTabHostView(){
 	    mTabHost = (TabHost) findViewById(android.R.id.tabhost);
         mTabWidget = (TabWidget) findViewById(android.R.id.tabs);
         mListViewTabHost = (ListView) findViewById(android.R.id.list);
-        //
+        //TabHost的使用
         mTabHost.setup();
         mTabHost.setOnTabChangedListener(mTabListener);
         mTabHost.clearAllTabs();
@@ -124,7 +148,7 @@ public class MySelfViewActivity extends BaseActivity {
         return mTabHost.newTabSpec(tag).setIndicator(title).setContent(
                 mEmptyTabContent);
     }
-	//
+	//ViewPager的使用
 	public void initMyScrollView(){
         mViewPager = (ViewPager) findViewById(R.id.myviewpager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());

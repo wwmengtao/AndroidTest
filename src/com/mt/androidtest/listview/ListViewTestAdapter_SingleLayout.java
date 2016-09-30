@@ -19,7 +19,7 @@ public class ListViewTestAdapter_SingleLayout  extends BaseAdapter{
 	// TODO Auto-generated constructor stub
 		mContext = context.getApplicationContext();
 		inflater = LayoutInflater.from(mContext);
-		for(int i = 0 ; i < 100 ; i++){
+		for(int i = 0 ; i < 20 ; i++){
 			listString.add(Integer.toString(i)+"  ++++");
 		}
 	}
