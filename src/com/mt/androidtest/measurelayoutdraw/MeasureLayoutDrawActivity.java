@@ -44,8 +44,8 @@ public class MeasureLayoutDrawActivity extends BaseActivity {
 		menu.add(0, Menu_Linear, 0, "LinearLayout");
 		menu.add(0, Menu_Relative, 0, "RelativeLayout");
 		menu.add(0, Menu_Frame, 0, "FrameLayout");
-		menu.add(0, Menu_SelfVG, 0, "SelfViewGroup");
-		menu.add(0, Menu_SelfVG2, 0, "SelfViewGroup2");
+		menu.add(0, Menu_SelfVG, 0, "MLDRootViewGroup");
+		menu.add(0, Menu_SelfVG2, 0, "MLDRootViewGroup2");
 		return true;
 	}
 	

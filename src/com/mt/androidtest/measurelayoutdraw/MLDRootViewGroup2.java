@@ -20,14 +20,28 @@ public class MLDRootViewGroup2 extends ViewGroup {
 	private int preViewsHeight=0;
 	private int defMeasuredWidthSize = 600;
 	private int defMeasuredHeightSize = 600;
-	private int defLayoutWidthSize = 300;
+	private int defLayoutWidthSize = 800;
 	private int defLayoutHeightSize = 300;	
 	private int extraSize = 200;
 	private int requestLayoutDuringLayoutCount = 0;
+	//
+	private static int offsetTop = 0;
+	private static int offsetRight = 0;
+	
     public MLDRootViewGroup2(Context context, AttributeSet attrs) {  
         super(context, attrs);  
+        offsetTop = 0;
+        offsetRight = 0;
     }  
-  
+    
+    public static void setOffsetTop(int value){
+    	offsetTop = value;
+    }
+    
+    public static void setOffsetRight(int value){
+    	offsetRight = value;
+    }
+    
     @Override  
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {  
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -46,7 +60,7 @@ public class MLDRootViewGroup2 extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
         	if(0==i){
         		mViewPre=getChildAt(i);
-        		mViewPre.layout(0, 0, defLayoutWidthSize, defLayoutHeightSize); //第一个View采用默认宽高布局，不考虑getMeasuredxxx结果
+        		mViewPre.layout(0, offsetTop, defLayoutWidthSize+offsetRight, defLayoutHeightSize+offsetTop); //第一个View采用默认宽高布局，不考虑getMeasuredxxx结果
         		if(requestLayoutDuringLayoutCount++<6){
         			mViewPre.requestLayout();//会导致调用ViewRootImpl.requestLayoutDuringLayout
         			ALog.Log("mViewPre.requestLayout()");
@@ -55,10 +69,10 @@ public class MLDRootViewGroup2 extends ViewGroup {
         		preViewsHeight += mViewPre.getHeight();
         		mViewNext=getChildAt(i);
         		if(childCount-1==i){//最后一个子控件布局时候，宽度比getMeasuredWidth大extraSize
-        			mViewNext.layout(0, preViewsHeight, mViewNext.getMeasuredWidth()+extraSize, preViewsHeight+mViewNext.getMeasuredHeight());
+        			mViewNext.layout(0, preViewsHeight+offsetTop, mViewNext.getMeasuredWidth()+extraSize, preViewsHeight+mViewNext.getMeasuredHeight()+offsetTop);
         			preViewsHeight = 0;
         		}else{
-            		mViewNext.layout(0, preViewsHeight, mViewNext.getMeasuredWidth(), preViewsHeight+mViewNext.getMeasuredHeight());
+            		mViewNext.layout(0, preViewsHeight+offsetTop, mViewNext.getMeasuredWidth(), preViewsHeight+mViewNext.getMeasuredHeight()+offsetTop);
         		}
         		mViewPre = mViewNext;
         	}
