@@ -15,6 +15,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
+import android.widget.TextView;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
@@ -88,6 +89,13 @@ public class MySelfViewActivity extends BaseActivity {
         mTabHost.addTab(buildTabSpec("1","title1"));
         mTabHost.addTab(buildTabSpec("2","title2"));
         mTabHost.setCurrentTab(0);
+        //mTabWidget中每个TextView的内容都不要默认为大写
+        if(null!=mTabWidget && mTabWidget.getChildCount()>0){
+	        for (int i = 0; i < mTabWidget.getChildCount(); i++) {
+	            TextView tv = (TextView) mTabWidget.getChildAt(i).findViewById(android.R.id.title);
+	            tv.setTransformationMethod(null);//不设置为大写
+	        }
+        }
 	}
 	
     private OnTabChangeListener mTabListener = new OnTabChangeListener() {
