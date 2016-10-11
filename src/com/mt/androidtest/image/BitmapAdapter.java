@@ -20,6 +20,7 @@ import android.widget.ImageView.ScaleType;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
+import com.mt.androidtest.tool.ExecutorHelper;
 
 /**
  * 专为加载大图片设计的高性能图片适配器
@@ -40,6 +41,7 @@ public class BitmapAdapter extends BaseAdapter{
     private int heightOfIV = 0;
     //
     private Executor mExecutor=null;
+    private ExecutorHelper mExecutorHelper =null;
     private ExecutorService mExecutorService = null;
     
     /** 
@@ -61,9 +63,15 @@ public class BitmapAdapter extends BaseAdapter{
 	            return (null==mBitmap)?0:mBitmap.getByteCount();  
 	        }  
 		};
-		//
-		mExecutor = AsyncTask.THREAD_POOL_EXECUTOR;//并行线程池，如果改为400等大数据，将GridView往下拉的时候会出现RejectedExecutionException
-		mExecutorService = Executors.newFixedThreadPool(10);
+		//AsyncTask自带并行线程池
+		mExecutor = AsyncTask.THREAD_POOL_EXECUTOR;//并行线程池，如果改为1000等大数据，将GridView往下拉的时候会出现RejectedExecutionException
+		//自定义线程池
+		mExecutorHelper = new ExecutorHelper();
+		//mExecutorService = mExecutorHelper.getExecutorService(3, -1);//如果使用newCachedThreadPool，很快会出现OOM，因为工作线程数量会持续增长。
+		/**
+		 * 使用newFixedThreadPool，限制10个线程工作，其余等待，可以避免OOM。但是如果coreThreads数量过大的话，会影响性能，因为对内存要求更高。
+		 */
+		mExecutorService = mExecutorHelper.getExecutorService(2, 10);
 	}
 	
 	@Override
@@ -114,8 +122,8 @@ public class BitmapAdapter extends BaseAdapter{
         	mImageView.setImageBitmap(mBitmap);  
         } else {
             BitmapWorkerTask task = new BitmapWorkerTask();  
-            task.executeOnExecutor(mExecutor, bitmapUrl);//采用并行处理方式，过多的任务会导致RejectedExecutionException
-            //task.executeOnExecutor(mExecutorService, bitmapUrl);//自定义线程池
+            //task.executeOnExecutor(mExecutor, bitmapUrl);//采用并行处理方式，过多的任务会导致RejectedExecutionException，因为等待队列长度为128
+            task.executeOnExecutor(mExecutorService, bitmapUrl);//自定义线程池
             //task.execute(bitmapUrl); //采用默认的串行处理方式
         }  
 		return convertView;
