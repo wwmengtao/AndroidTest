@@ -5,10 +5,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PicConstants {
+	private static String strangeSTR="abcdcba";
 	private String picPrefix=null;//ͼƬ��ַǰ׺
-    private String regPrefix = "[0-9]+@#@#@#";
+    private String regPrefix = "[0-9]+"+strangeSTR;
     private Pattern mPattern = null;
-    private Matcher mMatcher = null;
     
     public PicConstants(){
     	mPattern = Pattern.compile(regPrefix);
@@ -48,7 +48,7 @@ public class PicConstants {
 		int index=0;
 		picPrefix=null;
 		for(int i=0;i<picNum;i++){
-			picPrefix = i+"@#@#@#";
+			picPrefix = i+strangeSTR;
 			index = i%assetHDPicNames.length;
 			largeNumPicsAL.add(picPrefix+assetHDPicNames[index]);
 		}
@@ -63,8 +63,8 @@ public class PicConstants {
 	public String parsePicUrl(String picUrl){
 		if(null==picUrl)return null;
 		String picUrlNew=null;
-		mMatcher = mPattern.matcher(picUrl);
-        if(mMatcher.find()){
+		Matcher mMatcher = mPattern.matcher(picUrl);
+        if(null!=mMatcher && mMatcher.find()){
         	picUrlNew=picUrl.replace(mMatcher.group(),"");
         }
 		return picUrlNew;

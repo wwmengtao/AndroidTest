@@ -2,6 +2,9 @@ package com.mt.androidtest.image;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -28,16 +31,20 @@ public class BitmapAdapter extends BaseAdapter{
 	private ViewGroup mViewGroup; 
 	private ArrayList<String>largeNumPicsAL = null;
 	private PicConstants mPicConstants = null;
-	private int picNum = 150;
+	private int picNum = 1000;
 	private int maxMemory = 0;
     private LayoutInflater mLayoutInflater= null;
 	private AssetManager mAssetManager=null;    
     //
     private int widthOfIV = 0;
     private int heightOfIV = 0;
+    //
+    private Executor mExecutor=null;
+    private ExecutorService mExecutorService = null;
+    
     /** 
      * 图片缓存技术的核心类，用于缓存所有下载好的图片，在程序内存达到设定值时会将最少最近使用的图片移除掉。 
-     */  
+     */
     private LruCache<String, Bitmap> mLruCache;  
     //
 	public BitmapAdapter(Context context){
@@ -54,6 +61,9 @@ public class BitmapAdapter extends BaseAdapter{
 	            return (null==mBitmap)?0:mBitmap.getByteCount();  
 	        }  
 		};
+		//
+		mExecutor = AsyncTask.THREAD_POOL_EXECUTOR;//并行线程池，如果改为400等大数据，将GridView往下拉的时候会出现RejectedExecutionException
+		mExecutorService = Executors.newFixedThreadPool(10);
 	}
 	
 	@Override
@@ -104,7 +114,9 @@ public class BitmapAdapter extends BaseAdapter{
         	mImageView.setImageBitmap(mBitmap);  
         } else {
             BitmapWorkerTask task = new BitmapWorkerTask();  
-            task.execute(bitmapUrl);  
+            task.executeOnExecutor(mExecutor, bitmapUrl);//采用并行处理方式，过多的任务会导致RejectedExecutionException
+            //task.executeOnExecutor(mExecutorService, bitmapUrl);//自定义线程池
+            //task.execute(bitmapUrl); //采用默认的串行处理方式
         }  
 		return convertView;
 	}
@@ -136,8 +148,11 @@ public class BitmapAdapter extends BaseAdapter{
         @Override  
         protected Bitmap doInBackground(String... params) {  
             imageUrl = params[0];
+            ALog.Log("doInBackground--1");
             Bitmap bitmap = getBitmap(imageUrl);  
-            if(null!=bitmap)addBitmapToMemoryCache(imageUrl, bitmap);  
+            ALog.Log("doInBackground--2");
+            if(null!=bitmap)addBitmapToMemoryCache(imageUrl, bitmap);
+            ALog.Log("doInBackground--3");
             return bitmap;  
         }  
   
@@ -157,11 +172,14 @@ public class BitmapAdapter extends BaseAdapter{
 	 * @return
 	 */
 	private Bitmap getBitmap(String imageUrl) {
+        ALog.Log("getBitmap--1");
 		String imageUrlNew=mPicConstants.parsePicUrl(imageUrl);
 		if(null==imageUrlNew)return null;
 		InputStream mInputStream=null;
 		try {
+			ALog.Log("getBitmap--2");
 			mInputStream = mAssetManager.open(imageUrlNew);//从Asset文件夹中读取图片
+			ALog.Log("getBitmap--3");
 		}catch (Exception e) {
 			e.printStackTrace();
 			return null;
