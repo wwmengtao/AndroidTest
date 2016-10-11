@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
@@ -25,14 +26,15 @@ public class BitmapFactoryActivity extends BaseActivity {
 	private TextView mTextView = null;
 	private BitmapAdapter mBitmapAdapter = null;
 	private ListView mListView = null;
+	private GridView mGridView = null;	
 	private int index = 0;
 	//
 	private  static final int Menu_PIC = 1;
 	private  static final int Menu_ListView = 2;
+	private  static final int Menu_GridView = 3;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 	}
 	
 
@@ -43,6 +45,7 @@ public class BitmapFactoryActivity extends BaseActivity {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, Menu_PIC, 0, "Pics");
 		menu.add(0, Menu_ListView, 0, "ListView");
+		menu.add(0, Menu_GridView, 0, "GridView");		
 		return true;
 	}
 	
@@ -61,9 +64,13 @@ public class BitmapFactoryActivity extends BaseActivity {
 		case Menu_ListView:
 			setContentView(R.layout.activity_listview_test);
 			mListView = (ListView)this.findViewById(R.id.listview);
-			mBitmapAdapter = new BitmapAdapter(this);
-			mListView.setAdapter(mBitmapAdapter);
-			break;					
+			mListView.setAdapter(new BitmapAdapter(this));
+			break;				
+		case Menu_GridView:
+			setContentView(R.layout.activity_gridview);
+			mGridView = (GridView)this.findViewById(R.id.gridview);
+			mGridView.setAdapter(new BitmapAdapter(this));
+			break;
 		}
 		return super.onOptionsItemSelected(mi);
 	}
