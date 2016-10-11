@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,12 +54,13 @@ public class BaseActivity extends Activity implements AdapterView.OnItemClickLis
 	//
     private static Handler mHandler=null;
 	private Intent mIntent = null;
-	private String packageName = null;
 	private String className = null;		    
 	private String activitySelectedItem=null;
 	private LayoutInflater mLayoutInflater = null;
     private DisplayMetrics metric=null;
-    private int mDensityDpi = 0;
+    private int mDensityDpi = -1;
+    private AssetManager mAssetManager=null;
+    private int maxMemory=-1;
     private static WeakReference<BaseActivity>mBaseListActivityWR=null;
     private ArrayList<String>mActivitiesName=null;
     private int AndroidVersion=-1;
@@ -95,10 +97,6 @@ public class BaseActivity extends Activity implements AdapterView.OnItemClickLis
 		super.onCreate(savedInstanceState);
 		preferenceFileName += ALog.getActivityName(this);
 		if(isLogRun)ALog.Log("onCreate",this);
-		packageName = this.getPackageName();
-		mLayoutInflater=LayoutInflater.from(this);
-		metric  = getResources().getDisplayMetrics();
-		mDensityDpi = metric.densityDpi;
 		mBaseListActivityWR=new WeakReference<BaseActivity>(this);
 		getActivities(this);
 		mSharedPreferences	= this.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
@@ -275,15 +273,39 @@ public class BaseActivity extends Activity implements AdapterView.OnItemClickLis
 	}
 	
 	public DisplayMetrics getDisplayMetrics(){
+		if(null==metric){
+			metric = getResources().getDisplayMetrics();
+		}
 		return metric;
 	}
 	
 	public int getDensityDpi(){
+		if(-1==mDensityDpi){
+			mDensityDpi = getResources().getDisplayMetrics().densityDpi;
+		}
 		return mDensityDpi;
 	}
 	
 	public LayoutInflater getLayoutInflater(){
+		if(null==mLayoutInflater){
+			mLayoutInflater = LayoutInflater.from(this);
+		}
 		return mLayoutInflater;
+	}
+	
+	public AssetManager getAssetManager(){
+		if(null == mAssetManager){
+			mAssetManager=getResources().getAssets();
+		}
+		return mAssetManager;
+	}
+	
+	public int getMaxMemory(){
+		if(-1==maxMemory){
+			maxMemory = (int) (Runtime.getRuntime().maxMemory());//最大内存，单位bytes  
+			ALog.Log("Max memory is " + maxMemory + "KB");  
+		}
+		return maxMemory;
 	}
 	
 	public static Handler getHandler(){
@@ -346,7 +368,7 @@ public class BaseActivity extends Activity implements AdapterView.OnItemClickLis
 			if(null==mItem)return;
 			activitySelectedItem = (String) mItem.get(ListViewAdapter.TAG_ITEM_TEXT);
 			if(null==(className = getActivityName(activitySelectedItem)))return;
-			mIntent.setComponent(new ComponentName(packageName, className));
+			mIntent.setComponent(new ComponentName(getPackageName(), className));
 			try{
 				startActivity(mIntent);
 			}catch(ActivityNotFoundException e){

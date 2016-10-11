@@ -1,13 +1,13 @@
 package com.mt.androidtest.showview;
 
+import android.os.Bundle;
+
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
-import com.mt.androidtest.R.layout;
-
-import android.os.Bundle;
 
 public class UIActivity extends BaseActivity {
 	private String [] mActivitiesName={
+			"BitmapFactoryActivity",
 			"ListViewTestActivity","MySelfViewActivity","MyPreferenceActivity","MeasureLayoutDrawActivity",
 			"ResourceActivity","InflateActivity","ShowViewActivity","SwitcherDemoActivity","SysAppsActivity"};		
 	@Override
