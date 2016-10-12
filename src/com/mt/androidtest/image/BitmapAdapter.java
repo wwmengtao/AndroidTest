@@ -63,15 +63,12 @@ public class BitmapAdapter extends BaseAdapter{
 	            return (null==mBitmap)?0:mBitmap.getByteCount();  
 	        }  
 		};
-		//AsyncTask自带并行线程池
+		//1、AsyncTask自带并行线程池
 		mExecutor = AsyncTask.THREAD_POOL_EXECUTOR;//并行线程池，如果改为1000等大数据，将GridView往下拉的时候会出现RejectedExecutionException
-		//自定义线程池
+		//2、自定义线程池
 		mExecutorHelper = new ExecutorHelper();
 		//mExecutorService = mExecutorHelper.getExecutorService(3, -1);//如果使用newCachedThreadPool，很快会出现OOM，因为工作线程数量会持续增长。
-		/**
-		 * 使用newFixedThreadPool，限制10个线程工作，其余等待，可以避免OOM。但是如果coreThreads数量过大的话，会影响性能，因为对内存要求更高。
-		 */
-		mExecutorService = mExecutorHelper.getExecutorService(2, 10);
+		mExecutorService = mExecutorHelper.getExecutorService(2, 10);	//使用newFixedThreadPool，限制10个线程工作，其余等待，可以避免OOM。但是如果coreThreads数量过大的话，会影响性能，因为对内存要求更高。
 	}
 	
 	@Override
@@ -121,10 +118,10 @@ public class BitmapAdapter extends BaseAdapter{
         if (mBitmap != null) {  
         	mImageView.setImageBitmap(mBitmap);  
         } else {
-            BitmapWorkerTask task = new BitmapWorkerTask();  
+            BitmapWorkerTask task = new BitmapWorkerTask(); 
+            //task.execute(bitmapUrl); //采用默认的串行处理方式
             //task.executeOnExecutor(mExecutor, bitmapUrl);//采用并行处理方式，过多的任务会导致RejectedExecutionException，因为等待队列长度为128
             task.executeOnExecutor(mExecutorService, bitmapUrl);//自定义线程池
-            //task.execute(bitmapUrl); //采用默认的串行处理方式
         }  
 		return convertView;
 	}
