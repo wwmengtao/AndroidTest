@@ -153,11 +153,8 @@ public class BitmapAdapter extends BaseAdapter{
         @Override  
         protected Bitmap doInBackground(String... params) {  
             imageUrl = params[0];
-            ALog.Log("doInBackground--1");
             Bitmap bitmap = getBitmap(imageUrl);  
-            ALog.Log("doInBackground--2");
             if(null!=bitmap)addBitmapToMemoryCache(imageUrl, bitmap);
-            ALog.Log("doInBackground--3");
             return bitmap;  
         }  
   
@@ -168,7 +165,7 @@ public class BitmapAdapter extends BaseAdapter{
         		mImageView.setImageBitmap(mBitmap);
         		ALog.Log("imageUrl:"+imageUrl+" mImageView:"+mImageView);
             }   
-        }   
+        }
 	}
 	
 	/**
@@ -177,14 +174,11 @@ public class BitmapAdapter extends BaseAdapter{
 	 * @return
 	 */
 	private Bitmap getBitmap(String imageUrl) {
-        ALog.Log("getBitmap--1");
 		String imageUrlNew=mPicConstants.parsePicUrl(imageUrl);
 		if(null==imageUrlNew)return null;
 		InputStream mInputStream=null;
 		try {
-			ALog.Log("getBitmap--2");
 			mInputStream = mAssetManager.open(imageUrlNew);//从Asset文件夹中读取图片
-			ALog.Log("getBitmap--3");
 		}catch (Exception e) {
 			e.printStackTrace();
 			return null;
