@@ -1,27 +1,59 @@
 package com.mt.androidtest.listview;
 
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context;
+import android.util.SparseArray;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-class ViewHolder {
-	//各个布局的控件资源
-	static class viewHolder0{
-		CheckBox checkBox;
-		int index = 0;
+
+public class ViewHolder
+{
+	private final SparseArray<View> mViews;
+	protected View mConvertView;
+	protected ViewHolder(Context context, ViewGroup parent, int layoutId,	int position){
+		this.mViews = new SparseArray<View>();
+		mConvertView = LayoutInflater.from(context).inflate(layoutId, parent, false);
+		// setTag
+		mConvertView.setTag(this);
 	}
-	
-	static class viewHolder1{
-		TextView textView;
-		int index = 1;
+
+	/**
+	 * 拿到一个ViewHolder对象
+	 * 
+	 * @param context
+	 * @param convertView
+	 * @param parent
+	 * @param layoutId
+	 * @param position
+	 * @return
+	 */
+	public static ViewHolder get(Context context, View convertView, ViewGroup parent, int layoutId, int position){
+		ViewHolder holder = null;
+		if (convertView == null){
+			holder = new ViewHolder(context, parent, layoutId, position);
+		} else{
+			holder = (ViewHolder) convertView.getTag();
+		}
+		return holder;
 	}
-	static class viewHolder2{
-		TextView textView;
-		int index = 2;
+
+	public View getConvertView(){
+		return mConvertView;
 	}
-	static class viewHolder3{
-		ImageView imageView;
-		TextView textView;
-		int index = 3;
+
+	/**
+	 * 通过控件的Id获取对于的控件，如果没有则加入views
+	 * 
+	 * @param viewId
+	 * @return
+	 */
+	public <T extends View> T getView(int viewId){
+		View view = mViews.get(viewId);
+		if (view == null){
+			view = mConvertView.findViewById(viewId);
+			mViews.put(viewId, view);
+		}
+		return (T) view;
 	}
 }

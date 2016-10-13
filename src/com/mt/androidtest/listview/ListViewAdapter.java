@@ -3,6 +3,7 @@ package com.mt.androidtest.listview;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.mt.androidtest.R;
 
 public class ListViewAdapter extends BaseAdapter {
@@ -90,40 +92,21 @@ public class ListViewAdapter extends BaseAdapter {
 	}
 	
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder.viewHolder2 holder2 = null;
-		ViewHolder.viewHolder3 holder3 = null;
-        if (convertView == null) {
-            switch(mMode){
-	        	case 1:
-	        		convertView = mLayoutInflater.inflate(R.layout.item_getview, parent,false);
-	        		holder3 = new ViewHolder.viewHolder3();
-	        		holder3.imageView = (ImageView)convertView.findViewById(R.id.menu_img);
-	        		holder3.textView = (TextView)convertView.findViewById(R.id.menu_label);
-	        		convertView.setTag(R.id.holder1, holder3);
-	           	break;
-	        	case 2:
-	        		convertView = mLayoutInflater.inflate(R.layout.item_getview_function, parent,false);
-	        		holder2 = new ViewHolder.viewHolder2();
-	        		holder2.textView = (TextView)convertView.findViewById(R.id.text_ft);
-	        		convertView.setTag(R.id.holder2, holder2);
-	           	break;           	
-            }
-        }else {
-            switch(mMode){
-	        	case 1:
-	        		holder3 = (ViewHolder.viewHolder3)convertView.getTag(R.id.holder1);
-	               	break;
-	        	case 2:
-	        		holder2 = (ViewHolder.viewHolder2)convertView.getTag(R.id.holder2);
-	        		break;
-            }
+		ViewHolder mViewHolder = null;
+        switch(mMode){
+        	case 1:
+        		mViewHolder = ViewHolder.get(mContext, convertView, parent, R.layout.item_getview, position);
+           	break;
+        	case 2:
+        		mViewHolder = ViewHolder.get(mContext, convertView, parent, R.layout.item_getview_function, position);
+           	break;           	
         }
         String mText = null;
         TextView mTextView = null;
         switch(mMode){
 	    	case 1:
-				ImageView image = holder3.imageView;
-				mTextView = holder3.textView;
+				ImageView image = mViewHolder.getView(R.id.menu_img);
+				mTextView = mViewHolder.getView(R.id.menu_label);
 				mText = (String) mList.get(position).get(TAG_ITEM_TEXT);
 		        Object obj = mList.get(position).get("itemImage");
 		        if(isListViewRolling){
@@ -146,7 +129,7 @@ public class ListViewAdapter extends BaseAdapter {
 		        setLayoutParams(image);
 		        break;
 	    	case 2:
-	    		mTextView = holder2.textView;
+	    		mTextView = mViewHolder.getView(R.id.text_ft);
 	        	mText = (String) mList.get(position).get(TAG_ITEM_TEXT);
 	        	if(isListViewRolling){
 	        		mTextView.setText("Loading...");
@@ -157,7 +140,7 @@ public class ListViewAdapter extends BaseAdapter {
 	        	}
 	        	break;
         }
-        return convertView;
+        return mViewHolder.getConvertView();
     }
     /**
      * setLayoutParams: Define the LayoutParams of mView to avoid being too big to display

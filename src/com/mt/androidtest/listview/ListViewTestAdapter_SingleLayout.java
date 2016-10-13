@@ -1,6 +1,7 @@
 package com.mt.androidtest.listview;
 
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
@@ -41,22 +43,24 @@ public class ListViewTestAdapter_SingleLayout  extends BaseAdapter{
 		// TODO Auto-generated method stub
 		return position;
 	}
-
+	
+	private ViewHolder mViewHolder = null;
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder.viewHolder3 holder3;
-		if(convertView == null){ 
-			convertView = inflater.inflate(R.layout.item_getview_test_3, parent, false);
-			holder3 = new ViewHolder.viewHolder3();
-			holder3.textView = (TextView)convertView.findViewById(R.id.textview);
-			holder3.imageView = (ImageView)convertView.findViewById(R.id.imageview);
-			holder3.imageView.setBackgroundResource(R.drawable.icon);
-			convertView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-			convertView.setTag(holder3);
-		}else{
-			holder3=(ViewHolder.viewHolder3)convertView.getTag();
-		}
-		holder3.textView.setText(""+Integer.toString(position));
-		return convertView;
+		boolean needDoAdditionalWork = (null==convertView)?true:false;
+		mViewHolder = ViewHolder.get(mContext, convertView, parent, R.layout.item_getview_test_3, position);
+		if(needDoAdditionalWork)doAdditionalWork();
+		TextView mTextView = mViewHolder.getView(R.id.textview);
+		mTextView.setText(""+Integer.toString(position));
+		return mViewHolder.getConvertView();
+	}
+	
+	public void doAdditionalWork(){
+		View mConvertView = mViewHolder.getConvertView();
+		mConvertView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+		ImageView mImageView = mViewHolder.getView(R.id.imageview);
+		mImageView.setBackgroundResource(R.drawable.icon);
+		ALog.Log("doAdditionalWork");
 	}
 }
