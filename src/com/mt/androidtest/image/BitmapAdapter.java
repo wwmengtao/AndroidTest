@@ -20,7 +20,9 @@ import com.mt.androidtest.listview.ViewHolder;
 import com.mt.androidtest.tool.ExecutorHelper;
 
 /**
- * 专为加载大图片设计的高性能图片适配器
+ * 专为加载大图片设计的图片适配器，但是存在一些问题：
+ * 1、异步任务逐个下载逐个加载，没有任务取消机制。
+ * 2、每次mViewGroup.findViewWithTag(imageUrl)效率很低
  * @author Mengtao1
  *
  */
