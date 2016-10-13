@@ -1,10 +1,14 @@
 package com.mt.androidtest.image;
 
 import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
+import static com.mt.androidtest.image.PicConstants.strangeSTR;
 import com.mt.androidtest.ALog;
 /**
  * Bitmap按照一定采用率获取图片
@@ -12,7 +16,14 @@ import com.mt.androidtest.ALog;
  *
  */
 public class BitmapProcess {
+	private AssetManager mAssetManager=null;  
+    private String regPrefix = "[0-9]+"+strangeSTR;
+    private Pattern mPattern = null;
 	
+	public BitmapProcess(Context mContext){
+		mAssetManager = mContext.getResources().getAssets();
+    	mPattern = Pattern.compile(regPrefix);
+	}
 	/**
 	 * 获取特定采样率后解析图片
 	 * @param obj
@@ -61,4 +72,37 @@ public class BitmapProcess {
 //        }  
         return inSampleSize;  
     }  
+    
+	/**
+	 * 解析出最终想要的图片URL地址
+	 * @param picUrl
+	 * @return
+	 */
+	public String parsePicUrl(String picUrl){
+		if(null==picUrl)return null;
+		String picUrlNew=null;
+		Matcher mMatcher = mPattern.matcher(picUrl);
+        if(null!=mMatcher && mMatcher.find()){
+        	picUrlNew=picUrl.replace(mMatcher.group(),"");
+        }
+		return picUrlNew;
+	}
+    
+	/**
+	 * getBitmap：获取Bitmap
+	 * @param imageUrl
+	 * @return
+	 */
+	public Bitmap getBitmap(String imageUrl,int widthOfImageView, int heightOfImageView) {
+		String imageUrlNew=parsePicUrl(imageUrl);
+		if(null==imageUrlNew)return null;
+		InputStream mInputStream=null;
+		try {
+			mInputStream = mAssetManager.open(imageUrlNew);//从Asset文件夹中读取图片
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return decodeSampledBitmap(mInputStream, widthOfImageView, heightOfImageView,true);
+	}
 }

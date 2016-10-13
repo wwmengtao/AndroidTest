@@ -1,17 +1,13 @@
 package com.mt.androidtest.image;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PicConstants {
-	private static String strangeSTR="abcdcba";
+	public static final String strangeSTR="abcdcba";
 	private String picPrefix=null;//图片地址前缀
-    private String regPrefix = "[0-9]+"+strangeSTR;
-    private Pattern mPattern = null;
+
     
     public PicConstants(){
-    	mPattern = Pattern.compile(regPrefix);
     }
     
 	/**
@@ -53,20 +49,5 @@ public class PicConstants {
 			largeNumPicsAL.add(picPrefix+assetHDPicNames[index]);
 		}
 		return largeNumPicsAL;
-	}
-	
-	/**
-	 * 解析出最终想要的图片URL地址
-	 * @param picUrl
-	 * @return
-	 */
-	public String parsePicUrl(String picUrl){
-		if(null==picUrl)return null;
-		String picUrlNew=null;
-		Matcher mMatcher = mPattern.matcher(picUrl);
-        if(null!=mMatcher && mMatcher.find()){
-        	picUrlNew=picUrl.replace(mMatcher.group(),"");
-        }
-		return picUrlNew;
 	}
 }

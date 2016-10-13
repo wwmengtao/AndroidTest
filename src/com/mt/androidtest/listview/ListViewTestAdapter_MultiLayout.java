@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
-import com.mt.androidtest.R.id;
 
 public class ListViewTestAdapter_MultiLayout extends BaseAdapter{
 	Context mContext;

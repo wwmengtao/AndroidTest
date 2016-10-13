@@ -1,6 +1,7 @@
 package com.mt.androidtest.image;
 
 import java.io.InputStream;
+import java.util.List;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -18,13 +19,16 @@ import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
 public class BitmapFactoryActivity extends BaseActivity {
-	private int maxMemory=0;
 	private AssetManager mAssetManager=null;
 	private Bitmap mBitmap,mBitmap2=null;
 	private ImageView mImageView = null;
 	private ImageView mImageView2 = null;
 	private TextView mTextView = null;
 	private BitmapAdapter mBitmapAdapter = null;
+	private List<String>largeNumPicsAL = null;
+	private PicConstants mPicConstants = null;
+	private int picNum = 1000;
+
 	private ListView mListView = null;
 	private GridView mGridView = null;	
 	private int index = 0;
@@ -35,6 +39,8 @@ public class BitmapFactoryActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mPicConstants = new PicConstants();
+		largeNumPicsAL = mPicConstants.createLargeNumHDPics(picNum);
 	}
 	
 
@@ -64,12 +70,14 @@ public class BitmapFactoryActivity extends BaseActivity {
 		case Menu_ListView:
 			setContentView(R.layout.activity_listview_test);
 			mListView = (ListView)this.findViewById(R.id.listview);
-			mListView.setAdapter(new BitmapAdapter(this));
+			mBitmapAdapter = new BitmapAdapter(this, largeNumPicsAL);
+			mListView.setAdapter(mBitmapAdapter);
 			break;				
 		case Menu_GridView:
 			setContentView(R.layout.activity_gridview);
 			mGridView = (GridView)this.findViewById(R.id.gridview);
-			mGridView.setAdapter(new BitmapAdapter(this));
+			mBitmapAdapter = new BitmapAdapter(this, largeNumPicsAL);
+			mGridView.setAdapter(mBitmapAdapter);
 			break;
 		}
 		return super.onOptionsItemSelected(mi);

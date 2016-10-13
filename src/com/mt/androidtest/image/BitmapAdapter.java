@@ -1,25 +1,22 @@
 package com.mt.androidtest.image;
 
-import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.LruCache;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
+import com.mt.androidtest.listview.CommonBaseAdapter;
+import com.mt.androidtest.listview.ViewHolder;
 import com.mt.androidtest.tool.ExecutorHelper;
 
 /**
@@ -27,19 +24,17 @@ import com.mt.androidtest.tool.ExecutorHelper;
  * @author Mengtao1
  *
  */
-public class BitmapAdapter extends BaseAdapter{
+public class BitmapAdapter extends CommonBaseAdapter<String>{
 	private Context mContext = null;
 	private ViewGroup mViewGroup; 
-	private ArrayList<String>largeNumPicsAL = null;
-	private PicConstants mPicConstants = null;
-	private int picNum = 1000;
-	private int maxMemory = 0;
-    private LayoutInflater mLayoutInflater= null;
-	private AssetManager mAssetManager=null;    
+    private BitmapProcess mBitmapProcess=null;
     //
     private int widthOfIV = 0;
     private int heightOfIV = 0;
     //
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+	private static final int maxMemory = (int) (Runtime.getRuntime().maxMemory());//最大内存，单位bytes 
+
     private Executor mExecutor=null;
     private ExecutorHelper mExecutorHelper =null;
     private ExecutorService mExecutorService = null;
@@ -49,14 +44,11 @@ public class BitmapAdapter extends BaseAdapter{
      */
     private LruCache<String, Bitmap> mLruCache;  
     //
-	public BitmapAdapter(Context context){
-		mContext = context;
-		mLayoutInflater = LayoutInflater.from(mContext);
-		mAssetManager = mContext.getResources().getAssets();
-		mPicConstants = new PicConstants();
-		largeNumPicsAL=mPicConstants.createLargeNumHDPics(picNum);
-		maxMemory = (int) (Runtime.getRuntime().maxMemory());//最大内存，单位bytes 
-		int cacheSize = maxMemory / 8; 
+	public BitmapAdapter(Context context, List<String> mDatas){
+		super(context, mDatas);
+		mContext = context.getApplicationContext();
+		mBitmapProcess = new BitmapProcess(mContext);
+		int cacheSize = maxMemory / 8;
 		mLruCache = new LruCache<String, Bitmap>(cacheSize){
 	        @Override  
 	        protected int sizeOf(String key, Bitmap mBitmap) {  
@@ -64,55 +56,27 @@ public class BitmapAdapter extends BaseAdapter{
 	        }  
 		};
 		//1、AsyncTask自带并行线程池
-		mExecutor = AsyncTask.THREAD_POOL_EXECUTOR;//并行线程池，如果改为1000等大数据，将GridView往下拉的时候会出现RejectedExecutionException
+		mExecutor = AsyncTask.THREAD_POOL_EXECUTOR;//并行线程池，等待队列长度为128。如果改为1000等大数据，将GridView往下拉的时候会出现RejectedExecutionException
 		//2、自定义线程池
 		mExecutorHelper = new ExecutorHelper();
 		//mExecutorService = mExecutorHelper.getExecutorService(3, -1);//如果使用newCachedThreadPool，很快会出现OOM，因为工作线程数量会持续增长。
-		mExecutorService = mExecutorHelper.getExecutorService(2, 10);	//使用newFixedThreadPool，限制10个线程工作，其余等待，可以避免OOM。但是如果coreThreads数量过大的话，会影响性能，因为对内存要求更高。
+		mExecutorService = mExecutorHelper.getExecutorService(2, 2*CPU_COUNT+1);	//使用newFixedThreadPool，限制线程工作个数，可以避免OOM。但是如果coreThreads数量过大的话，会影响性能，因为对内存要求更高。
 	}
+
+	private ViewHolder mViewHolder=null;
 	
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return largeNumPicsAL.size();
-	}
-
-	@Override
-	public String getItem(int position) {
-		// TODO Auto-generated method stub
-		return largeNumPicsAL.get(position);
-	}
-
-	@Override
-	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return position;
-	}
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
         if (mViewGroup == null) {    
         	mViewGroup = (ViewGroup) parent;    
         }
-    	ViewHolder mViewHolder=null;
-		if(null==convertView){
-			convertView = mLayoutInflater.inflate(R.layout.item_getview_bitmap, parent,false);
-			mViewHolder=new ViewHolder();
-			mViewHolder.mImageView = (ImageView)convertView.findViewById(R.id.myimageview);
-			mViewHolder.mImageView.setScaleType(ScaleType.FIT_XY);//非等比例缩放，铺满整个ImageView
-			if(0==widthOfIV && 0==heightOfIV){//获取mImageView的测量宽高
-				convertView.measure(0, 0);
-				widthOfIV = mViewHolder.mImageView.getMeasuredWidth();
-				heightOfIV = mViewHolder.mImageView.getMeasuredHeight();
-			}
-			convertView.setTag(mViewHolder);
-		}else{
-			mViewHolder = (ViewHolder)convertView.getTag();
-		}
-		String bitmapUrl = largeNumPicsAL.get(position);
-		if(null==bitmapUrl)return convertView;
-		ImageView mImageView = mViewHolder.mImageView;
+        boolean needDoAdditionalWork = (null==convertView)?true:false;
+        mViewHolder = ViewHolder.get(mContext, convertView, parent, R.layout.item_getview_bitmap, position);
+        if(needDoAdditionalWork)doAdditionalWork();
+		String bitmapUrl = getItem(position);
+		if(null==bitmapUrl)return mViewHolder.getConvertView();
+		ImageView mImageView = mViewHolder.getView(R.id.myimageview);;
 		mImageView.setTag(bitmapUrl); 
 		Bitmap mBitmap = getBitmapFromMemoryCache(bitmapUrl);
         if (mBitmap != null) {  
@@ -123,11 +87,18 @@ public class BitmapAdapter extends BaseAdapter{
             //task.executeOnExecutor(mExecutor, bitmapUrl);//采用并行处理方式，过多的任务会导致RejectedExecutionException，因为等待队列长度为128
             task.executeOnExecutor(mExecutorService, bitmapUrl);//自定义线程池
         }  
-		return convertView;
+		return mViewHolder.getConvertView();
 	}
 	
-	private class ViewHolder{
-		ImageView mImageView = null;
+	public void doAdditionalWork(){
+			View convertView = mViewHolder.getConvertView();
+			ImageView mImageView =mViewHolder.getView(R.id.myimageview);
+			mImageView.setScaleType(ScaleType.FIT_XY);//非等比例缩放，铺满整个ImageView
+			if(0==widthOfIV && 0==heightOfIV){//获取mImageView的测量宽高
+				convertView.measure(0, 0);
+				widthOfIV = mImageView.getMeasuredWidth();
+				heightOfIV = mImageView.getMeasuredHeight();
+			}
 	}
 	
 	/** 
@@ -153,36 +124,19 @@ public class BitmapAdapter extends BaseAdapter{
         @Override  
         protected Bitmap doInBackground(String... params) {  
             imageUrl = params[0];
-            Bitmap bitmap = getBitmap(imageUrl);  
+            Bitmap bitmap = mBitmapProcess.getBitmap(imageUrl, widthOfIV, heightOfIV);  
             if(null!=bitmap)addBitmapToMemoryCache(imageUrl, bitmap);
             return bitmap;  
         }  
   
         @Override  
         protected void onPostExecute(Bitmap mBitmap) {  
-            ImageView mImageView = (ImageView) mViewGroup.findViewWithTag(imageUrl);    
-            if (mImageView != null && mBitmap != null) {    
+            ImageView mImageView = (ImageView) mViewGroup.findViewWithTag(imageUrl); //ListView或者GridView需要整体查找，效率低  
+            if (mImageView != null && mBitmap != null) {
         		mImageView.setImageBitmap(mBitmap);
         		ALog.Log("imageUrl:"+imageUrl+" mImageView:"+mImageView);
-            }   
+            }
         }
 	}
 	
-	/**
-	 * getBitmap：获取Bitmap
-	 * @param imageUrl
-	 * @return
-	 */
-	private Bitmap getBitmap(String imageUrl) {
-		String imageUrlNew=mPicConstants.parsePicUrl(imageUrl);
-		if(null==imageUrlNew)return null;
-		InputStream mInputStream=null;
-		try {
-			mInputStream = mAssetManager.open(imageUrlNew);//从Asset文件夹中读取图片
-		}catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		return BitmapProcess.decodeSampledBitmap(mInputStream, widthOfIV, heightOfIV,true);
-	}
 }
