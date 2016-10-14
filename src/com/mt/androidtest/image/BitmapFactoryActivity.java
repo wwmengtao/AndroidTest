@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -24,7 +25,7 @@ public class BitmapFactoryActivity extends BaseActivity {
 	private ImageView mImageView = null;
 	private ImageView mImageView2 = null;
 	private TextView mTextView = null;
-	private BitmapAdapter mBitmapAdapter = null;
+	private BaseAdapter mBitmapAdapter = null;
 	private List<String>largeNumPicsAL = null;
 	private PicConstants mPicConstants = null;
 	private int picNum = 1000;
@@ -76,7 +77,8 @@ public class BitmapFactoryActivity extends BaseActivity {
 		case Menu_GridView:
 			setContentView(R.layout.activity_gridview);
 			mGridView = (GridView)this.findViewById(R.id.gridview);
-			mBitmapAdapter = new BitmapAdapter(this, largeNumPicsAL);
+			//mBitmapAdapter = new BitmapAdapter(this, largeNumPicsAL);
+			mBitmapAdapter = new BitmapAdapter2(this, largeNumPicsAL);			
 			mGridView.setAdapter(mBitmapAdapter);
 			break;
 		}
@@ -104,17 +106,17 @@ public class BitmapFactoryActivity extends BaseActivity {
 		}
 		//一、高清图片处理
 		//1.1、不对图片进行压缩，直接显示到mImageView
-		mBitmap = BitmapProcess.decodeSampledBitmap(is_HD, mImageView.getWidth(),mImageView.getHeight(),false);
+		mBitmap = ImageProcess.decodeSampledBitmap(is_HD, mImageView.getWidth(),mImageView.getHeight(),false);
 		mImageView.setImageBitmap(mBitmap);
 		//1.2、对图片进行压缩，显示到mImageView2
 		//注意：mImageView2.getWidth或者getHeight获取数值单位是像素
-		mBitmap2 = BitmapProcess.decodeSampledBitmap(is_HD, mImageView2.getWidth(),mImageView2.getHeight(),true);
+		mBitmap2 = ImageProcess.decodeSampledBitmap(is_HD, mImageView2.getWidth(),mImageView2.getHeight(),true);
 		mImageView2.setImageBitmap(mBitmap2);
 		//二、非高清图片，不设置采样率，ScaleType测试用
 		index = 0;
 		mTextView.setOnClickListener(this);
-		mBitmap = BitmapProcess.decodeSampledBitmap(is, mImageView.getWidth(),mImageView.getHeight(),false);
-		mBitmap2 = BitmapProcess.decodeSampledBitmap(is, mImageView.getWidth(),mImageView.getHeight(),false);
+		mBitmap = ImageProcess.decodeSampledBitmap(is, mImageView.getWidth(),mImageView.getHeight(),false);
+		mBitmap2 = ImageProcess.decodeSampledBitmap(is, mImageView.getWidth(),mImageView.getHeight(),false);
 	}
 
 	//以下罗列出所有ScaleType类型

@@ -1,29 +1,38 @@
 package com.mt.androidtest.image;
 
+import static com.mt.androidtest.image.PicConstants.strangeSTR;
+
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import static com.mt.androidtest.image.PicConstants.strangeSTR;
+
 import com.mt.androidtest.ALog;
-/**
- * Bitmap按照一定采用率获取图片
- * @author Mengtao1
- *
- */
-public class BitmapProcess {
-	private AssetManager mAssetManager=null;  
+
+public class ImageProcess {
     private String regPrefix = "[0-9]+"+strangeSTR;
     private Pattern mPattern = null;
-	
-	public BitmapProcess(Context mContext){
-		mAssetManager = mContext.getResources().getAssets();
+    
+    public ImageProcess(){
     	mPattern = Pattern.compile(regPrefix);
+    }
+	/**
+	 * 解析出最终想要的图片URL地址
+	 * @param picUrl
+	 * @return
+	 */
+	public String parsePicUrl(String picUrl){
+		if(null==picUrl)return null;
+		String picUrlNew=null;
+		Matcher mMatcher = mPattern.matcher(picUrl);
+        if(null!=mMatcher && mMatcher.find()){
+        	picUrlNew=picUrl.replace(mMatcher.group(),"");
+        }
+		return picUrlNew;
 	}
+	
 	/**
 	 * 获取特定采样率后解析图片
 	 * @param obj
@@ -64,45 +73,7 @@ public class BitmapProcess {
             // 选择宽和高中最小的比率作为sampleSize的值，这样可以保证最终图片的宽和高  
             // 一定都会大于等于目标的宽和高。  
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;  
-        }  
-//        while (outHeight / inSampleSize > reqHeight || outWidth / inSampleSize > reqWidth) {  
-//            //如果宽高的任意一方的缩放比例没有达到要求，都继续增大缩放比例  
-//            //sampleSize应该为2的n次幂，如果给sampleSize设置的数字不是2的n次幂，那么系统会就近取值  
-//        	inSampleSize *= 2;  
-//        }  
+        }
         return inSampleSize;  
     }  
-    
-	/**
-	 * 解析出最终想要的图片URL地址
-	 * @param picUrl
-	 * @return
-	 */
-	public String parsePicUrl(String picUrl){
-		if(null==picUrl)return null;
-		String picUrlNew=null;
-		Matcher mMatcher = mPattern.matcher(picUrl);
-        if(null!=mMatcher && mMatcher.find()){
-        	picUrlNew=picUrl.replace(mMatcher.group(),"");
-        }
-		return picUrlNew;
-	}
-    
-	/**
-	 * getBitmap：获取Bitmap
-	 * @param imageUrl
-	 * @return
-	 */
-	public Bitmap getBitmap(String imageUrl,int widthOfImageView, int heightOfImageView) {
-		String imageUrlNew=parsePicUrl(imageUrl);
-		if(null==imageUrlNew)return null;
-		InputStream mInputStream=null;
-		try {
-			mInputStream = mAssetManager.open(imageUrlNew);//从Asset文件夹中读取图片
-		}catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		return decodeSampledBitmap(mInputStream, widthOfImageView, heightOfImageView,true);
-	}
 }

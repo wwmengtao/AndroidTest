@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class PicConstants {
 	public static final String strangeSTR="abcdcba";
+	public static enum Type{FIFO, LIFO};
 	private String picPrefix=null;//ͼƬ��ַǰ׺
 
     

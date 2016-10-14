@@ -15,6 +15,7 @@ import android.widget.ImageView.ScaleType;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
+import com.mt.androidtest.image.PicConstants.Type;
 import com.mt.androidtest.listview.CommonBaseAdapter;
 import com.mt.androidtest.listview.ViewHolder;
 import com.mt.androidtest.tool.ExecutorHelper;
@@ -22,6 +23,7 @@ import com.mt.androidtest.tool.ExecutorHelper;
 /**
  * 专为加载大图片设计的图片适配器，但是存在一些问题：
  * 1、异步任务逐个下载逐个加载，没有任务取消机制。
+ * 2、大量图片加载时，如果使用newCachedThreadPool线程池，很容易OOM
  * 2、每次mViewGroup.findViewWithTag(imageUrl)效率很低
  * @author Mengtao1
  *
@@ -29,7 +31,7 @@ import com.mt.androidtest.tool.ExecutorHelper;
 public class BitmapAdapter extends CommonBaseAdapter<String>{
 	private Context mContext = null;
 	private ViewGroup mViewGroup; 
-    private BitmapProcess mBitmapProcess=null;
+    private ImageLoader mImageLoader=null;
     //
     private int widthOfIV = 0;
     private int heightOfIV = 0;
@@ -49,7 +51,7 @@ public class BitmapAdapter extends CommonBaseAdapter<String>{
 	public BitmapAdapter(Context context, List<String> mDatas){
 		super(context, mDatas);
 		mContext = context.getApplicationContext();
-		mBitmapProcess = new BitmapProcess(mContext);
+		mImageLoader = new ImageLoader(mContext,-1,Type.FIFO);
 		int cacheSize = maxMemory / 8;
 		mLruCache = new LruCache<String, Bitmap>(cacheSize){
 	        @Override  
@@ -126,7 +128,7 @@ public class BitmapAdapter extends CommonBaseAdapter<String>{
         @Override  
         protected Bitmap doInBackground(String... params) {  
             imageUrl = params[0];
-            Bitmap bitmap = mBitmapProcess.getBitmap(imageUrl, widthOfIV, heightOfIV);  
+            Bitmap bitmap = mImageLoader.loadImage(imageUrl, widthOfIV, heightOfIV);  
             if(null!=bitmap)addBitmapToMemoryCache(imageUrl, bitmap);
             return bitmap;  
         }  
