@@ -17,6 +17,8 @@
         android:fastScrollEnabled="false"
         android:background="@color/white"
         android:scrollbarStyle="outsideOverlay" 
-        android:numColumns="3"/>
+        android:numColumns="3"
+        android:horizontalSpacing="3dip"        
+        android:verticalSpacing="3dip"/>
 
 </FrameLayout>

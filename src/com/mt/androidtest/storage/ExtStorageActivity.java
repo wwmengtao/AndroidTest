@@ -61,16 +61,14 @@ public class ExtStorageActivity extends BaseActivity {
 				break;						
 			case "saveFileToExtStoragePublicDir":
 	    		if(AndroidVersion>22){
-	    			RequestPermissionsActivity.startPermissionActivity(this);
-	    			return;
+	    			requestPermissions(RequestPermissionsActivity.REQUIRED_PERMISSIONS);
 	    		}
 				type=Environment.DIRECTORY_DOWNLOADS;
 				mFile = mExtStorageHelper.saveFileToExtStoragePublicDir(bytesToSave,type,fileName);
 				break;
 			case "saveFileToExtStorageCustomDir":
 	    		if(AndroidVersion>22){
-	    			RequestPermissionsActivity.startPermissionActivity(this);
-	    			return;
+	    			requestPermissions(RequestPermissionsActivity.REQUIRED_PERMISSIONS);
 	    		}
 				type="M_T";
 				mFile = mExtStorageHelper.saveFileToExtStorageCustomDir(bytesToSave,type,fileName);

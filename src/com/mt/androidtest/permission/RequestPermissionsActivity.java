@@ -10,7 +10,7 @@ import com.mt.androidtest.ALog;
  */
 public class RequestPermissionsActivity extends RequestPermissionsActivityBase {
 	static boolean isLogRun = false;
-    private static final String[] REQUIRED_PERMISSIONS = new String[]{
+    public static final String[] REQUIRED_PERMISSIONS = new String[]{
     	permission.READ_EXTERNAL_STORAGE,
     	permission.WRITE_EXTERNAL_STORAGE,
     	//permission.SYSTEM_ALERT_WINDOW：如果增加此权限判断，那么普通应用(没有签名，不在system区)将无法获取该权限
