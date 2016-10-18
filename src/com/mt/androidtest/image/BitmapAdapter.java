@@ -16,7 +16,6 @@ import android.widget.ImageView.ScaleType;
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 import com.mt.androidtest.image.PicConstants.Type;
-import com.mt.androidtest.listview.CommonBaseAdapter;
 import com.mt.androidtest.listview.ViewHolder;
 import com.mt.androidtest.tool.ExecutorHelper;
 
