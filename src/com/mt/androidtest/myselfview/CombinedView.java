@@ -14,6 +14,10 @@ public class CombinedView extends FrameLayout {
 
 	private Button leftButton;
 
+    public CombinedView(Context context) {
+        this(context,null);
+    }	
+	
 	public CombinedView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		LayoutInflater.from(context).inflate(R.layout.customview_title, this);

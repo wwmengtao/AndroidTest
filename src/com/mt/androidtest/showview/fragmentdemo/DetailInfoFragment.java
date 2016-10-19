@@ -14,7 +14,6 @@ public class DetailInfoFragment extends Fragment{
 	InfoContent.Info info;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
-		System.out.println("-------------------onCreate:BookDetailFragment");
 		super.onCreate(savedInstanceState);
 		if (getArguments().containsKey(ITEM_ID)){
 			info = InfoContent.ITEM_MAP.get(getArguments()	.getInt(ITEM_ID)); //¢Ù
@@ -23,7 +22,6 @@ public class DetailInfoFragment extends Fragment{
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		System.out.println("-------------------onCreateView:BookDetailFragment");
 		View rootView = inflater.inflate(R.layout.fragment_info_detail,	container, false);
 		if (info != null){
 			((TextView) rootView.findViewById(R.id.book_title)).setText(info.title);

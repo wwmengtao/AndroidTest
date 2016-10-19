@@ -27,10 +27,8 @@ public class SummaryListFragment extends ListFragment
 	@Override
 	public void onAttach(Activity activity)	{
 		super.onAttach(activity);
-		// 如果Activity没有实现Callbacks接口，抛出异常
 		if (!(activity instanceof Callback)){
-			throw new IllegalStateException(
-				"BookListFragment所在的Activity必须实现Callbacks接口!");
+			throw new IllegalStateException("BookListFragment所在的Activity必须实现Callbacks接口!");
 		}
 		mCallbacks = (Callback)activity;
 	}

@@ -1,16 +1,19 @@
 package com.mt.androidtest.myselfview;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.os.Parcelable;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -150,8 +153,15 @@ public class MySelfViewActivity extends BaseActivity {
     }
 	//ViewPager的使用
 	public void initMyScrollView(){
+		List<Fragment> mFragments = new ArrayList<Fragment>();
+		List<View> mListViews = new ArrayList<View>();
+		for(int i=0;i<NUM_PAGES;i++){
+			mFragments.add(ScreenSlidePageFragment.create(i));
+			mListViews.add(new CombinedView(this));
+		}
         mViewPager = (ViewPager) findViewById(R.id.myviewpager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
+        mPagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(),mFragments);//ViewPager显示Fragment，谷歌推荐做法
+        //mPagerAdapter = new MyPagerAdapter(mListViews);//ViewPager显示自定义View
         mViewPager.setAdapter(mPagerAdapter);
         //
         mListView = (ListView) findViewById(R.id.mylistview);
@@ -159,19 +169,68 @@ public class MySelfViewActivity extends BaseActivity {
         setListViewHeightBasedOnChildren(mListView);
 	}
 	
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
+	/**
+	 * FragmentPagerAdapter：专为添加Fragment设计
+	 * @author Mengtao1
+	 *
+	 */
+    private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+    	private List<Fragment> mFragments; 
+        public MyFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
+            mFragments = fragments;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return ScreenSlidePageFragment.create(position);
+            return mFragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return NUM_PAGES;
+            return mFragments.size();
         }
     }
+    
+    /**
+     * PagerAdapter:添加自定义View
+     * @author Mengtao1
+     *
+     */
+	private class MyPagerAdapter extends PagerAdapter {
+        private List<View> mListViews;  
+        
+        public MyPagerAdapter(List<View> mListViews) {  
+            this.mListViews = mListViews;//构造方法，参数是我们的页卡，这样比较方便。  
+        }  
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			container.removeView((View) object);
+		}
+
+		@Override
+		public int getCount() {
+			return mListViews.size();
+		}
+
+	@Override  
+    public Object instantiateItem(ViewGroup container, int position) {  //这个方法用来实例化页卡         
+         container.addView(mListViews.get(position), 0);//添加页卡  
+         return mListViews.get(position);  
+    }  
+
+		@Override
+		public boolean isViewFromObject(View view, Object object) {
+			return view.equals(object);
+		}
+
+		@Override
+		public void restoreState(Parcelable state, ClassLoader loader) {
+		}
+
+		@Override
+		public Parcelable saveState() {
+			return null;
+		}
+	}
 }

@@ -1,15 +1,15 @@
 package com.mt.androidtest.showview.fragmentdemo;
 
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
+import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
-public class FragmentTestActivity extends Activity  implements SummaryListFragment.Callback{
+public class FragmentTestActivity extends BaseActivity  implements SummaryListFragment.Callback{
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fragment_test);
 	}
