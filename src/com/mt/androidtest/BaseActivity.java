@@ -41,7 +41,7 @@ import com.mt.androidtest.listview.ListViewAdapter;
  * @author Mengtao1
  *
  */
-public class BaseActivity extends Activity implements AdapterView.OnItemClickListener, Handler.Callback, View.OnClickListener{
+public abstract class BaseActivity extends Activity implements AdapterView.OnItemClickListener, Handler.Callback, View.OnClickListener{
 	private boolean isLogRun = true;
 	//
 	private LinearLayout mLinearlayout_listview_activity=null;

@@ -9,7 +9,6 @@ import android.util.Log;
 public class ALog {
 	public  static String TAG_M = "M_T_AT";
 	private static Activity mActivity=null;
-	private static WeakReference<Activity> mActivityReference=null;
 	public static void Log(String info){
 		Log.e(TAG_M,info);
 	}
@@ -43,24 +42,20 @@ public class ALog {
      * @param info
      * @param activity
      */
-	public static void Log(String info, Activity activity){
-		mActivityReference=new WeakReference<Activity >(activity);
-		mActivity=mActivityReference.get();
-		String str = getActivityName(mActivity);
+	public static void Log(String info, Object obj){
+		String str = getActivityName(obj);
 		if(null != str)Log(String.format(formatStr,info)+":"+str);
 	}
 
-	public static void fillInStackTrace(String info, Activity activity){
-		mActivityReference=new WeakReference<Activity >(activity);
-		mActivity=mActivityReference.get();
-		String str = getActivityName(mActivity);
+	public static void fillInStackTrace(String info, Object obj){
+		String str = getActivityName(obj);
 		if(null != str)fillInStackTrace(info+":"+str);
 	}
 	
-	public static String getActivityName(Activity mActivity){
+	public static String getActivityName(Object obj){
 		String str = null;
-		if(null!=mActivity){
-			str = mActivity.toString();
+		if(null!=obj){
+			str = obj.toString();
 			if(null==str)return null;
 		    Pattern mPattern = null;
 		    Matcher mMatcher = null;

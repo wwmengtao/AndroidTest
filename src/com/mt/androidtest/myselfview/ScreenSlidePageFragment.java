@@ -1,15 +1,15 @@
 package com.mt.androidtest.myselfview;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mt.androidtest.BaseFragment;
 import com.mt.androidtest.R;
 
-public class ScreenSlidePageFragment extends Fragment {
+public class ScreenSlidePageFragment extends BaseFragment {
     public static final String ARG_PAGE = "page";
     private int mPageNumber;
 
@@ -29,6 +29,7 @@ public class ScreenSlidePageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    	super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
         ((TextView) rootView.findViewById(android.R.id.text1)).setText(getString(R.string.title_template_step, mPageNumber + 1));        
