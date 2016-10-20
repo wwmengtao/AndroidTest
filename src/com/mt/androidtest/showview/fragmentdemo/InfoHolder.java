@@ -2,7 +2,10 @@ package com.mt.androidtest.showview.fragmentdemo;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,7 +14,37 @@ import com.mt.androidtest.BaseFragment;
 import com.mt.androidtest.R;
 
 public class InfoHolder{
-
+	public static class MessageFragment extends BaseFragment {
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View messageLayout = inflater.inflate(R.layout.message_fragment,	container, false);
+			return messageLayout;
+		}
+	}
+	
+	public static class ContactsFragment extends BaseFragment {
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View contactsLayout = inflater.inflate(R.layout.contacts_fragment, container, false);
+			return contactsLayout;
+		}
+	}
+	
+	public static class NewsFragment extends BaseFragment {
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View newsLayout = inflater.inflate(R.layout.news_fragment, container, false);
+			return newsLayout;
+		}
+	}
+	
+	public static class SettingFragment extends BaseFragment {
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View settingLayout = inflater.inflate(R.layout.setting_fragment, container, false);
+			return settingLayout;
+		}
+	}
+	
 	public static final BaseFragment[] mBaseFragments={
 			new MessageFragment(),
 			new ContactsFragment(),
@@ -38,6 +71,13 @@ public class InfoHolder{
 			R.drawable.contacts_selected,
 			R.drawable.news_selected,
 			R.drawable.setting_selected
+	};
+	
+	public static final int[] DrawableUnSelectedIDs={
+			R.drawable.message_unselected,
+			R.drawable.contacts_unselected,
+			R.drawable.news_unselected,
+			R.drawable.setting_unselected
 	};
 	
 	public static final int[] TextViewIDs={
@@ -67,12 +107,6 @@ public class InfoHolder{
 		return mFragment;
 	}
 	
-//	public ImageView getImageView(){
-//		return mImageView;
-//	}
-//	public TextView getTextView(){
-//		return mTextView;
-//	}
 	public void setSelected(int drawableSelectedID){
 		mImageView.setImageResource(drawableSelectedID);
 		mTextView.setTextColor(Color.WHITE);

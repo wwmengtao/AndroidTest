@@ -861,6 +861,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_bitmap_factory=0x7f0a0041;
         public static final int title_activity_content_resolver_demo=0x7f0a003a;
         public static final int title_activity_fragment_test=0x7f0a0042;
+        public static final int title_activity_fragment_test2=0x7f0a0043;
         public static final int title_activity_inflate=0x7f0a002b;
         public static final int title_activity_int_storage=0x7f0a0039;
         public static final int title_activity_list_view=0x7f0a002a;
