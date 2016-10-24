@@ -1,23 +1,16 @@
 package com.mt.androidtest.image;
 
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.util.LruCache;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 import com.mt.androidtest.listview.ViewHolder;
 import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
-import com.mt.androidtest.tool.ExecutorHelper;
 
 /**
  *

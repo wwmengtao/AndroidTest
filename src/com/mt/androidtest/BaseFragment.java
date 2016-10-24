@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
-onAttach方法：Fragment和Activity建立关联的时候调用。
-onCreateView方法：为Fragment加载布局时调用。
+onAttach方法：Fragment和Activity建立关联的时候调用，在这个方法中可以获得所在的activity。
+onCreateView方法：为Fragment加载布局时调用，fragment在其中创建自己的layout(界面)。
 onActivityCreated方法：当Activity中的onCreate方法执行完后调用。
 onDestroyView方法：Fragment中的布局被移除时调用。
-onDetach方法：Fragment和Activity解除关联的时候调用。
- * @author Mengtao1
+onDetach方法：Fragment和Activity解除关联的时候调用，此时getActivity()返回null。
  *
  */
 public abstract class BaseFragment extends Fragment {
