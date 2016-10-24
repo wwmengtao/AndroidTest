@@ -32,7 +32,7 @@ public class ScreenSlidePageFragment extends BaseFragment {
     	super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
-        ((TextView) rootView.findViewById(android.R.id.text1)).setText(getString(R.string.title_template_step, mPageNumber + 1));        
+        ((TextView) rootView.findViewById(android.R.id.text1)).setText(getString(R.string.title_template_step, mPageNumber));        
         return rootView;
     }
 

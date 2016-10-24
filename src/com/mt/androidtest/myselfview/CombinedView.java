@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
 public class CombinedView extends FrameLayout {
@@ -18,6 +19,16 @@ public class CombinedView extends FrameLayout {
         this(context,null);
     }	
 	
+    public void onAttachedToWindow() {
+    	super.onAttachedToWindow();
+    	ALog.Log("CombinedView_onAttachedToWindow");
+    }
+    
+    public void onDetachedFromWindow() {
+    	super.onDetachedFromWindow();
+    	ALog.Log("CombinedView_onDetachedFromWindow");
+    }
+    
 	public CombinedView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		LayoutInflater.from(context).inflate(R.layout.customview_title, this);

@@ -8,11 +8,13 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -41,6 +43,7 @@ public class MySelfViewActivity extends BaseActivity {
     private static final int NUM_PAGES = 5;
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;	
+    private TextView mTextView;
     //
     private ListView mListView;
     private ListViewTestAdapter_SingleLayout mListAdapter_SingleLayout;
@@ -151,22 +154,90 @@ public class MySelfViewActivity extends BaseActivity {
         return mTabHost.newTabSpec(tag).setIndicator(title).setContent(
                 mEmptyTabContent);
     }
+    
+    
+    private List<Fragment> mFragments=null;
+    private List<View> mListViews=null;
 	//ViewPager的使用
 	public void initMyScrollView(){
-		List<Fragment> mFragments = new ArrayList<Fragment>();
-		List<View> mListViews = new ArrayList<View>();
+		mTextView = (TextView)findViewById(R.id.mytextview);
+		mTextView.setOnClickListener(mOnClickListener);
+		mFragments = new ArrayList<Fragment>();
+		mListViews = new ArrayList<View>();
 		for(int i=0;i<NUM_PAGES;i++){
 			mFragments.add(ScreenSlidePageFragment.create(i));
 			mListViews.add(new CombinedView(this));
 		}
         mViewPager = (ViewPager) findViewById(R.id.myviewpager);
-        mPagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(),mFragments);//ViewPager显示Fragment，谷歌推荐做法
-        //mPagerAdapter = new MyPagerAdapter(mListViews);//ViewPager显示自定义View
+        mPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager(),mFragments);//ViewPager显示Fragment，谷歌推荐做法
         mViewPager.setAdapter(mPagerAdapter);
         //
         mListView = (ListView) findViewById(R.id.mylistview);
         mListView.setAdapter(mListAdapter_SingleLayout);
         setListViewHeightBasedOnChildren(mListView);
+	}
+	
+	private OnClickListener mOnClickListener = new OnClickListener(){
+		private int index=0;
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			int value = (index++%3);
+			ALog.Log("value:"+value);
+			switch(value){
+			case 0:
+				mTextView.setText("FragmentPagerAdapter");
+				mPagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(),mFragments);//ViewPager显示Fragment，谷歌推荐做法
+				break;
+			case 1:
+				mTextView.setText("PagerAdapter");
+				mPagerAdapter = new MyPagerAdapter(mListViews);//ViewPager显示自定义View
+				break;
+			case 2:
+				mTextView.setText("FragmentStatePagerAdapter");
+				mFragments.clear();
+				for(int i=0;i<NUM_PAGES;i++){
+					mFragments.add(ScreenSlidePageFragment.create(i));
+				}
+				mPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager(),mFragments);//ViewPager显示Fragment，谷歌推荐做法
+				break;
+			}
+	        mViewPager.setAdapter(mPagerAdapter);
+		}
+	};
+	
+	/**
+	 * FragmentPagerAdapter与FragmentStatePagerAdapter的主要区别就在与对于fragment是否销毁，下面细说：
+	 * 区别1)FragmentPagerAdapter：对于不再需要的fragment，选择调用detach方法，仅销毁视图，并不会销毁fragment实例。
+	 * 区别2)FragmentStatePagerAdapter：会销毁不再需要的fragment，当当前事务提交以后，会彻底的将fragmeng从当前Activity
+	 * 的FragmentManager中移除，state标明，销毁时，会将其onSaveInstanceState(Bundle outState)中的bundle信息保存下来，
+	 * 当用户切换回来，可以通过该bundle恢复生成新的fragment，也就是说，你可以在onSaveInstanceState(Bundle outState)
+	 * 方法中保存一些数据，在onCreate中进行恢复创建。
+	 * 总之：使用FragmentStatePagerAdapter当然更省内存，但是销毁新建也是需要时间的。一般情况下，如果你是制作主页面，
+	 * 就3、4个Tab，那么可以选择使用FragmentPagerAdapter，如果你是用于ViewPager展示数量特别多的条目时，那么建议使用
+	 * FragmentStatePagerAdapter。
+	 */
+	
+	/**
+	 * FragmentStatePagerAdapter
+	 * @author Mengtao1
+	 *
+	 */
+	private class MyFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
+		private List<Fragment> mFragments; 
+		public MyFragmentStatePagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+			super(fm);
+			mFragments = fragments;
+		}
+		@Override
+		public Fragment getItem(int position) {
+			return mFragments.get(position);
+		}
+		
+		@Override
+		public int getCount() {
+			return mFragments.size();
+		}
 	}
 	
 	/**

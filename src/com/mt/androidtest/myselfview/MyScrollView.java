@@ -1,5 +1,8 @@
 package com.mt.androidtest.myselfview;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
@@ -7,12 +10,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.mt.androidtest.R;
 
 public class MyScrollView extends ScrollView{
+	private List<View> mViews=null;
+    private TextView mTextView;
 	private ViewPager mViewPager =null;
-	private RectF rectViewPager = null;
+	private RectF mRectF = null;
 	boolean isInViewRect = false;
 	public MyScrollView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -20,7 +26,11 @@ public class MyScrollView extends ScrollView{
 
     @Override  
     protected void onAttachedToWindow(){
+    	mViews = new ArrayList<View>();
+		mTextView = (TextView)findViewById(R.id.mytextview);
 		mViewPager = (ViewPager) findViewById(R.id.myviewpager);
+		mViews.add(mTextView);
+		mViews.add(mViewPager);
     }
 	
     @Override  
@@ -29,24 +39,21 @@ public class MyScrollView extends ScrollView{
     	//标识事件处理开始信息
         switch (curEventType) {
 	        case MotionEvent.ACTION_DOWN:  
-	        	//以下判断点击事件是否位于ViewPager所在区域
-	    		rectViewPager = calcViewRectangle(mViewPager);
-	        	isInViewRect = rectViewPager.contains(event.getRawX(), event.getRawY());
-	            return isInViewRect? false : true;
+	            return shouldInterceptTouchEvent(event);
         }
         return super.onInterceptTouchEvent(event);
     }  
     
-    @Override  
-    public boolean onTouchEvent(MotionEvent event) {  
-    	int curEventType = event.getAction();
-    	//标识事件处理开始信息
-        switch (curEventType) {
-	        case MotionEvent.ACTION_DOWN:
-	        	break;
-        }
-        return super.onTouchEvent(event);
-    }    
+	/**
+	 * 判断点击事件是否位于mViews包含的子View区域内
+	 */
+    public boolean shouldInterceptTouchEvent(MotionEvent event){
+    	for(View mView:mViews){
+    		mRectF = calcViewRectangle(mView);
+    		if(mRectF.contains(event.getRawX(), event.getRawY()))return false;
+    	}
+    	return true;
+    }
     
     /**
      * 计算view的矩形区域

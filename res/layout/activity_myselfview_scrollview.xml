@@ -2,11 +2,20 @@
 <com.mt.androidtest.myselfview.MyScrollView  
     xmlns:android="http://schemas.android.com/apk/res/android"  
     android:layout_width="match_parent"   
-    android:layout_height="wrap_content">  
+    android:layout_height="wrap_content">
   <LinearLayout 
       android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+    <TextView 
+        android:id="@+id/mytextview"
+		android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="FragmentStatePagerAdapter"
+        android:textSize="18sp"
+        android:background="@color/royalblue"
+        />
         <!-- ViewPager如果在Scrollview中使用，并且宽高指定为match_parent或者wrap_content则不会显示内容，需要精确高度 -->
     <android.support.v4.view.ViewPager
         android:id="@+id/myviewpager"
