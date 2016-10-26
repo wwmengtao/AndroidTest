@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
+import com.mt.androidtest.image.PicConstants.Type;
 
 public class BitmapFactoryActivity extends BaseActivity {
 	private AssetManager mAssetManager=null;
@@ -37,6 +38,9 @@ public class BitmapFactoryActivity extends BaseActivity {
 	private  static final int Menu_PIC = 1;
 	private  static final int Menu_ListView = 2;
 	private  static final int Menu_GridView = 3;
+	//
+	private boolean pauseOnScroll = true;
+	private boolean pauseOnFling = true;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,6 +84,7 @@ public class BitmapFactoryActivity extends BaseActivity {
 			//mBitmapAdapter = new BitmapAdapter(this, largeNumPicsAL);
 			mBitmapAdapter = new BitmapAdapter2(this, largeNumPicsAL);			
 			mGridView.setAdapter(mBitmapAdapter);
+			mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(this,-1,Type.LIFO), pauseOnScroll, pauseOnFling));
 			break;
 		}
 		return super.onOptionsItemSelected(mi);

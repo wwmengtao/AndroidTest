@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -14,9 +15,7 @@ import android.os.Message;
 import android.util.LruCache;
 import android.widget.ImageView;
 
-import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
-import com.mt.androidtest.image.BitmapAdapter.BitmapWorkerTask;
 import com.mt.androidtest.image.PicConstants.Type;
 import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
 import com.mt.androidtest.tool.ExecutorHelper;
@@ -27,6 +26,8 @@ import com.mt.androidtest.tool.ExecutorHelper;
  *
  */
 public class ImageLoader {
+	private final AtomicBoolean paused = new AtomicBoolean(false);
+	private final Object pauseLock = new Object();
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 	private static final int maxMemory = (int) (Runtime.getRuntime().maxMemory());
 	private Context mContext = null;
@@ -123,6 +124,7 @@ public class ImageLoader {
         if (mBitmap != null) {  
         	mImageView.setImageBitmap(mBitmap);  
         } else {
+        	mImageView.setImageResource(R.drawable.loading);
     		mImageView.setTag(imageUrl);
         	mTasks.add(fetchGetImageRunnable(mImageViewParas));
     		try{
@@ -141,6 +143,7 @@ public class ImageLoader {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
+				if(waitIfPaused())return;
 				int widthOfIV = ImageViewParas.width;
 				int heightOfIV = ImageViewParas.height;
 				String imageUrl = mImageViewParas.url;
@@ -154,6 +157,22 @@ public class ImageLoader {
 	            mShowImageHandler.sendMessage(mMessage);
 			}
 		};
+	}
+	
+	private boolean waitIfPaused() {
+		if (paused.get()) {
+			synchronized (getPauseLock()) {
+				if (paused.get()) {
+					try {
+						getPauseLock().wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	private Handler mShowImageHandler=new Handler(){
@@ -196,4 +215,18 @@ public class ImageLoader {
 		return ImageProcess.decodeSampledBitmap(mInputStream, widthOfImageView, heightOfImageView,true);
 	}
 
+	public void resume(){
+		paused.set(false);
+		synchronized (pauseLock) {
+			pauseLock.notifyAll();
+		}
+	}
+	
+	public void pause(){
+		paused.set(true);
+	}
+	
+	Object getPauseLock() {
+		return pauseLock;
+	}
 }
