@@ -1,20 +1,24 @@
 package com.mt.androidtest.image;
 
 import java.io.InputStream;
-import java.util.LinkedList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.LruCache;
 import android.widget.ImageView;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 import com.mt.androidtest.image.PicConstants.Type;
 import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
@@ -32,55 +36,22 @@ public class ImageLoader {
 	private static final int maxMemory = (int) (Runtime.getRuntime().maxMemory());
 	private Context mContext = null;
 	private AssetManager mAssetManager=null;  
-	private ExecutorHelper mExecutorHelper =null;
-    private ExecutorService mExecutorService = null;
-    private LinkedList<Runnable> mTasks;
+    private Executor mTaskLoadImg = null;
+    private Executor mTaskDistributor=null;
     private volatile static ImageLoader mInstance;
     private LruCache<String, Bitmap> mLruCache;  
     private Type mType;
-    //ThreadPoolHandler初始化信号量，保证ThreadPoolHandler的实例初始化完毕之后才能使用
-	private volatile Semaphore mSemaphoreThreadPoolHandlerInit = new Semaphore(0);
-	//ThreadPool线程池任务执行信号量，保证任务队列mTasks为LIFO时线程池优先执行后添加的任务，显著提升加载体验
-	private volatile Semaphore mSemaphoreThreadPoolExecute = null;
-    
-	/**
-	 * 线程池调度Hander
-	 */
-	private Handler mThreadPoolHandler = null;
+	private final Map<Integer, String> urlKeysForImageViews = Collections.synchronizedMap(new HashMap<Integer, String>());
+	private final Map<String, ReentrantLock> uriLocks = new WeakHashMap<String, ReentrantLock>();
 	
-	/**
-	 * 线程池事件处理线程
-	 */
-	private Thread mThreadPoolThread = new Thread(){
-		@Override
-		public void run(){
-			Looper.prepare();
-			mThreadPoolHandler =new Handler(){
-				@Override
-				public void handleMessage(Message msg){
-					try {
-						mSemaphoreThreadPoolExecute.acquire();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					Runnable mRunnable = fetchTask();
-					if(null!=mRunnable)mExecutorService.execute(mRunnable);
-				}
-			};
-			mSemaphoreThreadPoolHandlerInit.release();
-			Looper.loop();
-		}
-	};
+	private static boolean  IsImageLoaderInit = false;
+
+	public static boolean ImageLoaderInit(){
+		return IsImageLoaderInit;
+	}
 	
-	private Runnable fetchTask(){
-		Runnable mRunnable=null; 
-		if(Type.FIFO==mType){
-			mRunnable = mTasks.removeFirst();
-		}else if(Type.LIFO==mType){
-			mRunnable = mTasks.removeLast();
-		}
-		return mRunnable;
+	public static ImageLoader getInstance(Context context){
+		return getInstance(context, CPU_COUNT, Type.LIFO);
 	}
 	
 	public static ImageLoader getInstance(Context context,int threadCount, Type type)	{
@@ -88,6 +59,7 @@ public class ImageLoader {
 			synchronized (ImageLoader.class){
 				if (mInstance == null){
 					mInstance = new ImageLoader(context, threadCount, type);
+					IsImageLoaderInit = true;
 				}
 			}
 		}
@@ -102,6 +74,7 @@ public class ImageLoader {
 	}
 	
 	public void init(){
+		ALog.Log("ImageLoader_init");
 		int cacheSize = maxMemory / 8;
 		mLruCache = new LruCache<String, Bitmap>(cacheSize){
 	        @Override  
@@ -109,55 +82,106 @@ public class ImageLoader {
 	            return (null==mBitmap)?0:mBitmap.getByteCount();  
 	        }  
 		};
-		mExecutorHelper = new ExecutorHelper();
-		mExecutorService = mExecutorHelper.getExecutorService(2, CPU_COUNT);	//使用newFixedThreadPool，限制线程工作个数，可以避免OOM。但是如果coreThreads数量过大的话，会影响性能，因为对内存要求更高。
-		mSemaphoreThreadPoolExecute = new Semaphore(2*CPU_COUNT+1);
-		mTasks = new LinkedList<Runnable>();//初始化任务队列
-		mThreadPoolThread.start();
+	}
+	
+	private void masureExecutorExist(){
+		if(null==mTaskLoadImg||((ExecutorService) mTaskLoadImg).isShutdown()){
+			mTaskLoadImg = ExecutorHelper.createExecutor(CPU_COUNT, Thread.NORM_PRIORITY, mType);
+		}
+		if(null==mTaskDistributor||((ExecutorService) mTaskDistributor).isShutdown()){
+			mTaskDistributor = ExecutorHelper.createTaskDistributor();
+		}
 	}
 	
 	public void loadImage(ImageViewParas mImageViewParas){
+		masureExecutorExist();
 		ImageView mImageView = mImageViewParas.mImageView;
 		String imageUrl = mImageViewParas.url;
 		if(null==imageUrl)return;
+		ALog.Log("hashCode:"+mImageView.hashCode());
+		putUrlForImageView(mImageView.hashCode(),imageUrl);//强引用记录ImageView和URL关联关系
 		Bitmap mBitmap = getBitmapFromMemoryCache(imageUrl);
         if (mBitmap != null) {  
         	mImageView.setImageBitmap(mBitmap);  
         } else {
         	mImageView.setImageResource(R.drawable.loading);
-    		mImageView.setTag(imageUrl);
-        	mTasks.add(fetchGetImageRunnable(mImageViewParas));
-    		try{
-    			if (mThreadPoolHandler == null){
-    				mSemaphoreThreadPoolHandlerInit.acquire();
-    			}
-    		} catch (InterruptedException e){
-    		}
-        	mThreadPoolHandler.sendEmptyMessage(0x00);
+    		mTaskLoadImg.execute(new loadAndDisplayTask(mImageViewParas));
         }  
 	}
 	
-	//获取图片获取线程
-	private Runnable fetchGetImageRunnable(final ImageViewParas mImageViewParas){
-		return new Runnable(){
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				if(waitIfPaused())return;
-				int widthOfIV = ImageViewParas.width;
-				int heightOfIV = ImageViewParas.height;
-				String imageUrl = mImageViewParas.url;
-				Bitmap bitmap = loadImage(imageUrl, widthOfIV, heightOfIV);  
+	//加载、显示任务
+	private class loadAndDisplayTask implements Runnable{
+		private ImageViewParas mImageViewParas;
+		public loadAndDisplayTask(final ImageViewParas mImageViewParas){
+			this.mImageViewParas = mImageViewParas;
+		}
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			if(waitIfPaused())return;
+			int widthOfIV = ImageViewParas.width;
+			int heightOfIV = ImageViewParas.height;
+			String imageUrl = mImageViewParas.url;
+			ReentrantLock mUrlLock = getLockForUrl(imageUrl);
+			mUrlLock.lock();//对于多个ImageView加载同一个Url资源的情况进行限制
+			try{
+				checkImageViewReused(mImageViewParas);
+				Bitmap bitmap = loadImage(imageUrl, widthOfIV, heightOfIV);
 	            if(null!=bitmap){
+	            	checkImageViewReused(mImageViewParas);
 	            	addBitmapToMemoryCache(imageUrl, bitmap);
 	            	mImageViewParas.mBitmap=bitmap;
 	            }
-	            Message mMessage=Message.obtain();
-	            mMessage.obj=mImageViewParas;
-	            mShowImageHandler.sendMessage(mMessage);
+			}catch(TaskCancelException e){
+				ALog.Log("loadAndDisplayTask cancelled!");
+			}finally{
+				mUrlLock.unlock();
 			}
-		};
+			ALog.Log("loadAndDisplayTask:"+Thread.currentThread());
+			mTaskDistributor.execute(new DisplayTask(mImageViewParas));
+		}
 	}
+
+	public class DisplayTask implements Runnable{
+		private ImageViewParas mImageViewParas=null;
+		public DisplayTask(ImageViewParas mImageViewParas){
+			this.mImageViewParas = mImageViewParas;
+		}
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			if(null==mImageViewParas)return;
+            ImageView mImageView = mImageViewParas.mImageView; 
+            Bitmap mBitmap = mImageViewParas.mBitmap;
+            if (null == mImageView||null == mBitmap)return;
+
+			try{
+				checkImageViewReused(mImageViewParas);
+			}catch(TaskCancelException e){
+				ALog.Log("mShowImageHandler cancelled!");
+			}
+			Message mMessage = Message.obtain();
+			mMessage.obj=mImageViewParas;
+			mDisplayHandler.sendMessage(mMessage);
+		}
+	}
+	
+	private Handler mDisplayHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			ImageViewParas mImageViewParas = (ImageViewParas)msg.obj;
+			ImageView mImageView = mImageViewParas.mImageView;
+			Bitmap mBitmap = mImageViewParas.mBitmap;
+			try{
+				checkImageViewReused(mImageViewParas);
+			}catch(TaskCancelException e){
+				ALog.Log("mShowImageHandler cancelled!");
+			}
+            mImageView.setImageBitmap(mBitmap);
+            //让mImageView之前承接的所有显示任务统统取消，提升性能。比如用户没有设置pauseOnScroll属性时
+            removeDisplayTaskFor(mImageView.hashCode());
+		}
+	};
 	
 	private boolean waitIfPaused() {
 		if (paused.get()) {
@@ -175,22 +199,68 @@ public class ImageLoader {
 		return false;
 	}
 	
-	private Handler mShowImageHandler=new Handler(){
-		@Override
-		public void handleMessage(Message msg){
-			ImageViewParas mImageViewParas = (ImageViewParas)msg.obj;
-            ImageView mImageView = mImageViewParas.mImageView; 
-            Bitmap mBitmap = mImageViewParas.mBitmap;
-            if (null == mImageView||null == mBitmap)return;
-            String url = mImageViewParas.url;
-            String imageUrl = (String)mImageView.getTag();
-            if(null == url||null == imageUrl)return;
-            if (url.equals(imageUrl)) {
-        		mImageView.setImageBitmap(mBitmap);
-            }
-            mSemaphoreThreadPoolExecute.release();
+	public void resume(){
+		paused.set(false);
+		synchronized (pauseLock) {
+			pauseLock.notifyAll();
 		}
-	};
+	}
+	
+	public void pause(){
+		paused.set(true);
+	}
+	
+	Object getPauseLock() {
+		return pauseLock;
+	}
+	
+	//以下为ImageView和URL建立强引用关系，用于维护ImageView最新的URL
+	public void putUrlForImageView(Integer viewID, String url){
+		urlKeysForImageViews.put(viewID, url);
+	}
+	
+	public String getUrlForImageView(Integer viewID){
+		return urlKeysForImageViews.get(viewID);
+	}
+	
+	public void removeDisplayTaskFor(Integer viewID){
+		urlKeysForImageViews.remove(viewID);
+	}
+	
+	public ReentrantLock getLockForUrl(String url){
+		ReentrantLock lock = uriLocks.get(url);
+		if (lock == null) {
+			lock = new ReentrantLock();
+			uriLocks.put(url, lock);
+		}
+		return lock;
+	}
+	
+	//停止一切图片加载活动
+	public void stop() {
+		((ExecutorService) mTaskLoadImg).shutdownNow();
+		((ExecutorService) mTaskDistributor).shutdownNow();
+		mDisplayHandler.removeCallbacksAndMessages(null);
+		urlKeysForImageViews.clear();
+		uriLocks.clear();
+	}
+	
+	@SuppressWarnings("serial")
+	private class TaskCancelException extends Exception{
+	}
+	
+	public void checkImageViewReused(ImageViewParas mImageViewParas) throws TaskCancelException{
+		if (isViewReused(mImageViewParas)) {
+			throw new TaskCancelException();
+		}
+	}
+	
+	public boolean isViewReused(ImageViewParas mImageViewParas){
+		String url = mImageViewParas.url;
+		ImageView mImageView = mImageViewParas.mImageView;
+		ALog.Log("ID:"+mImageView.getId()+" url:"+url+" url2:"+getUrlForImageView(mImageView.hashCode()));
+		return !url.equals(getUrlForImageView(mImageView.hashCode()));
+	}
 	
 	public void addBitmapToMemoryCache(String key, Bitmap mBitmap) {  
         if (getBitmapFromMemoryCache(key) == null) {  
@@ -215,18 +285,5 @@ public class ImageLoader {
 		return ImageProcess.decodeSampledBitmap(mInputStream, widthOfImageView, heightOfImageView,true);
 	}
 
-	public void resume(){
-		paused.set(false);
-		synchronized (pauseLock) {
-			pauseLock.notifyAll();
-		}
-	}
-	
-	public void pause(){
-		paused.set(true);
-	}
-	
-	Object getPauseLock() {
-		return pauseLock;
-	}
+
 }

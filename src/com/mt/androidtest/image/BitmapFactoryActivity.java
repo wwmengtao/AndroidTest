@@ -16,6 +16,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 import com.mt.androidtest.image.PicConstants.Type;
@@ -84,7 +85,7 @@ public class BitmapFactoryActivity extends BaseActivity {
 			//mBitmapAdapter = new BitmapAdapter(this, largeNumPicsAL);
 			mBitmapAdapter = new BitmapAdapter2(this, largeNumPicsAL);			
 			mGridView.setAdapter(mBitmapAdapter);
-			mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(this,-1,Type.LIFO), pauseOnScroll, pauseOnFling));
+			mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(this), pauseOnScroll, pauseOnFling));
 			break;
 		}
 		return super.onOptionsItemSelected(mi);
@@ -172,4 +173,9 @@ public class BitmapFactoryActivity extends BaseActivity {
 		index++;
 	}
 	
+    @Override
+    protected void onStop() {
+    	if(ImageLoader.ImageLoaderInit())ImageLoader.getInstance(getApplicationContext()).stop();
+        super.onStop();
+    }
 }
