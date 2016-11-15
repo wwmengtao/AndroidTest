@@ -16,10 +16,8 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
-import com.mt.androidtest.image.PicConstants.Type;
 
 public class BitmapFactoryActivity extends BaseActivity {
 	private AssetManager mAssetManager=null;
@@ -175,7 +173,7 @@ public class BitmapFactoryActivity extends BaseActivity {
 	
     @Override
     protected void onStop() {
-    	if(ImageLoader.ImageLoaderInit())ImageLoader.getInstance(getApplicationContext()).stop();
+    	ImageLoader.getInstance(getApplicationContext()).stop();
         super.onStop();
     }
 }

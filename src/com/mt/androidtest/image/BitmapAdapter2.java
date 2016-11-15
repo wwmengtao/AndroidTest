@@ -5,9 +5,11 @@ import java.util.List;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 import com.mt.androidtest.listview.ViewHolder;
 import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
@@ -50,6 +52,10 @@ public class BitmapAdapter2 extends CommonBaseAdapter<String>{
 				ImageViewParas.width = widthOfIV;
 				ImageViewParas.height = heightOfIV;
 			}
+			//设置GridView的网格高度
+			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
+					android.view.ViewGroup.LayoutParams.MATCH_PARENT,80);
+			convertView.setLayoutParams(params);
 	}
 	
 }

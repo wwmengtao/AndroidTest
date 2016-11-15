@@ -1,5 +1,6 @@
 package com.mt.androidtest.listview;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.image.ImageLoader;
 import com.mt.androidtest.image.PicConstants.Type;
 
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 
 
 public class ViewHolder{
-    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 	private final SparseArray<View> mViews;
 	protected View mConvertView;
 	private Context mContext = null;
@@ -61,7 +61,8 @@ public class ViewHolder{
 		ImageViewParas mImageViewParas = new ImageViewParas();
 		mImageViewParas.mImageView = (ImageView) getView(viewId);
 		mImageViewParas.url = url;
-		ImageLoader.getInstance(mContext, CPU_COUNT+1,Type.LIFO).loadImage(mImageViewParas);
+		ImageLoader.getInstance(mContext).setQueueType(Type.LIFO);
+		ImageLoader.getInstance(mContext).loadImage(mImageViewParas);
 		return this;
 	}
 }

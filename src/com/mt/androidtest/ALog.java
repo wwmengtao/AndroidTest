@@ -1,18 +1,20 @@
 package com.mt.androidtest;
-import java.lang.ref.WeakReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.app.Activity;
 import android.util.Log;
 
 public class ALog {
 	public  static String TAG_M = "M_T_AT";
-	private static Activity mActivity=null;
+	public  static String TAG_M2 = "M_T_ATT";	
 	public static void Log(String info){
 		Log.e(TAG_M,info);
 	}
 
+	public static void Log1(String info){
+		Log.e(TAG_M2,info);
+	}
+	
 	public static void Log2(String info){
 		Log.e(TAG_M,info+" ThreadID:"+Thread.currentThread().getId());
 	}

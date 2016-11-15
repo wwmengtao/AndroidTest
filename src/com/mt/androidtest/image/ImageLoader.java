@@ -40,25 +40,17 @@ public class ImageLoader {
     private Executor mTaskDistributor=null;
     private volatile static ImageLoader mInstance;
     private LruCache<String, Bitmap> mLruCache;  
-    private Type mType;
-	private final Map<Integer, String> urlKeysForImageViews = Collections.synchronizedMap(new HashMap<Integer, String>());
+    private Type mType = Type.FIFO;
+	private final  Map<Integer, String> urlKeysForImageViews = Collections.synchronizedMap(new HashMap<Integer, String>());
 	private final Map<String, ReentrantLock> uriLocks = new WeakHashMap<String, ReentrantLock>();
 	
 	private static boolean  IsImageLoaderInit = false;
-
-	public static boolean ImageLoaderInit(){
-		return IsImageLoaderInit;
-	}
 	
-	public static ImageLoader getInstance(Context context){
-		return getInstance(context, CPU_COUNT, Type.LIFO);
-	}
-	
-	public static ImageLoader getInstance(Context context,int threadCount, Type type)	{
+	public static ImageLoader getInstance(Context context)	{
 		if (mInstance == null){
 			synchronized (ImageLoader.class){
 				if (mInstance == null){
-					mInstance = new ImageLoader(context, threadCount, type);
+					mInstance = new ImageLoader(context);
 					IsImageLoaderInit = true;
 				}
 			}
@@ -66,15 +58,18 @@ public class ImageLoader {
 		return mInstance;
 	}
 	
-	public ImageLoader(Context context, int threadCount, Type type){
+	public ImageLoader(Context context){
 		mContext = context.getApplicationContext();
-		mType = type;
 		mAssetManager = mContext.getResources().getAssets();
     	init();
 	}
 	
+	public void setQueueType(Type type){
+		mType = type;
+	}
+	
 	public void init(){
-		ALog.Log("ImageLoader_init");
+		ALog.Log1("ImageLoader_init");
 		int cacheSize = maxMemory / 8;
 		mLruCache = new LruCache<String, Bitmap>(cacheSize){
 	        @Override  
@@ -84,21 +79,21 @@ public class ImageLoader {
 		};
 	}
 	
-	private void masureExecutorExist(){
+	private void mesureExecutorExist(){
 		if(null==mTaskLoadImg||((ExecutorService) mTaskLoadImg).isShutdown()){
-			mTaskLoadImg = ExecutorHelper.createExecutor(CPU_COUNT, Thread.NORM_PRIORITY, mType);
+			mTaskLoadImg = ExecutorHelper.createExecutor(1, Thread.NORM_PRIORITY, mType);//核心线程数不能过大，否则影响性能并且LIFO队列效果不容易显现
 		}
 		if(null==mTaskDistributor||((ExecutorService) mTaskDistributor).isShutdown()){
 			mTaskDistributor = ExecutorHelper.createTaskDistributor();
+//			mTaskDistributor = ExecutorHelper.createTaskDistributor2(CPU_COUNT);
 		}
 	}
 	
 	public void loadImage(ImageViewParas mImageViewParas){
-		masureExecutorExist();
+		mesureExecutorExist();
 		ImageView mImageView = mImageViewParas.mImageView;
 		String imageUrl = mImageViewParas.url;
 		if(null==imageUrl)return;
-		ALog.Log("hashCode:"+mImageView.hashCode());
 		putUrlForImageView(mImageView.hashCode(),imageUrl);//强引用记录ImageView和URL关联关系
 		Bitmap mBitmap = getBitmapFromMemoryCache(imageUrl);
         if (mBitmap != null) {  
@@ -133,11 +128,11 @@ public class ImageLoader {
 	            	mImageViewParas.mBitmap=bitmap;
 	            }
 			}catch(TaskCancelException e){
-				ALog.Log("loadAndDisplayTask cancelled!");
+				ALog.Log1("loadAndDisplayTask cancelled!");
+				return;
 			}finally{
 				mUrlLock.unlock();
 			}
-			ALog.Log("loadAndDisplayTask:"+Thread.currentThread());
 			mTaskDistributor.execute(new DisplayTask(mImageViewParas));
 		}
 	}
@@ -154,12 +149,7 @@ public class ImageLoader {
             ImageView mImageView = mImageViewParas.mImageView; 
             Bitmap mBitmap = mImageViewParas.mBitmap;
             if (null == mImageView||null == mBitmap)return;
-
-			try{
-				checkImageViewReused(mImageViewParas);
-			}catch(TaskCancelException e){
-				ALog.Log("mShowImageHandler cancelled!");
-			}
+            if (isViewReused(mImageViewParas))return;
 			Message mMessage = Message.obtain();
 			mMessage.obj=mImageViewParas;
 			mDisplayHandler.sendMessage(mMessage);
@@ -172,11 +162,7 @@ public class ImageLoader {
 			ImageViewParas mImageViewParas = (ImageViewParas)msg.obj;
 			ImageView mImageView = mImageViewParas.mImageView;
 			Bitmap mBitmap = mImageViewParas.mBitmap;
-			try{
-				checkImageViewReused(mImageViewParas);
-			}catch(TaskCancelException e){
-				ALog.Log("mShowImageHandler cancelled!");
-			}
+			if (isViewReused(mImageViewParas))return;
             mImageView.setImageBitmap(mBitmap);
             //让mImageView之前承接的所有显示任务统统取消，提升性能。比如用户没有设置pauseOnScroll属性时
             removeDisplayTaskFor(mImageView.hashCode());
@@ -201,8 +187,8 @@ public class ImageLoader {
 	
 	public void resume(){
 		paused.set(false);
-		synchronized (pauseLock) {
-			pauseLock.notifyAll();
+		synchronized (getPauseLock()) {
+			getPauseLock().notifyAll();
 		}
 	}
 	
@@ -215,16 +201,16 @@ public class ImageLoader {
 	}
 	
 	//以下为ImageView和URL建立强引用关系，用于维护ImageView最新的URL
-	public void putUrlForImageView(Integer viewID, String url){
-		urlKeysForImageViews.put(viewID, url);
+	public void putUrlForImageView(Integer mImageView, String url){
+		urlKeysForImageViews.put(mImageView, url);
 	}
 	
-	public String getUrlForImageView(Integer viewID){
-		return urlKeysForImageViews.get(viewID);
+	public String getUrlForImageView(Integer mImageView){
+		return urlKeysForImageViews.get(mImageView);
 	}
 	
-	public void removeDisplayTaskFor(Integer viewID){
-		urlKeysForImageViews.remove(viewID);
+	public void removeDisplayTaskFor(Integer mImageView){
+		urlKeysForImageViews.remove(mImageView);
 	}
 	
 	public ReentrantLock getLockForUrl(String url){
@@ -238,6 +224,7 @@ public class ImageLoader {
 	
 	//停止一切图片加载活动
 	public void stop() {
+		if(!IsImageLoaderInit)return;
 		((ExecutorService) mTaskLoadImg).shutdownNow();
 		((ExecutorService) mTaskDistributor).shutdownNow();
 		mDisplayHandler.removeCallbacksAndMessages(null);
@@ -258,7 +245,7 @@ public class ImageLoader {
 	public boolean isViewReused(ImageViewParas mImageViewParas){
 		String url = mImageViewParas.url;
 		ImageView mImageView = mImageViewParas.mImageView;
-		ALog.Log("ID:"+mImageView.getId()+" url:"+url+" url2:"+getUrlForImageView(mImageView.hashCode()));
+//		ALog.Log1("hashCode:"+mImageView.hashCode());
 		return !url.equals(getUrlForImageView(mImageView.hashCode()));
 	}
 	

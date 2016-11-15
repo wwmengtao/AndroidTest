@@ -4,14 +4,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.mt.androidtest.image.PicConstants.Type;
-import com.nostra13.universalimageloader.core.assist.deque.LIFOLinkedBlockingDeque;
 
 /**
  * 自定义线程池
@@ -68,12 +66,16 @@ public class ExecutorHelper {
 		return Executors.newCachedThreadPool(createThreadFactory(Thread.NORM_PRIORITY, "uil-pool-d-"));
 	}
 	
+	public static Executor createTaskDistributor2(int coreThreads) {
+		return Executors.newFixedThreadPool(coreThreads);
+	}
+	
 	/** Creates default implementation of task executor */
 	public static Executor createExecutor(int threadPoolSize, int threadPriority,
 			Type tasksProcessingType) {
 		boolean lifo = tasksProcessingType == Type.LIFO;
 		BlockingQueue<Runnable> taskQueue =
-				lifo ? new LIFOLinkedBlockingDeque<Runnable>() : new LinkedBlockingQueue<Runnable>();
+				lifo ? new LIFOLinkedBlockingDeque<Runnable>() : new FIFOLinkedBlockingQueue<Runnable>();
 		return new ThreadPoolExecutor(threadPoolSize, threadPoolSize, 0L, TimeUnit.MILLISECONDS, taskQueue,
 				createThreadFactory(threadPriority, "uil-pool-"));
 	}
