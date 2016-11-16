@@ -100,6 +100,12 @@ public class ExecutorHelper {
 			namePrefix = threadNamePrefix + poolNumber.getAndIncrement() + "-thread-";
 		}
 
+		/**
+		 * 下列newThread生成的线程执行Thread.currentThread()会显示例如下列所示信息：
+		 * Thread[uil-pool-d-2-thread-1,5,main]
+		 * 解释：中括号里的第一个值(uil-pool-d-2-thread-1)为当前主线程的名字(可以自己定义)，第二个为线程级别，第三个为线程组
+		 */
+		
 		@Override
 		public Thread newThread(Runnable r) {
 			Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);

@@ -54,7 +54,8 @@ public class BitmapAdapter2 extends CommonBaseAdapter<String>{
 			}
 			//设置GridView的网格高度
 			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
-					android.view.ViewGroup.LayoutParams.MATCH_PARENT,80);
+					android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+					2*80);
 			convertView.setLayoutParams(params);
 	}
 	

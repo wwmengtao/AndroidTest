@@ -1,5 +1,7 @@
 package com.mt.androidtest.tool;
 
+import static com.mt.androidtest.image.ImageLoader.IsLogRun;
+
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.mt.androidtest.ALog;
@@ -18,13 +20,13 @@ public class FIFOLinkedBlockingQueue<T> extends LinkedBlockingQueue<T>{
 	
 	@Override
 	public boolean offer(T e) {
-		ALog.Log1("FIFO: offer");
+		if(IsLogRun)ALog.Log1("FIFO: offer");
 		return super.offer(e);
 	}
 	
 	@Override
 	public T take() throws InterruptedException{
-		ALog.Log1("FIFO: take");
+		if(IsLogRun)ALog.Log1("FIFO: take");
 		return super.take();
 	}
 }

@@ -3,7 +3,7 @@ package com.mt.androidtest.tool;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import com.mt.androidtest.ALog;
-
+import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 
 public class LIFOLinkedBlockingDeque<T> extends LinkedBlockingDeque<T> {
 
@@ -16,13 +16,13 @@ public class LIFOLinkedBlockingDeque<T> extends LinkedBlockingDeque<T> {
 	
 	@Override
 	public boolean offer(T e) {
-		ALog.Log1("LIFO: offer");
+		if(IsLogRun)ALog.Log1("LIFO: offer");
 		return super.offerFirst(e);
 	}
 	
 	@Override
 	public T take() throws InterruptedException {
-		ALog.Log1("LIFO: take");
+		if(IsLogRun)ALog.Log1("LIFO: take");
 		return super.take();
 	}
 }

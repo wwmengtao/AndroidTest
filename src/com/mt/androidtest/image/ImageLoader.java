@@ -30,6 +30,7 @@ import com.mt.androidtest.tool.ExecutorHelper;
  *
  */
 public class ImageLoader {
+	public static final boolean IsLogRun = true;
 	private final AtomicBoolean paused = new AtomicBoolean(false);
 	private final Object pauseLock = new Object();
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
@@ -69,7 +70,7 @@ public class ImageLoader {
 	}
 	
 	public void init(){
-		ALog.Log1("ImageLoader_init");
+		if(IsLogRun)ALog.Log1("ImageLoader_init");
 		int cacheSize = maxMemory / 8;
 		mLruCache = new LruCache<String, Bitmap>(cacheSize){
 	        @Override  
@@ -81,11 +82,10 @@ public class ImageLoader {
 	
 	private void mesureExecutorExist(){
 		if(null==mTaskLoadImg||((ExecutorService) mTaskLoadImg).isShutdown()){
-			mTaskLoadImg = ExecutorHelper.createExecutor(1, Thread.NORM_PRIORITY, mType);//核心线程数不能过大，否则影响性能并且LIFO队列效果不容易显现
+			mTaskLoadImg = ExecutorHelper.createExecutor(2, Thread.NORM_PRIORITY, mType);//核心线程数不能过大，否则影响性能并且LIFO队列效果不容易显现
 		}
 		if(null==mTaskDistributor||((ExecutorService) mTaskDistributor).isShutdown()){
 			mTaskDistributor = ExecutorHelper.createTaskDistributor();
-//			mTaskDistributor = ExecutorHelper.createTaskDistributor2(CPU_COUNT);
 		}
 	}
 	
@@ -128,7 +128,7 @@ public class ImageLoader {
 	            	mImageViewParas.mBitmap=bitmap;
 	            }
 			}catch(TaskCancelException e){
-				ALog.Log1("loadAndDisplayTask cancelled!");
+				if(IsLogRun)ALog.Log1("loadAndDisplayTask cancelled!");
 				return;
 			}finally{
 				mUrlLock.unlock();
@@ -162,7 +162,7 @@ public class ImageLoader {
 			ImageViewParas mImageViewParas = (ImageViewParas)msg.obj;
 			ImageView mImageView = mImageViewParas.mImageView;
 			Bitmap mBitmap = mImageViewParas.mBitmap;
-			if (isViewReused(mImageViewParas))return;
+		    if (isViewReused(mImageViewParas))return;
             mImageView.setImageBitmap(mBitmap);
             //让mImageView之前承接的所有显示任务统统取消，提升性能。比如用户没有设置pauseOnScroll属性时
             removeDisplayTaskFor(mImageView.hashCode());
@@ -245,7 +245,7 @@ public class ImageLoader {
 	public boolean isViewReused(ImageViewParas mImageViewParas){
 		String url = mImageViewParas.url;
 		ImageView mImageView = mImageViewParas.mImageView;
-//		ALog.Log1("hashCode:"+mImageView.hashCode());
+//		if(IsLogRun)ALog.Log1("hashCode:"+mImageView.hashCode());
 		return !url.equals(getUrlForImageView(mImageView.hashCode()));
 	}
 	
