@@ -28,7 +28,7 @@ public class BitmapFactoryActivity extends BaseActivity {
 	private BaseAdapter mBitmapAdapter = null;
 	private List<String>largeNumPicsAL = null;
 	private PicConstants mPicConstants = null;
-	private int picNum = 1000;
+	private int picNum = 3000;
 
 	private ListView mListView = null;
 	private GridView mGridView = null;	
@@ -38,7 +38,7 @@ public class BitmapFactoryActivity extends BaseActivity {
 	private  static final int Menu_ListView = 2;
 	private  static final int Menu_GridView = 3;
 	//
-	private boolean pauseOnScroll = true;
+	private boolean pauseOnScroll = false;
 	private boolean pauseOnFling = true;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

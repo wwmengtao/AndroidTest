@@ -20,7 +20,9 @@ public class PauseOnScrollListener implements OnScrollListener {
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		switch (scrollState) {
 			case OnScrollListener.SCROLL_STATE_IDLE:
-				imageLoader.resume();
+				if(pauseOnScroll || pauseOnFling){
+					imageLoader.resume();
+				}
 				break;
 			case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
 				if (pauseOnScroll) {

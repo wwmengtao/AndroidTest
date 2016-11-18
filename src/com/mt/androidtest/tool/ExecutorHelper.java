@@ -9,8 +9,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.image.PicConstants.Type;
-
+import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 /**
  * 自定义线程池
  * @author Mengtao1
@@ -63,7 +64,7 @@ public class ExecutorHelper {
 	}
 	
 	public static Executor createTaskDistributor() {
-		return Executors.newCachedThreadPool(createThreadFactory(Thread.NORM_PRIORITY, "uil-pool-d-"));
+		return Executors.newCachedThreadPool(createThreadFactory(Thread.NORM_PRIORITY, "pool-D-"));
 	}
 	
 	public static Executor createTaskDistributor2(int coreThreads) {
@@ -77,7 +78,7 @@ public class ExecutorHelper {
 		BlockingQueue<Runnable> taskQueue =
 				lifo ? new LIFOLinkedBlockingDeque<Runnable>() : new FIFOLinkedBlockingQueue<Runnable>();
 		return new ThreadPoolExecutor(threadPoolSize, threadPoolSize, 0L, TimeUnit.MILLISECONDS, taskQueue,
-				createThreadFactory(threadPriority, "uil-pool-"));
+				createThreadFactory(threadPriority, "pool-L-"));
 	}
 	
 	/** Creates default implementation of {@linkplain ThreadFactory thread factory} for task executor */
@@ -111,6 +112,7 @@ public class ExecutorHelper {
 			Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
 			if (t.isDaemon()) t.setDaemon(false);
 			t.setPriority(threadPriority);
+//			if(IsLogRun)ALog.Log1("newThread："+t.toString());
 			return t;
 		}
 	}

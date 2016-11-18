@@ -43,7 +43,8 @@ public class ImageLoader {
     private LruCache<String, Bitmap> mLruCache;  
     private Type mType = Type.FIFO;
 	private final  Map<Integer, String> urlKeysForImageViews = Collections.synchronizedMap(new HashMap<Integer, String>());
-	private final Map<String, ReentrantLock> uriLocks = new WeakHashMap<String, ReentrantLock>();
+	//WeakHashMap：不是线程安全的
+	private final Map<String, ReentrantLock> uriLocks = Collections.synchronizedMap(new WeakHashMap<String, ReentrantLock>());
 	
 	private static boolean  IsImageLoaderInit = false;
 	
@@ -82,10 +83,12 @@ public class ImageLoader {
 	
 	private void mesureExecutorExist(){
 		if(null==mTaskLoadImg||((ExecutorService) mTaskLoadImg).isShutdown()){
-			mTaskLoadImg = ExecutorHelper.createExecutor(2, Thread.NORM_PRIORITY, mType);//核心线程数不能过大，否则影响性能并且LIFO队列效果不容易显现
+			mTaskLoadImg = ExecutorHelper.createExecutor(3, Thread.NORM_PRIORITY, mType);//核心线程数并非越大越好
+			if(IsLogRun)ALog.Log1("mesureExecutorExist 1");
 		}
 		if(null==mTaskDistributor||((ExecutorService) mTaskDistributor).isShutdown()){
 			mTaskDistributor = ExecutorHelper.createTaskDistributor();
+			if(IsLogRun)ALog.Log1("mesureExecutorExist 2");
 		}
 	}
 	
@@ -176,7 +179,7 @@ public class ImageLoader {
 					try {
 						getPauseLock().wait();
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						if(IsLogRun)ALog.Log1("waitIfPaused InterruptedException");
 						return true;
 					}
 				}
@@ -245,7 +248,6 @@ public class ImageLoader {
 	public boolean isViewReused(ImageViewParas mImageViewParas){
 		String url = mImageViewParas.url;
 		ImageView mImageView = mImageViewParas.mImageView;
-//		if(IsLogRun)ALog.Log1("hashCode:"+mImageView.hashCode());
 		return !url.equals(getUrlForImageView(mImageView.hashCode()));
 	}
 	
