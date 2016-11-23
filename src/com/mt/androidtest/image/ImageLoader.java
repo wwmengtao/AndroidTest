@@ -55,7 +55,27 @@ public class ImageLoader {
      */
 	private final  Map<Integer, String> urlKeysForImageViews = Collections.synchronizedMap(new HashMap<Integer, String>());
 	/**
-	 * WeakHashMap：不是线程安全的，需要同步
+	 * WeakHashMap：不是线程安全的，需要同步，如果不同步的话，会出现WeakHashMap内部的链表死循环。此时以三个工作线程发生
+	 * 的一次死循环事故为例说明，事故发生的原因参照印象笔记的“疫苗：Java HashMap的死循环”。之所以能够形成这样的条件是因为这个
+	 * 图片加载器的图片URL都是不同的，会随着线程增多而增多，WeakHashMap数组下标处<String, ReentrantLock>冲突概率大增，从而造成
+	 * WeakHashMap内部的链表死循环。
+	 * 从而导致产生链表死循环概率大增。
+	 * 一个线程死在了 rehash()的下列循环处：
+     * while (entry != null) {
+            int index = entry.isNull ? 0 : (entry.hash & 0x7FFFFFFF)
+                    % length;
+            Entry<K, V> next = entry.next;
+            entry.next = newData[index];
+            newData[index] = entry;
+            entry = next;
+        }
+        剩下的两个线程死在了get()函数的下列for循环处(因为访问的是一个无限循环链表)：
+     *  while (entry != null) {
+            if (key.equals(entry.get())) {
+                return entry.value;
+            }
+            entry = entry.next;
+        }
 	 */
 	private final Map<String, ReentrantLock> uriLocks = Collections.synchronizedMap(new WeakHashMap<String, ReentrantLock>());
 	
