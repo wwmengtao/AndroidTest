@@ -317,6 +317,12 @@ public class ImageLoader {
 		}
 	}
 	
+	/**
+	 * getImageViewSize：获取imageView的宽高，由于GridView获取单元格宽高需要多次测量最终才能确定，因此在最终获取真实宽高
+	 * 之前必须给定默认值，此时的默认值是displayMetricsWidth、displayMetricsHeight。
+	 * @param imageView
+	 * @return
+	 */
 	public ImageViewSize getImageViewSize(ImageView imageView){
 		if(null==imageView)return null;
 		LayoutParams lp = imageView.getLayoutParams();
