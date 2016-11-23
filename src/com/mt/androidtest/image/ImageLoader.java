@@ -319,7 +319,8 @@ public class ImageLoader {
 	
 	/**
 	 * getImageViewSize：获取imageView的宽高，由于GridView获取单元格宽高需要多次测量最终才能确定，因此在最终获取真实宽高
-	 * 之前必须给定默认值，此时的默认值是displayMetricsWidth、displayMetricsHeight。
+	 * 之前必须给定默认值，此时的默认值是imageView.getxxx()后的各个if判断中的数值。
+	 * 注意：采用convertView.measure(0,0)后imageView.getMeasuredXXX的方法获取的尺寸是不准确的
 	 * @param imageView
 	 * @return
 	 */
@@ -331,6 +332,9 @@ public class ImageLoader {
 			width = lp.width;// 获取imageview在layout中声明的宽度
 		}
 		if (width <= 0){
+			width = ImageViewParas.defaultWidth;
+		}
+		if (width <= 0){
 			width = getImageViewFieldValue(imageView, "mMaxWidth");
 		}
 		if (width <= 0){
@@ -340,6 +344,9 @@ public class ImageLoader {
 		int height = imageView.getHeight();// 获取imageview的实际高度
 		if (height <= 0){
 			height = lp.height;// 获取imageview在layout中声明的宽度
+		}
+		if (height <= 0){
+			height = ImageViewParas.defaultHeight;
 		}
 		if (height <= 0){
 			height = getImageViewFieldValue(imageView, "mMaxHeight");// 检查最大值

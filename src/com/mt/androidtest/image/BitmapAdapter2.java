@@ -1,14 +1,10 @@
 package com.mt.androidtest.image;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -57,5 +53,11 @@ public class BitmapAdapter2 extends CommonBaseAdapter<String>{
 			convertView.setLayoutParams(params);
 			ImageView mImageView =mViewHolder.getView(R.id.myimageview);
 			mImageView.setScaleType(ScaleType.FIT_XY);//非等比例缩放，铺满整个ImageView
+			if(0==ImageViewParas.defaultWidth||0==ImageViewParas.defaultHeight){
+				convertView.measure(0, 0);
+				//下列数值仅仅作为采样用的宽高参考值(一般不会是真实数值)，一般会小于 displayMetrics.widthPixels、 displayMetrics.heightPixels
+				ImageViewParas.defaultWidth = mImageView.getMeasuredWidth();
+				ImageViewParas.defaultHeight = mImageView.getMeasuredHeight();
+			}
 	}
 }

@@ -1,10 +1,12 @@
 package com.mt.androidtest.listview;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.image.ImageLoader;
 import com.mt.androidtest.image.PicConstants.Type;
-import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 
+import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.SparseArray;
@@ -51,6 +53,8 @@ public class ViewHolder{
 	}
 	
 	public static class ImageViewParas{
+		public static int defaultWidth=0;
+		public static int defaultHeight=0;
 		public ImageView mImageView=null;
 		public String url=null;
 		public Bitmap mBitmap = null;
