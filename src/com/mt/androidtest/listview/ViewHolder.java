@@ -3,6 +3,7 @@ package com.mt.androidtest.listview;
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.image.ImageLoader;
 import com.mt.androidtest.image.PicConstants.Type;
+import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -50,8 +51,6 @@ public class ViewHolder{
 	}
 	
 	public static class ImageViewParas{
-		public static int width=0;
-		public static int height=0;
 		public ImageView mImageView=null;
 		public String url=null;
 		public Bitmap mBitmap = null;
@@ -60,6 +59,7 @@ public class ViewHolder{
 	public ViewHolder setImageByUrl(int viewId, String url){
 		ImageViewParas mImageViewParas = new ImageViewParas();
 		mImageViewParas.mImageView = (ImageView) getView(viewId);
+		if(IsLogRun)ALog.Log("widthOfIV1:"+mImageViewParas.mImageView.getMeasuredWidth()+" heightOfIV:"+mImageViewParas.mImageView.getMeasuredHeight());
 		mImageViewParas.url = url;
 		ImageLoader.getInstance(mContext).setQueueType(Type.LIFO);
 		ImageLoader.getInstance(mContext).loadImage(mImageViewParas);

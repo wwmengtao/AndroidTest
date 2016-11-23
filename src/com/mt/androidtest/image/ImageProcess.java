@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.mt.androidtest.ALog;
+import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 
 public class ImageProcess {
     private String regPrefix = "[0-9]+"+strangeSTR;
@@ -74,6 +75,7 @@ public class ImageProcess {
             // 一定都会大于等于目标的宽和高。  
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;  
         }
+        if(IsLogRun)ALog.Log("inSampleSize:"+inSampleSize);
         return inSampleSize;  
     }  
 }

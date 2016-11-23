@@ -1,6 +1,7 @@
 package com.mt.androidtest.image;
 
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,10 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.LruCache;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
 import com.mt.androidtest.ALog;
@@ -37,13 +41,22 @@ public class ImageLoader {
 	private static final int maxMemory = (int) (Runtime.getRuntime().maxMemory());
 	private Context mContext = null;
 	private AssetManager mAssetManager=null;  
+	private DisplayMetrics displayMetrics = null;
+	private static int displayMetricsWidth = 0;
+	private static int displayMetricsHeight = 0;
     private Executor mTaskLoadImg = null;
     private Executor mTaskDistributor=null;
     private volatile static ImageLoader mInstance;
     private LruCache<String, Bitmap> mLruCache;  
     private Type mType = Type.FIFO;
+    /**
+     * ImageView和URL的对应关系依赖ImageView的hashCode()和URL，当然，由于不同对象可能有相同的hashCode()，稳妥的做法
+     * 是直接ImageView和URL对应。
+     */
 	private final  Map<Integer, String> urlKeysForImageViews = Collections.synchronizedMap(new HashMap<Integer, String>());
-	//WeakHashMap：不是线程安全的
+	/**
+	 * WeakHashMap：不是线程安全的，需要同步
+	 */
 	private final Map<String, ReentrantLock> uriLocks = Collections.synchronizedMap(new WeakHashMap<String, ReentrantLock>());
 	
 	private static boolean  IsImageLoaderInit = false;
@@ -71,14 +84,18 @@ public class ImageLoader {
 	}
 	
 	public void init(){
-		if(IsLogRun)ALog.Log1("ImageLoader_init");
 		int cacheSize = maxMemory / 8;
+		if(IsLogRun)ALog.Log1("ImageLoader_cacheSize:"+cacheSize);
 		mLruCache = new LruCache<String, Bitmap>(cacheSize){
 	        @Override  
 	        protected int sizeOf(String key, Bitmap mBitmap) {  
 	            return (null==mBitmap)?0:mBitmap.getByteCount();  
 	        }  
 		};
+		//以下获取屏幕的宽高
+		displayMetrics = mContext.getResources().getDisplayMetrics();
+		displayMetricsWidth = displayMetrics.widthPixels;
+		displayMetricsHeight = displayMetrics.heightPixels;
 	}
 	
 	private void mesureExecutorExist(){
@@ -117,8 +134,9 @@ public class ImageLoader {
 		public void run() {
 			// TODO Auto-generated method stub
 			if(waitIfPaused())return;
-			int widthOfIV = ImageViewParas.width;
-			int heightOfIV = ImageViewParas.height;
+			ImageViewSize mImageViewSize = getImageViewSize(mImageViewParas.mImageView); 
+			int widthOfIV = mImageViewSize.getWidth();
+			int heightOfIV = mImageViewSize.getHeight();
 			String imageUrl = mImageViewParas.url;
 			ReentrantLock mUrlLock = getLockForUrl(imageUrl);
 			mUrlLock.lock();//对于多个ImageView加载同一个Url资源的情况进行限制
@@ -260,6 +278,67 @@ public class ImageLoader {
 	public Bitmap getBitmapFromMemoryCache(String key) {  
 	    return mLruCache.get(key);  
 	}  
+	
+	private class ImageViewSize{
+		private int width;
+		private int height;
+		
+		public ImageViewSize(int width, int height){
+			this.width = width;
+			this.height = height;
+		}
+		
+		public int getWidth(){
+			return width;
+		}
+		
+		public int getHeight(){
+			return height;
+		}
+	}
+	
+	public ImageViewSize getImageViewSize(ImageView imageView){
+		if(null==imageView)return null;
+		LayoutParams lp = imageView.getLayoutParams();
+		int width = imageView.getWidth();// 获取imageview的实际宽度
+		if (width <= 0){
+			width = lp.width;// 获取imageview在layout中声明的宽度
+		}
+		if (width <= 0){
+			width = getImageViewFieldValue(imageView, "mMaxWidth");
+		}
+		if (width <= 0){
+			width = displayMetricsWidth;
+		}
+
+		int height = imageView.getHeight();// 获取imageview的实际高度
+		if (height <= 0){
+			height = lp.height;// 获取imageview在layout中声明的宽度
+		}
+		if (height <= 0){
+			height = getImageViewFieldValue(imageView, "mMaxHeight");// 检查最大值
+		}
+		if (height <= 0){
+			height = displayMetricsHeight;
+		}
+		if(IsLogRun)ALog.Log("width:"+width+" height:"+height);
+		return new ImageViewSize(width, height);
+	}
+	
+	private static int getImageViewFieldValue(Object object, String fieldName){
+		int value = 0;
+		try{
+			Field field = ImageView.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			int fieldValue = (Integer) field.get(object);
+			if (fieldValue > 0 && fieldValue < Integer.MAX_VALUE){
+				value = fieldValue;
+				Log.e("TAG", value + "");
+			}
+		} catch (Exception e){
+		}
+		return value;
+	}
 	
 	public Bitmap loadImage(String imageUrl,int widthOfImageView, int heightOfImageView) {
 		String imageUrlNew=new ImageProcess().parsePicUrl(imageUrl);
