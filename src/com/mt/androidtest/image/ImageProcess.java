@@ -52,13 +52,13 @@ public class ImageProcess {
 		//inJustDecodeBounds属性设置为true就可以让解析方法禁止为bitmap分配内存，返回值也不再是一个Bitmap对象，
 		//而是null。虽然Bitmap是null了，但是BitmapFactory.Options的outWidth、outHeight和outMimeType属性都会被赋值。        
         options.inJustDecodeBounds = true;  
-        BitmapFactory.decodeStream((InputStream)obj, null, options);  //decodeStream会尝试为已经构建的bitmap分配内存，这时就会很容易导致OOM出现
-        ALog.Log("imageHeight:"+options.outHeight+" imageWidth:"+options.outWidth+" imageType:"+options.outMimeType);
+        BitmapFactory.decodeStream((InputStream)obj, null, options);  
+        if(IsLogRun)ALog.Log("imageHeight:"+options.outHeight+" imageWidth:"+options.outWidth+" imageType:"+options.outMimeType);
         //计算sampleSize值  
         options.inSampleSize = calculatesampleSize(options, reqWidth, reqHeight);//options中宽高单位是像素  
         //第二次解析将inJustDecodeBounds设置为false，结合获取到的sampleSize值再次解析图片  
         options.inJustDecodeBounds = false;  
-        return BitmapFactory.decodeStream((InputStream)obj, null, options);  
+        return BitmapFactory.decodeStream((InputStream)obj, null, options);  //decodeStream会尝试为已经构建的bitmap分配内存，这时就会很容易导致OOM出现
     }  
     
     //根据期望控件的大小确定图片采样率，让宽高等比例压缩

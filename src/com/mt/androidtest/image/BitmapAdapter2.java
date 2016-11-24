@@ -13,7 +13,7 @@ import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 import com.mt.androidtest.listview.ViewHolder;
 import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
-
+import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 /**
  *
  * @author Mengtao1
@@ -21,8 +21,6 @@ import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
  */
 public class BitmapAdapter2 extends CommonBaseAdapter<String>{
 	private Context mContext = null;
-    private int widthOfIV = 0;
-    private int heightOfIV = 0;
     
 	public BitmapAdapter2(Context context, List<String> mDatas){
 		super(context, mDatas);
@@ -33,9 +31,8 @@ public class BitmapAdapter2 extends CommonBaseAdapter<String>{
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
         boolean needDoAdditionalWork = (null==convertView)?true:false;
-        ALog.Log("position:"+position+" needDoAdditionalWork:"+needDoAdditionalWork);
+        if(IsLogRun)ALog.Log("position:"+position+" needDoAdditionalWork:"+needDoAdditionalWork);
         mViewHolder = ViewHolder.get(mContext, convertView, parent, R.layout.item_getview_bitmap, position);
         if(needDoAdditionalWork)doAdditionalWork();
         String url = getItem(position);

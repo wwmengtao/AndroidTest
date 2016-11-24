@@ -17,7 +17,6 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
@@ -366,7 +365,7 @@ public class ImageLoader {
 			int fieldValue = (Integer) field.get(object);
 			if (fieldValue > 0 && fieldValue < Integer.MAX_VALUE){
 				value = fieldValue;
-				Log.e("TAG", value + "");
+				if(IsLogRun)ALog.Log("value" + value);
 			}
 		} catch (Exception e){
 		}

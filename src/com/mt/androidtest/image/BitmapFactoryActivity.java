@@ -80,7 +80,6 @@ public class BitmapFactoryActivity extends BaseActivity {
 		case Menu_GridView:
 			setContentView(R.layout.activity_gridview);
 			mGridView = (GridView)this.findViewById(R.id.gridview);
-			//mBitmapAdapter = new BitmapAdapter(this, largeNumPicsAL);
 			mBitmapAdapter = new BitmapAdapter2(this, largeNumPicsAL);			
 			mGridView.setAdapter(mBitmapAdapter);
 			mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(this), pauseOnScroll, pauseOnFling));
