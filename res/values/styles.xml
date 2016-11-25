@@ -32,7 +32,7 @@
     <style name="SettingsActionBarTitleText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
         <item name="android:textSize">20sp</item>
     </style>    
-    
+    <style name="ProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal"/>
     <attr name="custom_style" format="reference"></attr>
     
     <style name="custom_theme">

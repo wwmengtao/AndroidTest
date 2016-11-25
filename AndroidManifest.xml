@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".ATApplication"
@@ -100,12 +101,12 @@
         <!--
         2、下列CALENDAR读写权限影响内部所有Uri的读写操作，说明如下：
 		1)path-permission中的读写权限可以用provider中的读写权限替代，但是path-level权限优先级高于 provider-level权限。
-		2)拥有path-permission中的读写权限，而没有provider中的读写权限是可以对Uri(例如android:pathPrefix="/sqlite")进行读写操作的；
+		2)拥有path-permission中的读写权限，而没有provider中的读写权限是可以对Uri(例如android:pathPrefix="/sqlite")进行读写操作的；
         -->
         <!--
         3、android:grantUriPermissions和grant-uri-permission是针对含有ContentProvider的应用而言的。
 		1、下列provider中android:grantUriPermissions="true"是指开启该provider中所有Uri的临时权限；为"false"是指不允许开启provider中所有Uri的临时权限。
-		2、在1中所示前提下，如果设置了grant-uri-permission，则全局的android:grantUriPermissions属性将无效，此时只允许grant-uri-permission声明的uri可以开启临时权限访问。
+		2、在1中所示前提下，如果设置了grant-uri-permission，则全局的android:grantUriPermissions属性将无效，此时只允许grant-uri-permission声明的uri可以开启临时权限访问。
         -->
         <provider
             android:name=".data.ContentProviderDemo"
@@ -171,6 +172,10 @@
             android:name=".showview.fragmentdemo.FragmentTest2Activity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_fragment_test2" >
+        </activity>
+        <activity
+            android:name="com.mt.androidtest.image.BitmapUILActivity"
+            android:label="@string/title_activity_bitmap_uil" >
         </activity>
     </application>
 
