@@ -1,7 +1,18 @@
 package com.mt.androidtest.image;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +22,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+import libcore.io.DiskLruCache;
+import libcore.io.DiskLruCache.Snapshot;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -46,11 +63,15 @@ public class ImageLoader {
     private Executor mTaskLoadImg = null;
     private Executor mTaskDistributor=null;
     private volatile static ImageLoader mInstance;
-    private LruCache<String, Bitmap> mLruCache;  
+    private LruCache<String, Bitmap> mLruCache;  //线程安全类，put、get等方法都有 synchronized (this) 限制
+	/**
+	 * 图片硬盘缓存核心类。
+	 */
+	private DiskLruCache mDiskLruCache;    //线程安全类，put，Editor.commit有关方法前有synchronized限制
     private Type mType = Type.FIFO;
     /**
-     * ImageView和URL的对应关系依赖ImageView的hashCode()和URL，当然，由于不同对象可能有相同的hashCode()，稳妥的做法
-     * 是直接ImageView和URL对应。
+     * ImageView和URL的对应关系依赖ImageView的hashCode()和URL，在不自定义而直接使用java实现的hashCode()可以保证ImageView
+     * 的hashCode和对应的URL一一对应。
      */
 	private final  Map<Integer, String> urlKeysForImageViews = Collections.synchronizedMap(new HashMap<Integer, String>());
 	/**
@@ -111,11 +132,54 @@ public class ImageLoader {
 	            return (null==mBitmap)?0:mBitmap.getByteCount();  
 	        }  
 		};
+		//以下创建硬盘缓存目录及初始化mDiskLruCache
+		try {
+			// 获取图片缓存路径
+			File cacheDir = getDiskCacheDir(mContext, "PicsCacheOfImageLoader");
+			if (!cacheDir.exists()) {
+				cacheDir.mkdirs();
+			}
+			// 创建DiskLruCache实例，初始化缓存数据
+			mDiskLruCache = DiskLruCache.open(cacheDir, getAppVersion(mContext), 1, 10 * 1024 * 1024);//10 * 1024 * 1024：10M
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		//以下获取屏幕的宽高
 		displayMetrics = mContext.getResources().getDisplayMetrics();
 		displayMetricsWidth = displayMetrics.widthPixels;
 		displayMetricsHeight = displayMetrics.heightPixels;
 	}
+	
+	/**
+	 * 获取当前应用程序的版本号。
+	 */
+	public int getAppVersion(Context context) {
+		try {
+			PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(),
+					0);
+			return info.versionCode;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+	
+	/**
+	 * 根据传入的uniqueName获取硬盘缓存的路径地址。
+	 */
+	public File getDiskCacheDir(Context context, String uniqueName) {
+		String cachePath;
+		//如果外置SD卡装载并且不可移除
+		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+				|| !Environment.isExternalStorageRemovable()) {
+			cachePath = context.getExternalCacheDir().getPath();
+		} else {
+			cachePath = context.getCacheDir().getPath();
+		}
+		return new File(cachePath + File.separator + uniqueName);
+	}
+	
+	
 	
 	private void mesureExecutorExist(){
 		if(null==mTaskLoadImg||((ExecutorService) mTaskLoadImg).isShutdown()){
@@ -135,8 +199,8 @@ public class ImageLoader {
 		if(null==imageUrl)return;
 		putUrlForImageView(mImageView.hashCode(),imageUrl);//强引用记录ImageView和URL关联关系
 		Bitmap mBitmap = getBitmapFromMemoryCache(imageUrl);
-        if (mBitmap != null) {  
-        	mImageView.setImageBitmap(mBitmap);  
+        if (mBitmap != null && !mBitmap.isRecycled()) {  
+        	mImageView.setImageBitmap(mBitmap);  ALog.Log("imageUrl:"+imageUrl);
         } else {
         	mImageView.setImageResource(R.drawable.loading);
     		mTaskLoadImg.execute(new loadAndDisplayTask(mImageViewParas));
@@ -265,11 +329,13 @@ public class ImageLoader {
 	//停止一切图片加载活动
 	public void stop() {
 		if(!IsImageLoaderInit)return;
-		((ExecutorService) mTaskLoadImg).shutdownNow();
-		((ExecutorService) mTaskDistributor).shutdownNow();
+		if(null!=mTaskLoadImg)((ExecutorService) mTaskLoadImg).shutdownNow();
+		if(null!=mTaskDistributor)((ExecutorService) mTaskDistributor).shutdownNow();
 		mDisplayHandler.removeCallbacksAndMessages(null);
 		urlKeysForImageViews.clear();
 		uriLocks.clear();
+		fluchCache();
+		ALog.Log("mDiskLruCache.size:"+mDiskLruCache.size()/1024+"KB");
 	}
 	
 	@SuppressWarnings("serial")
@@ -373,7 +439,11 @@ public class ImageLoader {
 	}
 	
 	public Bitmap loadImage(String imageUrl,int widthOfImageView, int heightOfImageView) {
-		String imageUrlNew=new ImageProcess().parsePicUrl(imageUrl);
+		if(null==imageUrl)return null;
+		if(imageUrl.startsWith("http")){//表示需要从网络下载图片
+			return tryToDownloadBitmap(imageUrl);
+		}
+		String imageUrlNew = ImageProcess.parsePicUrl(imageUrl);
 		if(null==imageUrlNew)return null;
 		InputStream mInputStream=null;
 		try {
@@ -385,5 +455,141 @@ public class ImageLoader {
 		return ImageProcess.decodeSampledBitmap(mInputStream, widthOfImageView, heightOfImageView,true);
 	}
 
+	/**
+	 * 从硬盘缓存中读取数据，如果不存在，从网络下载
+	 * @param imageUrl
+	 * @return
+	 */
+	protected Bitmap tryToDownloadBitmap(String imageUrl) {
+		FileDescriptor fileDescriptor = null;
+		FileInputStream fileInputStream = null;
+		Snapshot snapShot = null;
+		try {
+			// 生成图片URL对应的key
+			final String key = hashKeyForDisk(imageUrl);
+			// 查找key对应的缓存
+			snapShot = mDiskLruCache.get(key);
+			if (snapShot == null) {
+				// 如果没有找到对应的缓存，则准备从网络上请求数据，并写入缓存
+				DiskLruCache.Editor editor = mDiskLruCache.edit(key);
+				if (editor != null) {
+					OutputStream outputStream = editor.newOutputStream(0);
+					if (downloadUrlToStream(imageUrl, outputStream)) {
+						editor.commit();
+					} else {
+						editor.abort();
+					}
+				}
+				// 缓存被写入后，再次查找key对应的缓存
+				snapShot = mDiskLruCache.get(key);
+			}
+			if (snapShot != null) {
+				fileInputStream = (FileInputStream) snapShot.getInputStream(0);
+				fileDescriptor = fileInputStream.getFD();
+			}
+			// 将缓存数据解析成Bitmap对象
+			Bitmap bitmap = null;
+			if (fileDescriptor != null) {
+				bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+			}
+			return bitmap;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (fileDescriptor == null && fileInputStream != null) {
+				try {
+					fileInputStream.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 使用MD5算法对传入的key进行加密并返回。
+	 */
+	public String hashKeyForDisk(String key) {
+		String cacheKey;
+		try {
+			//首先进行实例化和初始化
+			final MessageDigest mDigest = MessageDigest.getInstance("MD5");
+			//得到一个操作系统默认的字节编码格式的字节数组
+			final byte[] btInput = key.getBytes();
+			//对得到的字节数组进行处理
+			mDigest.update(btInput);
+			//进行哈希计算并返回结果
+			byte[] btOutput = mDigest.digest();
+			cacheKey = bytesToHexString(btOutput);
+		} catch (NoSuchAlgorithmException e) {
+			cacheKey = String.valueOf(key.hashCode());
+		}
+		return cacheKey;
+	}
 
+	private String bytesToHexString(byte[] bytes) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < bytes.length; i++) {
+			String hex = Integer.toHexString(0xFF & bytes[i]);
+			if (hex.length() == 1) {
+				sb.append('0');
+			}
+			sb.append(hex);
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * 建立HTTP请求，并获取Bitmap对象。
+	 * 
+	 * @param imageUrl
+	 *            图片的URL地址
+	 * @return 解析后的Bitmap对象
+	 */
+	private boolean downloadUrlToStream(String urlString, OutputStream outputStream) {
+		HttpURLConnection urlConnection = null;
+		BufferedOutputStream out = null;
+		BufferedInputStream in = null;
+		try {
+			final URL url = new URL(urlString);
+			urlConnection = (HttpURLConnection) url.openConnection();
+			in = new BufferedInputStream(urlConnection.getInputStream(), 8 * 1024);
+			out = new BufferedOutputStream(outputStream, 8 * 1024);
+			int b;
+			while ((b = in.read()) != -1) {
+				out.write(b);
+			}
+			return true;
+		} catch (final IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (urlConnection != null) {
+				urlConnection.disconnect();
+			}
+			try {
+				if (out != null) {
+					out.close();
+				}
+				if (in != null) {
+					in.close();
+				}
+			} catch (final IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 将缓存记录同步到journal文件中，一般在Activity即将退出时候执行
+	 */
+	public void fluchCache() {
+		if (mDiskLruCache != null) {
+			try {
+				mDiskLruCache.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

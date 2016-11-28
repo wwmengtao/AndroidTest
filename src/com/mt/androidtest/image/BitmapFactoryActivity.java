@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
+import static com.mt.androidtest.image.Images_UIL.imageThumbUrls_GL;
 
 public class BitmapFactoryActivity extends BaseActivity {
 	private AssetManager mAssetManager=null;
@@ -45,6 +46,11 @@ public class BitmapFactoryActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		mPicConstants = new PicConstants();
 		largeNumPicsAL = mPicConstants.createLargeNumHDPics(picNum);
+		//在开头插入6张来自网络的图片
+		for(int i=3;i<=8;i++){
+			largeNumPicsAL.add(0, imageThumbUrls_GL[i]);
+		}
+		
 	}
 	
 

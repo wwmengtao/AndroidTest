@@ -43,7 +43,7 @@ public class BitmapAdapter2 extends CommonBaseAdapter<String>{
 	public void doAdditionalWork(){
 			View convertView = mViewHolder.getConvertView();
 			//设置GridView的网格高度
-			int heightOfGridCell = 80;
+			int heightOfGridCell = 2*80;
 			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
 					android.view.ViewGroup.LayoutParams.MATCH_PARENT,
 					heightOfGridCell);

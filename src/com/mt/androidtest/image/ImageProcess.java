@@ -13,18 +13,15 @@ import com.mt.androidtest.ALog;
 import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 
 public class ImageProcess {
-    private String regPrefix = "[0-9]+"+strangeSTR;
-    private Pattern mPattern = null;
+    private static final String regPrefix = "[0-9]+"+strangeSTR;
+    private static Pattern mPattern = Pattern.compile(regPrefix);
     
-    public ImageProcess(){
-    	mPattern = Pattern.compile(regPrefix);
-    }
 	/**
 	 * 解析出最终想要的图片URL地址
 	 * @param picUrl
 	 * @return
 	 */
-	public String parsePicUrl(String picUrl){
+	public static String parsePicUrl(String picUrl){
 		if(null==picUrl)return null;
 		String picUrlNew=null;
 		Matcher mMatcher = mPattern.matcher(picUrl);

@@ -1,6 +1,7 @@
 package com.mt.androidtest.image;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PicConstants {
 	public static final String strangeSTR="abcdcba";
@@ -39,9 +40,9 @@ public class PicConstants {
 	 * @param picNum 期望生成的图片数量
 	 * @return
 	 */
-	public ArrayList<String> createLargeNumHDPics(int picNum){
+	public List<String> createLargeNumHDPics(int picNum){
 		if(picNum<=0)return null;
-		ArrayList<String>largeNumPicsAL = new ArrayList<String>();
+		List<String>largeNumPicsAL = new ArrayList<String>();
 		int index=0;
 		picPrefix=null;
 		for(int i=0;i<picNum;i++){
