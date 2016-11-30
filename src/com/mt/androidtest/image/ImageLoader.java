@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
@@ -27,7 +26,6 @@ import libcore.io.DiskLruCache.Snapshot;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -40,6 +38,7 @@ import android.widget.ImageView;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
+import com.mt.androidtest.image.ImageProcess.StreamType;
 import com.mt.androidtest.image.PicConstants.Type;
 import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
 import com.mt.androidtest.tool.ExecutorHelper;
@@ -56,7 +55,6 @@ public class ImageLoader {
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 	private static final int maxMemory = (int) (Runtime.getRuntime().maxMemory());
 	private Context mContext = null;
-	private AssetManager mAssetManager=null;  
 	private DisplayMetrics displayMetrics = null;
 	private static int displayMetricsWidth = 0;
 	private static int displayMetricsHeight = 0;
@@ -115,7 +113,6 @@ public class ImageLoader {
 	
 	public ImageLoader(Context context){
 		mContext = context.getApplicationContext();
-		mAssetManager = mContext.getResources().getAssets();
     	init();
 	}
 	
@@ -444,15 +441,7 @@ public class ImageLoader {
 			return tryToDownloadBitmap(imageUrl, mImageViewParas);
 		}
 		String imageUrlNew = ImageProcess.parsePicUrl(imageUrl);
-		if(null==imageUrlNew)return null;
-		InputStream mInputStream=null;
-		try {
-			mInputStream = mAssetManager.open(imageUrlNew);//从Asset文件夹中读取图片
-		}catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		return ImageProcess.decodeSampledBitmap(mInputStream, widthOfImageView, heightOfImageView,true);
+		return ImageProcess.decodeSampledBitmap(imageUrlNew, StreamType.Asset, widthOfImageView, heightOfImageView,true);
 	}
 
 	/**

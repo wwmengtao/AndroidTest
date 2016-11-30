@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
+import com.mt.androidtest.image.ImageProcess.StreamType;
+
 import static com.mt.androidtest.image.Images_UIL.imageThumbUrls_GL;
 
 public class BitmapFactoryActivity extends BaseActivity {
@@ -28,6 +30,7 @@ public class BitmapFactoryActivity extends BaseActivity {
 	private TextView mTextView = null;
 	private BaseAdapter mBitmapAdapter = null;
 	private List<String>largeNumPicsAL = null;
+	private List<String>largeNumPicsAL2 = null;
 	private PicConstants mPicConstants = null;
 	private int picNum = 3000;
 
@@ -44,11 +47,14 @@ public class BitmapFactoryActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mAssetManager = getAssetManager();
+		ImageDecodeInfo.setAssetManager(mAssetManager);
 		mPicConstants = new PicConstants();
 		largeNumPicsAL = mPicConstants.createLargeNumHDPics(picNum);
+		largeNumPicsAL2 = mPicConstants.createLargeNumHDPics(picNum);
 		//在开头插入6张来自网络的图片
 		for(int i=3;i<=8;i++){
-			largeNumPicsAL.add(0, imageThumbUrls_GL[i]);
+			largeNumPicsAL2.add(0, imageThumbUrls_GL[i]);
 		}
 		
 	}
@@ -86,7 +92,7 @@ public class BitmapFactoryActivity extends BaseActivity {
 		case Menu_GridView:
 			setContentView(R.layout.activity_gridview);
 			mGridView = (GridView)this.findViewById(R.id.gridview);
-			mBitmapAdapter = new BitmapAdapter2(this, largeNumPicsAL);			
+			mBitmapAdapter = new BitmapAdapter2(this, largeNumPicsAL2);			
 			mGridView.setAdapter(mBitmapAdapter);
 			mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(this), pauseOnScroll, pauseOnFling));
 			break;
@@ -115,17 +121,17 @@ public class BitmapFactoryActivity extends BaseActivity {
 		}
 		//一、高清图片处理
 		//1.1、不对图片进行压缩，直接显示到mImageView
-		mBitmap = ImageProcess.decodeSampledBitmap(is_HD, mImageView.getWidth(),mImageView.getHeight(),false);
+		mBitmap = ImageProcess.decodeSampledBitmap(PicConstants.assetHDPicNames[0], StreamType.Asset, mImageView.getWidth(),mImageView.getHeight(),false);
 		mImageView.setImageBitmap(mBitmap);
 		//1.2、对图片进行压缩，显示到mImageView2
 		//注意：mImageView2.getWidth或者getHeight获取数值单位是像素
-		mBitmap2 = ImageProcess.decodeSampledBitmap(is_HD, mImageView2.getWidth(),mImageView2.getHeight(),true);
+		mBitmap2 = ImageProcess.decodeSampledBitmap(PicConstants.assetHDPicNames[0], StreamType.Asset, mImageView2.getWidth(),mImageView2.getHeight(),true);
 		mImageView2.setImageBitmap(mBitmap2);
 		//二、非高清图片，不设置采样率，ScaleType测试用
 		index = 0;
 		mTextView.setOnClickListener(this);
-		mBitmap = ImageProcess.decodeSampledBitmap(is, mImageView.getWidth(),mImageView.getHeight(),false);
-		mBitmap2 = ImageProcess.decodeSampledBitmap(is, mImageView.getWidth(),mImageView.getHeight(),false);
+		mBitmap = ImageProcess.decodeSampledBitmap(PicConstants.assetPicPicNames[0], StreamType.Asset, mImageView.getWidth(),mImageView.getHeight(),false);
+		mBitmap2 = ImageProcess.decodeSampledBitmap(PicConstants.assetPicPicNames[0], StreamType.Asset, mImageView.getWidth(),mImageView.getHeight(),false);
 	}
 
 	//以下罗列出所有ScaleType类型

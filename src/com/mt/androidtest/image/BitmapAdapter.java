@@ -1,12 +1,10 @@
 package com.mt.androidtest.image;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.LruCache;
@@ -17,6 +15,7 @@ import android.widget.ImageView.ScaleType;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
+import com.mt.androidtest.image.ImageProcess.StreamType;
 import com.mt.androidtest.listview.ViewHolder;
 import com.mt.androidtest.tool.ExecutorHelper;
 
@@ -30,7 +29,6 @@ import com.mt.androidtest.tool.ExecutorHelper;
  */
 public class BitmapAdapter extends CommonBaseAdapter<String>{
 	private Context mContext = null;
-	private AssetManager mAssetManager=null;
 	private ViewGroup mViewGroup; 
     //
     private int widthOfIV = 0;
@@ -51,7 +49,6 @@ public class BitmapAdapter extends CommonBaseAdapter<String>{
 	public BitmapAdapter(Context context, List<String> mDatas){
 		super(context, mDatas);
 		mContext = context.getApplicationContext();
-		mAssetManager = mContext.getResources().getAssets();
 		int cacheSize = maxMemory / 8;
 		mLruCache = new LruCache<String, Bitmap>(cacheSize){
 	        @Override  
@@ -130,6 +127,7 @@ public class BitmapAdapter extends CommonBaseAdapter<String>{
         protected Bitmap doInBackground(String... params) {  
             imageUrl = params[0];
             Bitmap bitmap = loadImage(imageUrl, widthOfIV, heightOfIV);  
+        	ALog.Log("imageUrl != null:"+(imageUrl != null));
             if(null!=bitmap)addBitmapToMemoryCache(imageUrl, bitmap);
             return bitmap;  
         }  
@@ -145,15 +143,7 @@ public class BitmapAdapter extends CommonBaseAdapter<String>{
 	}
 	
 	public Bitmap loadImage(String imageUrl,int widthOfImageView, int heightOfImageView) {
-		String imageUrlNew=new ImageProcess().parsePicUrl(imageUrl);
-		if(null==imageUrlNew)return null;
-		InputStream mInputStream=null;
-		try {
-			mInputStream = mAssetManager.open(imageUrlNew);//从Asset文件夹中读取图片
-		}catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		return ImageProcess.decodeSampledBitmap(mInputStream, widthOfImageView, heightOfImageView,true);
+		String imageUrlNew=ImageProcess.parsePicUrl(imageUrl);
+		return ImageProcess.decodeSampledBitmap(imageUrlNew, StreamType.Asset, widthOfImageView, heightOfImageView,true);
 	}
 }
