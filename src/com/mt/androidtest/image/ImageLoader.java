@@ -225,7 +225,7 @@ public class ImageLoader {
 			mUrlLock.lock();//对于多个ImageView加载同一个Url资源的情况进行限制
 			try{
 				checkImageViewReused(mImageViewParas);
-				Bitmap bitmap = loadImage(imageUrl, widthOfIV, heightOfIV);
+				Bitmap bitmap = loadImage(imageUrl, widthOfIV, heightOfIV, mImageViewParas);
 	            if(null!=bitmap){
 	            	checkImageViewReused(mImageViewParas);
 	            	addBitmapToMemoryCache(imageUrl, bitmap);
@@ -438,10 +438,10 @@ public class ImageLoader {
 		return value;
 	}
 	
-	public Bitmap loadImage(String imageUrl,int widthOfImageView, int heightOfImageView) {
+	public Bitmap loadImage(String imageUrl,int widthOfImageView, int heightOfImageView, ImageViewParas mImageViewParas) {
 		if(null==imageUrl)return null;
 		if(imageUrl.startsWith("http")){//表示需要从网络下载图片
-			return tryToDownloadBitmap(imageUrl);
+			return tryToDownloadBitmap(imageUrl, mImageViewParas);
 		}
 		String imageUrlNew = ImageProcess.parsePicUrl(imageUrl);
 		if(null==imageUrlNew)return null;
@@ -460,7 +460,7 @@ public class ImageLoader {
 	 * @param imageUrl
 	 * @return
 	 */
-	protected Bitmap tryToDownloadBitmap(String imageUrl) {
+	protected Bitmap tryToDownloadBitmap(String imageUrl, ImageViewParas mImageViewParas) {
 		FileDescriptor fileDescriptor = null;
 		FileInputStream fileInputStream = null;
 		Snapshot snapShot = null;
@@ -470,11 +470,14 @@ public class ImageLoader {
 			// 查找key对应的缓存
 			snapShot = mDiskLruCache.get(key);
 			if (snapShot == null) {
+				checkImageViewReused(mImageViewParas);
 				// 如果没有找到对应的缓存，则准备从网络上请求数据，并写入缓存
 				DiskLruCache.Editor editor = mDiskLruCache.edit(key);
 				if (editor != null) {
+					checkImageViewReused(mImageViewParas);
 					OutputStream outputStream = editor.newOutputStream(0);
-					if (downloadUrlToStream(imageUrl, outputStream)) {
+					if (downloadUrlToStream(imageUrl, outputStream, mImageViewParas)) {
+						checkImageViewReused(mImageViewParas);
 						editor.commit();
 					} else {
 						editor.abort();
@@ -494,6 +497,8 @@ public class ImageLoader {
 			}
 			return bitmap;
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TaskCancelException e) {
 			e.printStackTrace();
 		} finally {
 			if (fileDescriptor == null && fileInputStream != null) {
@@ -546,13 +551,14 @@ public class ImageLoader {
 	 *            图片的URL地址
 	 * @return 解析后的Bitmap对象
 	 */
-	private boolean downloadUrlToStream(String urlString, OutputStream outputStream) {
+	private boolean downloadUrlToStream(String urlString, OutputStream outputStream, ImageViewParas mImageViewParas) {
 		HttpURLConnection urlConnection = null;
 		BufferedOutputStream out = null;
 		BufferedInputStream in = null;
 		try {
 			final URL url = new URL(urlString);
 			urlConnection = (HttpURLConnection) url.openConnection();
+			checkImageViewReused(mImageViewParas);
 			in = new BufferedInputStream(urlConnection.getInputStream(), 8 * 1024);
 			out = new BufferedOutputStream(outputStream, 8 * 1024);
 			int b;
@@ -561,6 +567,8 @@ public class ImageLoader {
 			}
 			return true;
 		} catch (final IOException e) {
+			e.printStackTrace();
+		} catch (TaskCancelException e) {
 			e.printStackTrace();
 		} finally {
 			if (urlConnection != null) {
