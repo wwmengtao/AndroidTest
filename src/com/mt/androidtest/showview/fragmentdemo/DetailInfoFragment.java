@@ -29,6 +29,7 @@ public class DetailInfoFragment extends BaseFragment{
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		super.onCreateView(inflater, container, savedInstanceState);
 		View rootView = inflater.inflate(R.layout.fragment_info_detail,	container, false);
 		if (info != null){
 			((TextView) rootView.findViewById(R.id.book_title)).setText(info.title);

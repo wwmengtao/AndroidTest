@@ -33,6 +33,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    	super.onCreateView(inflater, container, savedInstanceState);
     	if(isLogRun)ALog.Log("onCreateView",this);
         return null;
     }

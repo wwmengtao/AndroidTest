@@ -16,6 +16,7 @@ import com.mt.androidtest.R;
 public class InfoHolder{
 	public static class MessageFragment extends BaseFragment {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			super.onCreateView(inflater, container, savedInstanceState);
 			View messageLayout = inflater.inflate(R.layout.message_fragment,	container, false);
 			return messageLayout;
 		}
@@ -24,6 +25,7 @@ public class InfoHolder{
 	public static class ContactsFragment extends BaseFragment {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			super.onCreateView(inflater, container, savedInstanceState);
 			View contactsLayout = inflater.inflate(R.layout.contacts_fragment, container, false);
 			return contactsLayout;
 		}
@@ -32,6 +34,7 @@ public class InfoHolder{
 	public static class NewsFragment extends BaseFragment {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			super.onCreateView(inflater, container, savedInstanceState);
 			View newsLayout = inflater.inflate(R.layout.news_fragment, container, false);
 			return newsLayout;
 		}
@@ -40,6 +43,7 @@ public class InfoHolder{
 	public static class SettingFragment extends BaseFragment {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			super.onCreateView(inflater, container, savedInstanceState);
 			View settingLayout = inflater.inflate(R.layout.setting_fragment, container, false);
 			return settingLayout;
 		}
