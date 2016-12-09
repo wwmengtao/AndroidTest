@@ -175,6 +175,12 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
 		}
 	};
 	
+    @Override
+    public void onBackPressed(){
+    	super.onBackPressed();
+    	if(isLogRun)ALog.Log("onBackPressed",this);
+    }
+	
 	@Override
 	public void onPause(){
 		if(null!=mHandler){
