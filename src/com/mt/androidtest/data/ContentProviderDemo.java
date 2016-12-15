@@ -36,6 +36,9 @@ public class ContentProviderDemo extends ContentProvider {
 	private static final int SqliteURI_code=0x02;
 	//
 	private static final String intent_authority="com.mt.androidtest.cpdemo/intent_test";
+	//
+	private SQLiteDatabase mSQLiteDatabase = null;
+	//
 	static{
 		// 为UriMatcher注册数据库解析Uri
 		mUriMatcher.addURI(authority, GrantURI_grant, GrantURI_code);
@@ -70,7 +73,8 @@ public class ContentProviderDemo extends ContentProvider {
 	}
 	
 	public void initSqlite(){
-		mSqlOpenHelper=DataBaseHelper.getInstance(mContext);
+		mSqlOpenHelper = DataBaseHelper.getInstance(mContext);
+		mSQLiteDatabase = mSqlOpenHelper.getWritableDatabase();
 		tableName=DataBaseHelper.getTableName();
 	}
 	
@@ -107,8 +111,7 @@ public class ContentProviderDemo extends ContentProvider {
 		switch (mUriMatcher.match(uri)){
 	        case SqliteURI_code :
 	    		if(isLogRun)ALog.Log2("CPDemo_insert");
-	    		SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
-				db.insert(tableName, null, values);
+	    		mSQLiteDatabase.insert(tableName, null, values);
 				break;
 	        case GrantURI_code:
 	        	if(isLogRun)ALog.Log2("CPDemo_insert_GrantURI_code");
@@ -124,8 +127,7 @@ public class ContentProviderDemo extends ContentProvider {
 		switch (mUriMatcher.match(uri)){
 	        case SqliteURI_code :
 				if(isLogRun)ALog.Log2("CPDemo_delete");
-				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
-				db.delete(tableName, selection, selectionArgs);
+				mSQLiteDatabase.delete(tableName, selection, selectionArgs);
 				break;
 	        case GrantURI_code:
 	        	if(isLogRun)ALog.Log2("CPDemo_delete_GrantURI_code");
@@ -141,8 +143,7 @@ public class ContentProviderDemo extends ContentProvider {
 		switch (mUriMatcher.match(uri)){
 	        case SqliteURI_code :
 				if(isLogRun)ALog.Log2("CPDemo_update");
-				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
-				db.update(tableName, values, selection, selectionArgs);
+				mSQLiteDatabase.update(tableName, values, selection, selectionArgs);
 				break;
 	        case GrantURI_code:
 	        	if(isLogRun)ALog.Log2("CPDemo_update_GrantURI_code");
@@ -159,8 +160,7 @@ public class ContentProviderDemo extends ContentProvider {
 		switch (mUriMatcher.match(uri)){
 	        case SqliteURI_code :		
 				if(isLogRun)ALog.Log2("CPDemo_query");
-				SQLiteDatabase db = mSqlOpenHelper.getWritableDatabase();
-				cursor = db.query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
+				cursor = mSQLiteDatabase.query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
 				break;
 	        case GrantURI_code:
 	        	if(isLogRun)ALog.Log2("CPDemo_query_GrantURI_code");
