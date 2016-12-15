@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -15,9 +16,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
+import com.mt.androidtest.tool.DataBaseHelper;
 import com.mt.androidtest.tool.XmlOperator;
 
 public class ContentResolverDemoActivity extends BaseActivity {
@@ -28,7 +31,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 			"insert","update","query","delete",
 			"globalUriGrant"};
 	private ContentResolver mContentResolver=null;
-	private ArrayList<Uri>uriCPFile=null;
+	private ArrayList<Uri>uriCPFiles=null;
 	//
 	private ArrayList<String>mAttrAL=null;
 	private ArrayList<String>mTextAL=null;
@@ -57,7 +60,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		//
 		ContProvider_URI += ContentProviderDemo.authority;
 		mContentResolver = getContentResolver();
-		initUriCPFile();
+		inituriCPFiles();
 		//
 		initSqliteOperator();
 	}
@@ -68,15 +71,15 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	}
 
 	/**
-	 * 以下将内部/外部存储中的共享文件对应的Uri加入uriCPFile中
+	 * 以下将内部/外部存储中的共享文件对应的Uri加入uriCPFiles中
 	 */
-	public void initUriCPFile(){
-		uriCPFile=new ArrayList<Uri>();
-		uriCPFile.add(Uri.parse(ContProvider_URI+"/myAssets_FilesDir/test/test.txt"));
-		uriCPFile.add(Uri.parse(ContProvider_URI+"/test.txt"));
-		uriCPFile.add(Uri.parse(ContProvider_URI+"/Documents/mt.txt"));
-		uriCPFile.add(Uri.parse(ContProvider_URI+"/Download/mt.txt"));
-		uriCPFile.add(Uri.parse(ContProvider_URI+"/mt.txt"));
+	public void inituriCPFiles(){
+		uriCPFiles = new ArrayList<Uri>();
+		uriCPFiles.add(Uri.parse(ContProvider_URI+"/myAssets_FilesDir/test/test.txt"));
+		uriCPFiles.add(Uri.parse(ContProvider_URI+"/test.txt"));
+		uriCPFiles.add(Uri.parse(ContProvider_URI+"/Documents/mt.txt"));
+		uriCPFiles.add(Uri.parse(ContProvider_URI+"/Download/mt.txt"));
+		uriCPFiles.add(Uri.parse(ContProvider_URI+"/mt.txt"));
 	}
 	
 	/**
@@ -114,7 +117,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		String methodName = (String)getListViewAdapterFT().mList.get(position).get("itemText"); 
 		switch(methodName){
 			case "readContentProviderFile":
-				for(Uri mUri : uriCPFile){
+				for(Uri mUri : uriCPFiles){
 					readContentProviderFile(mUri);
 				}
 				break;
@@ -146,7 +149,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		StringBuffer builder = null;
 		String line = null;
 		try {
-			inputStream = mContentResolver.openInputStream(mUri);
+			inputStream = mContentResolver.openInputStream(mUri);//会调用ContentProvider的openFile函数
 			if (inputStream != null) {
 		        reader = new BufferedReader(new InputStreamReader(inputStream));
 		        builder = new StringBuffer();
@@ -186,7 +189,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 			values.put(sqliteValue, mTextAL.get(i));
 			mContentResolver.insert(sqliteUri, values);
 		}
-		//
+		//测试UriMatcher用语句，附加功能测试
 		mContentResolver.insert(grantUri, null);
 		
 	}
@@ -197,7 +200,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		ContentValues values = new ContentValues();
 		values.put(sqliteValue, "mt");
 		mContentResolver.update(sqliteUri, values, sqlitekey+" = ?", new String[]{"string_name5"});
-		//
+		//测试UriMatcher用语句，附加功能测试
 		mContentResolver.update(grantUri, null, null, null);
 	}
 
@@ -212,7 +215,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 			ALog.Log("sqlitekey: "+id+" sqliteValue: "+name);
 		}
 		cursor.close();
-		//
+		//测试UriMatcher用语句，附加功能测试
 		mContentResolver.query(grantUri, null, null, null, null);
 	}
 
@@ -223,7 +226,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		//第二个参数String：条件语句
 		//第三个参数String[]：条件值
 		mContentResolver.delete(sqliteUri	, sqlitekey+" = ?", new String[]{"string_name4"});
-		//
+		//测试UriMatcher用语句，附加功能测试
 		mContentResolver.delete(grantUri, null, null);
 	}
 	

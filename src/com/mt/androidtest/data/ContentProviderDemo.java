@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +17,7 @@ import android.os.ParcelFileDescriptor;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.storage.StorageHelper;
+import com.mt.androidtest.tool.DataBaseHelper;
 
 public class ContentProviderDemo extends ContentProvider {
 	private boolean isLogRun = true; 
@@ -27,15 +27,16 @@ public class ContentProviderDemo extends ContentProvider {
     private static StorageHelper mStorageHelper=null;
 	private SQLiteOpenHelper mSqlOpenHelper;
 	private String tableName=null;
-	public static final String authority="com.mt.androidtest.cpdemo";
+	public static final String authority="com.mt.androidtest.cpdemo";//指定的ContentProvider会在AndroidManifest.xml中指定android:authorities="com.mt.androidtest.cpdemo"
+	//当其他应用通过CRUD操作ContentProvider时UriMatcher用来判断这些操作是否与此ContentProvider匹配
 	private static UriMatcher mUriMatcher  = new UriMatcher(UriMatcher.NO_MATCH);
 	public static final String GrantURI_grant="/grant";
-	private static final int GrantURI_code=0x00;	
+	private static final int GrantURI_code=0x01;	
 	public static final String SqliteURI_sqlite="/sqlite";
-	private static final int SqliteURI_code=0x01;
+	private static final int SqliteURI_code=0x02;
+	//
 	private static final String intent_authority="com.mt.androidtest.cpdemo/intent_test";
-	static
-	{
+	static{
 		// 为UriMatcher注册数据库解析Uri
 		mUriMatcher.addURI(authority, GrantURI_grant, GrantURI_code);
 		mUriMatcher.addURI(authority, SqliteURI_sqlite, SqliteURI_code);	

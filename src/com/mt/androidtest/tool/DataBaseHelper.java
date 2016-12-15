@@ -1,4 +1,4 @@
-package com.mt.androidtest.data;
+package com.mt.androidtest.tool;
 
 import android.content.Context;
 import android.database.SQLException;
@@ -22,7 +22,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-	static synchronized DataBaseHelper getInstance(Context context) {
+	public static synchronized DataBaseHelper getInstance(Context context) {
         if (sInstance == null) {
             sInstance = new DataBaseHelper(context);
         }

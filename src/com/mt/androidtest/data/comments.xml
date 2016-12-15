@@ -1,0 +1,14 @@
+一、使用ContentProvider需要三步：
+
+第1步：继承ContentProvider，实现query()、insert()、update()、delete()等方法（这些方法是给其他应用调用的）；
+
+第2步：在AndroidManifest.xml注册该ContentProvider，指定Android:authorities属性（指定ContentProvider对应的Uri）和android:exported属性（设置android:exported:true表示允许其他应用程序调用）。
+第3步：在ContentResolver中结合与指定ContentProvider匹配的URI使用CRUD操作来操作此ContentProvider
+
+二、CRUD操作说明：
+1、contentProvider的初始化是在它自己进程的主线程里面完成，一般发生在有人第一次访问这个contentProvider或者这个contentProvider进程第一次启动，比如这个进程有个service，开机启动，那么随着servier启动的还有contentProvider。
+说明：ContentProvider初始化的时候，会把自己初始化之后生成的对象存在AMS里面，然后其他进程去请求获取contentProvider对象时，一般第一次都会来AMS里面获取。获取到之后，一般会在自己进程里面进行缓存以便于下次获取。
+2、contentProvider有个android:multiProcess属性，用来配置是否在多个进程里面，有不同的实例。如果为true,那么谁调用contentProvider，contentProvider就运行在该进程里。如果为false，那么多进程之间共享一个contentProvider，通过binder来进行进程之间对象传递。如果多个进程同时访问，会为每个访问请求分配单独线程，因此这些操作(比如查询)不会运行在contentProvider进程的主线程。
+3、contentProvider查询等操作是否需要等待，需要binder来设置。
+4、contentProvider查询的数据传递是通过共享内存来完成的。
+说明：ContentProvider进程里面有一块共享内存，用来存放这次查询的数据。然后通过binder这个内存地址传递给调用ContentProvider的进程，这样，这个调用ContentProvider的进程就能访问ContentProvider进程的共享内存了。cursor只是java上层的一个对象，底层共享内存那块，怎么跨进程传地址，怎么读数据已经全部封装好了。
