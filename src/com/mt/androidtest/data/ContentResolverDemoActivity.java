@@ -209,12 +209,15 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		String id,name=null;
 		Cursor cursor = mContentResolver.query(sqliteUri, null, null, null, null);
 		// 将光标移动到下一行，从而判断该结果集是否还有下一条数据，如果有则返回true，没有则返回false
-		while (cursor.moveToNext()) {
-			id = cursor.getString(cursor.getColumnIndex(sqlitekey));
-			name = cursor.getString(cursor.getColumnIndex(sqliteValue));
-			ALog.Log("sqlitekey: "+id+" sqliteValue: "+name);
+		try{
+			while (cursor.moveToNext()) {
+				id = cursor.getString(cursor.getColumnIndex(sqlitekey));
+				name = cursor.getString(cursor.getColumnIndex(sqliteValue));
+				ALog.Log("sqlitekey: "+id+" sqliteValue: "+name);
+			}
+		}finally{
+			cursor.close();
 		}
-		cursor.close();
 		//测试UriMatcher用语句，附加功能测试
 		mContentResolver.query(grantUri, null, null, null, null);
 	}
