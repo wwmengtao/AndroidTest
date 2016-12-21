@@ -11,6 +11,7 @@ public final class R {
     public static final class array {
         public static final int citys=0x7f060000;
         public static final int citys_code=0x7f060001;
+        public static final int light_color=0x7f060002;
     }
     public static final class attr {
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",

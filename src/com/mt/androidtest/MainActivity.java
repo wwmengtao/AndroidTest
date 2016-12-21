@@ -364,12 +364,21 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
     private DialogInterface mShowDialog;
     private void showDialog() {
         // TODO: DialogFragment?
+    	//说明：AlertDialog.Builder的setMessage和setSingleChoiceItems冲突，只能写一个
+    	String[] arrayNum = getResources().getStringArray(R.array.light_color);
     	mShowDialog = new AlertDialog.Builder(this).setTitle(
                 getResources().getString(R.string.app_name))
                 .setIcon(R.drawable.not_found)
-                .setMessage(getResources().getString(R.string.title_activity_switcher_demo))
+//                .setMessage(getResources().getString(R.string.title_activity_switcher_demo))
                 .setPositiveButton(android.R.string.yes, this)
                 .setNegativeButton(android.R.string.no, this)
+	            .setSingleChoiceItems(arrayNum, 1,
+	            		new android.content.DialogInterface.OnClickListener() {
+	                		@Override
+	                		public void onClick(DialogInterface arg0, int which) {
+	                			ALog.Log("which:"+which);
+	                		}
+	            		})
                 .show();
     }
     @Override

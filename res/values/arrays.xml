@@ -11,4 +11,14 @@
         <item>010</item>  
         <item>021</item>  
     </string-array>  
+    
+     <string-array name="light_color">
+	    <item>Ivory</item>
+	    <item>Begonia red</item>
+	    <item>Orange</item>
+	    <item>Green</item>
+	    <item>Cyan</item>
+	    <item>Ocean blue</item>
+	    <item>Dark purple</item>
+	</string-array>
 </resources>
