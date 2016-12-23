@@ -13,11 +13,8 @@ import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
-import android.os.IBinder;
-import android.os.IPowerManager;
 import android.provider.Settings;
 
-import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
 public class SwitchersInfo {
@@ -291,69 +288,13 @@ public class SwitchersInfo {
 		}
 		return map;
 	}
-
-	
-	public HashMap<String, Object> getBrightnessSwitch() {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		int brightnessMode = Settings.System.getInt(mContext.getContentResolver(),
-				Settings.System.SCREEN_BRIGHTNESS_MODE,
-				Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
-		if (brightnessMode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
-			map.put("itemImage", getDrawbleFromAsset("toolbar_brightness_auto"));
-		} else {
-			int brightness = getBrightness(mContext);
-			switch (brightness) {
-			case MINIMUM_BACKLIGHT:
-				map.put("itemImage", getDrawbleFromAsset("toolbar_brightness_auto1"));
-				break;
-			case DEFAULT_BACKLIGHT:
-				map.put("itemImage", getDrawbleFromAsset("toolbar_brightness_auto2"));
-				break;
-			case MAXIMUM_BACKLIGHT:
-				map.put("itemImage", getDrawbleFromAsset("toolbar_brightness_on"));
-				break;
-			case MIDDLE_BACKLIGHT:
-				map.put("itemImage", getDrawbleFromAsset("toolbar_brightness_middle"));
-				break;
-			default:
-				map.put("itemImage", getDrawbleFromAsset("toolbar_brightness_auto1"));
-				break;
-			}
-		}
-		return map;
-	}
 	
 	public static final int BRIGHTNESS_ON = 255;
 	public static final int MINIMUM_BACKLIGHT = 30;// android.os.PowerManager.BRIGHTNESS_DIM
 	public static final int MIDDLE_BACKLIGHT = 47;
 	public static final int MAXIMUM_BACKLIGHT = BRIGHTNESS_ON;
 	public static final int DEFAULT_BACKLIGHT = (int) (BRIGHTNESS_ON * 0.4f);
-	public static int getBrightness(Context context) {
-		try {
-			Method method = Class.forName("android.os.ServiceManager")
-					.getMethod("getService", String.class);
-			IBinder binder;
-			binder = (IBinder) method.invoke(null, new Object[] { "power" });
-			IPowerManager power = IPowerManager.Stub.asInterface(binder);
-			if (power != null) {
-				int brightness = Settings.System.getInt(context.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS);
-				android.util.Log.d("bluewind","get brightness:" + brightness);
-				if (brightness <= MINIMUM_BACKLIGHT) {
-					brightness = MINIMUM_BACKLIGHT;
-				} else if (brightness <= MIDDLE_BACKLIGHT) {
-					brightness = MIDDLE_BACKLIGHT;
-				} else if (brightness <= DEFAULT_BACKLIGHT) {
-					brightness = DEFAULT_BACKLIGHT;
-				} else {
-					brightness = MAXIMUM_BACKLIGHT;
-				}
-				return brightness;
-			}
-		} catch (Exception e) {
-			ALog.Log("getBrightness: " + e);
-		}
-		return DEFAULT_BACKLIGHT;
-	}
+
     public boolean isVibeUI35(){
     	String lvpVersion = SysProp.get("ro.lenovo.lvp.version",null);
     	boolean isVibeUI35 = (null!=lvpVersion&&lvpVersion.contains("V3.5"));

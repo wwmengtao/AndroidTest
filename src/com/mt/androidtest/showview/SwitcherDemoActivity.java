@@ -29,7 +29,7 @@ public class SwitcherDemoActivity extends BaseActivity implements Handler.Callba
 	private ArrayList<HashMap<String, Object>> mSwitchersList = new ArrayList<HashMap<String, Object>>();
 	private ArrayList<HashMap<String, Object>> mLVPSwitchersList = new ArrayList<HashMap<String, Object>>();
 
-	private static int[] switchTXT = { R.string.switch_brightness,
+	private static int[] switchTXT = { 
 			R.string.switch_wifi, R.string.switch_rotation,
 			R.string.switch_bluetooth, R.string.switch_empty,
 			R.string.switch_profile, R.string.widetouch_torchlight,
@@ -165,10 +165,6 @@ public class SwitcherDemoActivity extends BaseActivity implements Handler.Callba
 				break;
 			case R.string.switch_wifi:
 				map = mSwitchersInfo.getWifiSwitch();
-				map.put("itemText", getString(switchTXT[i]));
-				break;
-			case R.string.switch_brightness:
-				map = mSwitchersInfo.getBrightnessSwitch();
 				map.put("itemText", getString(switchTXT[i]));
 				break;
 			case R.string.switch_empty:
