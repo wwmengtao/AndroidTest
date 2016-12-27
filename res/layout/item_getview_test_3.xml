@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dip"
+    android:background="@drawable/menu_item_background"
     android:orientation="horizontal" 
     android:gravity="center_vertical">
     
@@ -11,6 +12,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"        
         android:gravity="center"
+        android:textColor="@drawable/menu_item_text_color"
         android:text="index"/>
     <ImageView
         android:id="@+id/imageview"
@@ -22,6 +24,6 @@
         android:layout_width="wrap_content"        
         android:gravity="center"
         android:layout_gravity="end"
-        android:text="item_getview_test_3"
-		android:textColor="@color/orange"/>     
+        android:textColor="@drawable/menu_item_text_color"
+        android:text="item_getview_test_3"/>     
 </LinearLayout>

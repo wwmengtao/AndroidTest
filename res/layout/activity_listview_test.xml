@@ -16,6 +16,7 @@
         android:drawSelectorOnTop="true"
         android:fastScrollEnabled="false"
         android:background="@color/white"
+        android:choiceMode="singleChoice"
         android:scrollbarStyle="outsideOverlay" />
 
 </FrameLayout>
