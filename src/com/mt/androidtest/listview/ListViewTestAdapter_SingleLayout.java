@@ -53,6 +53,10 @@ public class ListViewTestAdapter_SingleLayout  extends BaseAdapter{
 		if(needDoAdditionalWork)doAdditionalWork();
 		TextView mTextView = mViewHolder.getView(R.id.textview);
 		mTextView.setText(""+Integer.toString(position));
+		/**
+		 * 如果ListView设置android:choiceMode="singleChoice"并且convertView内设置了选中状态下的字体颜色，此时
+		 * 注册convertView的View.OnClickListener监听器会使得选中状态下字体颜色变化功能消失
+		 */
 		return mViewHolder.getConvertView();
 	}
 	

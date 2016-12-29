@@ -42,7 +42,7 @@ public class ALog {
      * Activity的toString内容可能类似于"com.mt.androidtest.showview.1s.sdf2.s4rt.ShowViewActivity@7d129f7"，
      * 下列函数仅仅提取ShowViewActivity之类的内容
      * @param info
-     * @param activity
+     * @param obj
      */
 	public static void Log(String info, Object obj){
 		String str = getActivityName(obj);
