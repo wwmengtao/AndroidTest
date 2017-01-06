@@ -221,9 +221,11 @@ public class ImageLoader {
 			ReentrantLock mUrlLock = getLockForUrl(imageUrl);
 			mUrlLock.lock();//对于多个ImageView加载同一个Url资源的情况进行限制
 			try{
+				checkTaskInterrupted();
 				checkImageViewReused(mImageViewParas);
 				Bitmap bitmap = loadImage(imageUrl, widthOfIV, heightOfIV, mImageViewParas);
 	            if(null!=bitmap){
+	            	checkTaskInterrupted();
 	            	checkImageViewReused(mImageViewParas);
 	            	addBitmapToMemoryCache(imageUrl, bitmap);
 	            	mImageViewParas.mBitmap=bitmap;
@@ -328,11 +330,11 @@ public class ImageLoader {
 		if(!IsImageLoaderInit)return;
 		if(null!=mTaskLoadImg)((ExecutorService) mTaskLoadImg).shutdownNow();
 		if(null!=mTaskDistributor)((ExecutorService) mTaskDistributor).shutdownNow();
-		mDisplayHandler.removeCallbacksAndMessages(null);
-		urlKeysForImageViews.clear();
+		if(null!=mDisplayHandler)mDisplayHandler.removeCallbacksAndMessages(null);
+		if(null!=urlKeysForImageViews)urlKeysForImageViews.clear();
 		uriLocks.clear();
 		fluchCache();
-		ALog.Log("mDiskLruCache.size:"+mDiskLruCache.size()/1024+"KB");
+		ALog.Log("mDiskLruCache.size:"+mDiskLruCache.size()/1024+"KB");//用于统计应用的缓存大小
 	}
 	
 	@SuppressWarnings("serial")
@@ -349,6 +351,19 @@ public class ImageLoader {
 		String url = mImageViewParas.url;
 		ImageView mImageView = mImageViewParas.mImageView;
 		return !url.equals(getUrlForImageView(mImageView.hashCode()));
+	}
+	
+	private void checkTaskInterrupted() throws TaskCancelException {
+		if (isTaskInterrupted()) {
+			throw new TaskCancelException();
+		}
+	}
+
+	private boolean isTaskInterrupted() {
+		if (Thread.interrupted()) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void addBitmapToMemoryCache(String key, Bitmap mBitmap) {  
@@ -435,7 +450,8 @@ public class ImageLoader {
 		return value;
 	}
 	
-	public Bitmap loadImage(String imageUrl,int widthOfImageView, int heightOfImageView, ImageViewParas mImageViewParas) {
+	public Bitmap loadImage(String imageUrl,int widthOfImageView, int heightOfImageView, ImageViewParas mImageViewParas)
+		throws TaskCancelException{
 		if(null==imageUrl)return null;
 		if(imageUrl.startsWith("http")){//表示需要从网络下载图片
 			return tryToDownloadBitmap(imageUrl, mImageViewParas);
@@ -449,7 +465,7 @@ public class ImageLoader {
 	 * @param imageUrl
 	 * @return
 	 */
-	protected Bitmap tryToDownloadBitmap(String imageUrl, ImageViewParas mImageViewParas) {
+	protected Bitmap tryToDownloadBitmap(String imageUrl, ImageViewParas mImageViewParas) throws TaskCancelException {
 		FileDescriptor fileDescriptor = null;
 		FileInputStream fileInputStream = null;
 		Snapshot snapShot = null;
@@ -459,13 +475,16 @@ public class ImageLoader {
 			// 查找key对应的缓存
 			snapShot = mDiskLruCache.get(key);
 			if (snapShot == null) {
+				checkTaskInterrupted();
 				checkImageViewReused(mImageViewParas);
 				// 如果没有找到对应的缓存，则准备从网络上请求数据，并写入缓存
 				DiskLruCache.Editor editor = mDiskLruCache.edit(key);
 				if (editor != null) {
+					checkTaskInterrupted();
 					checkImageViewReused(mImageViewParas);
 					OutputStream outputStream = editor.newOutputStream(0);
 					if (downloadUrlToStream(imageUrl, outputStream, mImageViewParas)) {
+						checkTaskInterrupted();
 						checkImageViewReused(mImageViewParas);
 						editor.commit();
 					} else {
@@ -486,8 +505,6 @@ public class ImageLoader {
 			}
 			return bitmap;
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TaskCancelException e) {
 			e.printStackTrace();
 		} finally {
 			if (fileDescriptor == null && fileInputStream != null) {
@@ -547,7 +564,6 @@ public class ImageLoader {
 		try {
 			final URL url = new URL(urlString);
 			urlConnection = (HttpURLConnection) url.openConnection();
-			checkImageViewReused(mImageViewParas);
 			in = new BufferedInputStream(urlConnection.getInputStream(), 8 * 1024);
 			out = new BufferedOutputStream(outputStream, 8 * 1024);
 			int b;
@@ -557,9 +573,7 @@ public class ImageLoader {
 			return true;
 		} catch (final IOException e) {
 			e.printStackTrace();
-		} catch (TaskCancelException e) {
-			e.printStackTrace();
-		} finally {
+		}finally {
 			if (urlConnection != null) {
 				urlConnection.disconnect();
 			}

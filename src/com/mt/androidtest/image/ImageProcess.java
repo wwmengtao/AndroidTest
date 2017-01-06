@@ -52,20 +52,28 @@ public class ImageProcess {
         if(!isSample){//不进行采样压缩图片
         	return BitmapFactory.decodeStream(ImageDecodeInfo.getInputStream(Url, mType)); 
         }
-        InputStream mInputStream = ImageDecodeInfo.getInputStream(Url, mType);
-        final BitmapFactory.Options options = new BitmapFactory.Options();  
-		//inJustDecodeBounds属性设置为true就可以让解析方法禁止为bitmap分配内存，返回值也不再是一个Bitmap对象，
-		//而是null。虽然Bitmap是null了，但是BitmapFactory.Options的outWidth、outHeight和outMimeType属性都会被赋值。        
-        options.inJustDecodeBounds = true;  
-        BitmapFactory.decodeStream(mInputStream, null, options);  
-        if(IsLogRun)ALog.Log("imageHeight:"+options.outHeight+" imageWidth:"+options.outWidth+" imageType:"+options.outMimeType);
-        //计算sampleSize值  
-        options.inSampleSize = calculatesampleSize(options, reqWidth, reqHeight);//options中宽高单位是像素  
-        //第二次解析将inJustDecodeBounds设置为false，结合获取到的sampleSize值再次解析图片  
-        options.inJustDecodeBounds = false;  
-        mInputStream = resetStream(mInputStream,Url, mType);
-        Bitmap mBitmap = BitmapFactory.decodeStream(mInputStream, null, options);  //decodeStream会尝试为已经构建的bitmap分配内存，这时就会很容易导致OOM出现
-		closeSilently(mInputStream);
+        InputStream mInputStream = null;
+        Bitmap mBitmap = null;
+        try{
+	        mInputStream = ImageDecodeInfo.getInputStream(Url, mType);
+	        final BitmapFactory.Options options = new BitmapFactory.Options();  
+			//inJustDecodeBounds属性设置为true就可以让解析方法禁止为bitmap分配内存，返回值也不再是一个Bitmap对象，
+			//而是null。虽然Bitmap是null了，但是BitmapFactory.Options的outWidth、outHeight和outMimeType属性都会被赋值。        
+	        options.inJustDecodeBounds = true;  
+	        BitmapFactory.decodeStream(mInputStream, null, options);  
+	        if(IsLogRun)ALog.Log("imageHeight:"+options.outHeight+" imageWidth:"+options.outWidth+" imageType:"+options.outMimeType);
+	        //计算sampleSize值  
+	        options.inSampleSize = calculatesampleSize(options, reqWidth, reqHeight);//options中宽高单位是像素  
+	        //第二次解析将inJustDecodeBounds设置为false，结合获取到的sampleSize值再次解析图片  
+	        options.inJustDecodeBounds = false;  
+	        mInputStream = resetStream(mInputStream,Url, mType);
+	        mBitmap = BitmapFactory.decodeStream(mInputStream, null, options);  //decodeStream会尝试为已经构建的bitmap分配内存，这时就会很容易导致OOM出现
+        }catch (OutOfMemoryError e) {
+        	e.printStackTrace();
+        	ALog.Log("OutOfMemoryError");
+		} finally{
+			closeSilently(mInputStream);
+        }
         return mBitmap;
 	}
 	
