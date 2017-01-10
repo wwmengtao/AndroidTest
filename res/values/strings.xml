@@ -70,6 +70,7 @@
     <string name="title_activity_fragment_test">FragmentTestActivity</string>
     <string name="title_activity_fragment_test2">FragmentTest2Activity</string>
     <string name="descr_image">Image</string>
+	<string name="title_activity_dialog">DialogActivity</string>
     <string name="title_activity_bitmap_uil">BitmapUILActivity</string>
 	<string name="menu_item_clear_memory_cache">Clear memory cache</string>
 	<string name="menu_item_clear_disc_cache">Clear disc cache</string>

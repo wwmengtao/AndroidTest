@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
 	private String [] mMethodNameFT={
-			"showDialog","Notification","checkComponentExist","reflectCall","reflectCallListAll",
+			"showDialog","showDialog2","Notification","checkComponentExist","reflectCall","reflectCallListAll",
 			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI",
 			"getPSList"};
 	private String [] mActivitiesName={
@@ -75,6 +75,9 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 			case "showDialog":
 				showDialog();
 				break;
+			case "showDialog2":
+				showDialog2();
+				break;				
 			case "Notification":
 				if(!isNotificationShown){
 					showNotification(mContext,1,null);
@@ -381,6 +384,12 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	            		})
                 .show();
     }
+    
+    private void showDialog2() {
+    	Intent intent = new Intent("android.intent.action.SHOW_ACTIVITY_DIALOG");
+    	startActivity(intent);
+    }
+    
     @Override
     public void onClick(DialogInterface dialog, int which) {
     	String str="Nothing to show!";
