@@ -175,6 +175,12 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
 		}
 	}	
 	
+    @Override
+    public void onPostResume(){
+        super.onPostResume();
+        if(isLogRun)ALog.Log("onPostResume",this);
+    }
+	
 	private Runnable runnableScrollView = new Runnable(){
 		public void run() {
 			mRootScrollView.smoothScrollTo(xScrollView, yScrollView);//直接在onResume中执行会不成功
@@ -184,7 +190,7 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
     @Override
     public void finish() {
         super.finish();
-        if(isLogRun)ALog.fillInStackTrace("finish",this);
+        if(isLogRun)ALog.Log("finish",this);
     }
 	
     @Override
