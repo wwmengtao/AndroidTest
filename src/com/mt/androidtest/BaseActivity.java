@@ -132,6 +132,12 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
         return super.onOptionsItemSelected(item);
     }
 	
+    @Override
+    public void onNewIntent(Intent intent){
+    	super.onNewIntent(intent);
+    	if(isLogRun)ALog.Log("onNewIntent",this);
+    }
+    
 	@Override
 	public void onRestart(){
 		super.onRestart();
@@ -176,11 +182,23 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
 	};
 	
     @Override
+    public void finish() {
+        super.finish();
+        if(isLogRun)ALog.fillInStackTrace("finish",this);
+    }
+	
+    @Override
     public void onBackPressed(){
     	super.onBackPressed();
     	if(isLogRun)ALog.Log("onBackPressed",this);
     }
 	
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if(isLogRun)ALog.Log("onActivityResult",this);
+    }
+    
 	@Override
 	public void onPause(){
 		if(null!=mHandler){

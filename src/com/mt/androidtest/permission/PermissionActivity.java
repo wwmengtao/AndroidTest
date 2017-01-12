@@ -168,7 +168,8 @@ public class PermissionActivity extends BaseActivity{
 	}
 	
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		if(Build.VERSION.SDK_INT <= 22)return;
 	    if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
 	    	ALog.Log("resultCode:"+resultCode);
