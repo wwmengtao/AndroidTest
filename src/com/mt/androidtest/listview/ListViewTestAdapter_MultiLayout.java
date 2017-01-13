@@ -3,6 +3,7 @@ package com.mt.androidtest.listview;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,14 @@ public class ListViewTestAdapter_MultiLayout extends BaseAdapter{
 	LinearLayout linearLayout = null;
 	LayoutInflater inflater;
 	TextView tex;
-	final int VIEW_TYPE = 3;
-	final int TYPE_1 = 0;
-	final int TYPE_2 = 1;
-	final int TYPE_3 = 2;
+	private static final int VIEW_TYPE_COUNT = 3;
+	private static final int TYPE_1 = 0;
+	private static final int TYPE_2 = 1;
+	private static final int TYPE_3 = 2;
+	/**
+	 * TypesVSLayouts：用于存储getItemViewType返回值和对应的布局ID
+	 */
+	private SparseArray<Integer> TypesVSLayouts = null;
 	ArrayList<String> listString = new ArrayList<String>();
 	public ListViewTestAdapter_MultiLayout(Context context) {
 	// TODO Auto-generated constructor stub
@@ -32,6 +37,10 @@ public class ListViewTestAdapter_MultiLayout extends BaseAdapter{
 		for(int i = 0 ; i < 100 ; i++){
 			listString.add(Integer.toString(i)+"  ++++");
 		}
+		TypesVSLayouts = new SparseArray<>();
+		TypesVSLayouts.put(TYPE_1, R.layout.item_getview_test_1);
+		TypesVSLayouts.put(TYPE_2, R.layout.item_getview_test_2);
+		TypesVSLayouts.put(TYPE_3, R.layout.item_getview_test_3);
 	}
 
 	@Override
@@ -44,20 +53,19 @@ public class ListViewTestAdapter_MultiLayout extends BaseAdapter{
 	@Override
 	public int getItemViewType(int position) {
 		// TODO Auto-generated method stub
-		//ALog.Log("getItemViewType position:"+position);
 		int p = position%6;
-		if(p == 0)
+		if(p == 0){
 			return TYPE_1;
-		else if(p < 3)
+		}else if(p < 3){
 			return TYPE_2;
+		}
 		return TYPE_3;
 	}
 
 	@Override
 	public int getViewTypeCount() {//返回ListView显示的item的布局种类
 		// TODO Auto-generated method stub
-		ALog.Log("getViewTypeCount");
-		return 3;
+		return VIEW_TYPE_COUNT;
 	}
 
 	@Override
@@ -79,17 +87,7 @@ public class ListViewTestAdapter_MultiLayout extends BaseAdapter{
 		// TODO Auto-generated method stub
 		boolean needDoAdditionalWork = (null==convertView)?true:false;
 		int viewType = getItemViewType(position);
-		switch(viewType){
-			case TYPE_1:
-				mViewHolder = ViewHolder.get(mContext, convertView, parent, R.layout.item_getview_test_1, position);
-				break;
-			case TYPE_2:
-				mViewHolder = ViewHolder.get(mContext, convertView, parent, R.layout.item_getview_test_2, position);
-				break;
-			case TYPE_3:
-				mViewHolder = ViewHolder.get(mContext, convertView, parent, R.layout.item_getview_test_3, position);			
-				break;
-		}
+		mViewHolder = ViewHolder.get(mContext, convertView, parent, TypesVSLayouts.get(viewType), position);
 		if(needDoAdditionalWork)doAdditionalWork();
 		if(!needDoAdditionalWork){
 			CheckBox checkBox = mViewHolder.getView(R.id.checkbox);
