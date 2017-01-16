@@ -1,8 +1,5 @@
 package com.mt.androidtest.myselfview;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -11,6 +8,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,8 +38,9 @@ public class MySelfViewActivity extends BaseActivity {
 	private static final int Menu_Scroll = 1;	
 	private static final int Menu_TabHost = 2;		
 	//
-    private static final int NUM_PAGES = 5;
+    public static final int NUM_PAGES = 10;
     private ViewPager mViewPager;
+    private MyonPageChangeListener mMyonPageChangeListener=null;
     private PagerAdapter mPagerAdapter;	
     private TextView mTextView;
     //
@@ -72,6 +71,7 @@ public class MySelfViewActivity extends BaseActivity {
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem mi)	{
+		ScreenSlidePageFragment.clearFragments();
 		switch (mi.getItemId()){
 		case Menu_Common:
 			setContentView(R.layout.activity_myselfview_common);
@@ -156,21 +156,15 @@ public class MySelfViewActivity extends BaseActivity {
     }
     
     
-    private List<Fragment> mFragments=null;
-    private List<View> mListViews=null;
 	//ViewPager的使用
 	public void initMyScrollView(){
 		mTextView = (TextView)findViewById(R.id.mytextview);
 		mTextView.setOnClickListener(mOnClickListener);
-		mFragments = new ArrayList<Fragment>();
-		mListViews = new ArrayList<View>();
-		for(int i=0;i<NUM_PAGES;i++){
-			mFragments.add(ScreenSlidePageFragment.create(i));
-			mListViews.add(new CombinedView(this));
-		}
         mViewPager = (ViewPager) findViewById(R.id.myviewpager);
-        mPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager(),mFragments);//ViewPager显示Fragment，谷歌推荐做法
+        mPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
         mViewPager.setAdapter(mPagerAdapter);
+        mMyonPageChangeListener = new MyonPageChangeListener();
+        mViewPager.addOnPageChangeListener(mMyonPageChangeListener);
         //
         mListView = (ListView) findViewById(R.id.mylistview);
         mListView.setAdapter(mListAdapter_SingleLayout);
@@ -182,37 +176,63 @@ public class MySelfViewActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
+			ScreenSlidePageFragment.clearFragments();
 			int value = (index++%3);
-			ALog.Log("value:"+value);
 			switch(value){
 			case 0:
 				mTextView.setText("FragmentPagerAdapter");
-				mPagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(),mFragments);//ViewPager显示Fragment，谷歌推荐做法
+				mPagerAdapter = new MyFragmentPagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
 				break;
 			case 1:
 				mTextView.setText("PagerAdapter");
-				mPagerAdapter = new MyPagerAdapter(mListViews);//ViewPager显示自定义View
+				mPagerAdapter = new MyPagerAdapter();//ViewPager显示自定义View
 				break;
 			case 2:
 				mTextView.setText("FragmentStatePagerAdapter");
-				mFragments.clear();
-				for(int i=0;i<NUM_PAGES;i++){
-					mFragments.add(ScreenSlidePageFragment.create(i));
-				}
-				mPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager(),mFragments);//ViewPager显示Fragment，谷歌推荐做法
+				mPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
 				break;
 			}
 	        mViewPager.setAdapter(mPagerAdapter);
 		}
 	};
 	
+	@Override
+	public void onStop(){
+		super.onStop();
+		mViewPager.removeOnPageChangeListener(mMyonPageChangeListener);
+	}
+	
+	private class MyonPageChangeListener implements OnPageChangeListener{
+		
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+			// TODO Auto-generated method stub
+//			ALog.Log("onPageScrollStateChanged: "+arg0);
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+			// TODO Auto-generated method stub
+//			ALog.Log("onPageScrolled_arg0: "+arg0+" arg1: "+arg1+" arg2: "+arg2);
+		}
+
+		@Override
+		public void onPageSelected(int currentIndex) {
+			// TODO Auto-generated method stub
+			ALog.Log1("mViewPager.getCurrentIndex :"+currentIndex+" "+ScreenSlidePageFragment.get(currentIndex));
+//			ScreenSlidePageFragment.scanFragments();
+		}
+		
+	}
+	
 	/**
 	 * FragmentPagerAdapter与FragmentStatePagerAdapter的主要区别就在与对于fragment是否销毁，下面细说：
-	 * 区别1)FragmentPagerAdapter：对于不再需要的fragment，选择调用detach方法，仅销毁视图，并不会销毁fragment实例。
+	 * 区别1)FragmentPagerAdapter：对于不再需要的fragment，选择调用onDestroyView方法，仅销毁视图，并不会销毁fragment实例。
+	 * 因此之前加载过的fragment会保存在内存中，如果数量达到一定值会显著消耗内存。
 	 * 区别2)FragmentStatePagerAdapter：会销毁不再需要的fragment，当当前事务提交以后，会彻底的将fragmeng从当前Activity
-	 * 的FragmentManager中移除，state标明，销毁时，会将其onSaveInstanceState(Bundle outState)中的bundle信息保存下来，
-	 * 当用户切换回来，可以通过该bundle恢复生成新的fragment，也就是说，你可以在onSaveInstanceState(Bundle outState)
-	 * 方法中保存一些数据，在onCreate中进行恢复创建。
+	 * 的FragmentManager中移除，当然也会从内存中移除(保留当前项目左右各一个，其余的调用onDestroyView、onDestroy、onDetach彻底销毁)。state标明，
+	 * 销毁时，会将其onSaveInstanceState(Bundle outState)中的bundle信息保存下来，当用户切换回来，可以通过该bundle恢复生成新的fragment，
+	 * 也就是说，你可以在onSaveInstanceState(Bundle outState)方法中保存一些数据，在onCreate中进行恢复创建。
 	 * 总之：使用FragmentStatePagerAdapter当然更省内存，但是销毁新建也是需要时间的。一般情况下，如果你是制作主页面，
 	 * 就3、4个Tab，那么可以选择使用FragmentPagerAdapter，如果你是用于ViewPager展示数量特别多的条目时，那么建议使用
 	 * FragmentStatePagerAdapter。
@@ -224,19 +244,22 @@ public class MySelfViewActivity extends BaseActivity {
 	 *
 	 */
 	private class MyFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
-		private List<Fragment> mFragments; 
-		public MyFragmentStatePagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+
+		public MyFragmentStatePagerAdapter(FragmentManager fm) {
 			super(fm);
-			mFragments = fragments;
 		}
+
 		@Override
 		public Fragment getItem(int position) {
-			return mFragments.get(position);
+			Fragment mFragment = ScreenSlidePageFragment.get(position);
+			ALog.Log1("FragmentStatePagerAdapter.getItem_position: "+position);
+//			ScreenSlidePageFragment.scanFragments();
+			return mFragment;
 		}
 		
 		@Override
 		public int getCount() {
-			return mFragments.size();
+			return NUM_PAGES;
 		}
 	}
 	
@@ -246,21 +269,28 @@ public class MySelfViewActivity extends BaseActivity {
 	 *
 	 */
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
-    	private List<Fragment> mFragments; 
-        public MyFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+
+        public MyFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
-            mFragments = fragments;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return mFragments.get(position);
+			Fragment mFragment = ScreenSlidePageFragment.get(position);
+			ALog.Log1("FragmentPagerAdapter.getItem_position: "+position);
+//			ScreenSlidePageFragment.scanFragments();
+			return mFragment;
         }
 
         @Override
         public int getCount() {
-            return mFragments.size();
+            return NUM_PAGES;
         }
+        
+    	@Override  
+        public Object instantiateItem(ViewGroup container, int position) {  //这个方法用来实例化页卡 
+             return super.instantiateItem(container, position); 
+        }  
     }
     
     /**
@@ -269,11 +299,7 @@ public class MySelfViewActivity extends BaseActivity {
      *
      */
 	private class MyPagerAdapter extends PagerAdapter {
-        private List<View> mListViews;  
         
-        public MyPagerAdapter(List<View> mListViews) {  
-            this.mListViews = mListViews;//构造方法，参数是我们的页卡，这样比较方便。  
-        }  
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			container.removeView((View) object);
@@ -281,13 +307,15 @@ public class MySelfViewActivity extends BaseActivity {
 
 		@Override
 		public int getCount() {
-			return mListViews.size();
+			return NUM_PAGES;
 		}
 
 	@Override  
-    public Object instantiateItem(ViewGroup container, int position) {  //这个方法用来实例化页卡         
-         container.addView(mListViews.get(position), 0);//添加页卡  
-         return mListViews.get(position);  
+    public Object instantiateItem(ViewGroup container, int position) {  //这个方法用来实例化页卡    
+		CombinedView mView = new CombinedView(getApplicationContext());
+		container.addView(mView, 0);//添加页卡  
+//		ScreenSlidePageFragment.scanFragments();
+		return mView;  
     }  
 
 		@Override

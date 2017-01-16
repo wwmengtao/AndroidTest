@@ -65,6 +65,5 @@ public class ListViewTestAdapter_SingleLayout  extends BaseAdapter{
 		mConvertView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
 		ImageView mImageView = mViewHolder.getView(R.id.imageview);
 		mImageView.setBackgroundResource(R.drawable.icon);
-		ALog.Log("doAdditionalWork");
 	}
 }
