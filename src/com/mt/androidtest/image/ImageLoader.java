@@ -7,7 +7,6 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -31,13 +30,12 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.LruCache;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
+import com.mt.androidtest.image.ImageProcess.ViewSize;
 import com.mt.androidtest.image.ImageProcess.StreamType;
 import com.mt.androidtest.image.PicConstants.Type;
 import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
@@ -55,9 +53,7 @@ public class ImageLoader {
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 	private static final int maxMemory = (int) (Runtime.getRuntime().maxMemory());
 	private Context mContext = null;
-	private DisplayMetrics displayMetrics = null;
-	private static int displayMetricsWidth = 0;
-	private static int displayMetricsHeight = 0;
+
     private Executor mTaskLoadImg = null;
     private Executor mTaskDistributor=null;
     private volatile static ImageLoader mInstance;
@@ -141,10 +137,7 @@ public class ImageLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//以下获取屏幕的宽高
-		displayMetrics = mContext.getResources().getDisplayMetrics();
-		displayMetricsWidth = displayMetrics.widthPixels;
-		displayMetricsHeight = displayMetrics.heightPixels;
+
 	}
 	
 	/**
@@ -214,7 +207,7 @@ public class ImageLoader {
 		public void run() {
 			// TODO Auto-generated method stub
 			if(waitIfPaused())return;
-			ImageViewSize mImageViewSize = getImageViewSize(mImageViewParas.mImageView); 
+			ViewSize mImageViewSize = ImageProcess.getViewSize(mImageViewParas.mImageView); 
 			int widthOfIV = mImageViewSize.getWidth();
 			int heightOfIV = mImageViewSize.getHeight();
 			String imageUrl = mImageViewParas.url;
@@ -375,80 +368,6 @@ public class ImageLoader {
 	public Bitmap getBitmapFromMemoryCache(String key) {  
 	    return mLruCache.get(key);  
 	}  
-	
-	private class ImageViewSize{
-		private int width;
-		private int height;
-		
-		public ImageViewSize(int width, int height){
-			this.width = width;
-			this.height = height;
-		}
-		
-		public int getWidth(){
-			return width;
-		}
-		
-		public int getHeight(){
-			return height;
-		}
-	}
-	
-	/**
-	 * getImageViewSize：获取imageView的宽高，由于GridView获取单元格宽高需要多次测量最终才能确定，因此在最终获取真实宽高
-	 * 之前必须给定默认值，此时的默认值是imageView.getxxx()后的各个if判断中的数值。
-	 * 注意：采用convertView.measure(0,0)后imageView.getMeasuredXXX的方法获取的尺寸是不准确的
-	 * @param imageView
-	 * @return
-	 */
-	public ImageViewSize getImageViewSize(ImageView imageView){
-		if(null==imageView)return null;
-		LayoutParams lp = imageView.getLayoutParams();
-		int width = imageView.getWidth();// 获取imageview的实际宽度
-		if (width <= 0){
-			width = lp.width;// 获取imageview在layout中声明的宽度
-		}
-		if (width <= 0){
-			width = ImageViewParas.defaultWidth;
-		}
-		if (width <= 0){
-			width = getImageViewFieldValue(imageView, "mMaxWidth");
-		}
-		if (width <= 0){
-			width = displayMetricsWidth;
-		}
-
-		int height = imageView.getHeight();// 获取imageview的实际高度
-		if (height <= 0){
-			height = lp.height;// 获取imageview在layout中声明的宽度
-		}
-		if (height <= 0){
-			height = ImageViewParas.defaultHeight;
-		}
-		if (height <= 0){
-			height = getImageViewFieldValue(imageView, "mMaxHeight");// 检查最大值
-		}
-		if (height <= 0){
-			height = displayMetricsHeight;
-		}
-		if(IsLogRun)ALog.Log("width:"+width+" height:"+height);
-		return new ImageViewSize(width, height);
-	}
-	
-	private static int getImageViewFieldValue(Object object, String fieldName){
-		int value = 0;
-		try{
-			Field field = ImageView.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
-			int fieldValue = (Integer) field.get(object);
-			if (fieldValue > 0 && fieldValue < Integer.MAX_VALUE){
-				value = fieldValue;
-				if(IsLogRun)ALog.Log("value" + value);
-			}
-		} catch (Exception e){
-		}
-		return value;
-	}
 	
 	public Bitmap loadImage(String imageUrl,int widthOfImageView, int heightOfImageView, ImageViewParas mImageViewParas)
 		throws TaskCancelException{

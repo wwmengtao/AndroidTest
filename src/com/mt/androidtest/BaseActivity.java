@@ -439,7 +439,7 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
 	 * 最终我们调用函数getMeasuredxx返回的内容是：
 	 * mMeasuredWidth & MEASURED_SIZE_MASK;
 	 * mMeasuredHeight & MEASURED_SIZE_MASK;
-	 * 2)measure执行后layout执行：此时mRight和mBottom不为0。
+	 * 2)执行layout后：此时mRight和mBottom不为0。
 	 * layout->setFrame，其中setFrame有如下片段：
      * mLeft = left;
      * mTop = top;
@@ -456,35 +456,13 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
 			return;
 		}
 		int totalHeight = 0;
-		if(logListViewHeight)ALog.Log("@@@@setListViewHeightBasedOnChildren1");
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
-			if(0==i && logListViewHeight)ALog.Log("@@@@measure_getHeight:"+listItem.getHeight());
-			if(0==i && logListViewHeight)ALog.Log("@@@@measure_getMeasuredHeight:"+listItem.getMeasuredHeight());
-			/**
-			 * 仅适用于本场景：getMeasuredxx要在measure后才有值，getxx要在layout后才有值。
-			 */
-			/**
-			 * 1、measure执行完毕后，frameworks中View.java中各变量如下：
-			 * mLeft:0 mRight:0 mTop:0 mBottom:0
-			 * getHeight:0 getMeasuredHeight:133
-			 */
 			listItem.measure(0, 0);
-			if(0==i && logListViewHeight)ALog.Log("@@@@measure_getHeight:"+listItem.getHeight());
-			if(0==i && logListViewHeight)ALog.Log("@@@@measure_getMeasuredHeight:"+listItem.getMeasuredHeight());
-			/**
-			 * 2、layout执行完毕后，frameworks中View.java中各变量如下：
-			 * mLeft:0 mRight:343 mTop:0 mBottom:133
-			 * getHeight:133 getMeasuredHeight:133
-			 */
-			listItem.layout(0, 0, listItem.getMeasuredWidth(), listItem.getMeasuredHeight());
-			if(0==i && logListViewHeight)ALog.Log("@@@@layout_getHeight:"+listItem.getHeight());
-			if(0==i && logListViewHeight)ALog.Log("@@@@layout_getMeasuredHeight:"+listItem.getMeasuredHeight());
 			//以下将所有ListView中每个item view高度累加起来
 			totalHeight += listItem.getMeasuredHeight();
+			if(isLogRun)ALog.Log("itemHeight: "+listItem.getMeasuredHeight()+" i:"+i);
 		}
-		if(logListViewHeight)ALog.Log("@@@@setListViewHeightBasedOnChildren2");
-		logListViewHeight = false;
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
 		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);

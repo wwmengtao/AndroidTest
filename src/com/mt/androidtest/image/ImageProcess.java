@@ -5,20 +5,27 @@ import static com.mt.androidtest.image.PicConstants.strangeSTR;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 
 import com.mt.androidtest.ALog;
+import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
 
 import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 
 public class ImageProcess {
+	private static int displayMetricsWidth = 0;
+	private static int displayMetricsHeight = 0;
     private static final String regPrefix = "[0-9]+"+strangeSTR;
     private static Pattern mPattern = Pattern.compile(regPrefix);
-    
     public static enum StreamType{
     	Asset
     }
@@ -115,4 +122,89 @@ public class ImageProcess {
         if(IsLogRun)ALog.Log("inSampleSize:"+inSampleSize);
         return inSampleSize;  
     }  
+    
+	
+	/**
+	 * getViewSize：获取mView的宽高，由于GridView获取单元格宽高需要多次测量最终才能确定，因此在最终获取真实宽高
+	 * 之前必须给定默认值，此时的默认值是mView.getxxx()后的各个if判断中的数值。
+	 * 注意：采用convertView.measure(0,0)后mView.getMeasuredXXX的方法获取的尺寸是不准确的
+	 * @param mView
+	 * @return
+	 */
+	public static ViewSize getViewSize(View mView){
+		if(null==mView)return null;
+		LayoutParams lp = mView.getLayoutParams();
+		int width = mView.getWidth();// 获取mView的实际宽度
+		if (width <= 0){
+			width = lp.width;// 获取mView在layout中声明的宽度
+		}
+		if (width <= 0){
+			width = ImageViewParas.defaultWidth;
+		}
+		if (width <= 0){
+			width = getImageViewFieldValue(mView, "mMaxWidth");
+		}
+		//上述几种方法无法获取控件宽高，那么只能使用最大默认值，即屏幕宽高。
+
+		//以下获取屏幕的宽高
+		if(displayMetricsWidth <= 0){
+			DisplayMetrics displayMetrics = null;
+			displayMetrics = mView.getContext().getResources().getDisplayMetrics();
+			displayMetricsWidth = displayMetrics.widthPixels;
+			displayMetricsHeight = displayMetrics.heightPixels;
+		}
+		//
+		if (width <= 0){
+			width = displayMetricsWidth;
+		}
+
+		int height = mView.getHeight();// 获取imageview的实际高度
+		if (height <= 0){
+			height = lp.height;// 获取imageview在layout中声明的宽度
+		}
+		if (height <= 0){
+			height = ImageViewParas.defaultHeight;
+		}
+		if (height <= 0){
+			height = getImageViewFieldValue(mView, "mMaxHeight");// 检查最大值
+		}
+		if (height <= 0){
+			height = displayMetricsHeight;
+		}
+		if(IsLogRun)ALog.Log("width:"+width+" height:"+height);
+		return new ViewSize(width, height);
+	}
+	
+	private static int getImageViewFieldValue(Object object, String fieldName){
+		int value = 0;
+		try{
+			Field field = ImageView.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			int fieldValue = (Integer) field.get(object);
+			if (fieldValue > 0 && fieldValue < Integer.MAX_VALUE){
+				value = fieldValue;
+				if(IsLogRun)ALog.Log("value" + value);
+			}
+		} catch (Exception e){
+		}
+		return value;
+	}
+	
+	public static class ViewSize{
+		private int width;
+		private int height;
+		
+		public ViewSize(int width, int height){
+			this.width = width;
+			this.height = height;
+		}
+		
+		public int getWidth(){
+			return width;
+		}
+		
+		public int getHeight(){
+			return height;
+		}
+	}
 }
