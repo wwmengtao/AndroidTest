@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -456,16 +457,23 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
 			return;
 		}
 		int totalHeight = 0;
+		ViewGroup.LayoutParams paramsItem = null;
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
-			listItem.measure(0, 0);
+			paramsItem = listItem.getLayoutParams();
 			//以下将所有ListView中每个item view高度累加起来
-			totalHeight += listItem.getMeasuredHeight();
-			if(isLogRun)ALog.Log("itemHeight: "+listItem.getMeasuredHeight()+" i:"+i);
+			if(paramsItem.height >= 0){//1、直接通过item的LayoutParams获取高度
+				if(isLogRun)ALog.Log("####mParams.height: "+paramsItem.height+" i:"+i);
+				totalHeight += paramsItem.height;
+			}else{//2、方法1不可以的话通过MeasuredHeight获取高度
+				listItem.measure(0, 0);
+				totalHeight += listItem.getMeasuredHeight();
+				if(isLogRun)ALog.Log("####itemHeight: "+listItem.getMeasuredHeight()+" i:"+i);
+			}
 		}
-		ViewGroup.LayoutParams params = listView.getLayoutParams();
-		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-		listView.setLayoutParams(params);
+		ViewGroup.LayoutParams paramsListView = listView.getLayoutParams();
+		paramsListView.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(paramsListView);
 	}
 	
 	//以下申请权限
