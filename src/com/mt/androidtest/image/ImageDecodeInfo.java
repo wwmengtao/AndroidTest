@@ -6,6 +6,7 @@ import java.io.InputStream;
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.image.ImageProcess.StreamType;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 
 /**
@@ -14,13 +15,30 @@ import android.content.res.AssetManager;
  *
  */
 public class ImageDecodeInfo {
-	private static AssetManager mAssetManager=null;
 	
-	public static void setAssetManager(AssetManager assetManager){
-		if(null == mAssetManager)mAssetManager = assetManager;
+	private volatile static ImageDecodeInfo mInstance = null;
+	private Context mContext = null;
+	private AssetManager mAssetManager=null;
+
+	public static ImageDecodeInfo getInstance(Context context)	{
+		if (mInstance == null){
+			synchronized (ImageDecodeInfo.class){
+				if (mInstance == null){
+					mInstance = new ImageDecodeInfo(context);
+				}
+			}
+		}
+		return mInstance;
 	}
 	
-	public static int getFilesNum(String dir){
+	public ImageDecodeInfo(Context context){
+		mContext = context.getApplicationContext();
+		mAssetManager = mContext.getAssets();
+	}
+	
+	
+	
+	public int getFilesNum(String dir){
         try {
             String []files = mAssetManager.list(dir);
             return files.length;
@@ -30,8 +48,7 @@ public class ImageDecodeInfo {
         }
 	}
 	
-	public static InputStream getInputStream(String url, StreamType type){
-		if(null == mAssetManager)return null;
+	public InputStream getInputStream(String url, StreamType type){
 		InputStream mInputStream = null;
 		try {
 			switch(type){

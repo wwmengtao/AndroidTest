@@ -207,7 +207,7 @@ public class ImageLoader {
 		public void run() {
 			// TODO Auto-generated method stub
 			if(waitIfPaused())return;
-			ViewSize mImageViewSize = ImageProcess.getViewSize(mImageViewParas.mImageView); 
+			ViewSize mImageViewSize = ImageProcess.getInstance(mContext).getViewSize(mImageViewParas.mImageView); 
 			int widthOfIV = mImageViewSize.getWidth();
 			int heightOfIV = mImageViewSize.getHeight();
 			String imageUrl = mImageViewParas.url;
@@ -375,8 +375,8 @@ public class ImageLoader {
 		if(imageUrl.startsWith("http")){//表示需要从网络下载图片
 			return tryToDownloadBitmap(imageUrl, mImageViewParas);
 		}
-		String imageUrlNew = ImageProcess.parsePicUrl(imageUrl);
-		return ImageProcess.decodeSampledBitmap(imageUrlNew, StreamType.Asset, widthOfImageView, heightOfImageView,true);
+		String imageUrlNew = ImageProcess.getInstance(mContext).parsePicUrl(imageUrl);
+		return ImageProcess.getInstance(mContext).decodeSampledBitmap(imageUrlNew, StreamType.Asset, widthOfImageView, heightOfImageView,true);
 	}
 
 	/**

@@ -48,7 +48,6 @@ public class BitmapFactoryActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mAssetManager = getAssetManager();
-		ImageDecodeInfo.setAssetManager(mAssetManager);
 		mPicConstants = new PicConstants();
 		largeNumPicsAL = mPicConstants.createLargeNumHDPics(picNum);
 		largeNumPicsAL2 = mPicConstants.createLargeNumHDPics(picNum);
@@ -121,17 +120,17 @@ public class BitmapFactoryActivity extends BaseActivity {
 		}
 		//一、高清图片处理
 		//1.1、不对图片进行压缩，直接显示到mImageView
-		mBitmap = ImageProcess.decodeSampledBitmap(PicConstants.assetHDPicNames[0], StreamType.Asset, mImageView.getWidth(),mImageView.getHeight(),false);
+		mBitmap = ImageProcess.getInstance(this).decodeSampledBitmap(PicConstants.assetHDPicNames[0], StreamType.Asset, mImageView.getWidth(),mImageView.getHeight(),false);
 		mImageView.setImageBitmap(mBitmap);
 		//1.2、对图片进行压缩，显示到mImageView2
 		//注意：mImageView2.getWidth或者getHeight获取数值单位是像素
-		mBitmap2 = ImageProcess.decodeSampledBitmap(PicConstants.assetHDPicNames[0], StreamType.Asset, mImageView2.getWidth(),mImageView2.getHeight(),true);
+		mBitmap2 = ImageProcess.getInstance(this).decodeSampledBitmap(PicConstants.assetHDPicNames[0], StreamType.Asset, mImageView2.getWidth(),mImageView2.getHeight(),true);
 		mImageView2.setImageBitmap(mBitmap2);
 		//二、非高清图片，不设置采样率，ScaleType测试用
 		index = 0;
 		mTextView.setOnClickListener(this);
-		mBitmap = ImageProcess.decodeSampledBitmap(PicConstants.assetPicPicNames[0], StreamType.Asset, mImageView.getWidth(),mImageView.getHeight(),false);
-		mBitmap2 = ImageProcess.decodeSampledBitmap(PicConstants.assetPicPicNames[0], StreamType.Asset, mImageView.getWidth(),mImageView.getHeight(),false);
+		mBitmap = ImageProcess.getInstance(this).decodeSampledBitmap(PicConstants.assetPicPicNames[0], StreamType.Asset, mImageView.getWidth(),mImageView.getHeight(),false);
+		mBitmap2 = ImageProcess.getInstance(this).decodeSampledBitmap(PicConstants.assetPicPicNames[0], StreamType.Asset, mImageView.getWidth(),mImageView.getHeight(),false);
 	}
 
 	//以下罗列出所有ScaleType类型

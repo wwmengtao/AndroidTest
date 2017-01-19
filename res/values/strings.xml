@@ -46,6 +46,8 @@
     <string name="title_activity_list_view">ListViewTestActivity</string>
     <string name="title_activity_inflate">InflateActivity</string>
     <string name="title_activity_myselfview">MySelfViewActivity</string>
+    <string name="title_activity_viewpager">ViewPagerActivity</string>
+    <string name="title_activity_viewpager_fragment">ViewPagerFragmentActivity</string>
     <string name="preference_on">On</string>
     <string name="preference_title">Title</string>
     <string name="preference_summary">Summary</string>
@@ -70,10 +72,11 @@
     <string name="title_activity_fragment_test">FragmentTestActivity</string>
     <string name="title_activity_fragment_test2">FragmentTest2Activity</string>
     <string name="descr_image">Image</string>
-	<string name="title_activity_dialog">DialogActivity</string>
+    <string name="title_activity_dialog">DialogActivity</string>
     <string name="title_activity_bitmap_uil">BitmapUILActivity</string>
-	<string name="menu_item_clear_memory_cache">Clear memory cache</string>
-	<string name="menu_item_clear_disc_cache">Clear disc cache</string>
-	<string name="menu_item_pause_on_scroll">Pause on scroll</string>
-	<string name="menu_item_pause_on_fling">Pause on fling</string>
+    <string name="menu_item_clear_memory_cache">Clear memory cache</string>
+    <string name="menu_item_clear_disc_cache">Clear disc cache</string>
+    <string name="menu_item_pause_on_scroll">Pause on scroll</string>
+    <string name="menu_item_pause_on_fling">Pause on fling</string>
+
 </resources>

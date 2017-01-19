@@ -9,6 +9,8 @@ import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
@@ -22,6 +24,8 @@ import com.mt.androidtest.listview.ViewHolder.ImageViewParas;
 import static com.mt.androidtest.image.ImageLoader.IsLogRun;
 
 public class ImageProcess {
+	private volatile static ImageProcess mInstance = null;
+	private Context mContext = null;
 	private static int displayMetricsWidth = 0;
 	private static int displayMetricsHeight = 0;
     private static final String regPrefix = "[0-9]+"+strangeSTR;
@@ -29,12 +33,28 @@ public class ImageProcess {
     public static enum StreamType{
     	Asset
     }
+    
+	public static ImageProcess getInstance(Context context)	{
+		if (mInstance == null){
+			synchronized (ImageProcess.class){
+				if (mInstance == null){
+					mInstance = new ImageProcess(context);
+				}
+			}
+		}
+		return mInstance;
+	}
+    
+	public ImageProcess(Context context){
+		mContext = context.getApplicationContext();
+	}
+	
 	/**
 	 * 解析出最终想要的图片URL地址
 	 * @param picUrl
 	 * @return
 	 */
-	public static String parsePicUrl(String picUrl){
+	public String parsePicUrl(String picUrl){
 		if(null==picUrl)return null;
 		String picUrlNew=null;
 		Matcher mMatcher = mPattern.matcher(picUrl);
@@ -53,16 +73,16 @@ public class ImageProcess {
 	 * @param isSample 是否对图片进行采样
 	 * @return 采样(不采样)后的Bitmap
 	 */
-	public static Bitmap decodeSampledBitmap(String Url, StreamType mType, int reqWidth, int reqHeight, boolean isSample){
+	public Bitmap decodeSampledBitmap(String Url, StreamType mType, int reqWidth, int reqHeight, boolean isSample){
 	   	if(null == Url)return null;
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片信息  
         if(!isSample){//不进行采样压缩图片
-        	return BitmapFactory.decodeStream(ImageDecodeInfo.getInputStream(Url, mType)); 
+        	return BitmapFactory.decodeStream(ImageDecodeInfo.getInstance(mContext).getInputStream(Url, mType)); 
         }
         InputStream mInputStream = null;
         Bitmap mBitmap = null;
         try{
-	        mInputStream = ImageDecodeInfo.getInputStream(Url, mType);
+	        mInputStream = ImageDecodeInfo.getInstance(mContext).getInputStream(Url, mType);
 	        final BitmapFactory.Options options = new BitmapFactory.Options();  
 			//inJustDecodeBounds属性设置为true就可以让解析方法禁止为bitmap分配内存，返回值也不再是一个Bitmap对象，
 			//而是null。虽然Bitmap是null了，但是BitmapFactory.Options的outWidth、outHeight和outMimeType属性都会被赋值。        
@@ -84,7 +104,7 @@ public class ImageProcess {
         return mBitmap;
 	}
 	
-	protected static InputStream resetStream(InputStream imageStream, String Url, StreamType mType){
+	protected InputStream resetStream(InputStream imageStream, String Url, StreamType mType){
 		if (imageStream.markSupported()) {
 			try {
 				imageStream.reset();
@@ -93,10 +113,10 @@ public class ImageProcess {
 			}
 		}
 		closeSilently(imageStream);
-		return  ImageDecodeInfo.getInputStream(Url, mType);
+		return  ImageDecodeInfo.getInstance(mContext).getInputStream(Url, mType);
 	}
     
-	public static void closeSilently(Closeable closeable) {
+	public void closeSilently(Closeable closeable) {
 		if (closeable != null) {
 			try {
 				closeable.close();
@@ -106,7 +126,7 @@ public class ImageProcess {
 	}
 	
     //根据期望控件的大小确定图片采样率，让宽高等比例压缩
-    public static int calculatesampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {  
+    public int calculatesampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {  
         // 源图片的高度和宽度  
         final int outHeight = options.outHeight;  
         final int outWidth = options.outWidth;  
@@ -131,7 +151,7 @@ public class ImageProcess {
 	 * @param mView
 	 * @return
 	 */
-	public static ViewSize getViewSize(View mView){
+	public ViewSize getViewSize(View mView){
 		if(null==mView)return null;
 		LayoutParams lp = mView.getLayoutParams();
 		int width = mView.getWidth();// 获取mView的实际宽度
@@ -175,7 +195,7 @@ public class ImageProcess {
 		return new ViewSize(width, height);
 	}
 	
-	private static int getImageViewFieldValue(Object object, String fieldName){
+	private int getImageViewFieldValue(Object object, String fieldName){
 		int value = 0;
 		try{
 			Field field = ImageView.class.getDeclaredField(fieldName);

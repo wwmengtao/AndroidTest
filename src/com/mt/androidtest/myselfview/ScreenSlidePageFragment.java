@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseFragment;
 import com.mt.androidtest.R;
-import static com.mt.androidtest.myselfview.MySelfViewActivity.NUM_PAGES;;
+import static com.mt.androidtest.myselfview.ViewPagerFragmentActivity.NUM_PAGES;;
 
 
 public class ScreenSlidePageFragment extends BaseFragment {

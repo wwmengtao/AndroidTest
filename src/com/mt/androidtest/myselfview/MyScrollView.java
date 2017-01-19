@@ -5,19 +5,17 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.RectF;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.mt.androidtest.R;
 
 public class MyScrollView extends ScrollView{
-	private List<View> mViews=null;
-    private TextView mTextView;
-	private ViewPager mViewPager =null;
+	private List<View> mViewsNotIntercept=null;//添加触摸事件拦截豁免白名单
+	private HorizontalScrollView mHorizontalScrollView =null;
 	private RectF mRectF = null;
 	boolean isInViewRect = false;
 	public MyScrollView(Context context, AttributeSet attrs) {
@@ -26,11 +24,9 @@ public class MyScrollView extends ScrollView{
 
     @Override  
     protected void onAttachedToWindow(){
-    	mViews = new ArrayList<View>();
-		mTextView = (TextView)findViewById(R.id.mytextview);
-		mViewPager = (ViewPager) findViewById(R.id.myviewpager);
-		mViews.add(mTextView);
-		mViews.add(mViewPager);
+    	mViewsNotIntercept = new ArrayList<View>();
+		mHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.myhorizontalscrollview);
+		mViewsNotIntercept.add(mHorizontalScrollView);
     }
 	
     @Override  
@@ -45,10 +41,10 @@ public class MyScrollView extends ScrollView{
     }  
     
 	/**
-	 * 判断点击事件是否位于mViews包含的子View区域内
+	 * 判断点击事件是否位于mViewsNotIntercept包含的子View区域内
 	 */
     public boolean shouldInterceptTouchEvent(MotionEvent event){
-    	for(View mView:mViews){
+    	for(View mView : mViewsNotIntercept){
     		mRectF = calcViewRectangle(mView);
     		if(mRectF.contains(event.getRawX(), event.getRawY()))return false;
     	}

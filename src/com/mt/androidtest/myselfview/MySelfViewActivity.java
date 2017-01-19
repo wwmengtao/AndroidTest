@@ -1,16 +1,11 @@
 package com.mt.androidtest.myselfview;
 
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -22,13 +17,8 @@ import android.widget.TextView;
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
-import com.mt.androidtest.image.ImageDecodeInfo;
 import com.mt.androidtest.listview.ListViewTestAdapter_MultiLayout;
 import com.mt.androidtest.listview.ListViewTestAdapter_SingleLayout;
-import com.mt.androidtest.myselfview.ViewPagerComponets.MyFragmentOnPageChangeListener;
-import com.mt.androidtest.myselfview.ViewPagerComponets.MyFragmentPagerAdapter;
-import com.mt.androidtest.myselfview.ViewPagerComponets.MyFragmentStatePagerAdapter;
-import com.mt.androidtest.myselfview.ViewPagerComponets.MyPagerAdapter;
 
 /**
  * 自定义控件分为三类：自己绘制、组合、继承，即activity_customed_controller中的SelfDrawnView、CombinedView、InheritedView。
@@ -39,14 +29,6 @@ public class MySelfViewActivity extends BaseActivity {
 	private static final int Menu_Common = 0;
 	private static final int Menu_Scroll = 1;	
 	private static final int Menu_TabHost = 2;		
-	//
-    public static final int NUM_PAGES = 10;
-    private ViewPager mViewPager;
-    private OnPageChangeListener mMyonPageChangeListener=null, mMyonPageChangeListener2=null;
-    private PagerAdapter mPagerAdapter;	
-    private TextView mTextView;
-    //
-    private ListView mListView;
     private ListViewTestAdapter_SingleLayout mListAdapter_SingleLayout;
     private ListViewTestAdapter_MultiLayout mListAdapter_MultiLayout;
 	//
@@ -54,17 +36,14 @@ public class MySelfViewActivity extends BaseActivity {
     private TabWidget mTabWidget;
     private ListView mListViewTabHost;
     //
+    private ListView mListView = null;
     private GridView mGridView=null;
-    //
-    private TextView tv_img_desc = null;
-    private LinearLayout ll_dot_group = null;
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         mListAdapter_SingleLayout = new ListViewTestAdapter_SingleLayout(this);
         mListAdapter_MultiLayout = new ListViewTestAdapter_MultiLayout(this);
-        ImageDecodeInfo.setAssetManager(getAssetManager());
 	}
 	
 	@Override
@@ -82,12 +61,11 @@ public class MySelfViewActivity extends BaseActivity {
 		switch (mi.getItemId()){
 		case Menu_Common:
 			setContentView(R.layout.activity_myselfview_common);
-			initHorizontalScrollView();
-			break;
+			break;		
 		case Menu_Scroll:
 			setContentView(R.layout.activity_myselfview_scrollview);
 			initMyScrollView();
-			break;			
+			break;
 		case Menu_TabHost:
 			setContentView(R.layout.activity_myselfview_tabhost);
 			initTabHostView();
@@ -95,24 +73,34 @@ public class MySelfViewActivity extends BaseActivity {
 		}
 		return super.onOptionsItemSelected(mi);
 	}	
+	
+	private void initMyScrollView(){
+		initHorizontalScrollView();
+        //
+        mListView = (ListView) findViewById(R.id.mylistview);
+        mListView.setAdapter(mListAdapter_SingleLayout);
+        setListViewHeightBasedOnChildren(mListView);
+	}
 	//HorizontalScrollView的使用
 	public void initHorizontalScrollView(){
 		int scale = (int) (0.03125 * getDensityDpi());
 		int columnWidth = scale * 26;
 		int horizontalSpacing = scale;
 		//GridView可以根据mListAdapter_SingleLayout中条目个数以及显示列数NumColumns来自动确定行数
-		int NumColumns = mListAdapter_SingleLayout.getCount()/2;
+		int NumRows = 4;
+		int NumColumns = mListAdapter_SingleLayout.getCount()/NumRows;
 		mGridView = (GridView) findViewById(R.id.mygridview);
 		ViewGroup.LayoutParams lp = mGridView.getLayoutParams();
 		lp.width = NumColumns * (columnWidth+horizontalSpacing);
 		mGridView.setLayoutParams(lp);
 		mGridView.setColumnWidth(columnWidth);
 		mGridView.setHorizontalSpacing(horizontalSpacing);
-		mGridView.setVerticalSpacing(horizontalSpacing/2);
+		mGridView.setVerticalSpacing(horizontalSpacing/NumRows);
 		mGridView.setStretchMode(GridView.NO_STRETCH);
 		mGridView.setNumColumns(NumColumns);
 		mGridView.setAdapter(mListAdapter_SingleLayout);
 	}
+	//
 	//
 	public void initTabHostView(){
 	    mTabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -162,66 +150,6 @@ public class MySelfViewActivity extends BaseActivity {
                 mEmptyTabContent);
     }
 
-	//ViewPager的使用
-	public void initMyScrollView(){
-		mTextView = (TextView)findViewById(R.id.mytextview);
-		mTextView.setOnClickListener(mOnClickListener);
-        mViewPager = (ViewPager) findViewById(R.id.myviewpager);
-        mPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
-        mViewPager.setAdapter(mPagerAdapter);
-        mMyonPageChangeListener = new MyFragmentOnPageChangeListener();
-		mViewPager.addOnPageChangeListener(mMyonPageChangeListener);
-        //
-        mListView = (ListView) findViewById(R.id.mylistview);
-        mListView.setAdapter(mListAdapter_SingleLayout);
-        setListViewHeightBasedOnChildren(mListView);
-        //
-		tv_img_desc = (TextView) findViewById(R.id.tv_img_desc);
-		ll_dot_group = (LinearLayout) findViewById(R.id.ll_dot_group); //用来添加小圆点
-		tv_img_desc.setVisibility(View.GONE);
-		ll_dot_group.setVisibility(View.GONE);
-	}
-	
-	private OnClickListener mOnClickListener = new OnClickListener(){
-		private int index=0;
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			mViewPager.removeOnPageChangeListener(mMyonPageChangeListener);
-			if(null != mMyonPageChangeListener2)mViewPager.removeOnPageChangeListener(mMyonPageChangeListener2);
-			ScreenSlidePageFragment.clearFragments();
-			tv_img_desc.setVisibility(View.GONE);
-			ll_dot_group.setVisibility(View.GONE);
-			int value = (index++%3);
-			switch(value){
-			case 0:
-				mTextView.setText("FragmentPagerAdapter");
-				mPagerAdapter = new MyFragmentPagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
-				mViewPager.addOnPageChangeListener(mMyonPageChangeListener);
-				break;
-			case 1:
-				mTextView.setText("PagerAdapter");
-				mPagerAdapter = new MyPagerAdapter(MySelfViewActivity.this, mViewPager);//ViewPager显示自定义View
-				mMyonPageChangeListener2 = (OnPageChangeListener)mPagerAdapter;
-				mViewPager.addOnPageChangeListener(mMyonPageChangeListener2);
-				break;
-			case 2:
-				mTextView.setText("FragmentStatePagerAdapter");
-				mPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
-				mViewPager.addOnPageChangeListener(mMyonPageChangeListener);
-				break;
-			}
-	        mViewPager.setAdapter(mPagerAdapter);
-		}
-	};
-	
-	@Override
-	public void onStop(){
-		super.onStop();
-		if(null != mViewPager){
-			mViewPager.removeOnPageChangeListener(mMyonPageChangeListener);
-			mViewPager.removeOnPageChangeListener(mMyonPageChangeListener2);
-		}
-	}
+
 
 }

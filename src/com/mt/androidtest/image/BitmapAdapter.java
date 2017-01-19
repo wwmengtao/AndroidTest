@@ -143,7 +143,7 @@ public class BitmapAdapter extends CommonBaseAdapter<String>{
 	}
 	
 	public Bitmap loadImage(String imageUrl,int widthOfImageView, int heightOfImageView) {
-		String imageUrlNew=ImageProcess.parsePicUrl(imageUrl);
-		return ImageProcess.decodeSampledBitmap(imageUrlNew, StreamType.Asset, widthOfImageView, heightOfImageView,true);
+		String imageUrlNew=ImageProcess.getInstance(mContext).parsePicUrl(imageUrl);
+		return ImageProcess.getInstance(mContext).decodeSampledBitmap(imageUrlNew, StreamType.Asset, widthOfImageView, heightOfImageView,true);
 	}
 }
