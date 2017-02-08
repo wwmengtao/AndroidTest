@@ -268,7 +268,7 @@ public class SysAppsActivity extends BaseActivity implements DialogInterface.OnC
                 .setMessage("Show what kind of info?")
                 .setPositiveButton("AppInfo", mSysAppsActivity)
                 .setNeutralButton("Overlay", mSysAppsActivity)
-                .setNegativeButton(android.R.string.no, mSysAppsActivity)
+                .setNegativeButton("StartActivity", mSysAppsActivity)
                 .show();
     }
     @Override
@@ -278,6 +278,10 @@ public class SysAppsActivity extends BaseActivity implements DialogInterface.OnC
             if(which == DialogInterface.BUTTON_POSITIVE){
             	intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" +mSysAppList.get(mPosition).get("packname")));
             }else if(which == DialogInterface.BUTTON_NEGATIVE){
+            	intent = new Intent(Intent.ACTION_MAIN);
+            	intent.setClassName((String)mSysAppList.get(mPosition).get("packname"), (String)mSysAppList.get(mPosition).get("classname"));
+            	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//FLAG_ACTIVITY_NEW_TASK一般配合FLAG_ACTIVITY_CLEAR_TOP使用
+            	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             }else if(which == DialogInterface.BUTTON_NEUTRAL){
             	intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" +mSysAppList.get(mPosition).get("packname")));
             }
