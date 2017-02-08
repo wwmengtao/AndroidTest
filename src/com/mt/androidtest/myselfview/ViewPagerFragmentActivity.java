@@ -84,7 +84,7 @@ public class ViewPagerFragmentActivity extends BaseActivity{
 	
 	/**
 	 * FragmentPagerAdapter与FragmentStatePagerAdapter的主要区别就在与对于fragment是否销毁，下面细说：
-	 * 区别1)FragmentPagerAdapter：对于不再需要的fragment，选择调用onDestroyView方法，仅销毁视图，并不会销毁fragment实例。
+	 * 区别1)FragmentPagerAdapter：对于不再需要的fragment，选择调用onDestroyView方法(不调用onDestroy、onDetach)，仅销毁视图，并不会销毁fragment实例。
 	 * 因此之前加载过的fragment会保存在内存中，如果数量达到一定值会显著消耗内存。
 	 * 区别2)FragmentStatePagerAdapter：会销毁不再需要的fragment，当当前事务提交以后，会彻底的将fragmeng从当前Activity
 	 * 的FragmentManager中移除，当然也会从内存中移除(保留当前项目左右各一个，其余的调用onDestroyView、onDestroy、onDetach彻底销毁)。state标明，

@@ -31,7 +31,6 @@ public class ViewPagerActivity extends BaseActivity {
 	private LinearLayout ll_dot_group = null; //用来添加小圆点
 	private TextView tv_img_desc = null;//用于显示标题
 	private List<String> titles = null;
-	private String assetPicDir = "ViewPagerPics";
 	private List<ImageView> ivList;
 	//
 	private int previousPosition = 0; //默认为0
@@ -66,6 +65,7 @@ public class ViewPagerActivity extends BaseActivity {
 		ivList = new ArrayList<>();
 		titles = new ArrayList<>();
 		View dotView = null;
+		String assetPicDir = "ViewPagerPics";
 		int picNum = ImageDecodeInfo.getInstance(getApplicationContext()).getFilesNum(assetPicDir);
 		if(picNum <= 0)return;
 		for(int i = 0; i < picNum; i++){
