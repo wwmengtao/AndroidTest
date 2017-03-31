@@ -195,11 +195,11 @@
         </activity>
         <activity
             android:name=".showview.fragmentdemo.FragmentTest2Activity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_fragment_test2" >
         </activity>
         <activity
             android:name=".image.BitmapUILActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_bitmap_uil" >
         </activity>
         <activity

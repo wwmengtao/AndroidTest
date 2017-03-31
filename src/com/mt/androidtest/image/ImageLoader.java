@@ -229,7 +229,7 @@ public class ImageLoader {
 			}finally{
 				mUrlLock.unlock();
 			}
-			mTaskDistributor.execute(new DisplayTask(mImageViewParas));
+			if(null != mImageViewParas.mImageView)mTaskDistributor.execute(new DisplayTask(mImageViewParas));
 		}
 	}
 
