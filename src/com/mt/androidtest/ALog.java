@@ -5,8 +5,9 @@ import java.util.regex.Pattern;
 import android.util.Log;
 
 public class ALog {
-	public  static String TAG_M = "M_T_AT";
-	public  static String TAG_M2 = "M_T_ATT";	
+	private static String TAG_M = "M_T_AT";
+	private  static String TAG_M2 = "M_T_ATT";	
+	private  static String TAG_M_T = "M_T_AT_TIME";
 	public static void Log(String info){
 		Log.e(TAG_M,info);
 	}
@@ -19,6 +20,18 @@ public class ALog {
 		Log.e(TAG_M,info+" ThreadID:"+Thread.currentThread().getId());
 	}
 
+	private static long oldTime = 0;
+	
+	/**
+	 * TLog:统计代码执行时间
+	 * @param info
+	 */
+	public static void TLog(String info){
+		long newTime = System.currentTimeMillis();
+		long timeConsume = (0 == oldTime) ? oldTime : (newTime - oldTime );
+		oldTime = newTime;
+		Log.e(TAG_M_T,info+" CurrentTime: "+newTime+" TimeConsume: "+timeConsume);
+	}
 	
 	public static void fillInStackTrace(String info){
 		RuntimeException RTE = new RuntimeException(info);
