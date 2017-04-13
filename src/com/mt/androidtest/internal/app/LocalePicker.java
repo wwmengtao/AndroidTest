@@ -16,8 +16,6 @@
 
 package com.mt.androidtest.internal.app;
 
-import com.android.internal.R;
-
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
 import android.app.ListFragment;
@@ -42,6 +40,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ArrayList;
+
+import com.mt.androidtest.R;
 
 public class LocalePicker extends ListFragment {
     private static final String TAG = "LocalePicker";
@@ -272,6 +272,7 @@ public class LocalePicker extends ListFragment {
      * so the caller need to take care of it.
      */
     public static void updateLocales(LocaleList locales) {
+    	if(true)return;//下列方法不执行，因为没有相应权限
         try {
             final IActivityManager am = ActivityManagerNative.getDefault();
             final Configuration config = am.getConfiguration();

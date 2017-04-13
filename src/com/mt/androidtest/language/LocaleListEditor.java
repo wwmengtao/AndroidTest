@@ -189,7 +189,7 @@ public class LocaleListEditor extends BaseFragment
         final MenuItem menuItem =
                 menu.add(Menu.NONE, MENU_ID_REMOVE, 0, R.string.delete);
         menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menuItem.setIcon(android.R.drawable.ic_delete);
+        menuItem.setIcon(R.drawable.ic_delete);
         super.onCreateOptionsMenu(menu, inflater);
         mMenu = menu;
         updateVisibilityOfRemoveMenu();

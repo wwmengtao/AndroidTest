@@ -100,4 +100,6 @@
     <string name="region_picker_section_all">All regions</string>
     <string name="language_picker_section_all">All languages</string>
     <string name="language_picker_section_suggested">Suggested</string>
+    <string name="locale_search_menu">Search</string>
+    <string name="search_language_hint">Type language name</string>
 </resources>

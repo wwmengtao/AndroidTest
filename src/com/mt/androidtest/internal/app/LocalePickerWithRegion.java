@@ -30,12 +30,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.android.internal.R;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+
+import com.mt.androidtest.R;
 
 /**
  * A two-step locale picker. It shows a language, then a country.
@@ -176,7 +176,7 @@ public class LocalePickerWithRegion extends ListFragment implements SearchView.O
         if (mParentLocale != null) {
             getActivity().setTitle(mParentLocale.getFullNameNative());
         } else {
-            getActivity().setTitle(R.string.language_selection_title);
+            getActivity().setTitle(R.string.add_a_language);
         }
 
         getListView().requestFocus();

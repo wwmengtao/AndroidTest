@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2016 Motorola
+     All rights reserved
+     File Name: locale_config.xml
+     Description: This file defines the list of supported locales
+     History:
+         1.0   Aug 23, 2016   pwn687  Created
+-->
+
+<resources>
+
+    <string-array translatable="false" name="supported_locales">
+        <item>ar-AE</item> <!-- Arabic (United Arab Emirates) -->
+        <item>ar-BH</item> <!-- Arabic (Bahrain) -->
+        <item>ar-DJ</item> <!-- Arabic (Djibouti) -->
+        <item>ar-DZ</item> <!-- Arabic (Algeria) -->
+        <item>ar-EG</item> <!-- Arabic (Egypt) -->
+        <item>ar-EH</item> <!-- Arabic (Western Sahara) -->
+        <item>ar-ER</item> <!-- Arabic (Eritrea) -->
+        <item>ar-IL</item> <!-- Arabic (Israel) -->
+        <item>ar-IQ</item> <!-- Arabic (Iraq) -->
+        <item>ar-JO</item> <!-- Arabic (Jordan) -->
+        <item>ar-KM</item> <!-- Arabic (Comoros) -->
+        <item>ar-KW</item> <!-- Arabic (Kuwait) -->
+        <item>ar-LB</item> <!-- Arabic (Lebanon) -->
+        <item>ar-LY</item> <!-- Arabic (Libya) -->
+        <item>ar-MA</item> <!-- Arabic (Morocco) -->
+        <item>ar-MR</item> <!-- Arabic (Mauritania) -->
+        <item>ar-OM</item> <!-- Arabic (Oman) -->
+        <item>ar-PS</item> <!-- Arabic (Palestine) -->
+        <item>ar-QA</item> <!-- Arabic (Qatar) -->
+        <item>ar-SA</item> <!-- Arabic (Saudi Arabia) -->
+        <item>ar-SD</item> <!-- Arabic (Sudan) -->
+        <item>ar-SO</item> <!-- Arabic (Somalia) -->
+        <item>ar-SS</item> <!-- Arabic (South Sudan) -->
+        <item>ar-SY</item> <!-- Arabic (Syria) -->
+        <item>ar-TD</item> <!-- Arabic (Chad) -->
+        <item>ar-TN</item> <!-- Arabic (Tunisia) -->
+        <item>ar-YE</item> <!-- Arabic (Yemen) -->
+        <item>az-Latn-AZ</item> <!-- Azerbaijani (Latin,Azerbaijan) -->
+        <item>bg-BG</item> <!-- Bulgarian (Bulgaria) -->
+        <item>bn-BD</item> <!-- Bengali (Bangladesh) -->
+        <item>bn-IN</item> <!-- Bengali (India) -->
+        <item>cs-CZ</item> <!-- Czech (Czech Republic) -->
+        <item>da-DK</item> <!-- Danish (Denmark) -->
+        <item>da-GL</item> <!-- Danish (Greenland) -->
+        <item>de-AT</item> <!-- German (Austria) -->
+        <item>de-BE</item> <!-- German (Belgium) -->
+        <item>de-CH</item> <!-- German (Switzerland) -->
+        <item>de-DE</item> <!-- German (Germany) -->
+        <item>de-LI</item> <!-- German (Liechtenstein) -->
+        <item>de-LU</item> <!-- German (Luxembourg) -->
+        <item>el-CY</item> <!-- Greek (Cyprus) -->
+        <item>el-GR</item> <!-- Greek (Greece) -->
+        <item>en-AG</item> <!-- English (Antigua & Barbuda) -->
+        <item>en-AI</item> <!-- English (Anguilla) -->
+        <item>en-AS</item> <!-- English (American Samoa) -->
+        <item>en-AT</item> <!-- English (Austria) -->
+        <item>en-AU</item> <!-- English (Australia) -->
+        <item>en-BB</item> <!-- English (Barbados) -->
+        <item>en-BE</item> <!-- English (Belgium) -->
+        <item>en-BI</item> <!-- English (Burundi) -->
+        <item>en-BM</item> <!-- English (Bermuda) -->
+        <item>en-BS</item> <!-- English (Bahamas) -->
+        <item>en-BW</item> <!-- English (Botswana) -->
+        <item>en-BZ</item> <!-- English (Belize) -->
+        <item>en-CA</item> <!-- English (Canada) -->
+        <item>en-CC</item> <!-- English (Cocos (Keeling) Islands) -->
+        <item>en-CH</item> <!-- English (Switzerland) -->
+        <item>en-CK</item> <!-- English (Cook Islands) -->
+        <item>en-CM</item> <!-- English (Cameroon) -->
+        <item>en-CX</item> <!-- English (Christmas Island) -->
+        <item>en-CY</item> <!-- English (Cyprus) -->
+        <item>en-DE</item> <!-- English (Germany) -->
+        <item>en-DG</item> <!-- English (Diego Garcia) -->
+        <item>en-DK</item> <!-- English (Denmark) -->
+        <item>en-DM</item> <!-- English (Dominica) -->
+        <item>en-ER</item> <!-- English (Eritrea) -->
+        <item>en-FI</item> <!-- English (Finland) -->
+        <item>en-FJ</item> <!-- English (Fiji) -->
+        <item>en-FK</item> <!-- English (Falkland Islands (Islas Malvinas)) -->
+        <item>en-FM</item> <!-- English (Micronesia) -->
+        <item>en-GB</item> <!-- English (United Kingdom) -->
+        <item>en-GD</item> <!-- English (Grenada) -->
+        <item>en-GG</item> <!-- English (Guernsey) -->
+        <item>en-GH</item> <!-- English (Ghana) -->
+        <item>en-GI</item> <!-- English (Gibraltar) -->
+        <item>en-GM</item> <!-- English (Gambia) -->
+        <item>en-GU</item> <!-- English (Guam) -->
+        <item>en-GY</item> <!-- English (Guyana) -->
+        <item>en-HK</item> <!-- English (Hong Kong) -->
+        <item>en-IE</item> <!-- English (Ireland) -->
+        <item>en-IL</item> <!-- English (Israel) -->
+        <item>en-IM</item> <!-- English (Isle of Man) -->
+        <item>en-IN</item> <!-- English (India) -->
+        <item>en-IO</item> <!-- English (British Indian Ocean Territory) -->
+        <item>en-JE</item> <!-- English (Jersey) -->
+        <item>en-JM</item> <!-- English (Jamaica) -->
+        <item>en-KE</item> <!-- English (Kenya) -->
+        <item>en-KI</item> <!-- English (Kiribati) -->
+        <item>en-KN</item> <!-- English (St. Kitts & Nevis) -->
+        <item>en-KY</item> <!-- English (Cayman Islands) -->
+        <item>en-LC</item> <!-- English (St. Lucia) -->
+        <item>en-LR</item> <!-- English (Liberia) -->
+        <item>en-LS</item> <!-- English (Lesotho) -->
+        <item>en-MG</item> <!-- English (Madagascar) -->
+        <item>en-MH</item> <!-- English (Marshall Islands) -->
+        <item>en-MO</item> <!-- English (Macau) -->
+        <item>en-MP</item> <!-- English (Northern Mariana Islands) -->
+        <item>en-MS</item> <!-- English (Montserrat) -->
+        <item>en-MT</item> <!-- English (Malta) -->
+        <item>en-MU</item> <!-- English (Mauritius) -->
+        <item>en-MW</item> <!-- English (Malawi) -->
+        <item>en-MY</item> <!-- English (Malaysia) -->
+        <item>en-NA</item> <!-- English (Namibia) -->
+        <item>en-NF</item> <!-- English (Norfolk Island) -->
+        <item>en-NG</item> <!-- English (Nigeria) -->
+        <item>en-NL</item> <!-- English (Netherlands) -->
+        <item>en-NR</item> <!-- English (Nauru) -->
+        <item>en-NU</item> <!-- English (Niue) -->
+        <item>en-NZ</item> <!-- English (New Zealand) -->
+        <item>en-PG</item> <!-- English (Papua New Guinea) -->
+        <item>en-PH</item> <!-- English (Philippines) -->
+        <item>en-PK</item> <!-- English (Pakistan) -->
+        <item>en-PN</item> <!-- English (Pitcairn Islands) -->
+        <item>en-PR</item> <!-- English (Puerto Rico) -->
+        <item>en-PW</item> <!-- English (Palau) -->
+        <item>en-RW</item> <!-- English (Rwanda) -->
+        <item>en-SB</item> <!-- English (Solomon Islands) -->
+        <item>en-SC</item> <!-- English (Seychelles) -->
+        <item>en-SD</item> <!-- English (Sudan) -->
+        <item>en-SE</item> <!-- English (Sweden) -->
+        <item>en-SG</item> <!-- English (Singapore) -->
+        <item>en-SH</item> <!-- English (St. Helena) -->
+        <item>en-SI</item> <!-- English (Slovenia) -->
+        <item>en-SL</item> <!-- English (Sierra Leone) -->
+        <item>en-SS</item> <!-- English (South Sudan) -->
+        <item>en-SX</item> <!-- English (Sint Maarten) -->
+        <item>en-SZ</item> <!-- English (Swaziland) -->
+        <item>en-TC</item> <!-- English (Turks & Caicos Islands) -->
+        <item>en-TK</item> <!-- English (Tokelau) -->
+        <item>en-TO</item> <!-- English (Tonga) -->
+        <item>en-TT</item> <!-- English (Trinidad & Tobago) -->
+        <item>en-TV</item> <!-- English (Tuvalu) -->
+        <item>en-TZ</item> <!-- English (Tanzania) -->
+        <item>en-UG</item> <!-- English (Uganda) -->
+        <item>en-UM</item> <!-- English (U.S. Outlying Islands) -->
+        <item>en-US</item> <!-- English (United States) -->
+        <item>en-VC</item> <!-- English (St. Vincent & Grenadines) -->
+        <item>en-VG</item> <!-- English (British Virgin Islands) -->
+        <item>en-VI</item> <!-- English (U.S. Virgin Islands) -->
+        <item>en-VU</item> <!-- English (Vanuatu) -->
+        <item>en-WS</item> <!-- English (Samoa) -->
+        <item>en-ZA</item> <!-- English (South Africa) -->
+        <item>en-ZM</item> <!-- English (Zambia) -->
+        <item>en-ZW</item> <!-- English (Zimbabwe) -->
+        <item>es-AR</item> <!-- Spanish (Argentina) -->
+        <item>es-BO</item> <!-- Spanish (Bolivia) -->
+        <item>es-CL</item> <!-- Spanish (Chile) -->
+        <item>es-CO</item> <!-- Spanish (Colombia) -->
+        <item>es-CR</item> <!-- Spanish (Costa Rica) -->
+        <item>es-CU</item> <!-- Spanish (Cuba) -->
+        <item>es-DO</item> <!-- Spanish (Dominican Republic) -->
+        <item>es-EA</item> <!-- Spanish (Ceuta & Melilla) -->
+        <item>es-EC</item> <!-- Spanish (Ecuador) -->
+        <item>es-ES</item> <!-- Spanish (Spain) -->
+        <item>es-GQ</item> <!-- Spanish (Equatorial Guinea) -->
+        <item>es-GT</item> <!-- Spanish (Guatemala) -->
+        <item>es-HN</item> <!-- Spanish (Honduras) -->
+        <item>es-IC</item> <!-- Spanish (Canary Islands) -->
+        <item>es-MX</item> <!-- Spanish (Mexico) -->
+        <item>es-NI</item> <!-- Spanish (Nicaragua) -->
+        <item>es-PA</item> <!-- Spanish (Panama) -->
+        <item>es-PE</item> <!-- Spanish (Peru) -->
+        <item>es-PH</item> <!-- Spanish (Philippines) -->
+        <item>es-PR</item> <!-- Spanish (Puerto Rico) -->
+        <item>es-PY</item> <!-- Spanish (Paraguay) -->
+        <item>es-SV</item> <!-- Spanish (El Salvador) -->
+        <item>es-US</item> <!-- Spanish (United States) -->
+        <item>es-UY</item> <!-- Spanish (Uruguay) -->
+        <item>es-VE</item> <!-- Spanish (Venezuela) -->
+        <item>et-EE</item> <!-- Estonian (Estonia) -->
+        <item>fa-AF</item> <!-- Persian (Afghanistan) -->
+        <item>fa-IR</item> <!-- Persian (Iran) -->
+        <item>fi-FI</item> <!-- Finnish (Finland) -->
+        <item>fil-PH</item> <!-- Filipino (Philippines) -->
+        <item>fr-BE</item> <!-- French (Belgium) -->
+        <item>fr-BF</item> <!-- French (Burkina Faso) -->
+        <item>fr-BI</item> <!-- French (Burundi) -->
+        <item>fr-BJ</item> <!-- French (Benin) -->
+        <item>fr-BL</item> <!-- French (St. BarthC)lemy) -->
+        <item>fr-CA</item> <!-- French (Canada) -->
+        <item>fr-CD</item> <!-- French (Congo (DRC)) -->
+        <item>fr-CF</item> <!-- French (Central African Republic) -->
+        <item>fr-CG</item> <!-- French (Congo (Republic)) -->
+        <item>fr-CH</item> <!-- French (Switzerland) -->
+        <item>fr-CI</item> <!-- French (Cote de voire) -->
+        <item>fr-CM</item> <!-- French (Cameroon) -->
+        <item>fr-DJ</item> <!-- French (Djibouti) -->
+        <item>fr-DZ</item> <!-- French (Algeria) -->
+        <item>fr-FR</item> <!-- French (France) -->
+        <item>fr-GA</item> <!-- French (Gabon) -->
+        <item>fr-GF</item> <!-- French (French Guiana) -->
+        <item>fr-GN</item> <!-- French (Guinea) -->
+        <item>fr-GP</item> <!-- French (Guadeloupe) -->
+        <item>fr-GQ</item> <!-- French (Equatorial Guinea) -->
+        <item>fr-HT</item> <!-- French (Haiti) -->
+        <item>fr-KM</item> <!-- French (Comoros) -->
+        <item>fr-LU</item> <!-- French (Luxembourg) -->
+        <item>fr-MA</item> <!-- French (Morocco) -->
+        <item>fr-MC</item> <!-- French (Monaco) -->
+        <item>fr-MF</item> <!-- French (St. Martin) -->
+        <item>fr-MG</item> <!-- French (Madagascar) -->
+        <item>fr-ML</item> <!-- French (Mali) -->
+        <item>fr-MQ</item> <!-- French (Martinique) -->
+        <item>fr-MR</item> <!-- French (Mauritania) -->
+        <item>fr-MU</item> <!-- French (Mauritius) -->
+        <item>fr-NC</item> <!-- French (New Caledonia) -->
+        <item>fr-NE</item> <!-- French (Niger) -->
+        <item>fr-PF</item> <!-- French (French Polynesia) -->
+        <item>fr-PM</item> <!-- French (St. Pierre & Miquelon) -->
+        <item>fr-RE</item> <!-- French (RC)union) -->
+        <item>fr-RW</item> <!-- French (Rwanda) -->
+        <item>fr-SC</item> <!-- French (Seychelles) -->
+        <item>fr-SN</item> <!-- French (Senegal) -->
+        <item>fr-SY</item> <!-- French (Syria) -->
+        <item>fr-TD</item> <!-- French (Chad) -->
+        <item>fr-TG</item> <!-- French (Togo) -->
+        <item>fr-TN</item> <!-- French (Tunisia) -->
+        <item>fr-VU</item> <!-- French (Vanuatu) -->
+        <item>fr-WF</item> <!-- French (Wallis & Futuna) -->
+        <item>fr-YT</item> <!-- French (Mayotte) -->
+        <item>iw-IL</item> <!-- Hebrew (Israel) -->
+        <item>gu-IN</item> <!-- Gujarati (India) -->
+        <item>hi-IN</item> <!-- Hindi (India) -->
+        <item>hr-BA</item> <!-- Croatian (Bosnia & Herzegovina) -->
+        <item>hr-HR</item> <!-- Croatian (Croatia) -->
+        <item>hu-HU</item> <!-- Hungarian (Hungary) -->
+        <item>in-ID</item> <!-- Indonesian (Indonesia) -->
+        <item>is-IS</item> <!-- Icelandic (Iceland) -->
+        <item>it-CH</item> <!-- Italian (Switzerland) -->
+        <item>it-IT</item> <!-- Italian (Italy) -->
+        <item>it-SM</item> <!-- Italian (San Marino) -->
+        <item>ja-JP</item> <!-- Japanese (Japan) -->
+        <item>km-KH</item> <!-- Khmer (Cambodia) -->
+        <item>kn-IN</item> <!-- Kannada (India) -->
+        <item>ko-KP</item> <!-- Korean (North Korea) -->
+        <item>ko-KR</item> <!-- Korean (South Korea) -->
+        <item>lt-LT</item> <!-- Lithuanian (Lithuania) -->
+        <item>lv-LV</item> <!-- Latvian (Latvia) -->
+        <item>mk-MK</item> <!-- Macedonian (Macedonia (FYROM)) -->
+        <item>ml-IN</item> <!-- Malayalam (India) -->
+        <item>mr-IN</item> <!-- Marathi (India) -->
+        <item>ms-BN</item> <!-- Malay (Brunei) -->
+        <item>ms-MY</item> <!-- Malay (Malaysia) -->
+        <item>ms-SG</item> <!-- Malay (Singapore) -->
+        <item>my-MM</item> <!-- Burmese (Myanmar (Burma)) -->
+        <item>en-EZ</item> <!-- English (Zawgyi) -->
+        <item>en-ZG</item> <!-- Burmese (Zawgyi) -->
+        <item>nb-NO</item> <!-- Norwegian BokmC%l (Norway) -->
+        <item>nb-SJ</item> <!-- Norwegian BokmC%l (Svalbard & Jan Mayen) -->
+        <item>nl-AW</item> <!-- Dutch (Aruba) -->
+        <item>nl-BE</item> <!-- Dutch (Belgium) -->
+        <item>nl-BQ</item> <!-- Dutch (Caribbean Netherlands) -->
+        <item>nl-CW</item> <!-- Dutch (CuraC'ao) -->
+        <item>nl-NL</item> <!-- Dutch (Netherlands) -->
+        <item>nl-SR</item> <!-- Dutch (Suriname) -->
+        <item>nl-SX</item> <!-- Dutch (Sint Maarten) -->
+        <item>pa-Guru-IN</item> <!-- Punjabi (Gurmukhi,India) -->
+        <item>pl-PL</item> <!-- Polish (Poland) -->
+        <item>pt-AO</item> <!-- Portuguese (Angola) -->
+        <item>pt-BR</item> <!-- Portuguese (Brazil) -->
+        <item>pt-CV</item> <!-- Portuguese (Cape Verde) -->
+        <item>pt-GW</item> <!-- Portuguese (Guinea-Bissau) -->
+        <item>pt-MO</item> <!-- Portuguese (Macau) -->
+        <item>pt-MZ</item> <!-- Portuguese (Mozambique) -->
+        <item>pt-PT</item> <!-- Portuguese (Portugal) -->
+        <item>pt-ST</item> <!-- Portuguese (SC#o TomC) & PrC-ncipe) -->
+        <item>pt-TL</item> <!-- Portuguese (Timor-Leste) -->
+        <item>ro-MD</item> <!-- Romanian (Moldova) -->
+        <item>ro-RO</item> <!-- Romanian (Romania) -->
+        <item>ru-BY</item> <!-- Russian (Belarus) -->
+        <item>ru-KG</item> <!-- Russian (Kyrgyzstan) -->
+        <item>ru-KZ</item> <!-- Russian (Kazakhstan) -->
+        <item>ru-MD</item> <!-- Russian (Moldova) -->
+        <item>ru-RU</item> <!-- Russian (Russia) -->
+        <item>ru-UA</item> <!-- Russian (Ukraine) -->
+        <item>si-LK</item> <!-- Sinhala (Sri Lanka) -->
+        <item>sk-SK</item> <!-- Slovak (Slovakia) -->
+        <item>sl-SI</item> <!-- Slovenian (Slovenia) -->
+        <item>sr-Cyrl-BA</item> <!-- Serbian (Cyrillic,Bosnia & Herzegovina) -->
+        <item>sr-Cyrl-ME</item> <!-- Serbian (Cyrillic,Montenegro) -->
+        <item>sr-Cyrl-RS</item> <!-- Serbian (Cyrillic,Serbia) -->
+        <item>sr-Latn-BA</item> <!-- Serbian (Latin,Bosnia & Herzegovina) -->
+        <item>sr-Latn-ME</item> <!-- Serbian (Latin,Montenegro) -->
+        <item>sr-Latn-RS</item> <!-- Serbian (Latin,Serbia) -->
+        <item>sv-AX</item> <!-- Swedish (Cland Islands) -->
+        <item>sv-FI</item> <!-- Swedish (Finland) -->
+        <item>sv-SE</item> <!-- Swedish (Sweden) -->
+        <item>ta-IN</item> <!-- Tamil (India) -->
+        <item>ta-LK</item> <!-- Tamil (Sri Lanka) -->
+        <item>ta-MY</item> <!-- Tamil (Malaysia) -->
+        <item>ta-SG</item> <!-- Tamil (Singapore) -->
+        <item>te-IN</item> <!-- Telugu (India) -->
+        <item>th-TH</item> <!-- Thai (Thailand) -->
+        <item>tr-CY</item> <!-- Turkish (Cyprus) -->
+        <item>tr-TR</item> <!-- Turkish (Turkey) -->
+        <item>uk-UA</item> <!-- Ukrainian (Ukraine) -->
+        <item>ur-IN</item> <!-- Urdu (India) -->
+        <item>ur-PK</item> <!-- Urdu (Pakistan) -->
+        <item>vi-VN</item> <!-- Vietnamese (Vietnam) -->
+        <item>zh-Hans-CN</item> <!-- Chinese (Simplified Han,China) -->
+        <item>zh-Hans-HK</item> <!-- Chinese (Simplified Han,Hong Kong) -->
+        <item>zh-Hans-MO</item> <!-- Chinese (Simplified Han,Macau) -->
+        <item>zh-Hans-SG</item> <!-- Chinese (Simplified Han,Singapore) -->
+        <item>zh-Hant-HK</item> <!-- Chinese (Traditional Han,Hong Kong) -->
+        <item>zh-Hant-MO</item> <!-- Chinese (Traditional Han,Macau) -->
+        <item>zh-Hant-TW</item> <!-- Chinese (Traditional Han,Taiwan) -->
+    </string-array>
+
+</resources>
