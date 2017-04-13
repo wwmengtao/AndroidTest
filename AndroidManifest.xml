@@ -21,7 +21,10 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <!-- CHANGE_CONFIGURATION和WRITE_SETTINGS权限需要平台签名并且system/priv-app目录下 -->
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    
     <application
         android:name=".ATApplication"
         android:allowBackup="true"

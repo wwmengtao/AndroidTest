@@ -1,26 +1,9 @@
-/*
- * Copyright (C) 2016 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.mt.androidtest.language;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -44,7 +27,6 @@ import com.mt.androidtest.R;
 /**
  * Drag-and-drop editor for the user-ordered locale lists.
  */
-@SuppressLint("NewApi")
 public class LocaleListEditor extends BaseFragment
         implements LocalePickerWithRegion.LocaleSelectedListener {
 
@@ -71,13 +53,10 @@ public class LocaleListEditor extends BaseFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState) {
-        final View result = super.onCreateView(inflater, container, savedInstState);
-        final View myLayout = inflater.inflate(R.layout.locale_order_list, (ViewGroup) result);
-
+        final View myLayout = inflater.inflate(R.layout.locale_order_list, (ViewGroup) container, false);
         getActivity().setTitle(R.string.pref_title_lang_selection);
-
         configureDragAndDrop(myLayout);
-        return result;
+        return myLayout;
     }
 
     @Override
