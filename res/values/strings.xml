@@ -97,5 +97,7 @@
     <string name="action_drag_label_move_bottom">Move to bottom</string>
     <string name="action_drag_label_remove">Remove language</string>
     <string name="title_activity_language_for_n">LanguageForNActivity</string>
-
+    <string name="region_picker_section_all">All regions</string>
+    <string name="language_picker_section_all">All languages</string>
+    <string name="language_picker_section_suggested">Suggested</string>
 </resources>

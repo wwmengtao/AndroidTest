@@ -18,9 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.internal.app.LocalePicker;
-import com.android.internal.app.LocalePickerWithRegion;
-import com.android.internal.app.LocaleStore;
+import com.mt.androidtest.internal.app.LocalePicker;
+import com.mt.androidtest.internal.app.LocalePickerWithRegion;
+import com.mt.androidtest.internal.app.LocaleStore;
 import com.mt.androidtest.BaseFragment;
 import com.mt.androidtest.R;
 

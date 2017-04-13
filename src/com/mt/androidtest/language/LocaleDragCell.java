@@ -16,6 +16,8 @@
 
 package com.mt.androidtest.language;
 
+import com.mt.androidtest.R;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
@@ -23,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mt.androidtest.R;
 
 class LocaleDragCell extends RelativeLayout {
     // We need to keep the label and the checkbox "in sync"

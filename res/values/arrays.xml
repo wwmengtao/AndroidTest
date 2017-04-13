@@ -21,4 +21,17 @@
 	    <item>Ocean blue</item>
 	    <item>Dark purple</item>
 	</string-array>
+	
+    <string-array name="partially_translated_locale" translatable="false">
+        <!-- Ensure that the list of partially translated languages will not be
+        present as a translated language, even if the resources are available in
+        Android SystemAssetLocales. -->
+        <item>gu-IN</item>
+        <item>kn-IN</item>
+        <item>ml-IN</item>
+        <item>mr-IN</item>
+        <item>pa-Guru-IN</item>
+        <item>te-IN</item>
+        <item>is-IS</item>
+    </string-array>     
 </resources>

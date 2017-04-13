@@ -32,8 +32,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import com.android.internal.app.LocalePicker;
-import com.android.internal.app.LocaleStore;
+import com.mt.androidtest.internal.app.LocalePicker;
+import com.mt.androidtest.internal.app.LocaleStore;
 import com.mt.androidtest.R;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -154,6 +154,7 @@ class LocaleDragAndDropAdapter
         final String label = feedItem.getFullNameNative();
         final String description = feedItem.getFullNameInUiLanguage();
         dragCell.setLabelAndDescription(label, description);
+        dragCell.setLocalized(feedItem.isLocalized());
         dragCell.setMiniLabel(mNumberFormatter.format(i + 1));
         dragCell.setShowCheckbox(mRemoveMode);
         dragCell.setShowMiniLabel(!mRemoveMode);
