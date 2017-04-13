@@ -78,5 +78,24 @@
     <string name="menu_item_clear_disc_cache">Clear disc cache</string>
     <string name="menu_item_pause_on_scroll">Pause on scroll</string>
     <string name="menu_item_pause_on_fling">Pause on fling</string>
+    <string name="delete">Delete</string>
+    <string name="locale_not_translated">May not be available in some apps</string>
+    <string name="add_a_language">Add a language</string>
+    <string name="pref_title_lang_selection">Language preferences</string>
+    <string name="dlg_remove_locales_error_title">Can’t remove all languages</string>
+    <string name="dlg_remove_locales_error_message">Keep at least one preferred language</string>
+
+    <plurals name="dlg_remove_locales_title">
+        <item quantity="one">Remove selected language?</item>
+        <item quantity="other">Remove selected languages?</item>
+    </plurals>
+
+    <string name="dlg_remove_locales_message">Text will be displayed in another language.</string>
+    <string name="action_drag_label_move_up">Move up</string>
+    <string name="action_drag_label_move_down">Move down</string>
+    <string name="action_drag_label_move_top">Move to top</string>
+    <string name="action_drag_label_move_bottom">Move to bottom</string>
+    <string name="action_drag_label_remove">Remove language</string>
+    <string name="title_activity_language_for_n">LanguageForNActivity</string>
 
 </resources>
