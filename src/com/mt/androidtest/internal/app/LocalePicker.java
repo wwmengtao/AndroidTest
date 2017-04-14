@@ -272,7 +272,13 @@ public class LocalePicker extends ListFragment {
      * so the caller need to take care of it.
      */
     public static void updateLocales(LocaleList locales) {
-    	if(true)return;//下列方法不执行，因为没有相应权限
+    	if(true)return;
+    	/**
+    	 * 下列方法不执行，因为仅仅是功能演示，没必要更新系统信息
+        <!-- CHANGE_CONFIGURATION和WRITE_SETTINGS权限需要平台签名并且system/priv-app目录下 -->
+        <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+        <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+        */
         try {
             final IActivityManager am = ActivityManagerNative.getDefault();
             final Configuration config = am.getConfiguration();

@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import com.android.internal.app.LocaleHelper;
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
 public class LocaleStore {
@@ -289,6 +291,7 @@ public class LocaleStore {
             if (localeId.isEmpty()) {
                 throw new IllformedLocaleException("Bad locale entry in locale_config.xml");
             }
+            ALog.Log("localeId: "+localeId);
             LocaleInfo li = new LocaleInfo(localeId);
             if (simCountries.contains(li.getLocale().getCountry())) {
                 li.mSuggestionFlags |= LocaleInfo.SUGGESTION_TYPE_SIM;

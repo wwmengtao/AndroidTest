@@ -16,10 +16,14 @@
 
 package com.mt.androidtest.language;
 
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.support.v4.view.MotionEventCompat;
@@ -32,13 +36,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+
+import com.mt.androidtest.R;
 import com.mt.androidtest.internal.app.LocalePicker;
 import com.mt.androidtest.internal.app.LocaleStore;
-import com.mt.androidtest.R;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 
 @TargetApi(24)

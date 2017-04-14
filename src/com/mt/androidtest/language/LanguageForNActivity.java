@@ -8,10 +8,16 @@ import android.support.annotation.LayoutRes;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
 
+/**
+ * 
+ * @author Mengtao1
+ *
+ */
 public class LanguageForNActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	if(android.os.Build.VERSION.SDK_INT < 24)return;// If not android 7.x, return
         super.onCreate(savedInstanceState);
         setContentView(getResourceID());
         initActionBar();
