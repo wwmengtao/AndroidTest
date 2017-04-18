@@ -1,5 +1,6 @@
 package com.mt.androidtest.language;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -13,14 +14,13 @@ import com.mt.androidtest.R;
  * @author Mengtao1
  *
  */
-public class LanguageForNActivity extends BaseActivity {
+public class LanguageForNActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	if(android.os.Build.VERSION.SDK_INT < 24)return;// If not android 7.x, return
         super.onCreate(savedInstanceState);
         setContentView(getResourceID());
-        initActionBar();
         FragmentManager fm = getFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 

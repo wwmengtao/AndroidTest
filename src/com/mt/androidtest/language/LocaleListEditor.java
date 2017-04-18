@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import com.mt.androidtest.internal.app.LocalePicker;
 import com.mt.androidtest.internal.app.LocalePickerWithRegion;
 import com.mt.androidtest.internal.app.LocaleStore;
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseFragment;
 import com.mt.androidtest.R;
 
@@ -93,6 +94,7 @@ public class LocaleListEditor extends BaseFragment
                 }
                 return true;
             case android.R.id.home:
+                ALog.Log1("LocaleListEditor_android.R.id.home");
                 if (mRemoveMode) {
                     setRemoveMode(false);
                     return true;

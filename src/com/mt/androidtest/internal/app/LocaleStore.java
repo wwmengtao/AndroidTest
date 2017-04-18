@@ -291,17 +291,18 @@ public class LocaleStore {
             if (localeId.isEmpty()) {
                 throw new IllformedLocaleException("Bad locale entry in locale_config.xml");
             }
-            ALog.Log("localeId: "+localeId);
             LocaleInfo li = new LocaleInfo(localeId);
             if (simCountries.contains(li.getLocale().getCountry())) {
                 li.mSuggestionFlags |= LocaleInfo.SUGGESTION_TYPE_SIM;
             }
             sLocaleCache.put(li.getId(), li);
+            ALog.Log1("li.getId: "+li.getId());
             final Locale parent = li.getParent();
             if (parent != null) {
                 String parentId = parent.toLanguageTag();
                 if (!sLocaleCache.containsKey(parentId)) {
                     sLocaleCache.put(parentId, new LocaleInfo(parent));
+                    ALog.Log1("parentId: "+parentId);
                 }
             }
         }

@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
 /**
@@ -46,7 +47,7 @@ import com.mt.androidtest.R;
  */
 public class LocalePickerWithRegion extends ListFragment implements SearchView.OnQueryTextListener {
     private static final String PARENT_FRAGMENT_NAME = "localeListEditor";
-
+    private static final String CURRENT_FRAGMENT_NAME = "LocalePickerWithRegion";
     private SuggestedLocaleAdapter mAdapter;
     private LocaleSelectedListener mListener;
     private Set<LocaleStore.LocaleInfo> mLocaleList;
@@ -163,6 +164,11 @@ public class LocalePickerWithRegion extends ListFragment implements SearchView.O
         int id = menuItem.getItemId();
         switch (id) {
             case android.R.id.home:
+                ALog.Log1("LocalePickerWithRegion_android.R.id.home");
+                /**
+                 * popBackStack()会导致LocalePickerWithRegion的onDestroy的调用，注意与.popBackStack(PARENT_FRAGMENT_NAME,
+                 * FragmentManager.POP_BACK_STACK_INCLUSIVE);的区分
+                 */
                 getFragmentManager().popBackStack();
                 return true;
         }
@@ -218,7 +224,7 @@ public class LocalePickerWithRegion extends ListFragment implements SearchView.O
             if (selector != null) {
                 getFragmentManager().beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(getId(), selector).addToBackStack(null)
+                        .replace(getId(), selector).addToBackStack(CURRENT_FRAGMENT_NAME)
                         .commit();
             } else {
                 returnToParentFrame();
@@ -266,5 +272,11 @@ public class LocalePickerWithRegion extends ListFragment implements SearchView.O
             mAdapter.getFilter().filter(newText);
         }
         return false;
+    }
+    
+    @Override
+    public void onDestroy(){
+    	super.onDestroy();
+    	ALog.Log1("LocalePickerWithRegion_onDestroy");
     }
 }
