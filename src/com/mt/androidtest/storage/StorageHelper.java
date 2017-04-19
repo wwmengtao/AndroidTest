@@ -7,13 +7,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import org.apache.http.util.EncodingUtils;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
+
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
@@ -163,6 +170,43 @@ public class StorageHelper {
 		if(!rslt){
 			ALog.Log("无法删除:"+file.getName());
 			return;
+		}
+	}
+	
+	/**
+	 * InstallApk：外部应用会用到本应用的apk文件，因此需要授予临时读取权限
+	 * FLAG_GRANT_READ_URI_PERMISSION
+	 */
+	public void InstallApk(){
+		String apkName = "/apks/AndroidTest2.apk"; 
+		//String fileName = getFilesDir() + "/myAssets_FilesDir"+apkName; //获取内部存储中的AndroidTest2.apk
+		String fileName = mContext.getExternalFilesDir(null) + "/myAssets_ExternalFilesDir"+apkName; //获取外部存储中的AndroidTest2.apk
+		ALog.Log("fileName: "+fileName);
+		File file = new File(fileName);
+		if (file.exists()) {
+			try {
+				Uri path = Uri.fromFile(file);
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				if(Build.VERSION.SDK_INT >= 23){
+
+					ALog.Log("path: "+path+"\nfile: "+file.getAbsolutePath());
+					path = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", file);
+					intent.setDataAndType(path, "application/vnd.android.package-archive");
+					intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+					//intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					Context context = mContext.getApplicationContext();
+				 	List<ResolveInfo> infoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+					for (ResolveInfo resolveInfo : infoList) {
+					    String packageName = resolveInfo.activityInfo.packageName;
+					    context.grantUriPermission(packageName, path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+					    mContext.startActivity(intent);
+					}
+				}
+			}catch (android.content.ActivityNotFoundException e) {
+				e.printStackTrace();
+				ALog.Log("android.content.ActivityNotFoundException");
+			}
 		}
 	}
 }

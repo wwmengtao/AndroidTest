@@ -1,14 +1,56 @@
 一、使用ContentProvider需要三步：
-
 第1步：继承ContentProvider，实现query()、insert()、update()、delete()等方法（这些方法是给其他应用调用的）；
-
-第2步：在AndroidManifest.xml注册该ContentProvider，指定Android:authorities属性（指定ContentProvider对应的Uri）和android:exported属性（设置android:exported:true表示允许其他应用程序调用）。
+第2步：在AndroidManifest.xml注册该ContentProvider，指定Android:authorities属性（指定ContentProvider对应的Uri）
+和android:exported属性（设置android:exported:true表示允许其他应用程序调用）。
 第3步：在ContentResolver中结合与指定ContentProvider匹配的URI使用CRUD操作来操作此ContentProvider
-
 二、CRUD操作说明：
-1、contentProvider的初始化是在它自己进程的主线程里面完成，一般发生在有人第一次访问这个contentProvider或者这个contentProvider进程第一次启动，比如这个进程有个service，开机启动，那么随着servier启动的还有contentProvider。
-说明：ContentProvider初始化的时候，会把自己初始化之后生成的对象存在AMS里面，然后其他进程去请求获取contentProvider对象时，一般第一次都会来AMS里面获取。获取到之后，一般会在自己进程里面进行缓存以便于下次获取。
-2、contentProvider有个android:multiProcess属性，用来配置是否在多个进程里面，有不同的实例。如果为true,那么谁调用contentProvider，contentProvider就运行在该进程里。如果为false，那么多进程之间共享一个contentProvider，通过binder来进行进程之间对象传递。如果多个进程同时访问，会为每个访问请求分配单独线程，因此这些操作(比如查询)不会运行在contentProvider进程的主线程。
+1、contentProvider的初始化是在它自己进程的主线程里面完成，一般发生在有人第一次访问这个contentProvider或者这个contentProvider进程
+第一次启动，比如这个进程有个service，开机启动，那么随着servier启动的还有contentProvider。
+说明：ContentProvider初始化的时候，会把自己初始化之后生成的对象存在AMS里面，然后其他进程去请求获取contentProvider对象时，
+一般第一次都会来AMS里面获取。获取到之后，一般会在自己进程里面进行缓存以便于下次获取。
+2、contentProvider有个android:multiProcess属性，用来配置是否在多个进程里面，有不同的实例。如果为true,那么谁调用contentProvider，
+contentProvider就运行在该进程里。如果为false，那么多进程之间共享一个contentProvider，通过binder来进行进程之间对象传递。
+如果多个进程同时访问，会为每个访问请求分配单独线程，因此这些操作(比如查询)不会运行在contentProvider进程的主线程。
 3、contentProvider查询等操作是否需要等待，需要binder来设置。
 4、contentProvider查询的数据传递是通过共享内存来完成的。
-说明：ContentProvider进程里面有一块共享内存，用来存放这次查询的数据。然后通过binder这个内存地址传递给调用ContentProvider的进程，这样，这个调用ContentProvider的进程就能访问ContentProvider进程的共享内存了。cursor只是java上层的一个对象，底层共享内存那块，怎么跨进程传地址，怎么读数据已经全部封装好了。
+说明：ContentProvider进程里面有一块共享内存，用来存放这次查询的数据。然后通过binder这个内存地址传递给调用ContentProvider的进程，
+这样，这个调用ContentProvider的进程就能访问ContentProvider进程的共享内存了。cursor只是java上层的一个对象，底层共享内存那块，
+怎么跨进程传地址，怎么读数据已经全部封装好了。
+实验结果
+AndroidTest项目ContentResolverDemoActivity内的insert函数：
+可以在外围包裹几个for循环模拟大量访问ContentProviderDemo的情况。如果ContentResolverDemoActivity和ContentProviderDemo在一个
+应用中，会发现二者log打印出来的线程ID(Thread.currentThread().getId())是相同的；如果位于不同的应用，那么可以发现，ContentProviderDemo
+对于ContentProviderDemo的任何CRUD操作都是在单独的线程中，这些线程通过线程池管理，会发现线程ID会交替出现，也就是线程池在调度线程。
+三、ContentProvider权限问题说明
+以AndroidManifest.xml下列内容为例进行说明：
+1、下列CALENDAR读写权限影响内部所有Uri的读写操作，说明如下：
+a)path-permission中的读写权限可以用provider中的读写权限替代，但是path-level权限优先级高于 provider-level权限。例如/grant，此应用
+在授予其他应用(例如应用2)访问权限时，此应用和应用2可以都不具有日历读写权限以及联系人读写权限。当然，应用2在不使用临时权限访问本应用
+的provider的时候，应该至少具有日历或者联系人读写权限中的一个。
+b)拥有path-permission中的读写权限，而没有provider中的读写权限是可以对Uri(例如android:pathPrefix="/sqlite")进行读写操作的；
+2、android:grantUriPermissions和grant-uri-permission是针对含有ContentProvider的应用而言的。
+android:grantUriPermissions，管理哪个范围的数据权限需要处理。这个属性其实不用显式的设置，因为如果设置了android:readPermission, 
+android:writePermission ,android:permission(读写权限)中的任意一个android:grantUriPermissions就默认是true了；如果设置了grant-uri-permission，
+那么android:grantUriPermissions默认就是false；如果都设置了，那么android:grantUriPermissions也是false。
+<provider
+    android:name=".data.ContentProviderDemo"
+    android:authorities="com.mt.androidtest.cpdemo"
+    android:exported="true"
+    android:grantUriPermissions="true"
+    android:multiprocess="false"
+    android:readPermission="android.permission.READ_CALENDAR"
+    android:writePermission="android.permission.WRITE_CALENDAR" >
+
+    <!-- 3、其他调用者发送的Uri的path部分如果以/sqlite开头，那么此调用者需具备EXTERNAL_STORAGE读写权限 -->
+    <path-permission
+        android:pathPrefix="/sqlite"
+        android:readPermission="android.permission.READ_EXTERNAL_STORAGE"
+        android:writePermission="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 4、其他应用没有CALENDAR以及CONTACTS读写权限可以通过临时权限方式读写/grant开头的Uri的 -->
+    <grant-uri-permission android:pathPrefix="/grant" />
+    <!-- 设置了grant-uri-permission将使得provider的android:grantUriPermissions属性失效 -->
+    <path-permission
+        android:pathPrefix="/grant"
+        android:readPermission="android.permission.READ_CONTACTS"
+        android:writePermission="android.permission.WRITE_CONTACTS" />
+</provider>

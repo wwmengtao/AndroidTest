@@ -29,7 +29,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	private String [] mMethodNameFT={
 			"readContentProviderFile",
 			"insert","update","query","delete",
-			"globalUriGrant"};
+			"globalUriGrant","globalUriGrant2","getType"};
 	private ContentResolver mContentResolver=null;
 	private ArrayList<Uri>uriCPFiles=null;
 	//
@@ -136,6 +136,12 @@ public class ContentResolverDemoActivity extends BaseActivity {
 			case "globalUriGrant":
 				globalUriGrant();
 				break;
+			case "globalUriGrant2":
+				globalUriGrant2();
+				break;					
+			case "getType":
+				getType();
+				break;
 		}
 	}
 	
@@ -149,7 +155,7 @@ public class ContentResolverDemoActivity extends BaseActivity {
 		StringBuffer builder = null;
 		String line = null;
 		try {
-			inputStream = mContentResolver.openInputStream(mUri);//会调用ContentProvider的openFile函数
+			inputStream = mContentResolver.openInputStream(mUri);//会调用ContentProviderDemo的openFile函数
 			if (inputStream != null) {
 		        reader = new BufferedReader(new InputStreamReader(inputStream));
 		        builder = new StringBuffer();
@@ -234,15 +240,33 @@ public class ContentResolverDemoActivity extends BaseActivity {
 	}
 	
 	/**
+	 * 此时会导致ContentProviderDemo.getType函数的调用，工作原理请对照ContentProviderDemo.getType处的说明
+	 */
+	public void getType(){
+		Uri mUri=Uri.parse("content://com.mt.androidtest.cpdemo/sqlite");
+		Intent mIntent=new Intent("com.mt.androidtest.ContentResolver",mUri);
+		mIntent.addCategory(Intent.CATEGORY_DEFAULT);
+		startActivity(mIntent);
+	}
+	
+	/**
 	以下为某Uri开启临时权限，前提是AndroidManifest.xml中有<grant-uri-permission android:pathPrefix="/grant" />
 	如果想开启其他Uri的临时权限，比如/sqlite，那么需在AndroidManifest.xml中加上grant-uri-permission或者删除所有
 	grant-uri-permission，将android:grantUriPermissions设置为"true"。
 	*/
 	public void globalUriGrant(){
-		Intent intent = new Intent("com.mt.androidtest2.data.ContentResolverDemoActivity"); 
+		Intent intent = new Intent(); 
 		intent.setClassName("com.mt.androidtest2", "com.mt.androidtest2.data.ContentResolverDemoActivity");
 		intent.setData(Uri.parse("content://com.mt.androidtest.cpdemo/grant"));
 		intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-		startActivity(intent); 
+		startActivity(intent);
 	}
+	
+	public void globalUriGrant2(){
+		Intent intent = new Intent(); 
+		intent.setClassName("com.mt.androidtest2", "com.mt.androidtest2.data.ContentResolverDemoActivity");
+		grantUriPermission("com.mt.androidtest2", Uri.parse("content://com.mt.androidtest.cpdemo/grant"), Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);		
+		startActivity(intent);
+	}
+
 }

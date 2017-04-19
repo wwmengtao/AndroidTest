@@ -184,6 +184,7 @@ public class ContentProviderDemo extends ContentProvider {
 	public String getType(Uri uri) {
 		switch (mUriMatcher.match(uri)){
 	        case SqliteURI_code :
+	        	ALog.Log("ContentProviderDemo_getType_SqliteURI_code");
 	        	return intent_authority;
 	        default:
 	            throw new IllegalArgumentException("unknownUri:" + uri);

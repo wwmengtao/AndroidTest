@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="external_files" path="."/>
+    <files-path name="internal_files" path="."/>
+</paths>
+<!--
+内部的element可以是files-path，cache-path，external-path，external-files-path，external-cache-path，分别对应
+Context.getFilesDir()，Context.getCacheDir()，Environment.getExternalStorageDirectory()，Context.getExternalFilesDir()，
+Context.getExternalCacheDir()等几个方法。
+-->

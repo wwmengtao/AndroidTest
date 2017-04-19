@@ -1,12 +1,20 @@
 package com.mt.androidtest.storage;
 
 import java.io.File;
+import java.util.List;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -27,15 +35,17 @@ public class StorageActivity extends BaseActivity {
 	private String [] mMethodNameFT={
 			"readRawResources",
 			"getResourcesDescription",
+			"InstallApk",
 			"listAssets",
 			"getFromAssets",
 			"copyFilesInAssets"};
 	private String [] mActivitiesName={"ExtStorageActivity","IntStorageActivity"};
 	private static final int MSG_readRawResources=0x000;
 	private static final int MSG_getResourcesDescription=0x001;	
-	private static final int MSG_listAssets=0x002;
-	private static final int MSG_getFromAssets=0x003;
-	private static final int MSG_copyFilesInAssets=0x004;
+	private static final int MSG_InstallApk=0x002;
+	private static final int MSG_listAssets=0x003;
+	private static final int MSG_getFromAssets=0x004;
+	private static final int MSG_copyFilesInAssets=0x005;
     private static final int TIME_INTERVAL_MS = 500;
     private Message mMessage=null;	
     private static StorageHelper mStorageHelper=null;
@@ -49,15 +59,13 @@ public class StorageActivity extends BaseActivity {
 		mStorageHelper=new StorageHelper(this);
 	}
 	
-	@Override
-	public void onRestart(){
-		super.onRestart();
-	}	
-	
-	@Override
-	public void onResume(){
-		super.onResume();
-		mHandler = getHandler();
+	public void initHandlerThread(){
+		mHandler = getHandler();//BaseActivity中已经对mHandler在onPause中做了处理
+		//
+		mHandlerThread = new HandlerThread("StorageActivity",
+                android.os.Process.THREAD_PRIORITY_FOREGROUND);
+		mHandlerThread.start();
+		mHandlerCostTime=new HandlerCostTime(mHandlerThread.getLooper());
 	}
 
 	@Override
@@ -70,9 +78,24 @@ public class StorageActivity extends BaseActivity {
 	
 	@Override
 	public void onDestroy(){
+		/**HandlerThread的run方法是一个死循环，它不会自己结束，线程的生命周期超过了activity生命周期。
+		当横竖屏切换，HandlerThread线程的数量会随着activity重建次数的增加而增加。应该在onDestroy时将线程停止掉。
+		另外，对于不是HandlerThread的线程，也应该确保activity销毁前，线程已经终止，可以这样做：在onDestroy时调用
+		mThread.join();*/
+		mHandlerThread.getLooper().quit();
 		super.onDestroy();
-		destroyHandlerThread();
 	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view,	int position, long id) {
+		// TODO Auto-generated method stub
+		mMessage=Message.obtain(mHandler, position);
+		if(position <= 2){//执行的是非耗时操作
+			mHandler.sendMessageDelayed(mMessage, TIME_INTERVAL_MS);
+		}else{//执行的是耗时操作
+			mHandlerCostTime.sendMessageDelayed(mMessage, TIME_INTERVAL_MS);
+		}
+	}	
 	
 	@Override
 	public boolean handleMessage(Message msg) {
@@ -85,6 +108,9 @@ public class StorageActivity extends BaseActivity {
 			case MSG_getResourcesDescription:
 				mStorageHelper.getResourcesDescription();		
 				break;	
+			case MSG_InstallApk:
+				mStorageHelper.InstallApk();	
+				break;					
 		}
 		return true;
 	}
@@ -129,31 +155,5 @@ public class StorageActivity extends BaseActivity {
 			}
 		}
 	}
-	
-	public void initHandlerThread(){
-		mHandlerThread = new HandlerThread("StorageActivity",
-                android.os.Process.THREAD_PRIORITY_FOREGROUND);
-		mHandlerThread.start();
-		mHandlerCostTime=new HandlerCostTime(mHandlerThread.getLooper());
-	}
-	
-	public void destroyHandlerThread(){
-		/**HandlerThread的run方法是一个死循环，它不会自己结束，线程的生命周期超过了activity生命周期。
-		当横竖屏切换，HandlerThread线程的数量会随着activity重建次数的增加而增加。应该在onDestroy时将线程停止掉。
-		另外，对于不是HandlerThread的线程，也应该确保activity销毁前，线程已经终止，可以这样做：在onDestroy时调用
-		mThread.join();*/
-		mHandlerThread.getLooper().quit();
-	}
-	
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view,	int position, long id) {
-		// TODO Auto-generated method stub
-		mMessage=Message.obtain(mHandler, position);
-		if(position<=1){//执行的是非耗时操作
-			mHandler.sendMessageDelayed(mMessage, TIME_INTERVAL_MS);
-		}else{//执行的是耗时操作
-			mHandlerCostTime.sendMessageDelayed(mMessage, TIME_INTERVAL_MS);
-		}
-	}	
-	
+
 }
