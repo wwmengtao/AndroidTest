@@ -237,6 +237,7 @@ public class LocaleListEditor extends BaseFragment
 
     @Override
     public void onLocaleSelected(LocaleStore.LocaleInfo locale) {
+    	ALog.Log("LocaleListEditor.onLocaleSelected: "+locale.getId());
         mAdapter.addLocale(locale);
         updateVisibilityOfRemoveMenu();
     }

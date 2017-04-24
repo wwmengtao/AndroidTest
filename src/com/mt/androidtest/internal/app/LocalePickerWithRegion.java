@@ -124,11 +124,22 @@ public class LocalePickerWithRegion extends ListFragment implements SearchView.O
                 }
                 return false;
             }
+            ALog.Log("LocalePickerWithRegion_setListener_parent: "+parent.getId());
         } else {
             mLocaleList = LocaleStore.getLevelLocales(context, langTagsToIgnore,
                     null /* no parent */, translatedOnly);
         }
-
+        /**
+         * 以下显示点击“Add a language”界面上某一个语言父类后，其子类(如果有的话)
+         * 列表的详细信息。
+         */
+        ALog.Log("LocalePickerWithRegion_setListener, show mLocaleList begin:\n");
+        if(null != mLocaleList && mLocaleList.size() > 0){
+        	for(LocaleStore.LocaleInfo ll : mLocaleList){
+        		ALog.Log("mLocaleList_item: "+ll.getId());
+        	}
+        }
+        ALog.Log("LocalePickerWithRegion_setListener, show mLocaleList end.");
         return true;
     }
 

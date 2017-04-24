@@ -31,7 +31,7 @@ public final class R {
         /**  Used in LocalePicker 
          */
         public static final int special_locale_names=0x7f0e0005;
-        /**  Chinese (Traditional Han,Taiwan) 
+        /**  Zulu (South Africa) 
          */
         public static final int supported_locales=0x7f0e0006;
     }

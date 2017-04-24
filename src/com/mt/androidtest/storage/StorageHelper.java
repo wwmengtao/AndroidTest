@@ -175,7 +175,8 @@ public class StorageHelper {
 	
 	/**
 	 * InstallApk：外部应用会用到本应用的apk文件，因此需要授予临时读取权限
-	 * FLAG_GRANT_READ_URI_PERMISSION
+	 * FLAG_GRANT_READ_URI_PERMISSION。
+	 * 注意：函数执行前需保证执行了copyFilesInAssets函数将apk文件写入内部或者外部存储
 	 */
 	public void InstallApk(){
 		String apkName = "/apks/AndroidTest2.apk"; 
