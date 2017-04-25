@@ -21,7 +21,8 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+	<uses-permission android:name="android.permission.SET_TIME_ZONE" />
+	
     <application
         android:name=".ATApplication"
         android:allowBackup="true"
@@ -215,7 +216,8 @@
 
         <activity
             android:name="com.mt.androidtest.timezone.TimezoneActivity"
-            android:label="@string/title_activity_timezone" >
+            android:label="@string/title_activity_timezone" 
+            android:parentActivityName=".MainActivity" >
         </activity>
     </application>
 

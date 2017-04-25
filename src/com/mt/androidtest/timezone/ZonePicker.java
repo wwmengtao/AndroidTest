@@ -1,20 +1,11 @@
-/*
- * Copyright (C) 2006 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.mt.androidtest.timezone;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 import android.annotation.NonNull;
 import android.app.Activity;
@@ -30,17 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
-import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
 
 /**
  * The class displaying a list of time zones that match a filter string
@@ -214,11 +196,6 @@ public class ZonePicker extends ListFragment {
         if (!isResumed()) return;
         final Map<?, ?> map = (Map<?, ?>)listView.getItemAtPosition(position);
         final String tzId = (String) map.get(ZoneGetter.KEY_ID);
-        if(true){//模拟用户点击时区选项时候的行为
-        	ALog.Log("ZonePicker.onListItemClick: "+tzId);
-        	Toast.makeText(getActivity(), "ZonePicker.onListItemClick: "+tzId, Toast.LENGTH_SHORT).show();
-        	return;
-        }
         // Update the system timezone value
         final Activity activity = getActivity();
         final AlarmManager alarm = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);

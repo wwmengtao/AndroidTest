@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical"
+     android:paddingTop="8dp"
+     android:paddingBottom="8dp">
+
+	<TextView
+		android:id="@+id/time_zone"
+     	android:layout_width="match_parent"
+		android:layout_height="?android:listPreferredItemHeight"
+     	android:text="time_zone"
+     	android:gravity="center_vertical"
+     	android:textAppearance="?android:attr/textAppearanceListItem"
+     	android:background="@color/rosybrown"
+	/>
+
+	<TextView
+		android:id="@+id/time_zone_detail"
+     	android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+     	android:text="time_zone_detail"
+     	android:gravity="center_vertical"
+     	android:textAppearance="?android:attr/textAppearanceListItem"
+     	android:background="@color/greenyellow"
+	/>
+	
+     <Button
+         android:id="@+id/update_timezone"
+         android:layout_width="match_parent"
+         android:layout_height="?android:listPreferredItemHeight"
+         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+         android:drawableStart="@drawable/ic_add_24dp"
+         android:drawablePadding="24dp"
+         android:textAlignment="textStart"
+         android:text="@string/update_timezone"
+         style="@style/Base.Widget.AppCompat.Button.Borderless"
+         android:textAppearance="?android:attr/textAppearanceListItem"
+         android:background="@color/royalblue"/>
+
+ </LinearLayout>

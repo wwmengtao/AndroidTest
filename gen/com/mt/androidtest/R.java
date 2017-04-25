@@ -2703,7 +2703,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f080047;
         public static final int action_mode_bar_stub=0x7f080046;
         public static final int action_mode_close_button=0x7f08002c;
-        public static final int action_settings=0x7f0800e8;
+        public static final int action_settings=0x7f0800eb;
         public static final int activity_chooser_view_content=0x7f08002d;
         public static final int add_language=0x7f0800cf;
         public static final int alertTitle=0x7f080039;
@@ -2768,11 +2768,11 @@ containing a value of this type.
         public static final int info_detail_container=0x7f080062;
         public static final int item_add=0x7f0800b1;
         public static final int item_cancel=0x7f0800b2;
-        public static final int item_clear_disc_cache=0x7f0800ea;
-        public static final int item_clear_memory_cache=0x7f0800e9;
+        public static final int item_clear_disc_cache=0x7f0800ed;
+        public static final int item_clear_memory_cache=0x7f0800ec;
         public static final int item_del=0x7f0800b0;
-        public static final int item_pause_on_fling=0x7f0800ec;
-        public static final int item_pause_on_scroll=0x7f0800eb;
+        public static final int item_pause_on_fling=0x7f0800ef;
+        public static final int item_pause_on_scroll=0x7f0800ee;
         /**  ItemTouchHelper uses this id to save a View's original elevation. 
          */
         public static final int item_touch_helper_previous_elevation=0x7f080000;
@@ -2797,7 +2797,7 @@ containing a value of this type.
         public static final int listview_sysapp=0x7f080093;
         public static final int ll_dot_group=0x7f080097;
         public static final int locale=0x7f0800bd;
-        public static final int locale_search_menu=0x7f0800e7;
+        public static final int locale_search_menu=0x7f0800ea;
         public static final int media_actions=0x7f0800d3;
         public static final int menu_img=0x7f0800b3;
         public static final int menu_label=0x7f0800b4;
@@ -2900,6 +2900,8 @@ containing a value of this type.
         public static final int textviewxliff=0x7f080089;
         public static final int three=0x7f0800a3;
         public static final int time=0x7f0800d6;
+        public static final int time_zone=0x7f0800e6;
+        public static final int time_zone_detail=0x7f0800e7;
         public static final int title=0x7f080033;
         public static final int title_template=0x7f080038;
         public static final int title_text=0x7f08009e;
@@ -2907,13 +2909,14 @@ containing a value of this type.
         public static final int topPanel=0x7f080037;
         public static final int tv_fragment_adapter=0x7f080098;
         public static final int tv_img_desc=0x7f080096;
-        public static final int tv_media_menu_text=0x7f0800e6;
+        public static final int tv_media_menu_text=0x7f0800e9;
         public static final int tv_relative=0x7f0800e3;
         public static final int tv_relative_color=0x7f0800e5;
         public static final int tv_status_summary=0x7f0800df;
         public static final int two=0x7f0800a2;
         public static final int txStatus=0x7f0800c4;
         public static final int up=0x7f080002;
+        public static final int update_timezone=0x7f0800e8;
         public static final int useLogo=0x7f08001c;
         public static final int view_stub=0x7f08008b;
         public static final int widget_frame=0x7f0800c2;
@@ -3059,8 +3062,9 @@ containing a value of this type.
         public static final int select_dialog_singlechoice_material=0x7f030062;
         public static final int setting_fragment=0x7f030063;
         public static final int support_simple_spinner_dropdown_item=0x7f030064;
-        public static final int view_inflate=0x7f030065;
-        public static final int view_inflate_linearlayout=0x7f030066;
+        public static final int timezone_update=0x7f030065;
+        public static final int view_inflate=0x7f030066;
+        public static final int view_inflate_linearlayout=0x7f030067;
     }
     public static final class menu {
         public static final int language_selection_list=0x7f100000;
@@ -3247,6 +3251,7 @@ containing a value of this type.
         public static final int title_activity_viewpager=0x7f0c0041;
         public static final int title_activity_viewpager_fragment=0x7f0c0042;
         public static final int title_template_step=0x7f0c0055;
+        public static final int update_timezone=0x7f0c0077;
         public static final int widetouch_torchlight=0x7f0c0023;
         public static final int zone_list_menu_sort_alphabetically=0x7f0c0075;
         public static final int zone_list_menu_sort_by_timezone=0x7f0c0076;
