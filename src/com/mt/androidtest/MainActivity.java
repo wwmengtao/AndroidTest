@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI",
 			"getPSList"};
 	private String [] mActivitiesName={
-			"AsynchronousActivity","ContentResolverDemoActivity","LanguageForNActivity",
+			"AsynchronousActivity","ContentResolverDemoActivity","LanguageForNActivity","TimezoneActivity",
 			"PermissionActivity","TouchEventActivity","PackageManagerActivity",
 			"StorageActivity","UIActivity"};		
 	@Override

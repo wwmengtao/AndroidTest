@@ -102,4 +102,8 @@
     <string name="language_picker_section_suggested">Suggested</string>
     <string name="locale_search_menu">Search</string>
     <string name="search_language_hint">Type language name</string>
+    <string name="title_activity_timezone">TimezoneActivity</string>
+	<string name="global_change_warning" product="default">This setting affects all users on this phone.</string>
+	<string name="zone_list_menu_sort_alphabetically">Sort alphabetically</string>
+	<string name="zone_list_menu_sort_by_timezone">Sort by time zone</string>
 </resources>

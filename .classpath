@@ -2,10 +2,12 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/androidn_framework"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib_icu4j"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib_3rd"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="lib_3rd/android-support-v7-preference.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

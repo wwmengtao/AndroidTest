@@ -7,4 +7,6 @@
 	<dimen name="item_preference_pading_left">16dip</dimen>
     <dimen name="actionbar_size">56dip</dimen>
     <dimen name="actionbar_contentInsetStart">16dp</dimen>	
+    <dimen name="circle_avatar_size">40dp</dimen>
+    <dimen name="settings_side_margin">0dip</dimen>
 </resources>
