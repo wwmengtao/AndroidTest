@@ -48,6 +48,7 @@
     <string name="title_activity_myselfview">MySelfViewActivity</string>
     <string name="title_activity_viewpager">ViewPagerActivity</string>
     <string name="title_activity_viewpager_fragment">ViewPagerFragmentActivity</string>
+    <string name="title_activity_viewpager_state_fragment">ViewPagerStateFragmentActivity</string>
     <string name="preference_on">On</string>
     <string name="preference_title">Title</string>
     <string name="preference_summary">Summary</string>

@@ -4,12 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -19,67 +16,39 @@ import com.mt.androidtest.R;
 
 public class ViewPagerFragmentActivity extends BaseActivity{
 	//
-	private static final int Menu_state_adatper = 0;
-	private static final int Menu_adatper = 1;	
-	//
     public static final int NUM_PAGES = 10;
-    private ViewPager mViewPager;
-    private TextView mTV = null;
-    private OnPageChangeListener mMyonPageChangeListener=null, mMyonPageChangeListener2=null;
-    private PagerAdapter mFragmentPagerAdapter;	
+    public TextView mTV = null;
+    public ViewPager mViewPager;
+    public OnPageChangeListener mMyonPageChangeListener=null;
+    public PagerAdapter mFragmentPagerAdapter;	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_viewpager_fragment);
-		initView();
+        mTV = (TextView) findViewById(R.id.tv_fragment_adapter);	
+        ALog.Log2("onCreate");
+        mViewPager = (ViewPager) findViewById(R.id.myviewpager);
+        mMyonPageChangeListener = new MyFragmentOnPageChangeListener();
+		mViewPager.addOnPageChangeListener(mMyonPageChangeListener);
+		doInit();
+        mViewPager.setAdapter(mFragmentPagerAdapter);
 	}
 	
 	//ViewPager的使用
-	private void initView(){
-        mViewPager = (ViewPager) findViewById(R.id.myviewpager);
-        mTV = (TextView) findViewById(R.id.tv_fragment_adapter);
-        mFragmentPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
-        mViewPager.setAdapter(mFragmentPagerAdapter);
-        mTV.setText("FragmentStatePagerAdapter");
-        mMyonPageChangeListener = new MyFragmentOnPageChangeListener();
-		mViewPager.addOnPageChangeListener(mMyonPageChangeListener);
+	protected void doInit(){
+		ALog.Log2("doInit");
+        mTV.setText("FragmentPagerAdapter");
+        mFragmentPagerAdapter = new MyFragmentPagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu){
-		// -------------向menu中添加字体大小的子菜单-------------
-		super.onCreateOptionsMenu(menu);
-		menu.add(0, Menu_state_adatper, 0, "FragmentStatePagerAdapter");
-		menu.add(0, Menu_adatper, 0, "FragmentPagerAdapter");
-		return true;
-	}
-	
-	public boolean onOptionsItemSelected(MenuItem mi)	{
-		mViewPager.removeOnPageChangeListener(mMyonPageChangeListener);
-		ScreenSlidePageFragment.clearFragments();
-		switch (mi.getItemId()){
-		case Menu_state_adatper:
-			mFragmentPagerAdapter = new MyFragmentStatePagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
-			mTV.setText("FragmentStatePagerAdapter");
-			break;		
-		case Menu_adatper:
-			mFragmentPagerAdapter = new MyFragmentPagerAdapter(getFragmentManager());//ViewPager显示Fragment，谷歌推荐做法
-			mTV.setText("FragmentPagerAdapter");
-			break;		
-		}
-		mViewPager.addOnPageChangeListener(mMyonPageChangeListener);
-		mViewPager.setAdapter(mFragmentPagerAdapter);
-		return super.onOptionsItemSelected(mi);
-	}	
-	
-	@Override
-	public void onStop(){
-		super.onStop();
+	public void onDestroy(){
 		if(null != mViewPager){
 			mViewPager.removeOnPageChangeListener(mMyonPageChangeListener);
-			mViewPager.removeOnPageChangeListener(mMyonPageChangeListener2);
 		}
+		ScreenSlidePageFragment.clearFragments();
+		super.onDestroy();
 	}
 	
 	/**
@@ -94,31 +63,6 @@ public class ViewPagerFragmentActivity extends BaseActivity{
 	 * 就3、4个Tab，那么可以选择使用FragmentPagerAdapter，如果你是用于ViewPager展示数量特别多的条目时，那么建议使用
 	 * FragmentStatePagerAdapter。
 	 */
-	
-	/**
-	 * FragmentStatePagerAdapter
-	 * @author Mengtao1
-	 *
-	 */
-	public static class MyFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
-
-		public MyFragmentStatePagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			Fragment mFragment = ScreenSlidePageFragment.get(position);
-			ALog.Log1("FragmentStatePagerAdapter.getItem_position: "+position);
-//			ScreenSlidePageFragment.scanFragments();
-			return mFragment;
-		}
-		
-		@Override
-		public int getCount() {
-			return NUM_PAGES;
-		}
-	}
 	
 	/**
 	 * FragmentPagerAdapter：专为添加Fragment设计

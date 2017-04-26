@@ -93,6 +93,11 @@
             android:label="@string/title_activity_viewpager_fragment" >
         </activity>
         <activity
+            android:name=".myselfview.ViewPagerStateFragmentActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_viewpager_state_fragment" >
+        </activity>        
+        <activity
             android:name=".asynchronous.AsynchronousActivity"
             android:label="@string/title_activity_asynchronous" >
         </activity>
