@@ -182,6 +182,10 @@ public class StorageHelper {
 		String apkName = "/apks/AndroidTest2.apk"; 
 		//String fileName = getFilesDir() + "/myAssets_FilesDir"+apkName; //获取内部存储中的AndroidTest2.apk
 		String fileName = mContext.getExternalFilesDir(null) + "/myAssets_ExternalFilesDir"+apkName; //获取外部存储中的AndroidTest2.apk
+		if(!new File(fileName).exists()){
+			File mFile= new File(mContext.getFilesDir(),"myAssets_FilesDir");
+			copyFilesInAssets("",mFile.getAbsolutePath());
+		}
 		ALog.Log("fileName: "+fileName);
 		File file = new File(fileName);
 		if (file.exists()) {

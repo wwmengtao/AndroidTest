@@ -1,20 +1,12 @@
 package com.mt.androidtest.storage;
 
 import java.io.File;
-import java.util.List;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.AdapterView;
 

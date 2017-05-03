@@ -77,10 +77,14 @@ public class FragmentTest2Activity extends BaseActivity implements OnClickListen
 				mFragment = InfoHolder.getFragment(i);
 				transaction.add(R.id.content, mFragment, InfoHolder.FragmentsTAG[i]);
 			}
+			/**
+			 * 以下区分FragmentTransaction的hide&show和detach&attach的区别，还有remove(导致fragment的onDestroy和onDetach的调用)
+			 */
 			if(index != i){
+				//transaction.detach(mFragment)，会导致mFragment调用onPause,onStop,onDestroyView，不会调用onDestroy,onDetach
 				transaction.hide(mFragment);
 			}else{
-				transaction.show(mFragment);
+				transaction.show(mFragment);//transaction.attach(mFragment),会导致onCreateView->onResume
 			}
 		}
 		transaction.commit();
