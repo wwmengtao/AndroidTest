@@ -19,12 +19,18 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.os.StatFs;
 import android.support.v4.content.FileProvider;
 
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.R;
 
 public class StorageHelper {
+	private String ExternalStorageState = "Environment.getExternalStorageState";
+	private String ExternalStorageRemovable = "Environment.isExternalStorageRemovable";
+	private String ExternalStorageEmulated = "Environment.isExternalStorageEmulated";
+
 	Context mContext = null;
 	WeakReference<Context>mWeakReference=null;
 	public StorageHelper(Context context){
@@ -213,5 +219,53 @@ public class StorageHelper {
 				ALog.Log("android.content.ActivityNotFoundException");
 			}
 		}
+	}
+	
+	public void scanFilesArray(File[] files, String Tag){
+		   ALog.Log("/------------"+Tag+"--------------/");
+		   for(File file : files){
+			   scanFile(file);
+		   }
+	   }
+	   
+	   public void scanFilesArray(String[] files, String Tag){
+		   ALog.Log("/------------"+Tag+"--------------/");
+		   for(String file : files){
+			   scanFile(new File(file));
+		   }
+	   }
+	   
+	   /**
+	    * scanFile：列写file的路径及各种属性
+	    * @param Tag
+	    * @param file
+	    */
+	   private static String formatScanFileStr="%-50s";
+	   public void scanFile(File file){
+		   try{
+			   String info1 = String.format(formatScanFileStr,"1. \""+ExternalStorageState+"\": ")+Environment.getExternalStorageState(file);
+			   String info2 = String.format(formatScanFileStr,"2. \""+ExternalStorageRemovable+"\": ")+Environment.isExternalStorageRemovable(file);
+			   String info3 = String.format(formatScanFileStr,"3. \""+ExternalStorageEmulated+"\": ")+Environment.isExternalStorageEmulated(file);
+			   ALog.Log("Path: "+file.getAbsolutePath()+"\n"+info1+"\n"+info2+"\n"+info3);
+			   showExtStorageSize(file.getAbsolutePath());
+		   }catch(IllegalArgumentException ia){
+			   ALog.Log("IllegalArgumentException: " + file);
+		   }
+	   }
+	
+	private static String formatStorageSizeStr="%-40s";
+	public void showExtStorageSize(String path) {
+		String info = null;
+		StatFs fs = new StatFs(path);
+        long size = fs.getBlockSizeLong();
+		long count = fs.getBlockCountLong();
+		info = "StatFs.getBlockCountLong(单位:M): ";
+		ALog.Log(String.format(formatStorageSizeStr,info)+count * size / 1024 / 1024);
+        count = fs.getFreeBlocksLong();
+		info = "StatFs.getFreeBlocksLong(单位:M): ";
+		ALog.Log(String.format(formatStorageSizeStr,info)+count * size / 1024 / 1024);
+		count = fs.getAvailableBlocksLong();
+		info = "StatFs.getAvailableBlocksLong(单位:M): ";
+		ALog.Log(String.format(formatStorageSizeStr,info)+count * size / 1024 / 1024);   
 	}
 }

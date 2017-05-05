@@ -3,9 +3,9 @@ package com.mt.androidtest.storage;
 import java.io.File;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
+
 import com.mt.androidtest.ALog;
 import com.mt.androidtest.BaseActivity;
 import com.mt.androidtest.R;
@@ -13,16 +13,13 @@ import com.mt.androidtest.permission.RequestPermissionsActivity;
 
 public class ExtStorageActivity extends BaseActivity {
     private int AndroidVersion=-1;
-	private byte[] bytesToSave=new byte[]{'m','t'};
-	private byte[] bytesLoaded=null;
-	private String type=null;
-	private String fileName="mt.txt";
-	private File mFile=null;
+
 	private String [] mMethodNameFT={
-			"isExternalStorageWritable","isExternalStorageReadable",
-			"getExtStorageSize","listDirs",
-			"saveFileToExtStoragePublicDir","saveFileToExtStorageCustomDir","saveFileToExtStoragePrivateFilesDir","saveFileToExtStoragePrivateCacheDir",
-			"loadFileFromExtStorage"
+			"getMountPointByMountProc",
+			"getMountPointByStorageManager",
+			"listDirs",
+			"fileSaveAndLoadProStorage",
+			"bitmapSaveAndLoadProStorage"
 	};
 	private ExtStorageHelper mExtStorageHelper=null;
 	@Override
@@ -33,6 +30,9 @@ public class ExtStorageActivity extends BaseActivity {
 		initListFTData(mMethodNameFT);
 		initListActivityData(null);
 		mExtStorageHelper=new ExtStorageHelper(this.getApplicationContext());
+		if(AndroidVersion>22){
+			requestPermissions(RequestPermissionsActivity.REQUIRED_PERMISSIONS);
+		}
 	}
 	
 	@Override
@@ -40,57 +40,21 @@ public class ExtStorageActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		String methodName = (String)getListViewAdapterFT().mList.get(position).get("itemText"); 
 		switch(methodName){
-			case "isExternalStorageWritable":
-				ALog.Log("isExtStorageMounted:"+mExtStorageHelper.isExternalStorageWritable());
+			case "getMountPointByMountProc":
+				mExtStorageHelper.getMountPointByMountProc();
 				break;
-			case "isExternalStorageReadable":
-				ALog.Log("isExternalStorageReadable:"+mExtStorageHelper.isExternalStorageReadable());
-				break;				
-			case "getExtStorageSize":
-				ALog.Log("getExtStorageSize:"+mExtStorageHelper.getExtStorageSize());
-				ALog.Log("getExtStorageFreeSize:"+mExtStorageHelper.getExtStorageFreeSize());
-				ALog.Log("getExtStorageAvailableSize:"+mExtStorageHelper.getExtStorageAvailableSize());
+			case "getMountPointByStorageManager":
+				mExtStorageHelper.getMountPointByStorageManager(getApplicationContext());
 				break;
 			case "listDirs":
-				ALog.Log("getExternalStorageDirectory:"+mExtStorageHelper.getExternalStorageDirectory());
-				type=Environment.DIRECTORY_PICTURES;
-				ALog.Log("getExternalStoragePublicDirectory:"+mExtStorageHelper.getExternalStoragePublicDirectory(type));
-				ALog.Log("getExternalCacheDir:"+mExtStorageHelper.getExternalCacheDir());
-				type="M_T";
-				ALog.Log("getExternalFilesDir:"+mExtStorageHelper.getExternalFilesDir(type));
+				mExtStorageHelper.listDirs();
 				break;						
-			case "saveFileToExtStoragePublicDir":
-	    		if(AndroidVersion>22){
-	    			requestPermissions(RequestPermissionsActivity.REQUIRED_PERMISSIONS);
-	    		}
-				type=Environment.DIRECTORY_DOWNLOADS;
-				mFile = mExtStorageHelper.saveFileToExtStoragePublicDir(bytesToSave,type,fileName);
+			case "fileSaveAndLoadProStorage":
+				mExtStorageHelper.fileSaveAndLoadProStorage();
 				break;
-			case "saveFileToExtStorageCustomDir":
-	    		if(AndroidVersion>22){
-	    			requestPermissions(RequestPermissionsActivity.REQUIRED_PERMISSIONS);
-	    		}
-				type="M_T";
-				mFile = mExtStorageHelper.saveFileToExtStorageCustomDir(bytesToSave,type,fileName);
+			case "bitmapSaveAndLoadProStorage":
+				mExtStorageHelper.bitmapSaveAndLoadProStorage();
 				break;
-			case "saveFileToExtStoragePrivateFilesDir":
-				type=Environment.DIRECTORY_DOCUMENTS;
-				mFile = mExtStorageHelper.saveFileToExtStoragePrivateFilesDir(bytesToSave,type,fileName);
-				break;
-			case "saveFileToExtStoragePrivateCacheDir":
-				type=Environment.DIRECTORY_DOCUMENTS;
-				mFile = mExtStorageHelper.saveFileToExtStoragePrivateCacheDir(bytesToSave,fileName);
-				break;
-			case "loadFileFromExtStorage":
-				if(null!=mFile){
-					bytesLoaded = mExtStorageHelper.loadFileFromExtStorage(mFile.getAbsolutePath());
-					if(null!=bytesLoaded){
-						ALog.Log("File loaded:"+mFile.getAbsolutePath());
-						ALog.Log("Loaded contents:"+new String(bytesLoaded));
-					}
-				}
-				break;
-				
 		}
 	}
 	
