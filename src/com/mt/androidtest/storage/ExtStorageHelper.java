@@ -307,7 +307,7 @@ public class ExtStorageHelper {
 				e.printStackTrace();
 			}
     	}else if(data instanceof Bitmap){//Í¼Æ¬ÎÄ¼þ
-            if (fileName != null && (fileName.contains(".png") || fileName.contains(".PNG"))) {
+            if (fileName != null && fileName.toLowerCase().contains(".png")) {
                 ((Bitmap)data).compress(Bitmap.CompressFormat.PNG, 100, bos);
             } else {
             	((Bitmap)data).compress(Bitmap.CompressFormat.JPEG, 100, bos);
