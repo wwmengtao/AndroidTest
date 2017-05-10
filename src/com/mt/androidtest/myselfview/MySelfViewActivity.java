@@ -1,5 +1,6 @@
 package com.mt.androidtest.myselfview;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ public class MySelfViewActivity extends BaseActivity {
 	private static final int Menu_Scroll = 1;	
 	private static final int Menu_TabHost = 2;		
 	private static final int Menu_DrawView = 3;
+	private static final int Menu_DrawView2 = 4;
     private ListViewTestAdapter_SingleLayout mListAdapter_SingleLayout;
     private ListViewTestAdapter_MultiLayout mListAdapter_MultiLayout;
 	//
@@ -56,10 +58,13 @@ public class MySelfViewActivity extends BaseActivity {
 		menu.add(0, Menu_Scroll, 0, "ScrollView");
 		menu.add(0, Menu_TabHost, 0, "TabHost");
 		menu.add(0, Menu_DrawView, 0, "SelfDrawView");
+		menu.add(0, Menu_DrawView2, 0, "SelfDrawView2");		
 		return true;
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem mi)	{
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制设置为竖屏
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
 		switch (mi.getItemId()){
 		case Menu_Common:
 			setContentView(R.layout.activity_myselfview_common);
@@ -75,8 +80,15 @@ public class MySelfViewActivity extends BaseActivity {
 		case Menu_DrawView:
 			ALog.Log("Menu_DrawView");
 			setContentView(R.layout.activity_myselfview_drawview);
+	        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//强制设置为横屏
+	        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.greenyellow));
 			initSelfDrawView();
 			break;
+		case Menu_DrawView2:
+			ALog.Log("Menu_DrawView2");
+			setContentView(R.layout.activity_myselfview_drawview);
+			initSelfDrawView2();
+			break;			
 		}
 		return super.onOptionsItemSelected(mi);
 	}	
@@ -133,6 +145,16 @@ public class MySelfViewActivity extends BaseActivity {
 	private void initSelfDrawView(){
 		LinearLayout layout=(LinearLayout) findViewById(R.id.root);  
         final MyDrawView view=new MyDrawView(this);  
+        view.setMinimumHeight(1000);  
+        view.setMinimumWidth(800);  
+        //通知view组件重绘    
+        view.invalidate();  
+        layout.addView(view); 
+	}
+	
+	private void initSelfDrawView2(){
+		LinearLayout layout=(LinearLayout) findViewById(R.id.root);  
+        final MyDrawView2 view=new MyDrawView2(this);  
         view.setMinimumHeight(1000);  
         view.setMinimumWidth(800);  
         //通知view组件重绘    
