@@ -1,13 +1,11 @@
 package com.mt.androidtest.myselfview;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -128,16 +126,6 @@ public class MySelfViewActivity extends BaseActivity {
 	            tv.setTransformationMethod(null);//不设置为大写
 	        }
         }
-	}
-	
-	private void initSelfDrawView2(){
-		LinearLayout layout=(LinearLayout) findViewById(R.id.root);  
-        final MyDrawView2 view=new MyDrawView2(this);  
-        view.setMinimumHeight(1000);  
-        view.setMinimumWidth(800);  
-        //通知view组件重绘    
-        view.invalidate();  
-        layout.addView(view); 
 	}
 	
     private OnTabChangeListener mTabListener = new OnTabChangeListener() {
