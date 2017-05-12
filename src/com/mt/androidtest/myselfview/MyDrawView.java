@@ -40,7 +40,7 @@ public class MyDrawView extends View {
         Paint textPaint = new Paint();  
         textPaint.setTextSize(260);  
         textPaint.setStyle(Paint.Style.FILL);  
-        //该方法即为设置基线上那个点究竟是left,center,还是right  这里我设置为center  
+        //该方法即为设置基线上那个点究竟是left,center,还是right
         textPaint.setTextAlign(Paint.Align.CENTER);  
         //2.1、获取文字区域坐标，下列几个数值都是相对于baseline而言的，但是baseline需要计算获得
         Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();  
@@ -82,11 +82,5 @@ public class MyDrawView extends View {
         p.setColor(mContext.getResources().getColor(R.color.orange));
         lineY = baseLineY+(int)bottom;
         canvas.drawLine(rectLeft, lineY, rectRight, lineY, p);// 画bottom线  
-//        textPaint.setColor(Color.GREEN);
-//        canvas.drawText("你好世界",originTextX, rect.centerY(), textPaint);
-//        textPaint.setColor(Color.RED);
-//        baseLineY = (int) (rect.centerY() - top/2 + bottom/2);
-//        canvas.drawText("你好世界",originTextX, baseLineY, textPaint);
-
     }  
 }  
