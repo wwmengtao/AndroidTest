@@ -8,6 +8,5 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="lib_3rd/android-support-v7-preference.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
