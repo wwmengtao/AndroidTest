@@ -27,5 +27,11 @@
 			android:layout_height="480dp"
 			android:background="@android:color/holo_blue_light">
 		</com.mt.androidtest.myselfview.MyDrawViewPolygon>
+		
+		<com.mt.androidtest.myselfview.MyDrawViewSolarSystem
+			android:layout_width="match_parent"   
+			android:layout_height="240dp"
+			android:background="@android:color/white">
+		</com.mt.androidtest.myselfview.MyDrawViewSolarSystem>		
 	</LinearLayout> 
 </ScrollView>

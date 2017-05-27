@@ -39,8 +39,8 @@ public class MyDrawViewPolygon extends MyBaseDrawView{
 	        			break;
 	        		case "triangle"://绘制三角形
 	        	        float pathX, pathY;
-	        			rectFLeft = PADDING_RECT+(float)(WidthOfView*0.5); 
-	        			rectFRight = WidthOfView-PADDING_RECT;
+//	        			rectFLeft = PADDING_RECT+(float)(WidthOfView*0.5); 
+//	        			rectFRight = WidthOfView-PADDING_RECT;
 	        	        pathX = rectFLeft+(rectFRight-rectFLeft)/2;
 	        	        pathY = rectFTop+PADDING_RECT;
 	        	        path.moveTo(pathX, pathY);//path.moveTo:设置Path的起点  
