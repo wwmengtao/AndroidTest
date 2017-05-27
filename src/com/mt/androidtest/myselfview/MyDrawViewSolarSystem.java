@@ -77,6 +77,8 @@ public class MyDrawViewSolarSystem extends MyBaseDrawView{
     	super.onWindowFocusChanged(hasFocus);
     	if(!hasFocus){
     		getHandler().removeCallbacksAndMessages(null);
+    	}else{
+    		invalidate();
     	}
     }
     
