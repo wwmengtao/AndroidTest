@@ -130,7 +130,7 @@ public class LocalePickerWithRegion extends ListFragment implements SearchView.O
                     null /* no parent */, translatedOnly);
         }
         /**
-         * 以下显示点击“Add a language”界面上某一个语言父类后，其子类(如果有的话)
+         * 以下显示“Add a language”界面上所有语言父类以及点击其父类后所打开的子类(如果有子类的话)
          * 列表的详细信息。
          */
         ALog.Log("LocalePickerWithRegion_setListener, show mLocaleList begin:\n");
