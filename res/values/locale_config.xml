@@ -198,6 +198,7 @@
         <item>en-WS</item> <!-- English (Samoa) -->
         <item>en-XA</item> <!-- Left-to-right pseudolocale -->
         <item>en-ZA</item> <!-- English (South Africa) -->
+		<item>en-ZG</item> <!-- English (Myanmmar Zawgyi font) -->        
         <item>en-ZM</item> <!-- English (Zambia) -->
         <item>en-ZW</item> <!-- English (Zimbabwe) -->
         <item>es-AR</item> <!-- Spanish (Argentina) -->
@@ -370,6 +371,7 @@
         <item>ms-SG</item> <!-- Malay (Singapore) -->
         <item>mt-MT</item> <!-- Maltese (Malta) -->
         <item>my-MM</item> <!-- Burmese (Myanmar (Burma)) -->
+        <item>my-ZG</item> <!-- Zawgyi (Myanmar (Zawgyi)) -->
         <item>mzn-IR</item> <!-- Mazanderani (Iran) -->
         <item>naq-NA</item> <!-- Nama (Namibia) -->
         <item>nb-NO</item> <!-- Norwegian Bokmål (Norway) -->
