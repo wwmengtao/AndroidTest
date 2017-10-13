@@ -95,7 +95,7 @@ public class ImageProcess {
 	        options.inJustDecodeBounds = false;  
 	        mInputStream = resetStream(mInputStream,Url, mType);
 	        mBitmap = BitmapFactory.decodeStream(mInputStream, null, options);  //decodeStream会尝试为已经构建的bitmap分配内存，这时就会很容易导致OOM出现
-        }catch (OutOfMemoryError e) {
+        }catch (OutOfMemoryError e) {// 捕获OutOfMemoryError，避免直接崩溃 
         	e.printStackTrace();
         	ALog.Log("OutOfMemoryError");
 		} finally{

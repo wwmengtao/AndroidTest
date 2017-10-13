@@ -351,8 +351,15 @@ public class ImageLoader {
 			throw new TaskCancelException();
 		}
 	}
-
-	private boolean isTaskInterrupted() {
+/*具体参照为知笔记中的“如何可靠地中断线程”一文
+    二、线程interrupt、interrupted以及isInterrupted的关系
+	interrupt()：仅仅将当前运行线程的中断标记置位而并非终止该线程；
+	interrupted()：判断当前运行线程的中断状态并且复位中断标记，即如果之前有interrupt()操作，那么interrupted()将返回true，之后便将中断标记位复位，使其为false，因此调用interrupted()判断时应该做一些退出准备工作(MyThread文件内的isTaskInterrupted()函数所做的工作)
+	isInterrupted():仅仅判断当前运行线程的中断标记而不复位，但是如果在sleep、wait等可中断操作前或者期间调用了interrupt()，那么系统将catch住InterruptedException，此时再次执行 isInterrupted()将返回false，因为中断异常在被捕获之后便被复位了。
+	三、线程池shutDownNow顺利执行的关键
+    由于线程池shutDownNow是立即向内部工作线程调用interrupt()，因此内部工作线程应当有合适的中断异常捕获机制，并且捕获该异常之后应该break或者return以顺利退出线程。
+*/
+	private boolean isTaskInterrupted() {//例如图片正加载的时候用户点击退出按钮，那么线程池会向所有线程执行Thread.interrupt()置位操作，各线程需自行判断退出。
 		if (Thread.interrupted()) {
 			return true;
 		}
