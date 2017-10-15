@@ -73,8 +73,8 @@ public class ImageLoader {
 	
 	/*
 	 * 有关下列uriLocks的Map类型选择问题请参照README.md文件。实验证明，DDMS下查看的话ConcurrentHashMap更省内存，
-	 * 实际图片加载表现来看也是更快速。ConcurrentHashMap采用分段锁技术，在线程并发删除数据时候是线程安全的，比
-	 * Collections.synchronizedMap更有优势。
+	 * 实际图片加载表现来看也是更快速。ConcurrentHashMap采用分段锁数据技术，在线程并发删除数据时候是线程安全的，比
+	 * Collections.synchronizedMap性能更高。
 	 */
 	private final Map<String, ReentrantLock> uriLocks = Collections.synchronizedMap(new WeakHashMap<String, ReentrantLock>());
 //	private final  ConcurrentHashMap<String, ReentrantLock> uriLocks = new ConcurrentHashMap<>();
