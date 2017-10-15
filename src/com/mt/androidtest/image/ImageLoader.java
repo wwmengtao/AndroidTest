@@ -67,7 +67,8 @@ public class ImageLoader {
     
     /**
      * ImageView和URL的对应关系依赖ImageView的hashCode()和URL，在不自定义而直接使用java实现的hashCode()可以保证ImageView
-     * 的hashCode和对应的URL一一对应。
+     * 的hashCode和对应的URL一一对应。由于urlKeysForImageViews标志着控件和图片URL的一一对应关系，因此使用同步类型
+     * 的HashMap而不是WeakHashMap，因为urlKeysForImageViews很重要，不能被GC回收。
      */
 	private final  Map<Integer, String> urlKeysForImageViews = Collections.synchronizedMap(new HashMap<Integer, String>());
 	
