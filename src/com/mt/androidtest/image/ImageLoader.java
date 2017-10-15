@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -63,35 +64,20 @@ public class ImageLoader {
 	 */
 	private DiskLruCache mDiskLruCache;    //线程安全类，put，Editor.commit有关方法前有synchronized限制
     private Type mType = Type.FIFO;
+    
     /**
      * ImageView和URL的对应关系依赖ImageView的hashCode()和URL，在不自定义而直接使用java实现的hashCode()可以保证ImageView
      * 的hashCode和对应的URL一一对应。
      */
 	private final  Map<Integer, String> urlKeysForImageViews = Collections.synchronizedMap(new HashMap<Integer, String>());
-	/**
-	 * WeakHashMap：不是线程安全的，需要同步，如果不同步的话，会出现WeakHashMap内部的链表死循环。此时以三个工作线程发生
-	 * 的一次死循环事故为例说明，事故发生的原因参照印象笔记的“疫苗：Java HashMap的死循环”。之所以能够形成这样的条件是因为这个
-	 * 图片加载器的图片URL都是不同的，会随着线程增多而增多，WeakHashMap数组下标处<String, ReentrantLock>冲突概率大增，从而造成
-	 * WeakHashMap内部的链表死循环。
-	 * 从而导致产生链表死循环概率大增。
-	 * 一个线程死在了 rehash()的下列循环处：
-     * while (entry != null) {
-            int index = entry.isNull ? 0 : (entry.hash & 0x7FFFFFFF)
-                    % length;
-            Entry<K, V> next = entry.next;
-            entry.next = newData[index];
-            newData[index] = entry;
-            entry = next;
-        }
-        剩下的两个线程死在了get()函数的下列for循环处(因为访问的是一个无限循环链表)：
-     *  while (entry != null) {
-            if (key.equals(entry.get())) {
-                return entry.value;
-            }
-            entry = entry.next;
-        }
+	
+	/*
+	 * 有关下列uriLocks的Map类型选择问题请参照README.md文件。实验证明，DDMS下查看的话ConcurrentHashMap更省内存，
+	 * 实际图片加载表现来看也是更快速。ConcurrentHashMap采用分段锁技术，在线程并发删除数据时候是线程安全的，比
+	 * Collections.synchronizedMap更有优势。
 	 */
 	private final Map<String, ReentrantLock> uriLocks = Collections.synchronizedMap(new WeakHashMap<String, ReentrantLock>());
+//	private final  ConcurrentHashMap<String, ReentrantLock> uriLocks = new ConcurrentHashMap<>();
 	
 	private static boolean  IsImageLoaderInit = false;
 	
@@ -214,7 +200,7 @@ public class ImageLoader {
 			ReentrantLock mUrlLock = getLockForUrl(imageUrl);
 			mUrlLock.lock();//对于多个ImageView加载同一个Url资源的情况进行限制
 			try{
-				checkTaskInterrupted();
+				checkTaskInterrupted();//例如线程池关闭后，线程设置了中断标记。
 				checkImageViewReused(mImageViewParas);
 				Bitmap bitmap = loadImage(imageUrl, widthOfIV, heightOfIV, mImageViewParas);
 	            if(null!=bitmap){
@@ -325,7 +311,7 @@ public class ImageLoader {
 		if(null!=mTaskDistributor)((ExecutorService) mTaskDistributor).shutdownNow();
 		if(null!=mDisplayHandler)mDisplayHandler.removeCallbacksAndMessages(null);
 		if(null!=urlKeysForImageViews)urlKeysForImageViews.clear();
-		uriLocks.clear();
+		uriLocks.clear();//如果clear操作发生在线程池关闭之前，那么会出错，因为有可能线程终止之前仍然执行uriLocks.get(url)操作导致错误发生。
 		fluchCache();
 		ALog.Log("mDiskLruCache.size:"+mDiskLruCache.size()/1024+"KB");//用于统计应用的缓存大小
 	}
