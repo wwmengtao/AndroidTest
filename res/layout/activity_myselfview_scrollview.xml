@@ -53,5 +53,21 @@
 	        android:drawSelectorOnTop="true"
 	        android:fastScrollEnabled="false"
 	        android:scrollbarStyle="outsideOverlay" />
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ListView2：可以上下整体滑动"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:background="@color/greenyellow"/>		
+		<ListView
+	        android:id="@+id/mylistview2"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:drawSelectorOnTop="true"
+	        android:fastScrollEnabled="false"
+	        android:scrollbarStyle="outsideOverlay" />		
 	</LinearLayout>
 </com.mt.androidtest.myselfview.MyScrollView> 
