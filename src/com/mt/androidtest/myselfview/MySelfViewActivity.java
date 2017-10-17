@@ -38,6 +38,8 @@ public class MySelfViewActivity extends BaseActivity {
     private ListView mListViewTabHost;
     //
     private ListView mListView = null;
+    private ListView mListView2 = null;
+
     private GridView mGridView=null;
     
 	@Override
@@ -84,7 +86,13 @@ public class MySelfViewActivity extends BaseActivity {
         //
         mListView = (ListView) findViewById(R.id.mylistview);
         mListView.setAdapter(mListAdapter_SingleLayout);
-        setListViewHeightBasedOnChildren(mListView);
+        mListView2 = (ListView) findViewById(R.id.mylistview2);
+        mListView2.setAdapter(mListAdapter_SingleLayout);
+      /*
+       * 此时MySelfViewActivity中，mListView可以在显示一行的情况下上下滑动，由于 mListView2使用setListViewHeightBasedOnChildren
+       * 测量了整体的高度，因此可以整体显示
+       */
+        setListViewHeightBasedOnChildren(mListView2);
 	}
 	//HorizontalScrollView的使用
 	public void initHorizontalScrollView(){

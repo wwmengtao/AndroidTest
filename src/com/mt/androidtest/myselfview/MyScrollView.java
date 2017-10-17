@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.mt.androidtest.R;
@@ -16,6 +17,7 @@ import com.mt.androidtest.R;
 public class MyScrollView extends ScrollView{
 	private List<View> mViewsNotIntercept=null;//添加触摸事件拦截豁免白名单
 	private HorizontalScrollView mHorizontalScrollView =null;
+	private ListView mylistview = null;
 	private RectF mRectF = null;
 	boolean isInViewRect = false;
 	public MyScrollView(Context context, AttributeSet attrs) {
@@ -24,11 +26,23 @@ public class MyScrollView extends ScrollView{
 
     @Override  
     protected void onAttachedToWindow(){
+    	super.onAttachedToWindow();
     	mViewsNotIntercept = new ArrayList<View>();
 		mHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.myhorizontalscrollview);
+		mylistview = (ListView) findViewById(R.id.mylistview);
 		mViewsNotIntercept.add(mHorizontalScrollView);
+		mViewsNotIntercept.add(mylistview);
     }
 	
+    @Override  
+    protected void onDetachedFromWindow(){
+    	super.onDetachedFromWindow();
+    	if(null != mViewsNotIntercept){
+    		mViewsNotIntercept.clear();
+    		mViewsNotIntercept = null;
+    	}
+    }
+    
     @Override  
     public boolean onInterceptTouchEvent(MotionEvent event) {  
     	int curEventType = event.getAction();
@@ -63,4 +77,6 @@ public class MyScrollView extends ScrollView{
         return new RectF(location[0], location[1], location[0] + view.getWidth(),
                 location[1] + view.getHeight());
     }
+    
+    
 }
