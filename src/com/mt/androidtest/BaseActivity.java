@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -476,9 +477,9 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
 		listView.setLayoutParams(paramsListView);
 	}
 	
-	//以下申请权限
+    //以下申请权限，下列方法仅在AndroidM及以上版本适用
+    @TargetApi(Build.VERSION_CODES.M)
 	public void requestPermissions(String [] permissionsRequired){
-		if(AndroidVersion<=22)return;
 		if(null!=permissionsRequired && permissionsRequired.length>0){
 			this.requestPermissions(permissionsRequired,REQUEST_PERMISSION_CODE);
 		}

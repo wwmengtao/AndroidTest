@@ -1,5 +1,20 @@
 package com.mt.androidtest;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
+import android.widget.Toast;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -8,72 +23,130 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.icu.text.SimpleDateFormat;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.Toast;
-
-/**
+/**éœ€è¦å½“å‰åº”ç”¨è·å–"android.permission.READ_EXTERNAL_STORAGE"ä»¥åŠ"android.permission.WRITE_EXTERNAL_STORAGE"æƒé™
  * http://blog.csdn.net/urmytch/article/details/53642945
- * ²¶»ñÓ¦ÓÃÎ´Ô¤´¦ÀíµÄÒì³£
+ * æ•è·åº”ç”¨æœªé¢„å¤„ç†çš„å¼‚å¸¸
  * @author _TODO
  *
  */
 
 public class CrashManager implements Thread.UncaughtExceptionHandler {
-	private static final String TAG = "CrashManager_UncaughtExceptionHandler";
+	private static final String TAG = "CrashManager";
+    private static final String SAVE_CRASH_EXCEPTION = "MSG_SAVE_CRASH_EXCEPTION";
+    private static final String STOP_APP_AND_DO_CLEAN = "MSG_STOP_APP_AND_DO_CLEAN";
+
     private Thread.UncaughtExceptionHandler mDefaultHandler;
     private Map<String, String> infos;
     private ATApplication application;
-    
+    private HandlerThread mHandlerThread = null;
+    private HandlerCostTime mHandlerCostTime=null;
+
     public CrashManager(ATApplication application){
-        //»ñÈ¡ÏµÍ³Ä¬ÈÏµÄUncaughtExceptionHandler
+        //è·å–ç³»ç»Ÿé»˜è®¤çš„UncaughtExceptionHandler
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         this.application = application;
     }
-    
+
+    @Override
+    /**
+     * uncaughtExceptionï¼šThread.UncaughtExceptionHandleræ¥å£ç±»é»˜è®¤è°ƒç”¨çš„å¤„ç†å¼‚å¸¸çš„å‡½æ•°
+     */
+    public void uncaughtException(Thread thread, Throwable exc) {
+        if(!handleException(exc) && mDefaultHandler != null){
+            //å¦‚æœç”¨æˆ·æ²¡æœ‰å¤„ç†åˆ™è®©ç³»ç»Ÿé»˜è®¤çš„å¼‚å¸¸å¤„ç†å™¨æ¥å¤„ç†
+            mDefaultHandler.uncaughtException(thread, exc);
+        }else{
+            try{
+                Thread.sleep(3000);//ç¡®ä¿æç¤ºæ€§Toastå¯ä»¥è¢«ç”¨æˆ·çœ‹åˆ°
+            }catch (InterruptedException e){
+                ALog.Log(TAG, e.getMessage());
+            }
+            Message msg = Message.obtain();
+            msg.obj = STOP_APP_AND_DO_CLEAN;
+            mHandlerCostTime.sendMessage(msg);
+        }
+    }
+
     private boolean handleException(final Throwable exc){
         if (exc == null) {
             return false;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                ALog.Log("±ÀÀ£ÕıÔÚĞ´ÈëÈÕÖ¾");
-                flushBufferedUrlsAndReturn();
-                //´¦Àí±ÀÀ£
-                collectDeviceAndUserInfo(application);
-                String CrashFileName = writeCrash(exc);
-                Toast.makeText(application.getApplicationContext(), "CrashFile saved path:\n"+CrashFileName, Toast.LENGTH_LONG).show();
-                Looper.loop();
-            }
-        }).start();
+        initHandlerThread();
+        sendCrashMessage(exc);
         return true;
     }
 
-    /**
-     * °ÑÎ´´æÅÌµÄurlºÍ·µ»ØÊı¾İĞ´ÈëÈÕÖ¾ÎÄ¼ş
-     */
-    private void flushBufferedUrlsAndReturn(){
-        //TODO ¿ÉÒÔÔÚÇëÇóÍøÂçÊ±°ÑurlºÍ·µ»Øxml»òjsonÊı¾İ»º´æÔÚ¶ÓÁĞÖĞ£¬±ÀÀ£Ê±ÏÈĞ´ÈëÒÔ±ã²éÃ÷Ô­Òò
+    public void initHandlerThread(){
+        mHandlerThread = new HandlerThread(TAG, android.os.Process.THREAD_PRIORITY_FOREGROUND);
+        mHandlerThread.start();
+        //åº”ç”¨å´©æºƒæ—¶ï¼Œapplication.getMainLooper()ä¸ºnullï¼Œå› æ­¤é‡‡ç”¨mHandlerThread.getLooper()
+        mHandlerCostTime = new HandlerCostTime(mHandlerThread.getLooper());
     }
 
     /**
-     * ²É¼¯Éè±¸ºÍÓÃ»§ĞÅÏ¢
-     * @param context ÉÏÏÂÎÄ
+     * å°†excä¸­å¼‚å¸¸ä¿¡æ¯å†™å…¥è¿›logæ–‡ä»¶ä¸­
+     * @param exc
+     */
+    private void sendCrashMessage(Throwable exc){
+        Bundle mBundle = new Bundle();
+        Message msg = Message.obtain();
+        msg.obj = SAVE_CRASH_EXCEPTION;
+        mBundle.putSerializable(SAVE_CRASH_EXCEPTION, exc);
+        msg.setData(mBundle);
+        //åº”ç”¨å´©æºƒåªèƒ½ä½¿ç”¨mHandlerThread.getLooper()ï¼Œä¸»çº¿ç¨‹çš„Looperå·²ç»ä¸ºnull
+        if(null != mHandlerThread.getLooper())
+            mHandlerCostTime.sendMessage(msg);
+    }
+
+    class HandlerCostTime extends Handler {
+        public HandlerCostTime(Looper loop) {
+            super(loop);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch((String)msg.obj){
+                case SAVE_CRASH_EXCEPTION:
+                    flushBufferedUrlsAndReturn();
+                    collectDeviceAndUserInfo(application);
+                    String CrashFileName = writeCrash((Throwable)msg.getData().getSerializable(SAVE_CRASH_EXCEPTION));
+                    ALog.Log(TAG,"SAVE_CRASH_EXCEPTION: Show Toast!");
+                    Toast.makeText(application.getApplicationContext(), "CrashFile saved path:\n"+CrashFileName, Toast.LENGTH_LONG).show();
+                    break;
+                case STOP_APP_AND_DO_CLEAN:
+                    Intent intent = new Intent(application.getApplicationContext(), MainActivity.class);
+                    PendingIntent restartIntent = PendingIntent.getActivity(
+                            application.getApplicationContext(), 0, intent,0);
+                    //é€€å‡ºç¨‹åº
+                    AlarmManager mgr = (AlarmManager)application.getSystemService(Context.ALARM_SERVICE);
+                    //1ç§’åé‡å¯åº”ç”¨
+                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000,
+                            restartIntent);
+//                    //ä¸‹åˆ—ä»£ç æ— é¡»æ‰§è¡Œï¼Œå› ä¸ºåº”ç”¨å´©æºƒé‡å¯åï¼Œå†…å­˜æ³„éœ²å¨èƒè‡ªç„¶è§£é™¤
+//                    mHandlerCostTime.removeCallbacksAndMessages(null);
+//                    mHandlerThread.getLooper().quit();
+                    ALog.Log(TAG,"killProcess");
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    break;
+            }
+        }
+    }
+
+    /**
+     * å¯ä»¥åœ¨è¯·æ±‚ç½‘ç»œæ—¶æŠŠurlå’Œè¿”å›xmlæˆ–jsonæ•°æ®ç¼“å­˜åœ¨é˜Ÿåˆ—ä¸­ï¼Œå´©æºƒæ—¶å…ˆå†™å…¥ä»¥ä¾¿æŸ¥æ˜åŸå› 
+     */
+    private void flushBufferedUrlsAndReturn(){
+        //TODO
+    }
+
+    /**
+     * é‡‡é›†è®¾å¤‡å’Œç”¨æˆ·ä¿¡æ¯
+     * @param context ä¸Šä¸‹æ–‡
      */
     private void collectDeviceAndUserInfo(Context context){
         PackageManager pm = context.getPackageManager();
@@ -102,10 +175,9 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * ²É¼¯±ÀÀ£Ô­Òò
-     * @param exc Òì³£
+     * é‡‡é›†å´©æºƒåŸå› 
+     * @param exc å¼‚å¸¸
      */
-
     private String writeCrash(Throwable exc){
     	String CrashFileName = null;
         StringBuffer sb = new StringBuffer();
@@ -137,70 +209,53 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
             String sdcardPath = Environment.getExternalStorageDirectory().getPath();
             String filePath = sdcardPath + File.separator+"Download"+ File.separator+application.getPackageName()
             		+ File.separator+"Crash"+ File.separator;
-            ALog.Log("filePath: "+filePath);//filePath: "/storage/emulated/0/Download/com.mt.androidtest/Crash/"
+//            ALog.Log(TAG, "filePath: "+filePath);//filePath: "/storage/emulated/0/Download/packageName/Crash/"
             CrashFileName = writeLog(sb.toString(), filePath);
         }
         return CrashFileName;
     }
+
     /**
-     *
-     * @param log ÎÄ¼şÄÚÈİ
-     * @param name ÎÄ¼şÂ·¾¶
-     * @return ·µ»ØĞ´ÈëµÄÎÄ¼şÂ·¾¶
-     * Ğ´ÈëLogĞÅÏ¢µÄ·½·¨£¬Ğ´Èëµ½SD¿¨ÀïÃæ
+     *å†™å…¥Logä¿¡æ¯çš„æ–¹æ³•ï¼Œå†™å…¥åˆ°SDå¡é‡Œé¢
+     * @param log æ–‡ä»¶å†…å®¹
+     * @param name æ–‡ä»¶è·¯å¾„
+     * @return è¿”å›å†™å…¥çš„æ–‡ä»¶è·¯å¾„
      */
-    private String writeLog(String log, String name)
-    {
-        String filename = name + "mycrash"+ ".log";
+    private String writeLog(String log, String name){
+        String filename = name + "mycrash.log";
         File file =new File(filename);
         if(!file.getParentFile().exists()){
-        	ALog.Log(TAG, "ĞÂ½¨ÎÄ¼ş");
-            file.getParentFile().mkdirs();
+            if(!file.getParentFile().mkdirs()){
+                ALog.Log(TAG, "Can not mkdirs: "+file.getParentFile().toString());
+                tipsForCheckStoragePermissions("writeLog");
+                return null;
+            }
         }
         if (file != null && file.exists() && file.length() + log.length() >= 64 * 1024) {
-            //¿ØÖÆÈÕÖ¾ÎÄ¼ş´óĞ¡
+            //æ§åˆ¶æ—¥å¿—æ–‡ä»¶å¤§å°ï¼Œå› ä¸ºæ­¤Crashæ—¥å¿—æ˜¯ä¸æ–­è¿½åŠ çš„
             file.delete();
         }
-        try
-        {
+        try{
+            ALog.Log(TAG,"Create crash log: "+file.getAbsolutePath());
             file.createNewFile();
             FileWriter fw=new FileWriter(file,true);
             BufferedWriter bw = new BufferedWriter(fw);
-            //Ğ´ÈëÏà¹ØLogµ½ÎÄ¼ş
+            //å†™å…¥ç›¸å…³Logåˆ°æ–‡ä»¶
             bw.write(log);
             bw.newLine();
             bw.close();
             fw.close();
             return filename;
-        }
-        catch(IOException e)
-        {
-        	ALog.Log(TAG, e.getMessage());
+        }catch(IOException e){
+        	ALog.Log(TAG, "IOException: "+e.getMessage());//IOException: No such file or directory
+            tipsForCheckStoragePermissions("IOException:");
             return null;
         }
     }
-    
-    @Override
-    public void uncaughtException(Thread thread, Throwable exc) {
-        if(!handleException(exc) && mDefaultHandler != null){
-            //Èç¹ûÓÃ»§Ã»ÓĞ´¦ÀíÔòÈÃÏµÍ³Ä¬ÈÏµÄÒì³£´¦ÀíÆ÷À´´¦Àí
-            mDefaultHandler.uncaughtException(thread, exc);
-        }else{
-            try{
-                Thread.sleep(3000);
-            }catch (InterruptedException e){
-            	ALog.Log(TAG, e.getMessage());
-            }
-            Intent intent = new Intent(application.getApplicationContext(), MainActivity.class);
-            PendingIntent restartIntent = PendingIntent.getActivity(
-                    application.getApplicationContext(), 0, intent,
-                    0);
-            //ÍË³ö³ÌĞò
-            AlarmManager mgr = (AlarmManager)application.getSystemService(Context.ALARM_SERVICE);
-            //1ÃëºóÖØÆôÓ¦ÓÃ
-            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000,
-                    restartIntent);
-            android.os.Process.killProcess(android.os.Process.myPid());
-        }
+
+    // æœ¬åº”ç”¨å¯èƒ½æ²¡æœ‰æƒé™
+    private void tipsForCheckStoragePermissions(String mark){
+        String tips = "Please require READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE permissions!";
+        ALog.Log(TAG, mark+": "+tips);
     }
 }
