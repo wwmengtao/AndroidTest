@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	private String NOTIFICATION_ID="AndroidTest.Notification";
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
-	private String [] mMethodNameFT={
+	private String [] mMethodNameFT={"causeUncaughtException",
 			"showDialog","showDialog2","Notification","checkComponentExist","reflectCall","reflectCallListAll",
 			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI",
 			"getPSList"};
@@ -72,6 +72,9 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 		// TODO Auto-generated method stub
 		String methodName = (String)getListViewAdapterFT().mList.get(position).get(ListViewAdapter.TAG_ITEM_TEXT); 
 		switch(methodName){
+			case "causeUncaughtException":
+				causeUncaughtException();
+			break;
 			case "showDialog":
 				showDialog();
 				break;
@@ -364,6 +367,11 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	    }
 	}
 
+	//causeUncaughtException：人为产生UncaughtException
+	private void causeUncaughtException(){
+		int value = 4/0;
+	}
+	
     private DialogInterface mShowDialog;
     private void showDialog() {
         // TODO: DialogFragment?

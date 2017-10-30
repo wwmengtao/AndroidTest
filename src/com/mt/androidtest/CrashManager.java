@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * http://blog.csdn.net/urmytch/article/details/53642945
@@ -51,11 +52,12 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
             @Override
             public void run() {
                 Looper.prepare();
-                ALog.Log(TAG,"崩溃正在写入日志");
+                ALog.Log("崩溃正在写入日志");
                 flushBufferedUrlsAndReturn();
                 //处理崩溃
                 collectDeviceAndUserInfo(application);
-                writeCrash(exc);
+                String CrashFileName = writeCrash(exc);
+                Toast.makeText(application.getApplicationContext(), "CrashFile saved path:\n"+CrashFileName, Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
         }).start();
@@ -104,7 +106,8 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
      * @param exc 异常
      */
 
-    private void writeCrash(Throwable exc){
+    private String writeCrash(Throwable exc){
+    	String CrashFileName = null;
         StringBuffer sb = new StringBuffer();
         sb.append("------------------crash----------------------");
         sb.append("\r\n");
@@ -116,6 +119,8 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
         Writer writer = new StringWriter();
         PrintWriter pw = new PrintWriter(writer);
         exc.printStackTrace(pw);
+        sb.append("-------------crash_getCause---------------");
+        sb.append("\r\n");
         Throwable excCause = exc.getCause();
         while (excCause != null) {
             excCause.printStackTrace(pw);
@@ -130,9 +135,12 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
         {
             String sdcardPath = Environment.getExternalStorageDirectory().getPath();
-            String filePath = sdcardPath + "//Urmytch/crash/";
-            writeLog(sb.toString(), filePath);
+            String filePath = sdcardPath + File.separator+"Download"+ File.separator+application.getPackageName()
+            		+ File.separator+"Crash"+ File.separator;
+            ALog.Log("filePath: "+filePath);//filePath: "/storage/emulated/0/Download/com.mt.androidtest/Crash/"
+            CrashFileName = writeLog(sb.toString(), filePath);
         }
+        return CrashFileName;
     }
     /**
      *
@@ -171,6 +179,7 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
             return null;
         }
     }
+    
     @Override
     public void uncaughtException(Thread thread, Throwable exc) {
         if(!handleException(exc) && mDefaultHandler != null){
@@ -178,7 +187,7 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
             mDefaultHandler.uncaughtException(thread, exc);
         }else{
             try{
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             }catch (InterruptedException e){
             	ALog.Log(TAG, e.getMessage());
             }
