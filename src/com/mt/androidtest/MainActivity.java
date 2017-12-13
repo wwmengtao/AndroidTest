@@ -6,8 +6,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mt.androidtest.listview.ListViewAdapter;
-
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -25,12 +23,20 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import com.mt.androidtest.listview.ListViewAdapter;
 
 public class MainActivity extends BaseActivity implements DialogInterface.OnClickListener{
 	boolean isLogRun=false;
@@ -42,10 +48,9 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 	private String NOTIFICATION_ID="AndroidTest.Notification";
 	private PackageManager mPackageManager=null;
     private NotificationManager mNotificationManager = null;
-	private String [] mMethodNameFT={"causeUncaughtException",
-			"showDialog","showDialog2","Notification","checkComponentExist","reflectCall","reflectCallListAll",
-			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI",
-			"getPSList"};
+	private String [] mMethodNameFT={"causeUncaughtException",	"showDialog", "showDialog2",
+			"checkComponentExist", "reflectCall", "reflectCallListAll", 
+			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI","getPSList"};
 	private String [] mActivitiesName={
 			"AsynchronousActivity","ContentResolverDemoActivity","LanguageForNActivity","TimezoneActivity",
 			"PermissionActivity","TouchEventActivity","PackageManagerActivity",
@@ -81,13 +86,6 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 			case "showDialog2":
 				showDialog2();
 				break;				
-			case "Notification":
-				if(!isNotificationShown){
-					showNotification(mContext,1,null);
-				}else{
-					cancelNotification(mContext, 1);
-				}
-				break;
 			case "checkComponentExist"://检测组件是否存在
 				checkComponentExist();
 				break;
@@ -316,55 +314,6 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * 显示通知
-	 * @param mContext
-	 * @param id
-	 * @param intent
-	 */
-	private void showNotification(Context mContext,int id,PendingIntent intent) {
-        	CharSequence title0 = "AndroidTest";
-	        CharSequence title = "title";
-	        CharSequence details = "details";
-	        int icon = R.drawable.toolbar_brightness_off;
-	        Notification notification = new Notification.Builder(mContext)
-	                .setWhen(0)
-	                .setSmallIcon(icon)
-	                .setAutoCancel(true)
-	                .setTicker(title0)
-	                .setColor(mContext.getColor(R.color.wheat))
-	                .setContentTitle(title)
-	                .setContentText(details)
-	                .setContentIntent(intent)
-	                .setLocalOnly(true)
-	                .setPriority(Notification.PRIORITY_DEFAULT)
-	                .setDefaults(Notification.DEFAULT_ALL)
-	                .setOnlyAlertOnce(true)
-	                .build();
-	        try {
-	        	mNotificationManager.notify(NOTIFICATION_ID, id, notification);
-	        	isNotificationShown=true;
-	        } catch (NullPointerException npe) {
-	            npe.printStackTrace();
-	        }
-	    }
-	
-	/**
-	 * cancelNotification：取消状态栏内容的显示
-	 * @param mContext
-	 * @param id
-	 */
-	public void cancelNotification(Context mContext,int id){
-
-	    try {
-	    	mNotificationManager.cancel(NOTIFICATION_ID, id);
-	    	isNotificationShown=false;
-	    } catch (NullPointerException npe) {
-	        ALog.Log("setNotificationVisible: cancel notificationManager npe=" + npe);
-	        npe.printStackTrace();
-	    }
 	}
 
 	//causeUncaughtException：人为产生UncaughtException

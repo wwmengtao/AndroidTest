@@ -36,6 +36,9 @@ public class ExecutorHelper {
 	作用：该方法返回一个可以控制线程池内线程定时或周期性执行某任务的线程池。
 	5、newSingleThreadScheduledExecutor() ： 
 	作用：该方法返回一个可以控制线程池内线程定时或周期性执行某任务的线程池。只不过和上面的区别是该线程池大小为1，而上面的可以指定线程池的大小。
+	6、4和5中ScheduledExecutorService的使用说明
+	1)scheduleWithFixedDelay：受任务执行时间的影响，要等到上一个任务结束，等待固定时间间隔后下一个任务执行。
+	2)scheduleAtFixedRate：不受任务执行时间的影响，只要上一个任务开始，等待固定时间间隔后下一个任务执行。
 	 * @param type
 	 * @return
 	 */

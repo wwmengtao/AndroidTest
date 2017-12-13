@@ -17,7 +17,7 @@ public class ATApplication extends Application {
 		initImageLoader(getApplicationContext());
 		//以下为应用注册未捕获异常处理接口
 		CrashManager crashHandler = new CrashManager(this);
-        Thread.setDefaultUncaughtExceptionHandler(crashHandler);
+//        Thread.setDefaultUncaughtExceptionHandler(crashHandler);
 	}
 	
 	public static void initImageLoader(Context context) {
