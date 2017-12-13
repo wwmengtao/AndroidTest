@@ -39,6 +39,14 @@ public class ExecutorHelper {
 	6、4和5中ScheduledExecutorService的使用说明
 	1)scheduleWithFixedDelay：受任务执行时间的影响，要等到上一个任务结束，等待固定时间间隔后下一个任务执行。
 	2)scheduleAtFixedRate：不受任务执行时间的影响，只要上一个任务开始，等待固定时间间隔后下一个任务执行。
+	3)示例代码如下：
+	    ScheduledExecutorService mExecutorService = Executors.newSingleThreadScheduledExecutor();
+        mExecutorService.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                ALog.Log("scheduleWithFixedDelay");
+            }
+        }, 0, 3, TimeUnit.SECONDS);
 	 * @param type
 	 * @return
 	 */
