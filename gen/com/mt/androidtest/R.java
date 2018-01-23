@@ -24,16 +24,9 @@ public final class R {
         public static final int citys=0x7f0e0000;
         public static final int citys_code=0x7f0e0001;
         public static final int light_color=0x7f0e0002;
-        public static final int partially_translated_locale=0x7f0e0003;
-        /**  Used in LocalePicker 
-         */
-        public static final int special_locale_codes=0x7f0e0004;
-        /**  Used in LocalePicker 
-         */
-        public static final int special_locale_names=0x7f0e0005;
         /**  Zulu (South Africa) 
          */
-        public static final int supported_locales=0x7f0e0006;
+        public static final int supported_locales=0x7f0e0003;
     }
     public static final class attr {
         /**  Custom divider drawable to use for elements in the action bar. 
@@ -2634,7 +2627,7 @@ containing a value of this type.
     public static final class id {
         public static final int AsyncTaskProgressBar=0x7f0b0058;
         public static final int AsyncTaskTextView=0x7f0b0059;
-        public static final int action0=0x7f0b00d1;
+        public static final int action0=0x7f0b00cb;
         public static final int action_bar=0x7f0b0049;
         public static final int action_bar_activity_content=0x7f0b0003;
         public static final int action_bar_container=0x7f0b0048;
@@ -2643,7 +2636,7 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f0b002a;
         public static final int action_bar_title=0x7f0b0029;
         public static final int action_context_bar=0x7f0b004a;
-        public static final int action_divider=0x7f0b00d5;
+        public static final int action_divider=0x7f0b00cf;
         public static final int action_drag_move_bottom=0x7f0b000f;
         public static final int action_drag_move_down=0x7f0b000d;
         public static final int action_drag_move_top=0x7f0b000e;
@@ -2656,9 +2649,8 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0b0046;
         public static final int action_mode_bar_stub=0x7f0b0045;
         public static final int action_mode_close_button=0x7f0b002b;
-        public static final int action_settings=0x7f0b00ec;
+        public static final int action_settings=0x7f0b00e5;
         public static final int activity_chooser_view_content=0x7f0b002c;
-        public static final int add_language=0x7f0b00d0;
         public static final int alertTitle=0x7f0b0038;
         public static final int always=0x7f0b0021;
         public static final int beginning=0x7f0b0026;
@@ -2672,9 +2664,9 @@ containing a value of this type.
         public static final int btn_shutdown=0x7f0b009c;
         public static final int buttonPanel=0x7f0b0033;
         public static final int button_left=0x7f0b009e;
-        public static final int cancel_action=0x7f0b00d2;
+        public static final int cancel_action=0x7f0b00cc;
         public static final int checkbox=0x7f0b0041;
-        public static final int chronometer=0x7f0b00d8;
+        public static final int chronometer=0x7f0b00d2;
         public static final int className=0x7f0b00bc;
         public static final int collapseActionView=0x7f0b0022;
         public static final int contacts_image=0x7f0b0067;
@@ -2689,13 +2681,11 @@ containing a value of this type.
         public static final int delete_button=0x7f0b009a;
         public static final int devide=0x7f0b00a5;
         public static final int disableHome=0x7f0b0015;
-        public static final int dragHandle=0x7f0b00cb;
-        public static final int dragList=0x7f0b00cf;
         public static final int editText=0x7f0b0087;
         public static final int edit_query=0x7f0b004b;
         public static final int eight=0x7f0b00aa;
         public static final int end=0x7f0b0027;
-        public static final int end_padder=0x7f0b00dd;
+        public static final int end_padder=0x7f0b00d7;
         public static final int equal=0x7f0b00b0;
         public static final int expand_activities_button=0x7f0b002d;
         public static final int expanded_menu=0x7f0b0040;
@@ -2715,23 +2705,21 @@ containing a value of this type.
         public static final int ifRoom=0x7f0b0023;
         public static final int image=0x7f0b002e;
         public static final int imageview=0x7f0b00b9;
-        public static final int img_next=0x7f0b00df;
-        public static final int img_relative=0x7f0b00e5;
-        public static final int info=0x7f0b00dc;
+        public static final int img_next=0x7f0b00d9;
+        public static final int img_relative=0x7f0b00df;
+        public static final int info=0x7f0b00d6;
         public static final int info_detail_container=0x7f0b0061;
         public static final int item_add=0x7f0b00b2;
         public static final int item_cancel=0x7f0b00b3;
-        public static final int item_clear_disc_cache=0x7f0b00ee;
-        public static final int item_clear_memory_cache=0x7f0b00ed;
+        public static final int item_clear_disc_cache=0x7f0b00e7;
+        public static final int item_clear_memory_cache=0x7f0b00e6;
         public static final int item_del=0x7f0b00b1;
-        public static final int item_pause_on_fling=0x7f0b00f0;
-        public static final int item_pause_on_scroll=0x7f0b00ef;
-        public static final int l10nWarn=0x7f0b00ce;
-        public static final int label=0x7f0b00cc;
+        public static final int item_pause_on_fling=0x7f0b00e9;
+        public static final int item_pause_on_scroll=0x7f0b00e8;
         public static final int layout_linear_buttons23=0x7f0b009b;
         public static final int lenovo_switch=0x7f0b00c6;
-        public static final int line1=0x7f0b00d6;
-        public static final int line3=0x7f0b00da;
+        public static final int line1=0x7f0b00d0;
+        public static final int line3=0x7f0b00d4;
         public static final int linearlayout_addview=0x7f0b008d;
         public static final int linearlayout_adjusttextsize=0x7f0b008f;
         public static final int linearlayout_adjustviewwidth=0x7f0b008e;
@@ -2747,15 +2735,13 @@ containing a value of this type.
         public static final int listview_sysapp=0x7f0b0094;
         public static final int ll_dot_group=0x7f0b0098;
         public static final int locale=0x7f0b00be;
-        public static final int locale_search_menu=0x7f0b00eb;
-        public static final int media_actions=0x7f0b00d4;
+        public static final int media_actions=0x7f0b00ce;
         public static final int menu_img=0x7f0b00b4;
         public static final int menu_label=0x7f0b00b5;
         public static final int message_image=0x7f0b0064;
         public static final int message_layout=0x7f0b0063;
         public static final int message_text=0x7f0b0065;
         public static final int middle=0x7f0b0028;
-        public static final int miniLabel=0x7f0b00cd;
         public static final int minus=0x7f0b00ac;
         public static final int mldframerootview=0x7f0b0072;
         public static final int mldlinearrootview=0x7f0b0073;
@@ -2798,7 +2784,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0b0007;
         public static final int progress_horizontal=0x7f0b0008;
         public static final int radio=0x7f0b0043;
-        public static final int relativelayout_resource=0x7f0b00e3;
+        public static final int relativelayout_resource=0x7f0b00dd;
         public static final int root=0x7f0b0081;
         public static final int rootScrollView=0x7f0b005a;
         public static final int screen=0x7f0b001d;
@@ -2832,28 +2818,28 @@ containing a value of this type.
         public static final int src_atop=0x7f0b001e;
         public static final int src_in=0x7f0b001f;
         public static final int src_over=0x7f0b0020;
-        public static final int status_bar_latest_event_content=0x7f0b00d3;
-        public static final int status_tv=0x7f0b00e1;
+        public static final int status_bar_latest_event_content=0x7f0b00cd;
+        public static final int status_tv=0x7f0b00db;
         public static final int submit_area=0x7f0b0054;
         public static final int summary_list=0x7f0b0060;
         public static final int switch_bar=0x7f0b00c4;
-        public static final int switch_bt=0x7f0b00e2;
+        public static final int switch_bt=0x7f0b00dc;
         public static final int tabMode=0x7f0b0014;
         public static final int tabs_container=0x7f0b0086;
-        public static final int text=0x7f0b00db;
-        public static final int text2=0x7f0b00d9;
+        public static final int text=0x7f0b00d5;
+        public static final int text2=0x7f0b00d3;
         public static final int textSpacerNoButtons=0x7f0b003c;
         public static final int text_ft=0x7f0b00b7;
         public static final int textview=0x7f0b0088;
-        public static final int textview_index=0x7f0b00de;
+        public static final int textview_index=0x7f0b00d8;
         public static final int textview_layout=0x7f0b00b8;
         public static final int textview_textsize1=0x7f0b0090;
         public static final int textview_textsize2=0x7f0b0091;
         public static final int textviewxliff=0x7f0b008a;
         public static final int three=0x7f0b00a4;
-        public static final int time=0x7f0b00d7;
-        public static final int time_zone=0x7f0b00e7;
-        public static final int time_zone_detail=0x7f0b00e8;
+        public static final int time=0x7f0b00d1;
+        public static final int time_zone=0x7f0b00e1;
+        public static final int time_zone_detail=0x7f0b00e2;
         public static final int title=0x7f0b0032;
         public static final int title_template=0x7f0b0037;
         public static final int title_text=0x7f0b009f;
@@ -2861,14 +2847,14 @@ containing a value of this type.
         public static final int topPanel=0x7f0b0036;
         public static final int tv_fragment_adapter=0x7f0b0099;
         public static final int tv_img_desc=0x7f0b0097;
-        public static final int tv_media_menu_text=0x7f0b00ea;
-        public static final int tv_relative=0x7f0b00e4;
-        public static final int tv_relative_color=0x7f0b00e6;
-        public static final int tv_status_summary=0x7f0b00e0;
+        public static final int tv_media_menu_text=0x7f0b00e4;
+        public static final int tv_relative=0x7f0b00de;
+        public static final int tv_relative_color=0x7f0b00e0;
+        public static final int tv_status_summary=0x7f0b00da;
         public static final int two=0x7f0b00a3;
         public static final int txStatus=0x7f0b00c5;
         public static final int up=0x7f0b0001;
-        public static final int update_timezone=0x7f0b00e9;
+        public static final int update_timezone=0x7f0b00e3;
         public static final int useLogo=0x7f0b001b;
         public static final int view_stub=0x7f0b008c;
         public static final int widget_frame=0x7f0b00c3;
@@ -2991,46 +2977,39 @@ containing a value of this type.
         public static final int linearlayout_switchbar=0x7f03004b;
         public static final int listview_activity=0x7f03004c;
         public static final int listview_functions=0x7f03004d;
-        public static final int locale_drag_cell=0x7f03004e;
-        public static final int locale_order_list=0x7f03004f;
-        public static final int locale_picker_item=0x7f030050;
-        public static final int message_fragment=0x7f030051;
-        public static final int news_fragment=0x7f030052;
-        public static final int notification_media_action=0x7f030053;
-        public static final int notification_media_cancel_action=0x7f030054;
-        public static final int notification_template_big_media=0x7f030055;
-        public static final int notification_template_big_media_narrow=0x7f030056;
-        public static final int notification_template_lines=0x7f030057;
-        public static final int notification_template_media=0x7f030058;
-        public static final int notification_template_part_chronometer=0x7f030059;
-        public static final int notification_template_part_time=0x7f03005a;
-        public static final int preference_checkbox=0x7f03005b;
-        public static final int preference_checkbox_widget=0x7f03005c;
-        public static final int preference_status=0x7f03005d;
-        public static final int preference_status_widget=0x7f03005e;
-        public static final int preference_switchview=0x7f03005f;
-        public static final int relativelayout_resource=0x7f030060;
-        public static final int select_dialog_item_material=0x7f030061;
-        public static final int select_dialog_multichoice_material=0x7f030062;
-        public static final int select_dialog_singlechoice_material=0x7f030063;
-        public static final int setting_fragment=0x7f030064;
-        public static final int support_simple_spinner_dropdown_item=0x7f030065;
-        public static final int timezone_update=0x7f030066;
-        public static final int view_inflate=0x7f030067;
-        public static final int view_inflate_linearlayout=0x7f030068;
+        public static final int message_fragment=0x7f03004e;
+        public static final int news_fragment=0x7f03004f;
+        public static final int notification_media_action=0x7f030050;
+        public static final int notification_media_cancel_action=0x7f030051;
+        public static final int notification_template_big_media=0x7f030052;
+        public static final int notification_template_big_media_narrow=0x7f030053;
+        public static final int notification_template_lines=0x7f030054;
+        public static final int notification_template_media=0x7f030055;
+        public static final int notification_template_part_chronometer=0x7f030056;
+        public static final int notification_template_part_time=0x7f030057;
+        public static final int preference_checkbox=0x7f030058;
+        public static final int preference_checkbox_widget=0x7f030059;
+        public static final int preference_status=0x7f03005a;
+        public static final int preference_status_widget=0x7f03005b;
+        public static final int preference_switchview=0x7f03005c;
+        public static final int relativelayout_resource=0x7f03005d;
+        public static final int select_dialog_item_material=0x7f03005e;
+        public static final int select_dialog_multichoice_material=0x7f03005f;
+        public static final int select_dialog_singlechoice_material=0x7f030060;
+        public static final int setting_fragment=0x7f030061;
+        public static final int support_simple_spinner_dropdown_item=0x7f030062;
+        public static final int timezone_update=0x7f030063;
+        public static final int view_inflate=0x7f030064;
+        public static final int view_inflate_linearlayout=0x7f030065;
     }
     public static final class menu {
-        public static final int language_selection_list=0x7f100000;
-        public static final int main=0x7f100001;
-        public static final int permission=0x7f100002;
-        public static final int resource=0x7f100003;
-        public static final int show_view=0x7f100004;
-        public static final int switcher_demo=0x7f100005;
-        public static final int sys_apps=0x7f100006;
-        public static final int uil_menu=0x7f100007;
-    }
-    public static final class plurals {
-        public static final int dlg_remove_locales_title=0x7f0f0000;
+        public static final int main=0x7f0f0000;
+        public static final int permission=0x7f0f0001;
+        public static final int resource=0x7f0f0002;
+        public static final int show_view=0x7f0f0003;
+        public static final int switcher_demo=0x7f0f0004;
+        public static final int sys_apps=0x7f0f0005;
+        public static final int uil_menu=0x7f0f0006;
     }
     public static final class raw {
         public static final int taido=0x7f060000;
@@ -3101,28 +3080,14 @@ containing a value of this type.
         /**  Content description for the Toolbar icon used to collapse an expanded action mode. [CHAR LIMIT=NONE] 
          */
         public static final int abc_toolbar_collapse_description=0x7f0c0004;
-        public static final int action_drag_label_move_bottom=0x7f0c006c;
-        public static final int action_drag_label_move_down=0x7f0c006a;
-        public static final int action_drag_label_move_top=0x7f0c006b;
-        public static final int action_drag_label_move_up=0x7f0c0069;
-        public static final int action_drag_label_remove=0x7f0c006d;
         public static final int action_settings=0x7f0c0016;
-        public static final int add_a_language=0x7f0c0064;
         public static final int app_name=0x7f0c0014;
         public static final int asynctask_cancel=0x7f0c003c;
-        public static final int delete=0x7f0c0062;
         public static final int descr_image=0x7f0c005b;
-        public static final int dlg_remove_locales_error_message=0x7f0c0067;
-        public static final int dlg_remove_locales_error_title=0x7f0c0066;
-        public static final int dlg_remove_locales_message=0x7f0c0068;
         public static final int get_resource=0x7f0c002e;
-        public static final int global_change_warning=0x7f0c0075;
+        public static final int global_change_warning=0x7f0c0063;
         public static final int go_to_sleep=0x7f0c0033;
         public static final int hello_world=0x7f0c0015;
-        public static final int language_picker_section_all=0x7f0c0070;
-        public static final int language_picker_section_suggested=0x7f0c0071;
-        public static final int locale_not_translated=0x7f0c0063;
-        public static final int locale_search_menu=0x7f0c0072;
         public static final int lorem_ipsum=0x7f0c0057;
         public static final int lvp_switchers_demo=0x7f0c0031;
         public static final int menu_item_clear_disc_cache=0x7f0c005f;
@@ -3133,15 +3098,12 @@ containing a value of this type.
         public static final int msg_loading=0x7f0c001c;
         public static final int permission_granted=0x7f0c0017;
         public static final int permission_not_granted=0x7f0c0018;
-        public static final int pref_title_lang_selection=0x7f0c0065;
         public static final int preference_on=0x7f0c0044;
         public static final int preference_selfcheckbox_summary=0x7f0c0047;
         public static final int preference_status_summary=0x7f0c0048;
         public static final int preference_summary=0x7f0c0046;
         public static final int preference_title=0x7f0c0045;
-        public static final int region_picker_section_all=0x7f0c006f;
         public static final int relative_textview=0x7f0c002f;
-        public static final int search_language_hint=0x7f0c0073;
         public static final int show_dialog=0x7f0c001a;
         public static final int show_fixedlength=0x7f0c0035;
         public static final int show_notification=0x7f0c0038;
@@ -3184,7 +3146,6 @@ containing a value of this type.
         public static final int title_activity_fragment_test2=0x7f0c005a;
         public static final int title_activity_inflate=0x7f0c003f;
         public static final int title_activity_int_storage=0x7f0c0050;
-        public static final int title_activity_language_for_n=0x7f0c006e;
         public static final int title_activity_list_view=0x7f0c003e;
         public static final int title_activity_measure_layout_draw=0x7f0c0054;
         public static final int title_activity_my_preference=0x7f0c003d;
@@ -3199,16 +3160,16 @@ containing a value of this type.
         public static final int title_activity_storage=0x7f0c004e;
         public static final int title_activity_switcher_demo=0x7f0c0020;
         public static final int title_activity_sys_apps=0x7f0c001b;
-        public static final int title_activity_timezone=0x7f0c0074;
+        public static final int title_activity_timezone=0x7f0c0062;
         public static final int title_activity_ui=0x7f0c0055;
         public static final int title_activity_viewpager=0x7f0c0041;
         public static final int title_activity_viewpager_fragment=0x7f0c0042;
         public static final int title_activity_viewpager_state_fragment=0x7f0c0043;
         public static final int title_template_step=0x7f0c0056;
-        public static final int update_timezone=0x7f0c0078;
+        public static final int update_timezone=0x7f0c0066;
         public static final int widetouch_torchlight=0x7f0c0023;
-        public static final int zone_list_menu_sort_alphabetically=0x7f0c0076;
-        public static final int zone_list_menu_sort_by_timezone=0x7f0c0077;
+        public static final int zone_list_menu_sort_alphabetically=0x7f0c0064;
+        public static final int zone_list_menu_sort_by_timezone=0x7f0c0065;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f0d0044;

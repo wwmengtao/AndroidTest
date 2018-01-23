@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 			"checkComponentExist", "reflectCall", "reflectCallListAll", 
 			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI","getPSList"};
 	private String [] mActivitiesName={
-			"AsynchronousActivity","ContentResolverDemoActivity","LanguageForNActivity","TimezoneActivity",
+			"AsynchronousActivity","ContentResolverDemoActivity","TimezoneActivity",
 			"PermissionActivity","TouchEventActivity","PackageManagerActivity",
 			"StorageActivity","UIActivity"};		
 	@Override

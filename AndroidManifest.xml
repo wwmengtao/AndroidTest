@@ -203,11 +203,6 @@
             android:name=".myselfview.ViewPagerActivity"
             android:label="@string/title_activity_viewpager" >
         </activity>
-        <activity
-            android:name=".language.LanguageForNActivity"
-            android:label="@string/title_activity_language_for_n"
-            android:parentActivityName=".MainActivity" >
-        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
