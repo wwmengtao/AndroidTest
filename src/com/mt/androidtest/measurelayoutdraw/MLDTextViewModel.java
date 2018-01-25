@@ -12,7 +12,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
 import com.mt.androidtest.ALog;
-import com.mt.androidtest.showview.PhoneViewInfo;
 
 public class MLDTextViewModel  extends TextView implements View.OnTouchListener{
 	Context mContext = null;
@@ -32,8 +31,8 @@ public class MLDTextViewModel  extends TextView implements View.OnTouchListener{
 		super(context, attrs);
 		mContext = context;
 		setOnTouchListener(this);
-		defaultWidth = (int)(PhoneViewInfo.getPhoneWidth(context)*0.7);
-		defaultHeight = (int)(PhoneViewInfo.getPhoneHeight(context)*0.05);
+		defaultWidth = (int)(context.getResources().getDisplayMetrics().widthPixels*0.7);
+		defaultHeight = (int)(context.getResources().getDisplayMetrics().heightPixels*0.05);
 	}
 	
 	protected void setLayoutDes(String newDesStr){

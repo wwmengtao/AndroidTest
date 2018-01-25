@@ -28,8 +28,7 @@ public class ShowViewActivity extends BaseActivity{
     //3、根据控件内容确定控件宽度
 	private LinearLayout mLinearLayout_AdjustViewWidth=null;
 	private TextView mTV_AdjustViewWidth=null;
-    //4、获取手机显示信息
-    private PhoneViewInfo mPhoneViewInfo=null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,9 +45,6 @@ public class ShowViewActivity extends BaseActivity{
 	    mTV2_TextSize = (TextView) findViewById(R.id.textview_textsize2);
 	    //3、调整控件宽度以全部显示内容
 	    mLinearLayout_AdjustViewWidth = (LinearLayout) findViewById(R.id.linearlayout_adjustviewwidth);
-		//4、以下获取手机显示信息
-	    mPhoneViewInfo = new PhoneViewInfo(this);
-		mPhoneViewInfo.showPhoneViewInfo();
 	}
 	
 	/**
@@ -75,14 +71,6 @@ public class ShowViewActivity extends BaseActivity{
 		if(isLogRunAll)ALog.Log("/------------------------onWindowFocusChanged------------------------/");
 		showWidthAndHeightLog();
 		if(isLogRunAll)ALog.Log("/************************onWindowFocusChanged************************/");
-		//4、以下获取手机显示信息
-		mPhoneViewInfo.showPhoneViewInfo();
-		ALog.Log("statusBarHeight:"+mPhoneViewInfo.StatusBarHeight);
-	    View v = getWindow().findViewById(Window.ID_ANDROID_CONTENT);  
-	    ALog.Log("contentTop:"+v.getTop());
-	    //获取标题栏高度
-	    int titleBarHeight = v.getTop() - mPhoneViewInfo.StatusBarHeight;
-	    ALog.Log("titleBarHeight:"+titleBarHeight);
 	}
 	
     public void showWidthAndHeightLog(){
