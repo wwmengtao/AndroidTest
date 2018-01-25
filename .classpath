@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/androidn_framework"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib_icu4j"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib_3rd"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
