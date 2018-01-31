@@ -12,7 +12,7 @@
         android:text="Start activity"
         android:textColor="@color/royalblue"   
         style="@style/textview_1"/>
-     <ListView 
+     <com.mt.androidtest.ACListView  
 	     android:layout_width="match_parent"
 	     android:layout_height="wrap_content"
 	     android:id="@+id/listview_activity"/>   

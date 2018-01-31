@@ -366,7 +366,7 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
 		mListViewFT=(ListView)findViewById(R.id.listview_functions);	
 		mListViewFT.setAdapter(mListViewAdapterFT);
 		mListViewFT.setOnItemClickListener(this);	
-		setListViewHeightBasedOnChildren(mListViewFT);
+//		setListViewHeightBasedOnChildren(mListViewFT); //使用ACListView就不需要调用此函数
 	}
 	
 	@Override
@@ -388,7 +388,7 @@ public abstract class BaseActivity extends Activity implements AdapterView.OnIte
 		mListViewAC.setOnItemClickListener(mOnItemClickListenerAC);		
 		mListViewAC.setAdapter(mListViewAdapterAC);
 		mListViewAC.setTag(R.id.listview_activity, TAG_LIST_VIEW_AC);
-		setListViewHeightBasedOnChildren(mListViewAC);
+//		setListViewHeightBasedOnChildren(mListViewAC); //使用ACListView就不需要调用此函数
 	}	
 	
 	private AdapterView.OnItemClickListener mOnItemClickListenerAC = new AdapterView.OnItemClickListener(){
