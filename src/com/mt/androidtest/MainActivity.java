@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity implements DialogInterface.OnClic
 			"StartActivity","StartActivity_Uri","DocumentsActivity","DownloadProviderUI","getPSList"};
 	private String [] mActivitiesName={
 			"AsynchronousActivity","ContentResolverDemoActivity","TimezoneActivity",
-			"PermissionActivity","TouchEventActivity","PackageManagerActivity",
+			"PermissionActivity","PackageManagerActivity",
 			"StorageActivity","UIActivity"};		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

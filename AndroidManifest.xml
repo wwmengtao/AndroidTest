@@ -137,11 +137,7 @@
             android:name=".system.PackageManagerActivity"
             android:label="@string/title_activity_package_manager" >
         </activity>
-        <activity
-            android:name=".touchevent.TouchEventActivity"
-            android:label="@string/title_activity_on_click"
-            android:screenOrientation="portrait" >
-        </activity>
+
         <activity
             android:name=".measurelayoutdraw.MeasureLayoutDrawActivity"
             android:label="@string/title_activity_measure_layout_draw" >
