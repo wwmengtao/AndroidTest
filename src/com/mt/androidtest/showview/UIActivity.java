@@ -7,7 +7,7 @@ import com.mt.androidtest.R;
 
 public class UIActivity extends BaseActivity {
 	private String [] mActivitiesName={
-			"BitmapFactoryActivity","BitmapUILActivity","FragmentTestActivity","FragmentTest2Activity",
+			"BitmapFactoryActivity","BitmapUILActivity",
 			"ListViewTestActivity","MySelfViewActivity",
 			"MyPreferenceActivity","MeasureLayoutDrawActivity",
 			"ResourceActivity","InflateActivity","ShowViewActivity"};		
